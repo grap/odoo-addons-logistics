@@ -8,6 +8,12 @@ License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl.html).
 
     <menuitem id="menu_root"
         name="Global Transactions"
-        web_icon="global_base,static/src/img/icon.png"/>
+        web_icon="global_base,static/src/img/icon.png"
+    />
+
+    <menuitem id="menu_configuration"
+        name="Configurations"
+        parent="menu_root"
+    />
 
 </odoo>
