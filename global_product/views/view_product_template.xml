@@ -6,21 +6,20 @@ License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl.html).
 -->
 <odoo>
 
-    <record id="action_product_product" model="ir.actions.act_window">
-        <field name="name">Global Variants</field>
+    <record id="action_product_template" model="ir.actions.act_window">
+        <field name="name">Global Products</field>
         <field name="type">ir.actions.act_window</field>
-        <field name="res_model">product.product</field>
+        <field name="res_model">product.template</field>
         <field name="view_type">form</field>
         <field name="view_mode">tree,form</field>
         <field name="context">{"only_global":1}</field>
     </record>
 
-    <menuitem id="menu_product_product"
-        name="Global Variants"
+    <menuitem id="menu_product_template"
+        name="Global Products"
         parent="global_base.menu_configuration"
-        action="action_product_product"
-        groups="product.group_product_variant"
-        sequence="2"
+        action="action_product_template"
+        sequence="1"
     />
 
 </odoo>

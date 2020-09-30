@@ -10,5 +10,6 @@
     "license": "AGPL-3",
     "depends": ["base"],
     "data": ["views/menu.xml"],
+    "demo": ["demo/res_groups.xml"],
     "installable": True,
 }
