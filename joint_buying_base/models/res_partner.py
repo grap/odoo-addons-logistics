@@ -5,6 +5,6 @@
 from odoo import models
 
 
-class ProductTemplate(models.Model):
-    _inherit = ["product.template", "global.mixin"]
-    _name = "product.template"
+class ResPartner(models.Model):
+    _inherit = ["res.partner", "joint.buying.mixin"]
+    _name = "res.partner"

@@ -2,13 +2,14 @@
 # @author: Sylvain LE GAL (https://twitter.com/legalsylvain)
 # License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl.html).
 {
-    "name": "Global Products",
+    "name": "Joint Buying - Products",
     "version": "12.0.1.0.1",
     "category": "GRAP - Logistics",
     "author": "GRAP",
     "website": "http://www.grap.coop",
     "license": "AGPL-3",
-    "depends": ["product", "global_base"],
+    "depends": ["product", "joint_buying_base"],
     "data": ["views/view_product_product.xml", "views/view_product_template.xml"],
     "installable": True,
+    "auto_install": True,
 }

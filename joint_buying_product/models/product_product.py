@@ -6,9 +6,12 @@ from odoo import fields, models
 
 
 class ProductProduct(models.Model):
-    _inherit = ["product.product", "global.mixin"]
+    _inherit = ["product.product", "joint.buying.mixin"]
     _name = "product.product"
 
-    is_global = fields.Boolean(
-        compute=False, related="product_tmpl_id.is_global", store=True
+    is_joint_buying = fields.Boolean(
+        string="For Joint Buying",
+        related="product_tmpl_id.is_joint_buying",
+        store=True,
+        readonly=True,
     )
