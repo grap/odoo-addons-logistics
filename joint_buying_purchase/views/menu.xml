@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<odoo>
+
+    
+    <!-- Override menu global base to use action to show view kanban Model tour -->
+    <menuitem id="menu_tour_template"
+        name="Tour templates"
+        parent="joint_buying_base.menu_root"
+        action="joint_buying_purchase.open_view_kanban_tour_template"
+    />
+
+
+</odoo>
