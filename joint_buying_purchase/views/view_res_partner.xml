@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<odoo>
+
+
+    <record id="joint_buing_purchase_view_partner_form_inherit" model="ir.ui.view">
+        <field name="model">res.partner</field>
+        <field name="inherit_id" ref="joint_buying_base.view_res_partner"/>
+        <field name="arch" type="xml">
+
+            <field name="is_joint_buying" position="after">
+                <field name="is_joint_buying_customer" attrs="{'invisible': [('is_joint_buying','=',False)]}"/>
+                <field name="is_joint_buying_supplier" attrs="{'invisible': [('is_joint_buying','=',False)]}"/>
+                <field name="company_id" readonly="1"/>
+            </field>
+
+
+        </field>
+    </record>
+
+
+</odoo>
+
