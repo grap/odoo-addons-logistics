@@ -9,9 +9,11 @@
         <field name="arch" type="xml">
 
             <field name="is_joint_buying" position="after">
-                <field name="is_joint_buying_customer" attrs="{'invisible': [('is_joint_buying','=',False)]}"/>
-                <field name="is_joint_buying_supplier" attrs="{'invisible': [('is_joint_buying','=',False)]}"/>
-                <field name="company_id" readonly="1"/>
+                <group attrs="{'invisible': [('is_joint_buying','=',False)]}">
+                    <field name="is_joint_buying_customer"/>
+                    <field name="is_joint_buying_supplier"/>
+                    <field name="activity_id"/>
+                </group>
             </field>
 
 

@@ -4,7 +4,6 @@
 
     <!-- View kanban model tour -->
     <record model="ir.ui.view" id="joint_buying_tour_template_kanban_view">
-        <field name="name">joint.buying.tour.template.kanban</field>
         <field name="model">joint.buying.tour.template</field>
         <field name="arch" type="xml">
             <kanban class="o_kanban_mobile">
@@ -37,12 +36,10 @@
 
     <!-- Action to show view kanban Model tour --> 
     <record id="open_view_kanban_tour_template" model="ir.actions.act_window">
-        <field name="name">Tour template</field>
         <field name="res_model">joint.buying.tour.template</field>
         <field name="view_type">form</field>
         <field name="domain">[]</field>
         <field name="view_mode">kanban,form</field>
-        <field name="view_id" ref="joint_buying_tour_template_kanban_view"/>
         <field name="help" type="html">
             <p class="o_view_nocontent_smiling_face">
                 Create a new Tour template.
@@ -52,14 +49,13 @@
 
     <!-- Create a model tour -->
     <record model="ir.ui.view" id="tour_template_form_view">
-        <field name="name">joint.buying.tour.template.form</field>
         <field name="model">joint.buying.tour.template</field>
         <field name="arch" type="xml">
             <form string="Tour template form">
                 <sheet string="Represents a tour template">
                     <h1>Tour template : <field name="name"/></h1>
                     <group col="4">
-                        <field name="step_ids" widget="many2many_tags" />
+                        <field name="step_ids" widget="many2many_tags" context="{'joint_buying': 1}"/>
                     </group>
                 </sheet>
             </form>

@@ -6,7 +6,12 @@ class JointBuyingPurchaseOrder(models.Model):
     _description = "Joint buying purchase order"
     _rec_name = "supplier_id"
 
-    tour_id = fields.Many2one("joint.buying.tour", string="Tour")
+    tour_id = fields.Many2one(
+        "joint.buying.tour",
+        string="Tour",
+        required=True,
+        ondelete='cascade'
+    )
 
     customer_id = fields.Many2one(
         "res.partner",
@@ -25,7 +30,7 @@ class JointBuyingPurchaseOrder(models.Model):
     line_ids = fields.One2many(
         "joint.buying.purchase.order.line",
         inverse_name="order_id",
-        sting="Lines for each customer"
+        string="Lines for each customer"
     )
 
     pivot_activity = fields.Char(compute="_get_pivot_activity", store=True)
@@ -34,15 +39,3 @@ class JointBuyingPurchaseOrder(models.Model):
         if self.supplier_id.activity_id:
             return self.supplier_id.activity_id.name
         return self.supplier_id.name
-
-
-class JointBuyingPurchaseOrderLine(models.Model):
-    _name = "joint.buying.purchase.order.line"
-    _description = "Joint buying purchase order line"
-
-    order_id = fields.Many2one("joint.buying.purchase.order", string="Order")
-
-    product_id = fields.Many2one(
-        "product.product", string="Product", domain=[("is_joint_buying", "=", True)]
-    )
-    quantity = fields.Float()

@@ -11,11 +11,11 @@
     'depends': ["web_one2many_kanban", "purchase", "joint_buying_product"],
     'data': [
         'security/ir.model.access.csv',
-        'views/view_tour_template.xml',
-        'views/view_res_partner.xml',
-        'views/view_tour.xml',
-        'views/view_joint_buying_purchase_order.xml',
         'views/menu.xml',
+        'views/view_res_partner.xml',
+        'views/view_joint_buying_tour_template.xml',
+        'views/view_joint_buying_tour.xml',
+        'views/view_joint_buying_purchase_order.xml',
     ],
     "installable": True,
 }
