@@ -43,24 +43,24 @@ class JointBuyingMixin(models.AbstractModel):
     # Overload the private _search function:
     # This function is used by the other ORM functions
     # (name_search, search_read)
-    # @api.model
-    # def _search(
-    #     self,
-    #     args,
-    #     offset=0,
-    #     limit=None,
-    #     order=None,
-    #     count=False,
-    #     access_rights_uid=None,
-    # ):
-    #     args += [
-    #         ("is_joint_buying", "=", bool(self.env.context.get("joint_buying", False)))
-    #     ]
-    #     return super()._search(
-    #         args=args,
-    #         offset=offset,
-    #         limit=limit,
-    #         order=order,
-    #         count=count,
-    #         access_rights_uid=access_rights_uid,
-    #     )
+    @api.model
+    def _search(
+        self,
+        args,
+        offset=0,
+        limit=None,
+        order=None,
+        count=False,
+        access_rights_uid=None,
+    ):
+        args += [
+            ("is_joint_buying", "=", bool(self.env.context.get("joint_buying", False)))
+        ]
+        return super()._search(
+            args=args,
+            offset=offset,
+            limit=limit,
+            order=order,
+            count=count,
+            access_rights_uid=access_rights_uid,
+        )
