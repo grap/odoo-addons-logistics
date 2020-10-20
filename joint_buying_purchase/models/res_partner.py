@@ -8,13 +8,6 @@ class ResPartner(models.Model):
         "joint.buying.tour.template", string="Tour template"
     )
 
-    is_joint_buying_customer = fields.Boolean(
-        default=False, string="Is a customer for joint buying"
-    )
-    is_joint_buying_supplier = fields.Boolean(
-        default=False, string="Is a supplier for joint buying"
-    )
-
     # Supplier
     activity_id = fields.Many2one(
         "res.partner", string="The activity that manages my stocks"
