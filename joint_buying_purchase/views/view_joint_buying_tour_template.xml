@@ -36,6 +36,7 @@
 
     <!-- Action to show view kanban Model tour --> 
     <record id="open_view_kanban_tour_template" model="ir.actions.act_window">
+        <field name="name">Joint Buying Tour template</field>
         <field name="res_model">joint.buying.tour.template</field>
         <field name="view_type">form</field>
         <field name="domain">[]</field>
