@@ -10,6 +10,6 @@
     "license": "AGPL-3",
     "depends": ["base"],
     "data": ["views/menu.xml", "views/view_res_partner.xml"],
-    "demo": ["demo/res_groups.xml"],
+    "demo": ["demo/res_groups.xml", "demo/res_partner.xml"],
     "installable": True,
 }
