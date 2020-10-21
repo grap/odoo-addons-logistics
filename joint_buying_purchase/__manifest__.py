@@ -4,6 +4,7 @@
 {
     'name': "Joint Buying - Purchase",
     'summary': "A module that allows activities to make grouped orders.",
+    "version": "12.0.1.0.2",
     'category': "GRAP - Logistics",
     'author': "Hashbang",
     'website': "https://hashbang.coop",
@@ -16,6 +17,12 @@
         'views/view_joint_buying_tour.xml',
         'views/view_joint_buying_purchase_order.xml',
         'views/menu.xml',
+    ],
+    "demo": [
+        "demo/joint_buying_tour_template.xml",
+        "demo/joint_buying_tour.xml",
+        "demo/joint_buying_purchase_order.xml",
+        "demo/joint_buying_purchase_order_line.xml",
     ],
     "installable": True,
 }

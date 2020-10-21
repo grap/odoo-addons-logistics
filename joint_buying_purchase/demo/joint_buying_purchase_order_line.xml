@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<odoo>
+
+  <record id="joint_buying_purchase_order_line_customer_1" model="joint.buying.purchase.order.line">
+    <field name="order_id" ref="joint_buying_purchase.joint_buying_purchase_order_customer_1"/>
+    <field name="product_id" ref="joint_buying_product.product_product_supplier_in_grap"/>
+    <field name="quantity">1.0</field>
+  </record>
+
+  <record id="joint_buying_purchase_order_line_customer_2" model="joint.buying.purchase.order.line">
+    <field name="order_id" ref="joint_buying_purchase.joint_buying_purchase_order_customer_2"/>
+    <field name="product_id" ref="joint_buying_product.product_product_supplier_out_grap"/>
+    <field name="quantity">1.0</field>
+  </record>
+
+</odoo>
