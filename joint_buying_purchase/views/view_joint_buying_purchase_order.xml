@@ -31,10 +31,10 @@
                             </div>
                             <div class="row">
                                 <div class="col-6">
-                                    <strong>Products</strong>   
+                                    <strong>Products</strong>
                                 </div>
                                 <div class="col-6">
-                                    <strong>Quantity</strong>   
+                                    <strong>Quantity</strong>
                                 </div>
                             </div>
                             <hr/>
@@ -72,9 +72,9 @@
         </search>
       </field>
     </record>
-    
 
-    <!-- Action to show view kanban joint purchase order --> 
+
+    <!-- Action to show view kanban joint purchase order -->
     <record id="open_view_kanban_joint_buying_purchase_order_by_tour" model="ir.actions.act_window">
         <field name="name">Joint Buying Purchase Order</field>
         <field name="res_model">joint.buying.purchase.order</field>
@@ -112,9 +112,9 @@
                         <page name="lines" string="Order line">
                             <field name="line_ids">
                                 <tree editable="botttom">
-                                    <field name="product_id" string="Product" context="{'joint_buying': 1}"/>                    
+                                    <field name="product_id" string="Product" context="{'joint_buying': 1}"/>
                                     <field name="quantity" string="Quantity"/>
-                                </tree> 
+                                </tree>
                             </field>
                         </page>
                     </notebook>

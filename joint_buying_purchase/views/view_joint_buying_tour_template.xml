@@ -18,9 +18,9 @@
                             <hr/>
                             <div class="row o_kanban_card_upper_content">
                                 <div class="col-4 o_kanban_primary_left">
-                                    <!-- 
-                                        This button go to the kanban view of tour 
-                                        link to the current tour template 
+                                    <!--
+                                        This button go to the kanban view of tour
+                                        link to the current tour template
                                     -->
                                     <button type="action" class="btn btn-primary" name="joint_buying_purchase.open_view_kanban_tour_by_template">
                                         Tours
@@ -34,7 +34,7 @@
         </field>
     </record>
 
-    <!-- Action to show view kanban Model tour --> 
+    <!-- Action to show view kanban Model tour -->
     <record id="open_view_kanban_tour_template" model="ir.actions.act_window">
         <field name="name">Joint Buying Tour template</field>
         <field name="res_model">joint.buying.tour.template</field>
