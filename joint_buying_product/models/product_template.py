@@ -10,4 +10,6 @@ class ProductTemplate(models.Model):
     _name = "product.template"
 
     joint_buying_seller_ids = fields.One2many('product.supplierinfo', 'product_tmpl_id')
-    joint_buying_variant_seller_ids = fields.One2many('product.supplierinfo', 'product_tmpl_id')
+    joint_buying_variant_seller_ids = fields.One2many(
+        'product.supplierinfo', 'product_tmpl_id'
+    )
