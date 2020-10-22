@@ -16,6 +16,7 @@
         'views/view_joint_buying_tour_template.xml',
         'views/view_joint_buying_tour.xml',
         'views/view_joint_buying_purchase_order.xml',
+        'views/view_product_template.xml',
         'views/menu.xml',
     ],
     "demo": [
