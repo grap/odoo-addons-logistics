@@ -2,7 +2,7 @@
 # @author: Sylvain LE GAL (https://twitter.com/legalsylvain)
 # License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl.html).
 
-from odoo import models, fields
+from odoo import fields, models
 
 
 class ResPartner(models.Model):
@@ -20,7 +20,10 @@ class ResPartner(models.Model):
     activity_id = fields.Many2one(
         "res.partner",
         string="The activity that manages my stocks",
-        domain=[("is_joint_buying", "=", True), ("is_joint_buying_supplier", "=", True)]
+        domain=[
+            ("is_joint_buying", "=", True),
+            ("is_joint_buying_supplier", "=", True),
+        ],
     )
 
     # Customer
@@ -31,5 +34,8 @@ class ResPartner(models.Model):
             "Suppliers to manage, if there are one or more company,"
             " then this is a pivot activity"
         ),
-        domain=[("is_joint_buying", "=", True), ("is_joint_buying_supplier", "=", True)]
+        domain=[
+            ("is_joint_buying", "=", True),
+            ("is_joint_buying_supplier", "=", True),
+        ],
     )
