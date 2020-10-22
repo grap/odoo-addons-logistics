@@ -6,6 +6,7 @@
         <field name="name">Chocolalala</field>
         <field name="is_joint_buying">1</field>
         <field name="is_company">1</field>
+        <field name="supplier">1</field>
         <field name="company_id" eval="False"/>
         <field name="street">18 Rue de l'Armèllerie</field>
         <field name="city">Die</field>
@@ -18,6 +19,7 @@
         <field name="name">La Chèvre et le Chou</field>
         <field name="is_joint_buying">1</field>
         <field name="is_company">1</field>
+        <field name="supplier">1</field>
         <field name="company_id" eval="False"/>
         <field name="street">2 Grande Rue</field>
         <field name="city">Saint-Sauveur-de-Montagut</field>
@@ -30,6 +32,7 @@
         <field name="name">La Gourmande bio</field>
         <field name="is_joint_buying">1</field>
         <field name="is_company">1</field>
+        <field name="supplier">1</field>
         <field name="company_id" eval="False"/>
         <field name="activity_id" ref="res_partner_for_joint_buying_pivot_activity"/>
         <field name="street"></field>
