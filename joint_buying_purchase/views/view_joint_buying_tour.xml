@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <odoo>
-    
+
     <!-- View kanban tour -->
     <record model="ir.ui.view" id="joint_buying_tour_kanban_view">
         <field name="model">joint.buying.tour</field>
@@ -17,8 +17,8 @@
                             <hr/>
                             <div class="row o_kanban_card_upper_content">
                                 <div class="col-4 o_kanban_primary_left">
-                                    <!-- 
-                                        This button go to the kanban view of 
+                                    <!--
+                                        This button go to the kanban view of
                                         purchase order link to the current tour
                                     -->
                                     <button type="action" class="btn btn-primary" name="joint_buying_purchase.open_view_kanban_joint_buying_purchase_order_by_tour">
@@ -49,9 +49,9 @@
         </search>
       </field>
     </record>
-    
 
-    <!-- Action to show view kanban tour --> 
+
+    <!-- Action to show view kanban tour -->
     <record id="open_view_kanban_tour_by_template" model="ir.actions.act_window">
         <field name="name">Joint Buying Tour</field>
         <field name="res_model">joint.buying.tour</field>
