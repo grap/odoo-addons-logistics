@@ -14,7 +14,9 @@
                         <field name="name" context="{'joint_buying': context.get('joint_buying', 0)}" />
                         <field name="product_id" context="{'joint_buying': context.get('joint_buying', 0)}" domain="[('product_tmpl_id', '=', product_tmpl_id)]"/>
                         <field name="min_qty" />
+                        <field name="max_qty" />
                         <field name="price" />
+                        <field name="delay" />
                         <field name="date_start" />
                         <field name="date_end" />
                     </tree>
@@ -28,7 +30,9 @@
                         <field name="name" context="{'joint_buying': context.get('joint_buying', 0)}" />
                         <field name="product_id" context="{'joint_buying': context.get('joint_buying', 0)}" domain="[('product_tmpl_id', '=', product_tmpl_id)]"/>
                         <field name="min_qty" />
+                        <field name="max_qty" />
                         <field name="price" />
+                        <field name="delay" />
                         <field name="date_start" />
                         <field name="date_end" />
                     </tree>
