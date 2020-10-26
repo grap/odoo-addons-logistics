@@ -112,8 +112,28 @@
                         <page name="lines" string="Order line">
                             <field name="line_ids">
                                 <tree editable="botttom">
-                                    <field name="product_id" string="Product" context="{'joint_buying': 1}"/>
-                                    <field name="quantity" string="Quantity"/>
+                                    <field name="quantity_validation" invisible="1"/>
+                                    <field
+                                        name="product_id"
+                                        options='{
+                                            "fg_color": "
+                                                red:quantity_validation == 2 ;
+                                                orange:quantity_validation == 1;
+                                                green:quantity_validation == 0
+                                            "
+                                        }'
+                                        string="Product"
+                                        context="{'joint_buying': 1}"/>
+                                    <field
+                                        name="quantity"
+                                        options='{
+                                            "fg_color": "
+                                                red:quantity_validation == 2 ;
+                                                orange:quantity_validation == 1;
+                                                green:quantity_validation == 0
+                                            "
+                                        }'
+                                        string="Quantity"/>
                                 </tree>
                             </field>
                         </page>
