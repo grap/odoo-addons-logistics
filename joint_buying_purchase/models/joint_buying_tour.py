@@ -15,3 +15,4 @@ class JointBuyingTour(models.Model):
         inverse_name="tour_id",
         string="Joint buying purchase orders peer supplier",
     )
+    generate = fields.Boolean(default=False)

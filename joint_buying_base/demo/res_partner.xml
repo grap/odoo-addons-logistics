@@ -13,6 +13,9 @@
         <field name="zip">26150</field>
         <field name="country_id" ref="base.fr"/>
         <field name="is_joint_buying_supplier">1</field>
+        <field name="delay">10</field>
+        <field name="period">15</field>
+        <field name="init_period_date" eval="time.strftime('%Y-%m-%d')"/>
     </record>
 
     <record id="res_partner_for_joint_buying_pivot_activity" model="res.partner">
@@ -26,6 +29,9 @@
         <field name="zip">07190</field>
         <field name="country_id" ref="base.fr"/>
         <field name="is_joint_buying_supplier">1</field>
+        <field name="delay">10</field>
+        <field name="period">15</field>
+        <field name="init_period_date" eval="time.strftime('%Y-%m-%d')"/>
     </record>
 
     <record id="res_partner_for_joint_buying_supplier_out_grap" model="res.partner">
@@ -40,6 +46,9 @@
         <field name="zip">7190</field>
         <field name="country_id" ref="base.fr"/>
         <field name="is_joint_buying_supplier">1</field>
+        <field name="delay">10</field>
+        <field name="period">15</field>
+        <field name="init_period_date" eval="time.strftime('%Y-%m-%d')"/>
     </record>
 
     <record id="res_partner_for_joint_buying_customer_1" model="res.partner">
@@ -52,6 +61,7 @@
         <field name="zip">69007</field>
         <field name="country_id" ref="base.fr"/>
         <field name="is_joint_buying_customer">1</field>
+        <field name="init_period_date" eval="time.strftime('%Y-%m-%d')"/>
     </record>
 
     <record id="res_partner_for_joint_buying_customer_2" model="res.partner">
@@ -64,6 +74,7 @@
         <field name="zip">69100</field>
         <field name="country_id" ref="base.fr"/>
         <field name="is_joint_buying_customer">1</field>
+        <field name="init_period_date" eval="time.strftime('%Y-%m-%d')"/>
     </record>
 
 </odoo>
