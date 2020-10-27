@@ -16,6 +16,19 @@
                 </group>
             </field>
 
+            <notebook position="before">
+
+                <group modifier="{}">
+
+                    <group modifier="{}" col="3">
+                        <field name="delay"/>
+                        <field name="period"/>
+                        <field name="init_period_date"/>
+                    </group>
+
+                </group>
+
+            </notebook>
 
         </field>
     </record>

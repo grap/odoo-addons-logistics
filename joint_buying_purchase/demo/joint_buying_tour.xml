@@ -3,7 +3,8 @@
 <odoo>
 
   <record id="joint_buying_tour" model="joint.buying.tour">
-        <field name="date" eval="(DateTime.now() + relativedelta(days=-1)).strftime('%Y-%m-%d')"/>
+        <field name="date" eval="time.strftime('%Y-%m-%d')"/>
+        <field name="generate" eval="True"/>
         <field name="tour_template_id" ref="joint_buying_purchase.joint_buying_tour_template"/>
   </record>
 
