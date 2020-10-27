@@ -25,6 +25,20 @@ class ResPartner(models.Model):
             ("is_joint_buying_supplier", "=", True),
         ],
     )
+    delay = fields.Integer(
+        default=0,
+        string="Timeframes for preparations before order.",
+        required=[("is_joint_buying_supplier", "=", True)],
+    )
+    period = fields.Integer(
+        default=0,
+        string="Period between each order",
+        required=[("is_joint_buying_supplier", "=", True)],
+    )
+    init_period_date = fields.Date(
+        string="Initial date to start the periods between each order.",
+        required=[("is_joint_buying_supplier", "=", True)],
+    )
 
     # Customer
     supplier_ids = fields.One2many(
