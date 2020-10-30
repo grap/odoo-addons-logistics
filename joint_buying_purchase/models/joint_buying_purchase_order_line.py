@@ -18,37 +18,74 @@ class JointBuyingPurchaseOrderLine(models.Model):
         ondelete="cascade",
         required=True,
     )
+
     quantity = fields.Float(
         string="Quantity",
         digits=dp.get_precision("Product Unit of Measure"),
         required=True,
     )
-    quantity_validation = fields.Integer(compute="_compute_quantity_validation")
+    total_quantity = fields.Float(
+        compute="_compute_total_quantity",
+        digits=dp.get_precision("Product Unit of Measure"),
+        store=True,
+    )
+    min_quantity = fields.Float(
+        compute="_compute_min_quantity",
+        digits=dp.get_precision("Product Unit of Measure"),
+        store=True,
+    )
+    max_quantity = fields.Float(
+        compute="_compute_max_quantity",
+        digits=dp.get_precision("Product Unit of Measure"),
+        store=True,
+    )
+    quantity_validation = fields.Float(
+        compute="_compute_quantity_validation",
+        digits=dp.get_precision("Product Unit of Measure"),
+        invisible=True,
+        store=True,
+    )
 
-    _sql_constraints = [
-        ("product_id_unique", "unique(product_id)", "It's on product peer line")
-    ]
+    @api.depends("product_id")
+    def _compute_min_quantity(self):
+        for rec in self:
+            supplier_id = rec.product_id.seller_ids.search(
+                [("name", "=", rec.order_id.supplier_id.id)]
+            )
+            rec.min_quantity = supplier_id.min_qty
 
-    @api.onchange("quantity")
+    @api.depends("product_id")
+    def _compute_max_quantity(self):
+        for rec in self:
+            supplier_id = rec.product_id.seller_ids.search(
+                [("name", "=", rec.order_id.supplier_id.id)]
+            )
+            rec.max_quantity = supplier_id.max_qty
+
+    @api.depends("quantity")
+    def _compute_total_quantity(self):
+        for rec in self:
+            rec.total_quantity = sum(
+                line.quantity
+                for order in rec.order_id.tour_id.joint_buying_purchase_ids.search(
+                    [("supplier_id", "=", rec.order_id.supplier_id.id)]
+                )
+                for line in order.line_ids.search(
+                    [("product_id", "=", rec.product_id.id)]
+                )
+            )
+
+    @api.depends("quantity")
     def _compute_quantity_validation(self):
         """
         Check if the quantity of lines not exceeded the
         quantity allowed for the product or is supperior
         to minimum quantity of supplier.
         """
-        if not self.product_id:
-            return
-
-        supplier_id = self.product_id.seller_ids.search(
-            [("name", "=", self.order_id.supplier_id.id)]
-        )
-        # Critical case: If the current product have multiple
-        # seller_ids with the same supplier
-        quantity_allowed = supplier_id.max_qty
-        minimum_quantity = supplier_id.min_qty
-        if self.quantity > quantity_allowed:
-            self.update({"quantity_validation": 2})
-        elif self.quantity < minimum_quantity:
-            self.update({"quantity_validation": 1})
-        else:
-            self.update({"quantity_validation": 0})
+        for rec in self:
+            if rec.total_quantity > rec.max_quantity:
+                rec.quantity_validation = 2
+            elif rec.total_quantity < rec.min_quantity:
+                rec.quantity_validation = 1
+            else:
+                rec.quantity_validation = 0

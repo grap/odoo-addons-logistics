@@ -30,12 +30,13 @@ class JointBuyingPurchaseOrder(models.Model):
         string="Lines for each customer",
     )
 
-    pivot_activity = fields.Char(compute="_compute_get_pivot_activity", store=True)
+    pivot_activity = fields.Char(compute="_compute_get_pivot_activity")
 
+    @api.depends("supplier_id")
     def _compute_get_pivot_activity(self):
-        if self.supplier_id.activity_id:
-            return self.supplier_id.activity_id.name
-        return self.supplier_id.name
+        for rec in self:
+            if rec.supplier_id.activity_id:
+                rec.pivot_activity = rec.supplier_id.activity_id.name
 
     @api.onchange("supplier_id")
     def populate_line_ids(self):

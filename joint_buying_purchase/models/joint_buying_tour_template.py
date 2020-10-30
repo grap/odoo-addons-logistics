@@ -75,7 +75,7 @@ class JointBuyingTourTemplate(models.Model):
             today = datetime.today().date()
             if not rec.tour_ids:
                 date = rec.init_period_date
-                index = 1
+                index = 0
             else:
                 date = rec.tour_ids.search([("generate", "=", True)])[
                     -1
