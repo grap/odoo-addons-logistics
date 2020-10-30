@@ -16,19 +16,22 @@
                 </group>
             </field>
 
-            <notebook position="before">
+            <page autofocus="autofocus" position="before">
 
-                <group modifier="{}">
+                <page string="Supplier info for joint buying" attrs="{'invisible': [('is_joint_buying_supplier', '=', False)]}" autofocus="autofocus">
 
-                    <group modifier="{}" col="3">
-                        <field name="delay"/>
-                        <field name="period"/>
-                        <field name="init_period_date"/>
+                    <group modifier="{}">
+                        <group modifier="{}" col="3">
+                            <field name="delay"/>
+                            <field name="period"/>
+                            <field name="init_period_date"/>
+                            <field name="tour_template_id"/>
+                        </group>
                     </group>
 
-                </group>
+                </page>
 
-            </notebook>
+            </page>
 
         </field>
     </record>

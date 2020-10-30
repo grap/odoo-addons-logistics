@@ -9,8 +9,15 @@
     "author": "GRAP, Hashbang",
     "website": "https://hashbang.coop",
     "license": "AGPL-3",
-    "depends": ["web_one2many_kanban", "purchase", "joint_buying_product"],
+    "depends": [
+        "web_one2many_kanban",
+        "web_tree_dynamic_colored_field",
+        "purchase",
+        "joint_buying_product",
+    ],
     "data": [
+        "data/ir_module_category_data.xml",
+        "security/joint_buying_purchase_security.xml",
         "security/ir.model.access.csv",
         "views/view_res_partner.xml",
         "views/view_joint_buying_tour_template.xml",
@@ -24,6 +31,7 @@
         "demo/joint_buying_tour.xml",
         "demo/joint_buying_purchase_order.xml",
         "demo/joint_buying_purchase_order_line.xml",
+        "demo/res_user.xml",
     ],
     "installable": True,
 }
