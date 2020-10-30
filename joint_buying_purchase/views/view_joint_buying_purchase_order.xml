@@ -11,7 +11,7 @@
                 <field name="line_ids"/>
                 <templates>
                     <t t-name="kanban-box">
-                        <div t-attf-class="oe_kanban_content oe_kanban_global_click o_kanban_get_form" style="width: 100% !important;">
+                        <div t-attf-class="oe_kanban_content oe_kanban_global_click_edit o_kanban_get_form" type="edit" style="width: 100% !important;">
                             <h3>Deadline : </h3>
                             <div class="row">
                                 <div class="col-4">
@@ -103,15 +103,15 @@
                 <sheet string="Represents a tour">
                     <h1>Purchase order of : <field name="tour_id" readonly="1"/></h1>
                     <group col="3">
-                        <field name="supplier_id" context="{'joint_buying': 1}"/>
+                        <field name="supplier_id" context="{'joint_buying': 1}" readonly="1"/>
                     </group>
                     <group col="3">
-                        <field name="customer_id" context="{'joint_buying': 1}"/>
+                        <field name="customer_id" context="{'joint_buying': 1}" readonly="1"/>
                     </group>
                     <notebook>
                         <page name="lines" string="Order line">
                             <field name="line_ids">
-                                <tree editable="botttom">
+                                <tree editable="botttom" create="false">
                                     <field name="quantity_validation" invisible="1"/>
                                     <field
                                         name="product_id"
@@ -123,7 +123,44 @@
                                             "
                                         }'
                                         string="Product"
-                                        context="{'joint_buying': 1}"/>
+                                        context="{'joint_buying': 1}"
+                                        readonly="1"/>
+                                    <field
+                                        name="min_quantity"
+                                        options='{
+                                            "fg_color": "
+                                                red:quantity_validation == 2 ;
+                                                orange:quantity_validation == 1;
+                                                green:quantity_validation == 0
+                                            "
+                                        }'
+                                        string="Min. quantity"
+                                        context="{'joint_buying': 1}"
+                                        readonly="1"/>
+                                    <field
+                                        name="max_quantity"
+                                        options='{
+                                            "fg_color": "
+                                                red:quantity_validation == 2 ;
+                                                orange:quantity_validation == 1;
+                                                green:quantity_validation == 0
+                                            "
+                                        }'
+                                        string="Max. quantity"
+                                        context="{'joint_buying': 1}"
+                                        readonly="1"/>
+                                    <field
+                                        name="total_quantity"
+                                        options='{
+                                            "fg_color": "
+                                                red:quantity_validation == 2 ;
+                                                orange:quantity_validation == 1;
+                                                green:quantity_validation == 0
+                                            "
+                                        }'
+                                        string="Total quantity"
+                                        context="{'joint_buying': 1}"
+                                        readonly="1"/>
                                     <field
                                         name="quantity"
                                         options='{
