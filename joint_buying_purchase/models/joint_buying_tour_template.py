@@ -77,9 +77,9 @@ class JointBuyingTourTemplate(models.Model):
                 date = rec.init_period_date
                 index = 0
             else:
-                date = rec.tour_ids.search([("generate", "=", True)])[
-                    -1
-                ].date + timedelta(days=rec.period)
+                date = rec.tour_ids.search(
+                    [("tour_template_id", "=", rec.id), ("generate", "=", True)]
+                )[-1].date + timedelta(days=rec.period)
                 index = len(rec.tour_ids)
 
             tour_data = {"tour_ids": []}

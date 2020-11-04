@@ -45,15 +45,19 @@ class TestGenerateTours(common.TransactionCase):
         customer_2 = self.env.ref(
             "joint_buying_base.res_partner_for_joint_buying_customer_2"
         )
+
         tour_template = self.env["joint.buying.tour.template"].create(
             {
                 "name": "tour_template",
-                "deadline": 10,
-                "period": 15,
+                "deadline": 13,
+                "period": 14,
                 "init_period_date": datetime.today().date(),
             }
         )
+        self.assertEqual(len(tour_template.tour_ids), 0)
+
         tour_template.generate_tour()
+
         self.assertEqual(len(tour_template.tour_ids), 1)
         self.assertEqual(len(tour_template.tour_ids[0].joint_buying_purchase_ids), 6)
         self.assertIn(
