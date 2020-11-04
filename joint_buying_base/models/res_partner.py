@@ -26,25 +26,18 @@ class ResPartner(models.Model):
         ],
     )
     delay = fields.Integer(
-        default=0,
-        string="Timeframes for preparations before order.",
-        required=[("is_joint_buying_supplier", "=", True)],
+        default=0, string="Timeframes for preparations before order."
     )
-    period = fields.Integer(
-        default=0,
-        string="Period between each order",
-        required=[("is_joint_buying_supplier", "=", True)],
-    )
+    period = fields.Integer(default=0, string="Period between each order")
     init_period_date = fields.Date(
-        string="Initial date to start the periods between each order.",
-        required=[("is_joint_buying_supplier", "=", True)],
+        string="Initial date to start the periods between each order."
     )
 
     # Customer
     supplier_ids = fields.One2many(
         "res.partner",
         inverse_name="activity_id",
-        strings=(
+        string=(
             "Suppliers to manage, if there are one or more company,"
             " then this is a pivot activity"
         ),

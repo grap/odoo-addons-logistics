@@ -2,39 +2,28 @@
 
 <odoo>
 
-
     <record id="joint_buing_purchase_view_partner_form_inherit" model="ir.ui.view">
         <field name="model">res.partner</field>
         <field name="inherit_id" ref="joint_buying_base.view_res_partner"/>
         <field name="arch" type="xml">
 
-            <field name="is_joint_buying" position="after">
-                <group attrs="{'invisible': [('is_joint_buying','=',False)]}">
-                    <field name="is_joint_buying_customer"/>
-                    <field name="is_joint_buying_supplier"/>
-                    <field name="activity_id"/>
-                </group>
+            <field name="is_joint_buying_customer" position="after">
+                <field name="tour_template_id"/>
             </field>
-
-            <page autofocus="autofocus" position="before">
-
-                <page string="Supplier info for joint buying" attrs="{'invisible': [('is_joint_buying_supplier', '=', False)]}" autofocus="autofocus">
-
-                    <group modifier="{}">
-                        <group modifier="{}" col="3">
-                            <field name="delay"/>
-                            <field name="period"/>
-                            <field name="init_period_date"/>
-                            <field name="tour_template_id"/>
-                        </group>
-                    </group>
-
-                </page>
-
-            </page>
 
         </field>
     </record>
 
+    <record id="joint_buying_base_supplier_tree_view_inherit" model="ir.ui.view">
+        <field name="model">res.partner</field>
+        <field name="inherit_id" ref="joint_buying_base.joint_buying_base_supplier_tree_view"/>
+        <field name="arch" type="xml">
+
+            <field name="activity_id" position="after">
+                <field name="tour_template_id"/>
+            </field>
+
+        </field>
+    </record>
 
 </odoo>

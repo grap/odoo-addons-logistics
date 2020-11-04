@@ -27,7 +27,6 @@ class JointBuyingPurchaseOrderLine(models.Model):
     total_quantity = fields.Float(
         compute="_compute_total_quantity",
         digits=dp.get_precision("Product Unit of Measure"),
-        store=True,
     )
     min_quantity = fields.Float(
         compute="_compute_min_quantity",
@@ -43,8 +42,8 @@ class JointBuyingPurchaseOrderLine(models.Model):
         compute="_compute_quantity_validation",
         digits=dp.get_precision("Product Unit of Measure"),
         invisible=True,
-        store=True,
     )
+    total_price = fields.Float(compute="_compute_total_price")
 
     @api.depends("product_id")
     def _compute_min_quantity(self):
@@ -71,9 +70,20 @@ class JointBuyingPurchaseOrderLine(models.Model):
                     [("supplier_id", "=", rec.order_id.supplier_id.id)]
                 )
                 for line in order.line_ids.search(
-                    [("product_id", "=", rec.product_id.id)]
+                    [
+                        ("product_id", "=", rec.product_id.id),
+                        ("order_id", "=", order.id),
+                    ]
                 )
             )
+
+    @api.depends("quantity")
+    def _compute_total_price(self):
+        for rec in self:
+            supplier_id = rec.product_id.seller_ids.search(
+                [("name", "=", rec.order_id.supplier_id.id)]
+            )
+            rec.total_price = supplier_id.price * rec.quantity
 
     @api.depends("quantity")
     def _compute_quantity_validation(self):

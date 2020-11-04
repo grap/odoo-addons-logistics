@@ -13,22 +13,102 @@ License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl.html).
             <field name="type" position="before">
                 <field name="is_joint_buying"/>
             </field>
+
+            <notebook position="before">
+                <group attrs="{'invisible': [('is_joint_buying','=',False)]}">
+                    <group name="joint_buying_common_info">
+                        <field name="is_joint_buying_customer"/>
+                        <field name="is_joint_buying_supplier"/>
+                    </group>
+                    <group>
+                        <field name="activity_id"/>
+                        <field name="supplier_ids"/>
+                    </group>
+                </group>
+            </notebook>
+
+            <page autofocus="autofocus" position="before">
+                <page string="Supplier info for joint buying" attrs="{'invisible': [('is_joint_buying_supplier', '=', False)]}" autofocus="autofocus">
+                    <group modifier="{}">
+                        <group modifier="{}" col="3">
+                            <field name="delay" required="True"/>
+                            <field name="period" required="True"/>
+                            <field name="init_period_date" required="True"/>
+                        </group>
+                    </group>
+                </page>
+            </page>
+
         </field>
     </record>
 
-    <record id="action_res_partner" model="ir.actions.act_window">
-        <field name="name">Joint Buying Contacts</field>
+    <record model="ir.ui.view" id="joint_buying_base_supplier_tree_view">
+        <field name="model">res.partner</field>
+        <field name="arch" type="xml">
+            <tree edit="false">
+                <field name="name"/>
+                <field name="activity_id"/>
+                <field name="delay"/>
+                <field name="period"/>
+                <field name="init_period_date"/>
+            </tree>
+        </field>
+    </record>
+
+    <record id="search_view_joint_buying_base_res_partner" model="ir.ui.view">
+      <field name="model">res.partner</field>
+      <field name="arch" type="xml">
+        <search string="Search joint buying base res partner">
+          <field name="is_joint_buying_customer" string="Is customer : "/>
+          <field name="is_joint_buying_supplier" string="Is supplier : "/>
+          <separator/>
+          <filter string="Archived" name="inactive" domain="[('active','=',False)]"/>
+        </search>
+      </field>
+    </record>
+
+    <record id="action_res_partner_customer" model="ir.actions.act_window">
+        <field name="name">Joint Buying Customer</field>
         <field name="type">ir.actions.act_window</field>
         <field name="res_model">res.partner</field>
         <field name="view_type">form</field>
         <field name="view_mode">tree,form</field>
-        <field name="context">{"joint_buying":1}</field>
+        <field name="search_view_id" ref="search_view_joint_buying_base_res_partner"/>
+        <field name="context">
+            {
+                "joint_buying":1,
+                "search_default_is_joint_buying_customer": True,
+            }
+        </field>
     </record>
 
-    <menuitem id="menu_res_partner"
-        name="Joint Buying Contacts"
+    <record id="action_res_partner_supplier" model="ir.actions.act_window">
+        <field name="name">Joint Buying Supplier</field>
+        <field name="type">ir.actions.act_window</field>
+        <field name="res_model">res.partner</field>
+        <field name="view_type">form</field>
+        <field name="view_id" ref="joint_buying_base_supplier_tree_view"/>
+        <field name="view_mode">tree,form</field>
+        <field name="search_view_id" ref="search_view_joint_buying_base_res_partner"/>
+        <field name="context">
+            {
+                "joint_buying":1,
+                "search_default_is_joint_buying_supplier": True,
+            }
+        </field>
+    </record>
+
+    <menuitem id="menu_res_partner_customer"
+        name="Joint Buying Customer"
         parent="joint_buying_base.menu_configuration"
-        action="action_res_partner"
+        action="action_res_partner_customer"
         sequence="1"
+    />
+
+    <menuitem id="menu_res_partner_supplier"
+        name="Joint Buying Supplier"
+        parent="joint_buying_base.menu_configuration"
+        action="action_res_partner_supplier"
+        sequence="2"
     />
 </odoo>

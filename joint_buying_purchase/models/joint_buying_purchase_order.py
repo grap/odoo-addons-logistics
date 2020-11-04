@@ -1,3 +1,5 @@
+from datetime import datetime, timedelta
+
 from odoo import api, fields, models
 
 
@@ -24,6 +26,8 @@ class JointBuyingPurchaseOrder(models.Model):
         domain=[("is_joint_buying_supplier", "=", True)],
     )
 
+    is_locked = fields.Boolean(default=False)
+
     line_ids = fields.One2many(
         "joint.buying.purchase.order.line",
         inverse_name="order_id",
@@ -31,6 +35,28 @@ class JointBuyingPurchaseOrder(models.Model):
     )
 
     pivot_activity = fields.Char(compute="_compute_get_pivot_activity")
+
+    date_next_order = fields.Date(compute="_compute_date_next_order")
+
+    deadline = fields.Date(compute="_compute_deadline")
+
+    @api.multi
+    def check_order_is_locked(self):
+        for rec in self:
+            if datetime.today().date > rec.deadline:
+                rec.is_locked = True
+
+    @api.depends("tour_id")
+    def _compute_date_next_order(self):
+        for rec in self:
+            rec.date_next_order = rec.tour_id.date + timedelta(
+                days=rec.tour_id.tour_template_id.period
+            )
+
+    @api.depends("supplier_id")
+    def _compute_deadline(self):
+        for rec in self:
+            rec.deadline = rec.tour_id.date - timedelta(days=rec.supplier_id.delay)
 
     @api.depends("supplier_id")
     def _compute_get_pivot_activity(self):
