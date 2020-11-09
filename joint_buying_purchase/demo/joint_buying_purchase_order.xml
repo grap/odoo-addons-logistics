@@ -20,4 +20,10 @@
     <field name="supplier_id" ref="joint_buying_base.res_partner_for_joint_buying_supplier_in_grap"/>
   </record>
 
+  <record id="joint_buying_purchase_order_customer_choco" model="joint.buying.purchase.order">
+    <field name="tour_id" ref="joint_buying_purchase.joint_buying_tour"/>
+    <field name="customer_id" ref="joint_buying_base.res_partner_for_joint_buying_supplier_in_grap"/>
+    <field name="supplier_id" ref="joint_buying_base.res_partner_for_joint_buying_supplier_out_grap"/>
+  </record>
+
 </odoo>

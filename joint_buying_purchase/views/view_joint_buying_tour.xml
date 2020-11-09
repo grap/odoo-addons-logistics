@@ -13,6 +13,9 @@
                                 <div class="col-12">
                                     Date of tour : <strong><field name="date"/></strong>
                                 </div>
+                                <div class="col-12">
+                                    Number of orders : <field name="total_orders"/>
+                                </div>
                             </div>
                             <hr/>
                             <div class="row o_kanban_card_upper_content">

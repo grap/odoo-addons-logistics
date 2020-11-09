@@ -40,6 +40,12 @@ class JointBuyingPurchaseOrder(models.Model):
 
     deadline = fields.Date(compute="_compute_deadline")
 
+    def get_action_view_kanban_by_supplier(self):
+        action = self.env.ref("joint_buying_purchase.open_view_kanban_manage_order")
+        current_user = self.env["res.users"].search([("id", "=", self._context["uid"])])
+        self.env.context["search_default_supplier_id"] = current_user.partner_id.id
+        return action.read()[0]
+
     @api.multi
     def check_order_is_locked(self):
         for rec in self:

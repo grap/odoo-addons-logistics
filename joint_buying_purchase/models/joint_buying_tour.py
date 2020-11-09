@@ -1,4 +1,4 @@
-from odoo import fields, models
+from odoo import api, fields, models
 
 
 class JointBuyingTour(models.Model):
@@ -16,3 +16,10 @@ class JointBuyingTour(models.Model):
         string="Joint buying purchase orders peer supplier",
     )
     generate = fields.Boolean(default=False)
+
+    total_orders = fields.Integer(compute="_compute_total_orders", store=True)
+
+    @api.depends("joint_buying_purchase_ids")
+    def _compute_total_orders(self):
+        for rec in self:
+            rec.total_orders = len(rec.joint_buying_purchase_ids)
