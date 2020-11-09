@@ -67,9 +67,9 @@
       <field name="arch" type="xml">
         <search string="Search joint buying purchase order">
           <field name="tour_id" string="Tour : "/>
+          <field name="supplier_id" string="Supplier : "/>
+          <field name="customer_id" string="Customer : "/>
           <field name="is_locked" string="Locked : "/>
-          <filter string="My Supplier Orders" name="my_supplier_orders" domain="[('supplier_id.user_ids', 'in', uid)]"/>
-          <filter string="My Customer Orders" name="my_customer_orders" domain="[('customer_id.user_ids', 'in', uid)]"/>
           <separator/>
           <filter string="Archived" name="inactive" domain="[('active','=',False)]"/>
         </search>
@@ -79,16 +79,16 @@
 
     <!-- Action to show view kanban joint purchase order -->
     <record id="open_view_kanban_joint_buying_purchase_order_by_tour" model="ir.actions.act_window">
-        <field name="name">Joint Buying Purchase Order for Customer</field>
+        <field name="name">Joint Buying Purchase Order</field>
         <field name="res_model">joint.buying.purchase.order</field>
         <field name="view_type">form</field>
         <field name="domain">[]</field>
         <field name="view_mode">kanban,form</field>
         <field name="search_view_id" ref="search_view_joint_buying_purchase_order_filter_by_tour"/>
-        <field name="context">{
-            'search_default_tour_id': [active_id],
-            'search_default_my_customer_orders':1,
-        }
+        <field name="context">
+            {
+                'search_default_tour_id': [active_id],
+            }
         </field>
         <field name="help" type="html">
             <p class="o_view_nocontent_smiling_face">
@@ -105,11 +105,6 @@
         <field name="domain">[]</field>
         <field name="view_mode">kanban,form</field>
         <field name="search_view_id" ref="search_view_joint_buying_purchase_order_filter_by_tour"/>
-        <field name="context">{
-            'search_default_is_locked': True,
-            'search_default_my_customer_orders':1,
-        }
-        </field>
         <field name="help" type="html">
             <p class="o_view_nocontent_smiling_face">
                 Create a new Joint purchase order.

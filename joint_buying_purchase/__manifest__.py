@@ -32,6 +32,7 @@
         "demo/joint_buying_purchase_order.xml",
         "demo/joint_buying_purchase_order_line.xml",
         "demo/res_user.xml",
+        "demo/res_partner.xml",
     ],
     "installable": True,
 }

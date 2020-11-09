@@ -7,8 +7,9 @@
         <field name="inherit_id" ref="joint_buying_base.view_res_partner"/>
         <field name="arch" type="xml">
 
-            <field name="is_joint_buying_customer" position="after">
+            <field name="is_joint_buying_customer" position="before">
                 <field name="tour_template_id"/>
+                <br />
             </field>
 
         </field>
@@ -23,6 +24,35 @@
                 <field name="tour_template_id"/>
             </field>
 
+        </field>
+    </record>
+
+    <record id="search_view_joint_buying_base_res_partner_inherit" model="ir.ui.view">
+        <field name="model">res.partner</field>
+        <field name="inherit_id" ref="joint_buying_base.search_view_joint_buying_base_res_partner"/>
+        <field name="arch" type="xml">
+
+            <field name="is_joint_buying_supplier" position="after">
+                <field name="tour_template_id" string="Tour template : "/>
+            </field>
+
+        </field>
+    </record>
+
+    <record id="open_view_tree_step_suppliers_tour_template" model="ir.actions.act_window">
+        <field name="name">Step suppliers</field>
+        <field name="res_model">res.partner</field>
+        <field name="view_type">form</field>
+        <field name="domain">[]</field>
+        <field name="view_mode">tree,form</field>
+        <field name="view_id" ref="joint_buying_base.joint_buying_base_supplier_tree_view"/>
+        <field name="search_view_id" ref="joint_buying_base.search_view_joint_buying_base_res_partner"/>
+        <field name="context">
+            {
+                'search_default_tour_template_id': [active_id],
+                'default_tour_template_id': active_id,
+                'joint_buying': 1,
+            }
         </field>
     </record>
 

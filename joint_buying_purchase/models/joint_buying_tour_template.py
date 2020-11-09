@@ -1,6 +1,7 @@
 from datetime import datetime, timedelta
 
 from odoo import api, fields, models
+from odoo.exceptions import Warning
 
 
 class JointBuyingTourTemplate(models.Model):
@@ -26,6 +27,21 @@ class JointBuyingTourTemplate(models.Model):
     init_period_date = fields.Date(
         string="Initial date to start the periods between each tour.", required=True
     )
+
+    total_step_suppliers = fields.Integer(
+        compute="_compute_total_step_suppliers", store=True
+    )
+    total_tours = fields.Integer(compute="_compute_total_tours", store=True)
+
+    @api.depends("step_ids")
+    def _compute_total_step_suppliers(self):
+        for rec in self:
+            rec.total_step_suppliers = len(rec.step_ids)
+
+    @api.depends("tour_ids")
+    def _compute_total_tours(self):
+        for rec in self:
+            rec.total_tours = len(rec.tour_ids)
 
     def _generate_tour_ids_data(
         self, today, date, index, customer_ids, supplier_ids, tour_data
@@ -54,6 +70,20 @@ class JointBuyingTourTemplate(models.Model):
                             {
                                 "customer_id": customer_id.id,
                                 "supplier_id": supplier_id.id,
+                                "line_ids": [
+                                    (
+                                        0,
+                                        0,
+                                        {
+                                            "product_id": supplier.product_id.id,
+                                            "quantity": 0.0,
+                                            "order_id": self.id,
+                                        },
+                                    )
+                                    for supplier in self.env[
+                                        "product.supplierinfo"
+                                    ].search([("name", "=", supplier_id.id)])
+                                ],
                             },
                         )
                         for customer_id in customer_ids
@@ -93,9 +123,14 @@ class JointBuyingTourTemplate(models.Model):
                 .with_context({"joint_buying": "1"})
                 .search([("is_joint_buying_supplier", "=", True)])
             )
-
             if today >= date - timedelta(days=rec.deadline):
                 rec._generate_tour_ids_data(
                     today, date, index, customer_ids, supplier_ids, tour_data
                 )
                 rec.update(tour_data)
+            else:
+                raise Warning(
+                    f"The next tour is planned in : "
+                    f"{-(today - (date - timedelta(days=rec.deadline))).days} "
+                    "days"
+                )

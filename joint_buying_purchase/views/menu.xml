@@ -10,11 +10,20 @@
         action="joint_buying_purchase.open_view_kanban_tour_template"
     />
 
+    <record model="ir.actions.server" id="action_upd_printed_invoices">
+        <field name="name">Invoice Upd 'printed' Server Action</field>
+        <field name="model_id" ref="joint_buying_purchase.model_joint_buying_purchase_order"/>
+        <field name="type">ir.actions.server</field>
+        <field name="state">code</field>
+        <field name="code">action=model.get_action_view_kanban_by_supplier()</field>
+    </record>
+
     <!-- Override menu global base to use action to show view kanban Model tour -->
     <menuitem id="menu_manage_order"
         name="Manage orders"
         parent="joint_buying_base.menu_root"
-        action="joint_buying_purchase.open_view_kanban_manage_order"
+        groups="joint_buying_purchase.group_joint_buying_supplier_manager"
+        action="action_upd_printed_invoices"
     />
 
 
