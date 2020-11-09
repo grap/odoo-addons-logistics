@@ -13,6 +13,7 @@
         <field name="zip">26150</field>
         <field name="country_id" ref="base.fr"/>
         <field name="is_joint_buying_supplier">1</field>
+        <field name="is_joint_buying_customer">1</field>
         <field name="delay">3</field>
         <field name="period">14</field>
         <field name="init_period_date" eval="time.strftime('%Y-%m-%d')"/>
