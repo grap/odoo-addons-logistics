@@ -13,6 +13,7 @@
         "views/view_product_product.xml",
         "views/view_product_template.xml",
         "views/view_product_supplier_info.xml",
+        "views/view_res_partner.xml",
     ],
     "demo": ["demo/product_product.xml"],
     "installable": True,
