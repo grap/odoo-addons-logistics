@@ -19,7 +19,7 @@ class ResPartner(models.Model):
     # Supplier
     activity_id = fields.Many2one(
         "res.partner",
-        string="The activity that manages my stocks",
+        string="Activity key",
         domain=[
             ("is_joint_buying", "=", True),
             ("is_joint_buying_supplier", "=", True),
@@ -37,10 +37,7 @@ class ResPartner(models.Model):
     supplier_ids = fields.One2many(
         "res.partner",
         inverse_name="activity_id",
-        string=(
-            "Suppliers to manage, if there are one or more company,"
-            " then this is a pivot activity"
-        ),
+        string=("Suppliers to manage"),
         domain=[
             ("is_joint_buying", "=", True),
             ("is_joint_buying_supplier", "=", True),

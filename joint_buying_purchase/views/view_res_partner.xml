@@ -56,4 +56,46 @@
         </field>
     </record>
 
+    <!-- View kanban model tour -->
+    <record model="ir.ui.view" id="joint_buying_res_partner_by_activity_key_kanban_view">
+        <field name="model">res.partner</field>
+        <field name="arch" type="xml">
+            <kanban class="o_kanban_mobile">
+                <templates>
+                    <t t-name="kanban-box">
+                        <div t-attf-class="oe_kanban_content oe_kanban_global_click o_kanban_get_form">
+                            <div class="row">
+                                <div class="col-12">
+                                    <strong><field name="name"/></strong>
+                                </div>
+                                <div class="col-12">
+                                        Number of orders : <b><field name="total_supplier_orders"/></b>
+                                </div>
+                            </div>
+                            <hr/>
+                            <div class="row o_kanban_card_upper_content">
+                                <div class="col-4 o_kanban_primary_left">
+                                    <button type="action" class="btn btn-primary" name="joint_buying_purchase.open_view_kanban_joint_buying_purchase_order_by_supplier">
+                                        Orders
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    </t>
+                </templates>
+            </kanban>
+        </field>
+    </record>
+
+    <!-- Action to show view kanban joint purchase order by supplier -->
+    <record id="open_view_kanban_manage_suppliers" model="ir.actions.act_window">
+        <field name="name">Joint Buying Suppliers</field>
+        <field name="res_model">res.partner</field>
+        <field name="view_type">form</field>
+        <field name="view_id" ref="joint_buying_purchase.joint_buying_res_partner_by_activity_key_kanban_view" />
+        <field name="domain">[]</field>
+        <field name="view_mode">kanban,form</field>
+        <field name="context">{'is_activity_key': 1, 'joint_buying': 1}</field>
+    </record>
+
 </odoo>

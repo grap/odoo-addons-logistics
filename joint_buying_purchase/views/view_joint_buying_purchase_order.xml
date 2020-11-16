@@ -18,7 +18,7 @@
                                     <strong>Supplier : <field name="supplier_id"/></strong>
                                 </div>
                                 <div class="col-4">
-                                    <strong>Pivot activity : <field name="pivot_activity"/></strong>
+                                    <strong>Activity key: <field name="activity_key"/></strong>
                                 </div>
                                 <div class="col-4">
                                     <strong>Devilery : </strong>
@@ -62,29 +62,30 @@
 
 
     <!-- Search view to filter Kanban view order -->
-    <record id="search_view_joint_buying_purchase_order_filter_by_tour" model="ir.ui.view">
+    <record id="search_view_joint_buying_purchase_order" model="ir.ui.view">
       <field name="model">joint.buying.purchase.order</field>
       <field name="arch" type="xml">
         <search string="Search joint buying purchase order">
           <field name="tour_id" string="Tour : "/>
           <field name="supplier_id" string="Supplier : "/>
-          <field name="customer_id" string="Customer : "/>
           <field name="is_locked" string="Locked : "/>
           <separator/>
           <filter string="Archived" name="inactive" domain="[('active','=',False)]"/>
+          <filter string="Order locked" name="locked" domain="[('is_locked','=',True)]"/>
+          <filter string="Order to prepare" name="unlocked" domain="[('is_locked','=',False)]"/>
         </search>
       </field>
     </record>
 
 
-    <!-- Action to show view kanban joint purchase order -->
+    <!-- Action to show view kanban joint purchase order by tour -->
     <record id="open_view_kanban_joint_buying_purchase_order_by_tour" model="ir.actions.act_window">
         <field name="name">Joint Buying Purchase Order</field>
         <field name="res_model">joint.buying.purchase.order</field>
         <field name="view_type">form</field>
         <field name="domain">[]</field>
         <field name="view_mode">kanban,form</field>
-        <field name="search_view_id" ref="search_view_joint_buying_purchase_order_filter_by_tour"/>
+        <field name="search_view_id" ref="search_view_joint_buying_purchase_order"/>
         <field name="context">
             {
                 'search_default_tour_id': [active_id],
@@ -97,14 +98,19 @@
         </field>
     </record>
 
-    <!-- Action to show view kanban joint purchase order not treated -->
-    <record id="open_view_kanban_manage_order" model="ir.actions.act_window">
+    <!-- Action to show view kanban joint purchase order by supplier -->
+    <record id="open_view_kanban_joint_buying_purchase_order_by_supplier" model="ir.actions.act_window">
         <field name="name">Joint Buying Purchase Order for Supplier</field>
         <field name="res_model">joint.buying.purchase.order</field>
         <field name="view_type">form</field>
         <field name="domain">[]</field>
         <field name="view_mode">kanban,form</field>
-        <field name="search_view_id" ref="search_view_joint_buying_purchase_order_filter_by_tour"/>
+        <field name="search_view_id" ref="search_view_joint_buying_purchase_order"/>
+        <field name="context">
+            {
+                'search_default_supplier_id': [active_id],
+            }
+        </field>
         <field name="help" type="html">
             <p class="o_view_nocontent_smiling_face">
                 Create a new Joint purchase order.

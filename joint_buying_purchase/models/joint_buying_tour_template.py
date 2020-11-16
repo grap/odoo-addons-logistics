@@ -36,7 +36,9 @@ class JointBuyingTourTemplate(models.Model):
     @api.depends("step_ids")
     def _compute_total_step_suppliers(self):
         for rec in self:
-            rec.total_step_suppliers = len(rec.step_ids)
+            rec.total_step_suppliers = len(
+                rec.with_context({"joint_buying": 1}).step_ids
+            )
 
     @api.depends("tour_ids")
     def _compute_total_tours(self):
@@ -88,6 +90,7 @@ class JointBuyingTourTemplate(models.Model):
                         )
                         for customer_id in customer_ids
                         for supplier_id in filter_supplier_ids
+                        if supplier_id.vendor_ids
                     ],
                 },
             )

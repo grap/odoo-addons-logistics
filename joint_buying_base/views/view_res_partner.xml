@@ -23,7 +23,7 @@ License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl.html).
                     <group>
                         <field name="activity_id" context="{'joint_buying':1}"/>
                         <br />
-                        <field name="supplier_ids" widget="many2many_tags" context="{'joint_buying':1}"/>
+                        <field name="supplier_ids" readonly="1" widget="many2many_tags" context="{'joint_buying':1}"/>
                     </group>
                 </group>
             </notebook>
