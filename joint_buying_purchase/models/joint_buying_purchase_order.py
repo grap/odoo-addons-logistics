@@ -34,17 +34,39 @@ class JointBuyingPurchaseOrder(models.Model):
         string="Lines for each customer",
     )
 
-    pivot_activity = fields.Char(compute="_compute_get_pivot_activity")
+    activity_key = fields.Char(compute="_compute_get_activity_key")
 
     date_next_order = fields.Date(compute="_compute_date_next_order")
 
     deadline = fields.Date(compute="_compute_deadline")
 
-    def get_action_view_kanban_by_supplier(self):
-        action = self.env.ref("joint_buying_purchase.open_view_kanban_manage_order")
-        current_user = self.env["res.users"].search([("id", "=", self._context["uid"])])
-        self.env.context["search_default_supplier_id"] = current_user.partner_id.id
-        return action.read()[0]
+    @api.model
+    def _search(
+        self,
+        args,
+        offset=0,
+        limit=None,
+        order=None,
+        count=False,
+        access_rights_uid=None,
+    ):
+        is_activity_key = self.env.context.get("is_activity_key", False)
+        if is_activity_key:
+            supplier_ids = (
+                self.env["res.users"]
+                .with_context({"joint_buying": "1"})
+                .browse(self.env.context["uid"])
+                .partner_id.supplier_ids
+            )
+            args += [("supplier_id", "in", supplier_ids.ids)]
+        return super()._search(
+            args=args,
+            offset=offset,
+            limit=limit,
+            order=order,
+            count=count,
+            access_rights_uid=access_rights_uid,
+        )
 
     @api.multi
     def check_order_is_locked(self):
@@ -65,10 +87,10 @@ class JointBuyingPurchaseOrder(models.Model):
             rec.deadline = rec.tour_id.date - timedelta(days=rec.supplier_id.delay)
 
     @api.depends("supplier_id")
-    def _compute_get_pivot_activity(self):
+    def _compute_get_activity_key(self):
         for rec in self:
             if rec.supplier_id.activity_id:
-                rec.pivot_activity = rec.supplier_id.activity_id.name
+                rec.activity_key = rec.supplier_id.activity_id.name
 
     @api.onchange("supplier_id")
     def populate_line_ids(self):
