@@ -45,6 +45,13 @@ class JointBuyingPurchaseOrderLine(models.Model):
     )
     total_price = fields.Float(compute="_compute_total_price")
 
+    state_order = fields.Char(compute="_compute_state_order", store=True)
+
+    @api.depends("order_id")
+    def _compute_state_order(self):
+        for rec in self:
+            rec.state_order = rec.order_id.state
+
     @api.depends("product_id")
     def _compute_min_quantity(self):
         for rec in self:

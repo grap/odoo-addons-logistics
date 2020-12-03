@@ -20,4 +20,11 @@
     <field name="quantity">1.0</field>
   </record>
 
+  <!-- Line to order locked -->
+  <record id="joint_buying_purchase_order_line_customer_1_locked" model="joint.buying.purchase.order.line">
+    <field name="order_id" ref="joint_buying_purchase.joint_buying_purchase_order_customer_1_locked"/>
+    <field name="product_id" ref="joint_buying_product.product_product_supplier_in_grap"/>
+    <field name="quantity">1.0</field>
+  </record>
+
 </odoo>
