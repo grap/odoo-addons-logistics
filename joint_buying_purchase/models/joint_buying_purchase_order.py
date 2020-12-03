@@ -8,6 +8,12 @@ class JointBuyingPurchaseOrder(models.Model):
     _description = "Joint buying purchase order"
     _rec_name = "supplier_id"
 
+    STATE_CHOICES = [
+        ("locked", "Locked"),
+        ("to_prepare", "To prepare"),
+        ("send", "Send"),
+    ]
+
     tour_id = fields.Many2one(
         "joint.buying.tour", string="Tour", required=True, ondelete="cascade"
     )
@@ -26,7 +32,7 @@ class JointBuyingPurchaseOrder(models.Model):
         domain=[("is_joint_buying_supplier", "=", True)],
     )
 
-    is_locked = fields.Boolean(default=False)
+    state = fields.Selection(STATE_CHOICES, string="State", default="to_prepare")
 
     line_ids = fields.One2many(
         "joint.buying.purchase.order.line",
@@ -69,10 +75,12 @@ class JointBuyingPurchaseOrder(models.Model):
         )
 
     @api.multi
-    def check_order_is_locked(self):
+    def change_order_state(self):
         for rec in self:
+            if datetime.today().date > rec.tour_id.date:
+                rec.state = "send"
             if datetime.today().date > rec.deadline:
-                rec.is_locked = True
+                rec.state = "locked"
 
     @api.depends("tour_id")
     def _compute_date_next_order(self):

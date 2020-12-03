@@ -35,7 +35,12 @@
         <field name="password">chouch</field>
         <field name="signature" type="xml"><span>-- <br/>+Mme Chouc</span></field>
         <field name="company_id" ref="base.main_company"/>
-        <field name="groups_id" eval="[(6,0,[ref('base.group_user'), ref('base.group_partner_manager'), ref('joint_buying_purchase.group_joint_buying_customer'), ref('joint_buying_purchase.group_joint_buying_supplier_manager')])]"/>
+        <field name="groups_id" eval="[(6,0,[ref('base.group_user'), ref('base.group_partner_manager'), ref('joint_buying_purchase.group_joint_buying_customer'), ref('joint_buying_purchase.group_joint_buying_supplier_activity_key')])]"/>
     </record>
+
+    <record id="base.user_admin" model="res.users">
+        <field name="groups_id" eval="[(4, ref('joint_buying_purchase.group_joint_buying_customer_manager'))]"/>
+    </record>
+
 
 </odoo>

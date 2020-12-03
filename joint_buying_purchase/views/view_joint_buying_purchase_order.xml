@@ -2,13 +2,13 @@
 
 <odoo>
 
-
     <!-- View kanban joint buying purchase order -->
     <record model="ir.ui.view" id="joint_buying_purchase_order_kanban_view">
         <field name="model">joint.buying.purchase.order</field>
         <field name="arch" type="xml">
             <kanban class="o_kanban_mobile kanban_joint_buying_purchase_order_wrap">
                 <field name="line_ids"/>
+                <button name="%(action_report_order_suppliers)d" string="Get report" type="action"/>
                 <templates>
                     <t t-name="kanban-box">
                         <div t-attf-class="oe_kanban_content oe_kanban_global_click_edit o_kanban_get_form" type="edit" style="width: 100% !important;">
@@ -27,6 +27,9 @@
                             <div class="row">
                                 <div class="col-4">
                                     <strong>Customer : <field name="customer_id"/></strong>
+                                </div>
+                                <div class="col-4">
+                                    <strong>State : <field name="state"/></strong>
                                 </div>
                             </div>
                             <div class="row">
@@ -60,7 +63,6 @@
         </field>
     </record>
 
-
     <!-- Search view to filter Kanban view order -->
     <record id="search_view_joint_buying_purchase_order" model="ir.ui.view">
       <field name="model">joint.buying.purchase.order</field>
@@ -68,15 +70,14 @@
         <search string="Search joint buying purchase order">
           <field name="tour_id" string="Tour : "/>
           <field name="supplier_id" string="Supplier : "/>
-          <field name="is_locked" string="Locked : "/>
           <separator/>
           <filter string="Archived" name="inactive" domain="[('active','=',False)]"/>
-          <filter string="Order locked" name="locked" domain="[('is_locked','=',True)]"/>
-          <filter string="Order to prepare" name="unlocked" domain="[('is_locked','=',False)]"/>
+          <filter string="Order locked" name="locked" domain="[('state','=','locked')]"/>
+          <filter string="Order to prepare" name="to_prepare" domain="[('state','=','to_prepare')]"/>
+          <filter string="Order send" name="send" domain="[('state','=','send')]"/>
         </search>
       </field>
     </record>
-
 
     <!-- Action to show view kanban joint purchase order by tour -->
     <record id="open_view_kanban_joint_buying_purchase_order_by_tour" model="ir.actions.act_window">
@@ -109,6 +110,7 @@
         <field name="context">
             {
                 'search_default_supplier_id': [active_id],
+                'search_default_to_prepare': 1,
             }
         </field>
         <field name="help" type="html">
@@ -136,6 +138,7 @@
                             <field name="line_ids">
                                 <tree editable="botttom" create="false">
                                     <field name="quantity_validation" invisible="1"/>
+                                    <field name="state_order" invisible="1"/>
                                     <field
                                         name="product_id"
                                         options='{
@@ -193,7 +196,9 @@
                                                 green:quantity_validation == 0
                                             "
                                         }'
-                                        string="Quantity"/>
+                                        string="Quantity"
+                                        attrs="{'readonly':[('state_order', '=', 'locked')]}"
+                                        />
                                     <field
                                         name="total_price"
                                         options='{
@@ -212,7 +217,5 @@
             </form>
         </field>
     </record>
-
-
 
 </odoo>

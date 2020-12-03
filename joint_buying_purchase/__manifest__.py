@@ -25,6 +25,9 @@
         "views/view_joint_buying_purchase_order.xml",
         "views/view_product_template.xml",
         "views/menu.xml",
+        "views/view_add_static.xml",
+        "report/report_order.xml",
+        "report/report_template_order_suppliers.xml",
     ],
     "demo": [
         "demo/joint_buying_tour_template.xml",
@@ -34,5 +37,6 @@
         "demo/res_user.xml",
         "demo/res_partner.xml",
     ],
+    "qweb": ["static/src/xml/joint_buying_purchase_export_pdf_view_template.xml"],
     "installable": True,
 }

@@ -13,14 +13,14 @@
     </record>
 
 
-    <record model="ir.cron" id="joint_buying_check_order_is_locked">
-        <field name="name">joint.buying.check.order.locked</field>
+    <record model="ir.cron" id="joint_buying_change_order_state">
+        <field name="name">joint.buying.check.order.state</field>
         <field name="interval_number">1</field>
         <field name="interval_type">days</field>
         <field name="numbercall">-1</field>
         <field name="doall">0</field>
         <field name="model">joint.buying.purchase.order</field>
-        <field name="code">model.check_order_is_locked()</field>
+        <field name="code">model.change_order_state()</field>
     </record>
 
 </odoo>
