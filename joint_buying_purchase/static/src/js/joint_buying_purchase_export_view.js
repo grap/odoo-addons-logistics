@@ -1,26 +1,22 @@
 odoo.define('web_export_view', function (require) {
-  "use strict";
+    "use strict";
+    var Sidebar = require('web.Sidebar');
+    Sidebar.include({
 
-  var core = require('web.core');
-  var Sidebar = require('web.Sidebar');
-  var session = require('web.session');
+        _redraw: function () {
+            var self = this;
+            this._super.apply(this, arguments);
+            self.$el.find('.export_kanban_pdf').on(
+                'click',
+                self.action_to_call_gocardless.bind(self),
+            );
+        },
 
-  var QWeb = core.qweb;
+        action_to_call_gocardless: function (event) {
+            event.preventDefault();
+            var self = this;
+            self.do_action('joint_buying_purchase.action_report_order_suppliers');
+        },
 
-  Sidebar.include({
-
-    _redraw: function () {
-      var self = this;
-      this._super.apply(this, arguments);
-      self.$el.find('.export_kanban_pdf').on('click', self.action_to_call_gocardless.bind(self));
-    },
-
-    action_to_call_gocardless: function(event) {
-      event.preventDefault();
-      var self = this;
-      self.do_action('joint_buying_purchase.action_report_order_suppliers');
-    },
-
-
-  });
+    });
 });

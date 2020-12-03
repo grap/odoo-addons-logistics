@@ -120,6 +120,22 @@
         </field>
     </record>
 
+    <!-- Action to show view kanban joint purchase order in state to_prepare -->
+    <record id="open_view_kanban_joint_buying_purchase_order_in_state_to_prepare" model="ir.actions.act_window">
+        <field name="name">Joint Buying Purchase Order</field>
+        <field name="res_model">joint.buying.purchase.order</field>
+        <field name="view_type">form</field>
+        <field name="domain">[]</field>
+        <field name="view_mode">kanban,form</field>
+        <field name="search_view_id" ref="search_view_joint_buying_purchase_order"/>
+        <field name="context">
+            {
+                'search_default_to_prepare': 1,
+            }
+        </field>
+    </record>
+
+
     <!-- Create a joint buying purchase order -->
     <record model="ir.ui.view" id="joint_buying_purchase_order_form_view">
         <field name="model">joint.buying.purchase.order</field>
