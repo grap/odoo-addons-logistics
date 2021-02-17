@@ -8,7 +8,7 @@
         <field name="interval_type">days</field>
         <field name="numbercall">-1</field>
         <field name="doall">0</field>
-        <field name="model">joint.buying.tour.template</field>
+        <field name="model_id" ref="model_joint_buying_tour_template"/>
         <field name="code">model.generate_tour()</field>
     </record>
 
@@ -19,7 +19,7 @@
         <field name="interval_type">days</field>
         <field name="numbercall">-1</field>
         <field name="doall">0</field>
-        <field name="model">joint.buying.purchase.order</field>
+        <field name="model_id" ref="model_joint_buying_purchase_order"/>
         <field name="code">model.change_order_state()</field>
     </record>
 

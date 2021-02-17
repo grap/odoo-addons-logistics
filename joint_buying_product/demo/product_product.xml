@@ -5,6 +5,7 @@
         <record id="product_product_supplier_in_grap" model="product.product">
             <field name="is_joint_buying">1</field>
             <field name="name">Tablettes chocolat noir 66% Cardamome-Gingembre 100g LOT DE 10</field>
+            <field name="company_id" eval="False"/>
         </record>
 
         <record id="product_template_supplier_in_grap" model="product.template">
