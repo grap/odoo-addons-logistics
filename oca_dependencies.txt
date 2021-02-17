@@ -1,1 +1,3 @@
+web
+
 odoo-addons-extra     https://github.com/grap/odoo-addons-extra.git      12.0
