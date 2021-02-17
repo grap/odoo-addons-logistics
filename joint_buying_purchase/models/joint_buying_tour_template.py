@@ -1,6 +1,6 @@
 from datetime import datetime, timedelta
 
-from odoo import api, fields, models
+from odoo import _, api, fields, models
 from odoo.exceptions import UserError
 
 
@@ -133,7 +133,7 @@ class JointBuyingTourTemplate(models.Model):
                 rec.update(tour_data)
             else:
                 raise UserError(
-                    f"The next tour is planned in : "
-                    f"{-(today - (date - timedelta(days=rec.deadline))).days} "
-                    "days"
+                    _("The next tour is planned in : {} days").format(
+                        -(today - (date - timedelta(days=rec.deadline))).days
+                    )
                 )

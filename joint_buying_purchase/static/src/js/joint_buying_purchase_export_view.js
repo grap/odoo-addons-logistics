@@ -15,7 +15,9 @@ odoo.define('web_export_view', function (require) {
         action_to_call_gocardless: function (event) {
             event.preventDefault();
             var self = this;
-            self.do_action('joint_buying_purchase.action_report_order_suppliers');
+            self.do_action(
+                'joint_buying_purchase.action_report_order_suppliers'
+            );
         },
 
     });
