@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+    Copyright (C) 2021 - Today: GRAP (http://www.grap.coop)
+    @author: Sylvain LE GAL (https://twitter.com/legalsylvain)
+    License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl.html).
+-->
+
+<odoo>
+
+    <record id="joint_buying_manager" model="res.users">
+        <field name="name">Logistic Manager</field>
+        <field name="login">LOG_manager</field>
+        <field name="password">demo</field>
+        <field name="company_id" ref="joint_buying_base.company_3PP"/>
+        <field name="groups_id" eval="[
+            (4, ref('base.group_multi_company')),
+            (4, ref('joint_buying_base.group_joint_buying_manager')),
+        ]" />
+        <field name="company_ids" eval="[
+            (4, ref('joint_buying_base.company_3PP')),
+            (4, ref('joint_buying_base.company_DOZ')),
+            (4, ref('joint_buying_base.company_CHO')),
+        ]" />
+    </record>
+
+
+    <record id="base.user_admin" model="res.users">
+        <field name="groups_id" eval="[
+            (4, ref('base.group_multi_company')),
+            (4, ref('joint_buying_base.group_joint_buying_manager')),
+        ]" />
+        <field name="company_ids" eval="[
+            (4, ref('joint_buying_base.company_3PP')),
+            (4, ref('joint_buying_base.company_DOZ')),
+            (4, ref('joint_buying_base.company_CHO')),
+        ]" />
+    </record>
+
+</odoo>

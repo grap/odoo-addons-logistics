@@ -1,0 +1,159 @@
+# Translation of Odoo Server.
+# This file contains the translation of the following modules:
+#   * joint_buying_base
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: Odoo Server 12.0\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2021-02-23 11:00+0000\n"
+"PO-Revision-Date: 2021-02-23 11:00+0000\n"
+"Last-Translator: <>\n"
+"Language-Team: \n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: \n"
+"Plural-Forms: \n"
+
+#. module: joint_buying_base
+#: model:ir.model.fields,help:joint_buying_base.field_res_company__is_joint_buying_customer
+msgid "Check this box if this contact is a customer. It can be selected in sales orders."
+msgstr ""
+
+#. module: joint_buying_base
+#: model:ir.model.fields,help:joint_buying_base.field_res_company__is_joint_buying_supplier
+msgid "Check this box if this contact is a vendor. It can be selected in purchase orders."
+msgstr ""
+
+#. module: joint_buying_base
+#: model:ir.model,name:joint_buying_base.model_res_company
+msgid "Companies"
+msgstr "Sociétés"
+
+#. module: joint_buying_base
+#: model:ir.actions.act_window,name:joint_buying_base.action_res_company
+#: model:ir.ui.menu,name:joint_buying_base.menu_res_company
+msgid "Companies Using Odoo"
+msgstr "Sociétés utilisant Odoo"
+
+#. module: joint_buying_base
+#: model:ir.ui.menu,name:joint_buying_base.menu_configuration
+msgid "Configuration"
+msgstr ""
+
+#. module: joint_buying_base
+#: model:ir.model,name:joint_buying_base.model_res_partner
+msgid "Contact"
+msgstr ""
+
+#. module: joint_buying_base
+#: model:res.company,overdue_msg:joint_buying_base.company_3PP
+#: model:res.company,overdue_msg:joint_buying_base.company_CHE
+#: model:res.company,overdue_msg:joint_buying_base.company_CHO
+#: model:res.company,overdue_msg:joint_buying_base.company_DOZ
+msgid "Dear Sir/Madam,\n"
+"\n"
+"Our records indicate that some payments on your account are still due. Please find details below.\n"
+"If the amount has already been paid, please disregard this notice. Otherwise, please forward us the total amount stated below.\n"
+"If you have any queries regarding your account, Please contact us.\n"
+"\n"
+"Thank you in advance for your cooperation.\n"
+"Best Regards,"
+msgstr "Madame, Monsieur,\n"
+"\n"
+"D'après nos relevés, nous sommes encore en attente à ce jour de paiements de votre part, dont les détails sont indiqués ci-dessous.\n"
+"Si ces sommes ont déjà été réglées, vous pouvez ignorer ce rappel. Dans le cas contraire, nous vous remercions de bien vouloir nous faire parvenir votre règlement.\n"
+"Si vous avez d'autres questions concernant votre compte, vous pouvez nous contacter directement.\n"
+"\n"
+"En vous remerciant par avance.\n"
+"\n"
+"Cordialement,"
+
+#. module: joint_buying_base
+#: model:ir.model.fields,field_description:joint_buying_base.field_joint_buying_mixin__display_name
+msgid "Display Name"
+msgstr "Nom affiché"
+
+#. module: joint_buying_base
+#: model_terms:ir.ui.view,arch_db:joint_buying_base.view_res_company_tree
+msgid "Enable / Disable 'Is a Customer'"
+msgstr "Activer / désactiver 'Est un Client'"
+
+#. module: joint_buying_base
+#: model_terms:ir.ui.view,arch_db:joint_buying_base.view_res_company_tree
+msgid "Enable / Disable 'Is a Vendor'"
+msgstr "Activer / désactiver 'Est un Fournisseur'"
+
+#. module: joint_buying_base
+#: model:ir.model.fields,field_description:joint_buying_base.field_joint_buying_mixin__is_joint_buying
+#: model:ir.model.fields,field_description:joint_buying_base.field_res_partner__is_joint_buying
+#: model:ir.model.fields,field_description:joint_buying_base.field_res_users__is_joint_buying
+msgid "For Joint Buyings"
+msgstr "Pour les achats groupés"
+
+#. module: joint_buying_base
+#: model:ir.model.fields,field_description:joint_buying_base.field_joint_buying_mixin__id
+msgid "ID"
+msgstr ""
+
+#. module: joint_buying_base
+#: model:ir.model.fields,field_description:joint_buying_base.field_res_company__is_joint_buying_customer
+msgid "Is a Customer"
+msgstr "Est un Client"
+
+#. module: joint_buying_base
+#: model:ir.model.fields,field_description:joint_buying_base.field_res_company__is_joint_buying_supplier
+msgid "Is a Vendor"
+msgstr "Est un Fournisseur"
+
+#. module: joint_buying_base
+#: model:ir.model,name:joint_buying_base.model_joint_buying_mixin
+msgid "Joint Buying Mixin"
+msgstr "Mixin Achat Groupé"
+
+#. module: joint_buying_base
+#: model:ir.model.fields,field_description:joint_buying_base.field_res_company__joint_buying_partner_id
+msgid "Joint Buying Partner"
+msgstr "Partneraire Achats Groupés"
+
+#. module: joint_buying_base
+#: model:ir.actions.act_window,name:joint_buying_base.action_res_partner_supplier
+#: model:ir.ui.menu,name:joint_buying_base.menu_res_partner_supplier
+msgid "Joint Buying Suppliers"
+msgstr "Fournisseurs Achats Groupés"
+
+#. module: joint_buying_base
+#: model:ir.module.category,name:joint_buying_base.module_category_joint_buying
+#: model:ir.ui.menu,name:joint_buying_base.menu_root
+#: model_terms:ir.ui.view,arch_db:joint_buying_base.view_res_company_form
+#: model_terms:ir.ui.view,arch_db:joint_buying_base.view_res_partner_form
+msgid "Joint Buyings"
+msgstr "Achats Groupés"
+
+#. module: joint_buying_base
+#: model:ir.model.fields,field_description:joint_buying_base.field_joint_buying_mixin____last_update
+msgid "Last Modified on"
+msgstr "Dernière modification le"
+
+#. module: joint_buying_base
+#: model:res.groups,name:joint_buying_base.group_joint_buying_manager
+msgid "Manager"
+msgstr "Responsable"
+
+#. module: joint_buying_base
+#: model:res.groups,name:joint_buying_base.group_joint_buying_user
+msgid "User"
+msgstr "Utilisateur"
+
+#. module: joint_buying_base
+#: code:addons/joint_buying_base/models/joint_buying_mixin.py:27
+#, python-format
+msgid "You can not create an item for 'joint buying' that has a company field defined."
+msgstr "Vous ne pouvez pas créer un élément pour les 'achats groupés' qui est une société définie."
+
+#. module: joint_buying_base
+#: code:addons/joint_buying_base/models/res_company.py:43
+#, python-format
+msgid "{} (Joint Buyings)"
+msgstr "{} (Achat Groupés)"
+

@@ -11,7 +11,7 @@ class JointBuyingMixin(models.AbstractModel):
     _description = "Joint Buying Mixin"
 
     is_joint_buying = fields.Boolean(
-        string="For Joint Buying",
+        string="For Joint Buyings",
         readonly=True,
         default=lambda x: x._default_is_joint_buying(),
     )
