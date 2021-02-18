@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<odoo>
+
+    <record id="joint_buying_base.res_partner_for_joint_buying_supplier_in_grap" model="res.partner">
+        <field name="tour_template_id" ref="joint_buying_purchase.joint_buying_tour_template"/>
+    </record>
+
+    <record id="joint_buying_base.res_partner_for_joint_buying_pivot_activity" model="res.partner">
+        <field name="tour_template_id" ref="joint_buying_purchase.joint_buying_tour_template"/>
+    </record>
+
+    <record id="joint_buying_base.res_partner_for_joint_buying_supplier_out_grap" model="res.partner">
+        <field name="tour_template_id" ref="joint_buying_purchase.joint_buying_tour_template"/>
+    </record>
+
+</odoo>

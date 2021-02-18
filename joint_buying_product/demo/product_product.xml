@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<odoo>
+
+        <record id="product_product_supplier_in_grap" model="product.product">
+            <field name="is_joint_buying">1</field>
+            <field name="name">Tablettes chocolat noir 66% Cardamome-Gingembre 100g LOT DE 10</field>
+            <field name="company_id" eval="False"/>
+        </record>
+
+        <record id="product_template_supplier_in_grap" model="product.template">
+            <field name="name">Tablettes chocolat noir 66% Cardamome-Gingembre 100g LOT DE 10</field>
+            <field name="categ_id" ref="product.product_category_consumable"/>
+            <field name="product_variant_id" ref="product_product_supplier_in_grap"/>
+            <field name="type">consu</field>
+            <field name="company_id" eval="False"/>
+            <field name="is_joint_buying">1</field>
+            <field name="uom_id" ref="uom.product_uom_unit"/>
+            <field name="uom_po_id" ref="uom.product_uom_unit"/>
+        </record>
+
+        <record id="product_supplier_supplier_in_grap" model="product.supplierinfo">
+            <field name="product_tmpl_id" ref="product_template_supplier_in_grap"/>
+            <field name="product_id" ref="product_product_supplier_in_grap"/>
+            <field name="name" ref="joint_buying_base.res_partner_for_joint_buying_supplier_in_grap"/>
+            <field name="delay">30</field>
+            <field name="min_qty">1</field>
+            <field name="max_qty">10</field>
+            <field name="price">3.55</field>
+        </record>
+
+
+
+        <record id="product_product_supplier_out_grap" model="product.product">
+            <field name="is_joint_buying">1</field>
+            <field name="name">Marmelade/coulis d'Agrumes solidaire</field>
+        </record>
+
+        <record id="product_template_supplier_out_grap" model="product.template">
+            <field name="name">Marmelade/coulis d'Agrumes solidaire</field>
+            <field name="categ_id" ref="product.product_category_consumable"/>
+            <field name="product_variant_id" ref="product_product_supplier_out_grap"/>
+            <field name="type">consu</field>
+            <field name="company_id" eval="False"/>
+            <field name="is_joint_buying">1</field>
+            <field name="uom_id" ref="uom.product_uom_unit"/>
+            <field name="uom_po_id" ref="uom.product_uom_unit"/>
+        </record>
+
+        <record id="product_supplier_supplier_out_grap" model="product.supplierinfo">
+            <field name="product_tmpl_id" ref="product_template_supplier_out_grap"/>
+            <field name="product_id" ref="product_product_supplier_out_grap"/>
+            <field name="name" ref="joint_buying_base.res_partner_for_joint_buying_supplier_out_grap"/>
+            <field name="delay">30</field>
+            <field name="min_qty">6</field>
+            <field name="max_qty">10</field>
+            <field name="price">5.64</field>
+        </record>
+
+
+</odoo>

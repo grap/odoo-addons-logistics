@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<odoo>
+
+    <record id="joint_buying_user_1" model="res.users">
+        <field name="partner_id" ref="joint_buying_base.res_partner_for_joint_buying_customer_1"/>
+        <field name="login">petitpois</field>
+        <field name="password">petitpois</field>
+        <field name="signature" type="xml"><span>-- <br/>+Mr 3</span></field>
+        <field name="company_id" ref="base.main_company"/>
+        <field name="groups_id" eval="[(6,0,[ref('base.group_user'), ref('base.group_partner_manager'), ref('joint_buying_purchase.group_joint_buying_customer')])]"/>
+    </record>
+
+    <record id="joint_buying_user_2" model="res.users">
+        <field name="partner_id" ref="joint_buying_base.res_partner_for_joint_buying_customer_2"/>
+        <field name="login">doze</field>
+        <field name="password">doze</field>
+        <field name="signature" type="xml"><span>-- <br/>+Mr Doze</span></field>
+        <field name="company_id" ref="base.main_company"/>
+        <field name="groups_id" eval="[(6,0,[ref('base.group_user'), ref('base.group_partner_manager'), ref('joint_buying_purchase.group_joint_buying_customer')])]"/>
+    </record>
+
+    <record id="joint_buying_user_3" model="res.users">
+        <field name="partner_id" ref="joint_buying_base.res_partner_for_joint_buying_supplier_in_grap"/>
+        <field name="login">choc</field>
+        <field name="password">choc</field>
+        <field name="signature" type="xml"><span>-- <br/>+Mr Choc</span></field>
+        <field name="company_id" ref="base.main_company"/>
+        <field name="groups_id" eval="[(6,0,[ref('base.group_user'), ref('base.group_partner_manager'), ref('joint_buying_purchase.group_joint_buying_customer')])]"/>
+    </record>
+
+    <record id="joint_buying_user_4" model="res.users">
+        <field name="partner_id" ref="joint_buying_base.res_partner_for_joint_buying_pivot_activity"/>
+        <field name="login">chouch</field>
+        <field name="password">chouch</field>
+        <field name="signature" type="xml"><span>-- <br/>+Mme Chouc</span></field>
+        <field name="company_id" ref="base.main_company"/>
+        <field name="groups_id" eval="[(6,0,[ref('base.group_user'), ref('base.group_partner_manager'), ref('joint_buying_purchase.group_joint_buying_customer'), ref('joint_buying_purchase.group_joint_buying_supplier_activity_key')])]"/>
+    </record>
+
+    <record id="base.user_admin" model="res.users">
+        <field name="groups_id" eval="[(4, ref('joint_buying_purchase.group_joint_buying_customer_manager'))]"/>
+    </record>
+
+
+</odoo>

@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<odoo>
+
+    <record model="ir.cron" id="joint_buying_generate_tour">
+        <field name="name">joint.buying.generate.tour</field>
+        <field name="interval_number">1</field>
+        <field name="interval_type">days</field>
+        <field name="numbercall">-1</field>
+        <field name="doall">0</field>
+        <field name="model_id" ref="model_joint_buying_tour_template"/>
+        <field name="code">model.generate_tour()</field>
+    </record>
+
+
+    <record model="ir.cron" id="joint_buying_change_order_state">
+        <field name="name">joint.buying.check.order.state</field>
+        <field name="interval_number">1</field>
+        <field name="interval_type">days</field>
+        <field name="numbercall">-1</field>
+        <field name="doall">0</field>
+        <field name="model_id" ref="model_joint_buying_purchase_order"/>
+        <field name="code">model.change_order_state()</field>
+    </record>
+
+</odoo>

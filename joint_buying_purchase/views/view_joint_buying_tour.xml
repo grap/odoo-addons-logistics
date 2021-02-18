@@ -1,0 +1,90 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+
+    <!-- View kanban tour -->
+    <record model="ir.ui.view" id="joint_buying_tour_kanban_view">
+        <field name="model">joint.buying.tour</field>
+        <field name="arch" type="xml">
+            <kanban class="o_kanban_mobile">
+                <templates>
+                    <t t-name="kanban-box">
+                        <div t-attf-class="oe_kanban_content oe_kanban_global_click o_kanban_get_form">
+                            <div class="row">
+                                <div class="col-12">
+                                    Date of tour : <strong><field name="date"/></strong>
+                                </div>
+                                <div class="col-12">
+                                    Number of orders : <field name="total_orders"/>
+                                </div>
+                            </div>
+                            <hr/>
+                            <div class="row o_kanban_card_upper_content">
+                                <div class="col-4 o_kanban_primary_left">
+                                    <!--
+                                        This button go to the kanban view of
+                                        purchase order link to the current tour
+                                    -->
+                                    <button type="action" class="btn btn-primary" name="joint_buying_purchase.open_view_kanban_joint_buying_purchase_order_by_tour">
+                                        Joint buying orders
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    </t>
+                </templates>
+            </kanban>
+        </field>
+    </record>
+
+
+    <!-- Search view to filter Kanban view tour -->
+    <record id="search_view_joint_buying_tour_filter_by_template" model="ir.ui.view">
+      <field name="model">joint.buying.tour</field>
+      <field name="arch" type="xml">
+        <search string="Search tour">
+          <field name="date" string="Tour date"/>
+          <field name="tour_template_id" string="Tour template : "/>
+          <filter string="My Favorites" name="my_tours" domain="[('favorite_user_ids', 'in', uid)]"/>
+          <separator/>
+          <filter string="Followed by Me" name="followed_by_me" domain="[('message_is_follower','=',True)]"/>
+          <separator/>
+          <filter string="Archived" name="inactive" domain="[('active','=',False)]"/>
+        </search>
+      </field>
+    </record>
+
+
+    <!-- Action to show view kanban tour -->
+    <record id="open_view_kanban_tour_by_template" model="ir.actions.act_window">
+        <field name="name">Joint Buying Tour</field>
+        <field name="res_model">joint.buying.tour</field>
+        <field name="view_type">form</field>
+        <field name="domain">[]</field>
+        <field name="view_mode">kanban,form</field>
+        <field name="search_view_id" ref="search_view_joint_buying_tour_filter_by_template"/>
+        <field name="context">{
+            'search_default_tour_template_id': [active_id],
+            'default_tour_template_id': active_id,
+        }
+        </field>
+        <field name="help" type="html">
+            <p class="o_view_nocontent_smiling_face">
+                Create a new Tour.
+            </p>
+        </field>
+    </record>
+
+
+    <!-- Create a tour -->
+    <record model="ir.ui.view" id="joint_buying_tour_form_view">
+        <field name="model">joint.buying.tour</field>
+        <field name="arch" type="xml">
+            <form string="Tour form">
+                <sheet string="Represents a tour">
+                    <h1>Tour : <field name="date"/></h1>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+</odoo>

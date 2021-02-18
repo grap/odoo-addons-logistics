@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<template id="joint_buying_export_pdf_kanban_purchase_order_suppliers" xml:space="preserve">
+    <t t-extend="KanbanView.buttons">
+        <t t-jquery="button" t-operation="after">
+            <t t-if="widget.modelName == 'joint.buying.purchase.order'">
+                <button class="oe_button oe_highlight btn btn-primary" type="button">My Button</button>
+            </t>
+        </t>
+    </t>
+</template>

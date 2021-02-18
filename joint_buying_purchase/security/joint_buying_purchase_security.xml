@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+
+<odoo>
+
+
+    <record id="group_joint_buying_customer" model="res.groups">
+        <field name="name">Customer: Own Joint Buying Purchase Order Only</field>
+        <field name="implied_ids" eval="[(4, ref('base.group_user'))]"/>
+        <field name="category_id" ref="joint_buying_purchase.module_joint_buying_purchase_order_management"/>
+    </record>
+
+    <record id="group_joint_buying_customer_manager" model="res.groups">
+        <field name="name">All Joint Buying Purchase Order</field>
+        <field name="implied_ids" eval="[(4, ref('base.group_user'))]"/>
+        <field name="category_id" ref="joint_buying_purchase.module_joint_buying_purchase_order_management"/>
+    </record>
+
+    <record id="group_joint_buying_supplier_manager" model="res.groups">
+        <field name="name">Supplier: Own Joint Buying Purchase Order</field>
+        <field name="implied_ids" eval="[(4, ref('base.group_user'))]"/>
+        <field name="category_id" ref="joint_buying_purchase.module_joint_buying_purchase_order_management"/>
+    </record>
+
+    <record id="group_joint_buying_supplier_activity_key" model="res.groups">
+        <field name="name">Activity key: Joint Buying Purchase Order of suppliers</field>
+        <field name="implied_ids" eval="[(4, ref('base.group_user'))]"/>
+        <field name="category_id" ref="joint_buying_purchase.module_joint_buying_purchase_order_management"/>
+    </record>
+
+
+
+    <record id="joint_buying_purchase_order_personal_customer_rule" model="ir.rule">
+        <field name="name">Personal Customer Joint Buying Purchase Orders</field>
+        <field ref="model_joint_buying_purchase_order" name="model_id"/>
+        <field name="domain_force">[('customer_id','=',user.partner_id.id)]</field>
+        <field name="groups" eval="[(4, ref('group_joint_buying_customer'))]"/>
+    </record>
+
+    <record id="joint_buying_purchase_order_personal_supplier_rule" model="ir.rule">
+        <field name="name">Personal Supplier Joint Buying Purchase Orders</field>
+        <field ref="model_joint_buying_purchase_order" name="model_id"/>
+        <field name="domain_force">[('supplier_id','=',user.partner_id.id)]</field>
+        <field name="groups" eval="[(4, ref('group_joint_buying_supplier_manager'))]"/>
+    </record>
+
+    <record id="joint_buying_purchase_order_personal_supplier_activity_key_rule" model="ir.rule">
+        <field name="name">Activity key Suppliers Joint Buying Purchase Orders</field>
+        <field ref="model_joint_buying_purchase_order" name="model_id"/>
+        <field name="domain_force">
+            [('supplier_id','in',user.partner_id.with_context({'joint_buying':1}).supplier_ids.ids)]
+        </field>
+        <field name="groups" eval="[(4, ref('group_joint_buying_supplier_activity_key'))]"/>
+    </record>
+
+    <record id="joint_buying_purchase_all_order_rule" model="ir.rule">
+        <field name="name">All Joint Buying Purchase Orders</field>
+        <field ref="model_joint_buying_purchase_order" name="model_id"/>
+        <field name="domain_force">[]</field>
+        <field name="groups" eval="[(4, ref('group_joint_buying_customer_manager'))]"/>
+    </record>
+
+
+</odoo>

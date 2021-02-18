@@ -9,7 +9,13 @@
     "website": "http://www.grap.coop",
     "license": "AGPL-3",
     "depends": ["product", "joint_buying_base"],
-    "data": ["views/view_product_product.xml", "views/view_product_template.xml"],
+    "data": [
+        "views/view_product_product.xml",
+        "views/view_product_template.xml",
+        "views/view_product_supplier_info.xml",
+        "views/view_res_partner.xml",
+    ],
+    "demo": ["demo/product_product.xml"],
     "installable": True,
     "auto_install": True,
 }

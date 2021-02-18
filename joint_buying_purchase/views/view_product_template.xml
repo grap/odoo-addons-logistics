@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- pylint: disable=dangerous-view-replace-wo-priority -->
+
+<odoo>
+
+    <record id="product_product_for_joint_buying_form_view" model="ir.ui.view">
+        <field name="model">product.template</field>
+        <field name="inherit_id" ref="purchase.view_product_supplier_inherit"/>
+        <field name="arch" type="xml">
+
+            <field name="seller_ids" position="replace">
+                <field name="seller_ids" context="{'default_product_tmpl_id':context.get('product_tmpl_id',active_id), 'product_template_invisible_variant': True}" nolabel="1">
+                    <tree editable="botttom">
+                        <field name="product_tmpl_id" invisible="1"/>
+                        <field name="name" context="{'joint_buying': context.get('joint_buying', 0)}" />
+                        <field name="product_id" context="{'joint_buying': context.get('joint_buying', 0)}" domain="[('product_tmpl_id', '=', product_tmpl_id)]"/>
+                        <field name="min_qty" />
+                        <field name="max_qty" />
+                        <field name="price" />
+                        <field name="delay" />
+                        <field name="date_start" />
+                        <field name="date_end" />
+                    </tree>
+                </field>
+            </field>
+
+            <field name="variant_seller_ids" position="replace">
+                <field name="variant_seller_ids" context="{'default_product_tmpl_id':context.get('product_tmpl_id',active_id), 'product_template_invisible_variant': True}" nolabel="1">
+                    <tree editable="botttom">
+                        <field name="product_tmpl_id" invisible="1"/>
+                        <field name="name" context="{'joint_buying': context.get('joint_buying', 0)}" />
+                        <field name="product_id" context="{'joint_buying': context.get('joint_buying', 0)}" domain="[('product_tmpl_id', '=', product_tmpl_id)]"/>
+                        <field name="min_qty" />
+                        <field name="max_qty" />
+                        <field name="price" />
+                        <field name="delay" />
+                        <field name="date_start" />
+                        <field name="date_end" />
+                    </tree>
+                </field>
+            </field>
+
+        </field>
+    </record>
+
+</odoo>
