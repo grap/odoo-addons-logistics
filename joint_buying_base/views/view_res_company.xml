@@ -1,0 +1,81 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+Copyright (C) 2021 - Today: GRAP (http://www.grap.coop)
+@author: Sylvain LE GAL (https://twitter.com/legalsylvain)
+License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl.html).
+-->
+<odoo>
+
+
+    <record id="view_res_company_tree" model="ir.ui.view">
+        <field name="model">res.company</field>
+        <field name="priority">1000</field>
+        <field name="arch" type="xml">
+            <tree decoration-muted="(not is_joint_buying_customer and not is_joint_buying_supplier)">
+                <field name="name"/>
+                <field name="joint_buying_partner_id"/>
+                <button name="action_is_joint_buying_customer" type="object" string="Enable / Disable 'Is a Customer'" />
+                <field name="is_joint_buying_customer"/>
+                <button name="action_is_joint_buying_supplier" type="object" string="Enable / Disable 'Is a Vendor'" />
+                <field name="is_joint_buying_supplier"/>
+            </tree>
+        </field>
+    </record>
+
+    <record id="view_res_company_form" model="ir.ui.view">
+        <field name="model">res.company</field>
+        <field name="inherit_id" ref="base.view_company_form"/>
+        <field name="arch" type="xml">
+            <notebook position="inside">
+                <page string="Joint Buyings">
+                    <group>
+                        <group>
+                            <field name="joint_buying_partner_id" context="{'form_view_ref': 'joint_buying_base.view_res_partner_form'}"/>
+                            <newline/>
+                            <field name="is_joint_buying_customer"/>
+                            <field name="is_joint_buying_supplier"/>
+                        </group>
+                    </group>
+                </page>
+            </notebook>
+
+        </field>
+    </record>
+
+    <record id="action_res_company" model="ir.actions.act_window">
+        <field name="name">Companies Using Odoo</field>
+        <field name="type">ir.actions.act_window</field>
+        <field name="res_model">res.company</field>
+        <field name="view_type">form</field>
+        <field name="view_id" ref="view_res_company_tree"/>
+        <field name="view_mode">tree</field>
+    </record>
+
+    <menuitem id="menu_res_company"
+        name="Companies Using Odoo"
+        parent="menu_configuration"
+        action="action_res_company"
+        sequence="1"
+    />
+
+</odoo>
+
+
+
+<!--
+    <record id="view_res_company_tree" model="ir.ui.view">
+        <field name="model">res.company</field>
+        <field name="inherit_id" ref="base.view_company_tree"/>
+        <field name="arch" type="xml">
+            <tree>
+                <field name="name" position="after">
+                    <field name="joint_buying_partner_id"/>
+                    <button name="action_is_joint_buying_customer" type="object" string="Buyer" />
+                    <field name="is_joint_buying_customer"/>
+                    <button name="action_is_joint_buying_supplier" type="object" string="Seller" />
+                    <field name="is_joint_buying_supplier"/>
+                </field>
+            </tree>
+        </field>
+    </record>
+ -->

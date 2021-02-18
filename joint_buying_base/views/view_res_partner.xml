@@ -1,0 +1,120 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+Copyright (C) 2020 - Today: GRAP (http://www.grap.coop)
+@author: Sylvain LE GAL (https://twitter.com/legalsylvain)
+License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl.html).
+-->
+<odoo>
+
+    <record id="view_res_partner_form" model="ir.ui.view">
+        <field name="model">res.partner</field>
+        <field name="inherit_id" ref="base.view_partner_form"/>
+        <field name="mode">primary</field>
+        <field name="arch" type="xml">
+            <!-- Make readonly displayed fields -->
+            <!-- Hide useless fields and pages-->
+            <field name="company_type" position="attributes">
+                <attribute name="invisible">1</attribute>
+            </field>
+            <field name="mobile" position="attributes">
+                <attribute name="invisible">1</attribute>
+            </field>
+            <field name="lang" position="attributes">
+                <attribute name="invisible">1</attribute>
+            </field>
+            <field name="category_id" position="attributes">
+                <attribute name="invisible">1</attribute>
+            </field>
+            <notebook position="replace">
+                <notebook>
+                <page string="Joint Buyings">
+                    <group>
+                        <group>
+                            <field name="customer" readonly="1"/>
+                            <field name="supplier"/>
+                        </group>
+                    </group>
+                </page>
+                </notebook>
+            </notebook>
+        </field>
+    </record>
+
+<!--
+    <record id="view_res_partner" model="ir.ui.view">
+        <field name="model">res.partner</field>
+        <field name="inherit_id" ref="base.view_partner_form"/>
+        <field name="arch" type="xml">
+            <field name="type" position="before">
+                <field name="is_joint_buying"/>
+            </field>
+
+            <notebook position="before">
+                <group attrs="{'invisible': [('is_joint_buying','=',False)]}">
+                    <group name="joint_buying_common_info">
+                        <field name="is_joint_buying_customer"/>
+                        <field name="is_joint_buying_supplier"/>
+                    </group>
+                    <group>
+                        <field name="activity_id" context="{'joint_buying':1}"/>
+                        <br />
+                        <field name="supplier_ids" readonly="1" widget="many2many_tags" context="{'joint_buying':1}"/>
+                    </group>
+                </group>
+            </notebook>
+
+            <page autofocus="autofocus" position="before">
+                <page string="Supplier info for joint buying" attrs="{'invisible': [('is_joint_buying_supplier', '=', False)]}" autofocus="autofocus">
+                    <group modifier="{}">
+                        <group modifier="{}" col="3">
+                            <field name="delay" required="True"/>
+                            <field name="period" required="True"/>
+                            <field name="init_period_date" required="True"/>
+                        </group>
+                    </group>
+                </page>
+            </page>
+
+        </field>
+    </record>
+ -->
+
+    <record id="view_res_partner_tree" model="ir.ui.view">
+        <field name="model">res.partner</field>
+        <field name="arch" type="xml">
+            <tree>
+                <field name="is_favorite" widget="boolean_favorite" nolabel="1" string="Fav." attrs="{'invisible': [('supplier', '=', False)]}"/>
+                <field name="name"/>
+                <field name="city"/>
+                <field name="zip"/>
+                <field name="supplier" invisible="1"/>
+            </tree>
+        </field>
+    </record>
+
+    <record id="action_res_partner_supplier" model="ir.actions.act_window">
+        <field name="name">Joint Buying Suppliers</field>
+        <field name="type">ir.actions.act_window</field>
+        <field name="res_model">res.partner</field>
+        <field name="view_id" ref="view_res_partner_tree"/>
+        <field name="view_mode">tree,form</field>
+        <field name="context">
+            {
+                "joint_buying":1,
+                "search_default_supplier": 1,
+                "default_customer": 0,
+                "default_supplier": 1,
+                "default_is_company": 1,
+                "form_view_ref": "joint_buying_base.view_res_partner_form",
+            }
+        </field>
+    </record>
+
+    <menuitem id="menu_res_partner_supplier"
+        name="Joint Buying Suppliers"
+        parent="joint_buying_base.menu_configuration"
+        action="action_res_partner_supplier"
+        sequence="2"
+    />
+
+</odoo>
