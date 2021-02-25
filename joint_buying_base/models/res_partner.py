@@ -3,7 +3,7 @@
 # License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl.html).
 
 from odoo import _, api, fields, models
-from odoo.exceptions import AccessError
+from odoo.exceptions import AccessError, UserError
 
 from odoo.addons.base.models.res_partner import ADDRESS_FIELDS
 
@@ -21,6 +21,31 @@ class ResPartner(models.Model):
     joint_buying_company_id = fields.Many2one(
         comodel_name="res.company", name="Related Company for Joint Buyings"
     )
+
+    pivot_company_id = fields.Many2one(
+        comodel_name="res.company",
+        string="Pivot Company",
+        help="Activity that has a commercial relationship with this supplier",
+    )
+
+    deposit_company_id = fields.Many2one(
+        comodel_name="res.company",
+        string="Deposit Company",
+        help="Activity that will serve as a deposit for this supplier",
+    )
+
+    @api.constrains("is_joint_buying", "joint_buying_company_id", "customer")
+    def _check_joint_buying_company_customer(self):
+        if self.filtered(
+            lambda x: x.is_joint_buying and not x.joint_buying_company_id and x.customer
+        ):
+            raise UserError(
+                _(
+                    "You can not create a customer joint buying partner."
+                    " You should ask to you ERP manager to do it via"
+                    " the creation of a company."
+                )
+            )
 
     def _compute_is_favorite(self):
         for partner in self.filtered(lambda x: x.is_joint_buying):
@@ -47,7 +72,8 @@ class ResPartner(models.Model):
         if (
             self.filtered(lambda x: x.joint_buying_company_id)
             and not self.env.context.get("write_joint_buying_partner", False)
-            and set(self._get_fields_no_writable()) & set(vals.keys())
+            and set(self._get_fields_no_writable_joint_buying_company())
+            & set(vals.keys())
         ):
             raise AccessError(
                 _(
@@ -69,22 +95,26 @@ class ResPartner(models.Model):
         return super().unlink()
 
     @api.model
-    def _get_fields_no_writable(self):
-        """return fields that can not be written on joint_buying partners"""
+    def _get_fields_no_writable_joint_buying_company(self):
+        """return fields that can not be written on joint_buying companies"""
 
         res = list(ADDRESS_FIELDS)
         res += ["name", "is_joint_buying", "company_id", "is_company", "email", "phone"]
         return res
 
-    # # Supplier
-    # activity_id = fields.Many2one(
-    #     "res.partner",
-    #     string="Activity key",
-    #     domain=[
-    #         ("is_joint_buying", "=", True),
-    #         ("is_joint_buying_supplier", "=", True),
-    #     ],
-    # )
+    @api.multi
+    def button_open_joint_buying_partner(self):
+        self.ensure_one()
+        return {
+            "name": self.display_name,
+            "type": "ir.actions.act_window",
+            "res_model": self._name,
+            "view_mode": "form",
+            "view_id": self.env.ref("joint_buying_base.view_res_partner_form").id,
+            "res_id": self.id,
+            "target": "current",
+        }
+
     # delay = fields.Integer(
     #     default=0, string="Timeframes for preparations before order."
     # )

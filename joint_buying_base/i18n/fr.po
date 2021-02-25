@@ -6,8 +6,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Odoo Server 12.0\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2021-02-23 11:00+0000\n"
-"PO-Revision-Date: 2021-02-23 11:00+0000\n"
+"POT-Creation-Date: 2021-02-25 14:11+0000\n"
+"PO-Revision-Date: 2021-02-25 14:11+0000\n"
 "Last-Translator: <>\n"
 "Language-Team: \n"
 "MIME-Version: 1.0\n"
@@ -16,25 +16,46 @@ msgstr ""
 "Plural-Forms: \n"
 
 #. module: joint_buying_base
+#: model_terms:ir.ui.view,arch_db:joint_buying_base.view_res_partner_form
+msgid "<b>Company Address:</b>"
+msgstr "<b>Adresse de la société:</b>"
+
+#. module: joint_buying_base
+#: model:ir.model.fields,help:joint_buying_base.field_res_partner__pivot_company_id
+#: model:ir.model.fields,help:joint_buying_base.field_res_users__pivot_company_id
+msgid "Activity that has a commercial relationship with this supplier"
+msgstr "Société qui entretient un lien commercial avec ce fournisseur"
+
+#. module: joint_buying_base
+#: model:ir.model.fields,help:joint_buying_base.field_res_partner__deposit_company_id
+#: model:ir.model.fields,help:joint_buying_base.field_res_users__deposit_company_id
+msgid "Activity that will serve as a deposit for this supplier"
+msgstr "Société qui servira de dépôt pour ce fournisseur"
+
+#. module: joint_buying_base
+#: model_terms:ir.ui.view,arch_db:joint_buying_base.view_res_partner_form
+msgid "Address"
+msgstr "Adresse"
+
+#. module: joint_buying_base
 #: model:ir.model.fields,help:joint_buying_base.field_res_company__is_joint_buying_customer
 msgid "Check this box if this contact is a customer. It can be selected in sales orders."
-msgstr ""
+msgstr "Cocher cette case si ce contact est un fournisseur. Il pourra être sélectionner comme client."
 
 #. module: joint_buying_base
 #: model:ir.model.fields,help:joint_buying_base.field_res_company__is_joint_buying_supplier
 msgid "Check this box if this contact is a vendor. It can be selected in purchase orders."
-msgstr ""
+msgstr "Cocher cette case si ce contact est un fournisseur. Il pourra être sélectionner comme fournisseurs, dans les achats."
+
+#. module: joint_buying_base
+#: model_terms:ir.ui.view,arch_db:joint_buying_base.view_res_partner_form
+msgid "City"
+msgstr "Ville"
 
 #. module: joint_buying_base
 #: model:ir.model,name:joint_buying_base.model_res_company
 msgid "Companies"
 msgstr "Sociétés"
-
-#. module: joint_buying_base
-#: model:ir.actions.act_window,name:joint_buying_base.action_res_company
-#: model:ir.ui.menu,name:joint_buying_base.menu_res_company
-msgid "Companies Using Odoo"
-msgstr "Sociétés utilisant Odoo"
 
 #. module: joint_buying_base
 #: model:ir.ui.menu,name:joint_buying_base.menu_configuration
@@ -47,27 +68,20 @@ msgid "Contact"
 msgstr ""
 
 #. module: joint_buying_base
-#: model:res.company,overdue_msg:joint_buying_base.company_3PP
-#: model:res.company,overdue_msg:joint_buying_base.company_CHE
-#: model:res.company,overdue_msg:joint_buying_base.company_CHO
-#: model:res.company,overdue_msg:joint_buying_base.company_DOZ
-msgid "Dear Sir/Madam,\n"
-"\n"
-"Our records indicate that some payments on your account are still due. Please find details below.\n"
-"If the amount has already been paid, please disregard this notice. Otherwise, please forward us the total amount stated below.\n"
-"If you have any queries regarding your account, Please contact us.\n"
-"\n"
-"Thank you in advance for your cooperation.\n"
-"Best Regards,"
-msgstr "Madame, Monsieur,\n"
-"\n"
-"D'après nos relevés, nous sommes encore en attente à ce jour de paiements de votre part, dont les détails sont indiqués ci-dessous.\n"
-"Si ces sommes ont déjà été réglées, vous pouvez ignorer ce rappel. Dans le cas contraire, nous vous remercions de bien vouloir nous faire parvenir votre règlement.\n"
-"Si vous avez d'autres questions concernant votre compte, vous pouvez nous contacter directement.\n"
-"\n"
-"En vous remerciant par avance.\n"
-"\n"
-"Cordialement,"
+#: model_terms:ir.ui.view,arch_db:joint_buying_base.view_res_partner_form
+msgid "Country"
+msgstr "Pays"
+
+#. module: joint_buying_base
+#: model_terms:ir.ui.view,arch_db:joint_buying_base.view_res_partner_form
+msgid "Customer"
+msgstr "Client"
+
+#. module: joint_buying_base
+#: model:ir.model.fields,field_description:joint_buying_base.field_res_partner__deposit_company_id
+#: model:ir.model.fields,field_description:joint_buying_base.field_res_users__deposit_company_id
+msgid "Deposit Company"
+msgstr "Société dépôt"
 
 #. module: joint_buying_base
 #: model:ir.model.fields,field_description:joint_buying_base.field_joint_buying_mixin__display_name
@@ -75,14 +89,9 @@ msgid "Display Name"
 msgstr "Nom affiché"
 
 #. module: joint_buying_base
-#: model_terms:ir.ui.view,arch_db:joint_buying_base.view_res_company_tree
-msgid "Enable / Disable 'Is a Customer'"
-msgstr "Activer / désactiver 'Est un Client'"
-
-#. module: joint_buying_base
-#: model_terms:ir.ui.view,arch_db:joint_buying_base.view_res_company_tree
-msgid "Enable / Disable 'Is a Vendor'"
-msgstr "Activer / désactiver 'Est un Fournisseur'"
+#: model_terms:ir.ui.view,arch_db:joint_buying_base.view_res_partner_tree
+msgid "Fav."
+msgstr ""
 
 #. module: joint_buying_base
 #: model:ir.model.fields,field_description:joint_buying_base.field_joint_buying_mixin__is_joint_buying
@@ -97,6 +106,12 @@ msgid "ID"
 msgstr ""
 
 #. module: joint_buying_base
+#: model:ir.model.fields,field_description:joint_buying_base.field_res_partner__is_favorite
+#: model:ir.model.fields,field_description:joint_buying_base.field_res_users__is_favorite
+msgid "Is Favorite Vendor"
+msgstr "Est un fournisseur favori"
+
+#. module: joint_buying_base
 #: model:ir.model.fields,field_description:joint_buying_base.field_res_company__is_joint_buying_customer
 msgid "Is a Customer"
 msgstr "Est un Client"
@@ -107,6 +122,18 @@ msgid "Is a Vendor"
 msgstr "Est un Fournisseur"
 
 #. module: joint_buying_base
+#: model:ir.model.fields,field_description:joint_buying_base.field_res_partner__joint_buying_company_id
+#: model:ir.model.fields,field_description:joint_buying_base.field_res_users__joint_buying_company_id
+msgid "Joint Buying Company"
+msgstr "Société achat groupé"
+
+#. module: joint_buying_base
+#: model:ir.actions.act_window,name:joint_buying_base.action_res_partner
+#: model:ir.ui.menu,name:joint_buying_base.menu_res_partner
+msgid "Joint Buying Contacts"
+msgstr "Contact pour les achats groupés"
+
+#. module: joint_buying_base
 #: model:ir.model,name:joint_buying_base.model_joint_buying_mixin
 msgid "Joint Buying Mixin"
 msgstr "Mixin Achat Groupé"
@@ -115,12 +142,6 @@ msgstr "Mixin Achat Groupé"
 #: model:ir.model.fields,field_description:joint_buying_base.field_res_company__joint_buying_partner_id
 msgid "Joint Buying Partner"
 msgstr "Partneraire Achats Groupés"
-
-#. module: joint_buying_base
-#: model:ir.actions.act_window,name:joint_buying_base.action_res_partner_supplier
-#: model:ir.ui.menu,name:joint_buying_base.menu_res_partner_supplier
-msgid "Joint Buying Suppliers"
-msgstr "Fournisseurs Achats Groupés"
 
 #. module: joint_buying_base
 #: model:ir.module.category,name:joint_buying_base.module_category_joint_buying
@@ -141,9 +162,46 @@ msgid "Manager"
 msgstr "Responsable"
 
 #. module: joint_buying_base
+#: model_terms:ir.ui.view,arch_db:joint_buying_base.view_res_partner_tree
+msgid "Open"
+msgstr "Ouvrir"
+
+#. module: joint_buying_base
+#: model:ir.model.fields,field_description:joint_buying_base.field_res_partner__pivot_company_id
+#: model:ir.model.fields,field_description:joint_buying_base.field_res_users__pivot_company_id
+msgid "Pivot Company"
+msgstr "Société pivot"
+
+#. module: joint_buying_base
+#: model_terms:ir.ui.view,arch_db:joint_buying_base.view_res_partner_form
+msgid "State"
+msgstr "État"
+
+#. module: joint_buying_base
+#: model_terms:ir.ui.view,arch_db:joint_buying_base.view_res_partner_form
+msgid "Street 2..."
+msgstr "Rue 2..."
+
+#. module: joint_buying_base
+#: model_terms:ir.ui.view,arch_db:joint_buying_base.view_res_partner_form
+msgid "Street..."
+msgstr "Rue..."
+
+#. module: joint_buying_base
 #: model:res.groups,name:joint_buying_base.group_joint_buying_user
 msgid "User"
 msgstr "Utilisateur"
+
+#. module: joint_buying_base
+#: model_terms:ir.ui.view,arch_db:joint_buying_base.view_res_partner_form
+msgid "Vendor"
+msgstr "Fournisseur"
+
+#. module: joint_buying_base
+#: code:addons/joint_buying_base/models/res_partner.py:43
+#, python-format
+msgid "You can not create a customer joint buying partner. You should ask to you ERP manager to do it via the creation of a company."
+msgstr "Vous ne opuvez pas créer un client pour les achats groupés. Vous devez demander au responsable de lERP de le faire, via la création d'une société."
 
 #. module: joint_buying_base
 #: code:addons/joint_buying_base/models/joint_buying_mixin.py:27
@@ -152,7 +210,24 @@ msgid "You can not create an item for 'joint buying' that has a company field de
 msgstr "Vous ne pouvez pas créer un élément pour les 'achats groupés' qui est une société définie."
 
 #. module: joint_buying_base
-#: code:addons/joint_buying_base/models/res_company.py:43
+#: code:addons/joint_buying_base/models/res_partner.py:90
+#, python-format
+msgid "You can not delete this partner because it is related to a company for joint Buyings. Please archive it."
+msgstr "Vous ne pouvez pas supprimer ce contact, car il est lié à une société pour les achats groupés. Vous pouvez simplement l'archiver."
+
+#. module: joint_buying_base
+#: code:addons/joint_buying_base/models/res_partner.py:79
+#, python-format
+msgid "You can not update this partner this way you should ask to your ERP Manager to update this field via the related company."
+msgstr "Vous ne pouvez pas mettre à jour ce contact de cette manière, vous devez demander au responsable de votre ERP de mettre à jour les données, via la société associée."
+
+#. module: joint_buying_base
+#: model_terms:ir.ui.view,arch_db:joint_buying_base.view_res_partner_form
+msgid "ZIP"
+msgstr "Code postal"
+
+#. module: joint_buying_base
+#: code:addons/joint_buying_base/models/res_company.py:35
 #, python-format
 msgid "{} (Joint Buyings)"
 msgstr "{} (Achat Groupés)"

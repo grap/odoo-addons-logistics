@@ -2,6 +2,22 @@
 
 <odoo>
 
+    <record id="company_1GG" model="res.company">
+        <field name="name">[A Grain in the Granary]</field>
+        <field name="street">1, rue du mail</field>
+        <field name="city">Lyon</field>
+        <field name="zip">69004</field>
+        <field name="country_id" ref="base.fr"/>
+    </record>
+
+    <record id="company_LSE" model="res.company">
+        <field name="name">[The Super Mall]</field>
+        <field name="street">105, avenue Jean Jaurès</field>
+        <field name="city">Oullins</field>
+        <field name="zip">69600</field>
+        <field name="country_id" ref="base.fr"/>
+    </record>
+
     <record id="company_CHE" model="res.company">
         <field name="name">[The Goat and Cabbage]</field>
         <field name="street">2 Grande Rue</field>
@@ -36,6 +52,7 @@
 
     <function model="res.company" name="write">
         <value eval="[
+                ref('joint_buying_base.company_1GG'),
                 ref('joint_buying_base.company_3PP'),
                 ref('joint_buying_base.company_CHE'),
                 ref('joint_buying_base.company_CHO'),
