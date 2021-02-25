@@ -2,4 +2,21 @@
 
 <odoo>
 
+    <record id="supplier_fumer_dombes" model="res.partner">
+        <field name="name">le Fumet des Dombes</field>
+        <field name="street">Z.I. Sure</field>
+        <field name="street2">93 rue de l'artisanat</field>
+        <field name="city">Saint-André-de-Corcy</field>
+        <field name="zip">01390</field>
+        <field name="country_id" ref="base.fr"/>
+        <field name="phone">04.72.26.44.42</field>
+        <field name="website">https://www.lefumetdesdombes.com</field>
+        <field name="is_joint_buying" eval="True"/>
+        <field name="customer" eval="False"/>
+        <field name="supplier" eval="True"/>
+        <field name="company_id" eval="False"/>
+        <field name="pivot_company_id" ref="joint_buying_base.company_1GG"/>
+        <field name="deposit_company_id" ref="joint_buying_base.company_LSE"/>
+    </record>
+
 </odoo>

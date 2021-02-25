@@ -13,4 +13,7 @@ def _create_joint_buying_partner_for_companies(cr, registry):
     for company in companies:
         if not company.joint_buying_partner_id:
             vals = company._prepare_joint_buying_partner_vals()
+            vals.update({"customer": False, "supplier": False})
+            if company._fields.get("active"):
+                vals.update({"active": company.active})
             company.joint_buying_partner_id = env["res.partner"].create(vals)

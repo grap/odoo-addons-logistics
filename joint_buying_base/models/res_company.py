@@ -28,27 +28,16 @@ class ResCompany(models.Model):
         related="joint_buying_partner_id.supplier", string="Is a Vendor", readonly=False
     )
 
-    def action_is_joint_buying_customer(self):
-        for company in self:
-            company.with_context(write_joint_buying_partner=True).mapped(
-                "joint_buying_partner_id"
-            ).write({"customer": not company.is_joint_buying_customer})
-
-    def action_is_joint_buying_supplier(self):
-        for company in self:
-            company.with_context(write_joint_buying_partner=True).mapped(
-                "joint_buying_partner_id"
-            ).write({"supplier": not company.is_joint_buying_supplier})
-
     def _prepare_joint_buying_partner_vals(self):
         self.ensure_one()
-        sanitized_name = self.name.replace("[", "").replace("]", "")
+        sanitized_name = self.name.replace("|", "")
         vals = {
             "name": _("{} (Joint Buyings)").format(sanitized_name),
             "is_joint_buying": True,
             "joint_buying_company_id": self.id,
             "company_id": False,
             "is_company": True,
+            "pivot_company_id": self.id,
             "email": self.email,
             "phone": self.phone,
         }
