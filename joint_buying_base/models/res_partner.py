@@ -102,19 +102,6 @@ class ResPartner(models.Model):
         res += ["name", "is_joint_buying", "company_id", "is_company", "email", "phone"]
         return res
 
-    @api.multi
-    def button_open_joint_buying_partner(self):
-        self.ensure_one()
-        return {
-            "name": self.display_name,
-            "type": "ir.actions.act_window",
-            "res_model": self._name,
-            "view_mode": "form",
-            "view_id": self.env.ref("joint_buying_base.view_res_partner_form").id,
-            "res_id": self.id,
-            "target": "current",
-        }
-
     # delay = fields.Integer(
     #     default=0, string="Timeframes for preparations before order."
     # )
