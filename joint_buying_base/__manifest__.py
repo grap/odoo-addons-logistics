@@ -16,8 +16,14 @@
         "views/menu.xml",
         "views/view_res_company.xml",
         "views/view_res_partner.xml",
+        "views/view_res_partner_category.xml",
     ],
-    "demo": ["demo/res_company.xml", "demo/res_users.xml", "demo/res_partner.xml"],
+    "demo": [
+        "demo/res_company.xml",
+        "demo/res_users.xml",
+        "demo/res_partner.xml",
+        "demo/res_partner_category.xml",
+    ],
     "post_init_hook": "_create_joint_buying_partner_for_companies",
     "installable": True,
 }

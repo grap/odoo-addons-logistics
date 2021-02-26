@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<odoo>
+
+    <record id="partner_category_chocolate" model="res.partner.category">
+        <field name="is_joint_buying" eval="True"/>
+        <field name="name">Chocolate Factory</field>
+    </record>
+
+    <record id="partner_category_bakery" model="res.partner.category">
+        <field name="is_joint_buying" eval="True"/>
+        <field name="name">Bakery</field>
+    </record>
+
+    <record id="partner_category_vegetable_growing" model="res.partner.category">
+        <field name="is_joint_buying" eval="True"/>
+        <field name="name">Vegetable Growing</field>
+    </record>
+
+</odoo>
