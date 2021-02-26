@@ -34,6 +34,10 @@ class ResPartner(models.Model):
         help="Activity that will serve as a deposit for this supplier",
     )
 
+    @api.constrains("is_joint_buying", "company_id")
+    def _check_is_joint_buying_company_id(self):
+        return super()._check_is_joint_buying_company_id()
+
     @api.constrains("is_joint_buying", "joint_buying_company_id", "customer")
     def _check_joint_buying_company_customer(self):
         if self.filtered(
