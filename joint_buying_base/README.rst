@@ -28,13 +28,35 @@ Add a new mixin model ``joint.buying.mixin``, that adds a field ``is_joint_buyin
 * Joint Buying" items are available, only if the key ``joint_buying`` is present in the context.
 
 
-Add the possibility to have "Joint Buying" partners in a specific menu
- entry.
+Add the possibility to have "Joint Buying" partners in a specific menu entry.
 
 **Table of contents**
 
 .. contents::
    :local:
+
+Known issues / Roadmap
+======================
+
+TODO
+~~~~
+
+- retravailler sur le ``res.partner``." activity_key"
+- mettre un message d'avertissement quand on créé un client frs, en disant attention, le nouveau client frs ne doit pas faire partie de la coopérative.
+
+- overwriter la vue partner.
+
+EN COURS
+~~~~~~~~
+
+
+
+Done
+~~~~
+
+
+- pouvoir créer un client / frs depuis une société
+- Faire un nouveau logo d'accueil, SANS TEXTE.
 
 Bug Tracker
 ===========
@@ -58,6 +80,12 @@ Contributors
 ~~~~~~~~~~~~
 
 * Sylvain LE GAL (https://www.twitter.com/legalsylvain)
+* Lucien DELEU (https://github.com/LucienD)
+
+Other credits
+~~~~~~~~~~~~~
+
+* Module Icon come from https://icon-icons.com/fr/icone/groupe/129531
 
 Maintainers
 ~~~~~~~~~~~
