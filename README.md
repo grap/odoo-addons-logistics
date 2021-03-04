@@ -11,6 +11,6 @@ Available addons
 ----------------
 addon | version | summary
 --- | --- | ---
-[joint_buying_base](joint_buying_base/) | 12.0.1.0.2 | Joint Buying - Base
+[joint_buying_base](joint_buying_base/) | 12.0.1.1.0 | Joint Buying - Base
 
 [//]: # (end addons)
