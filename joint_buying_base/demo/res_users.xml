@@ -7,7 +7,8 @@
 
 <odoo>
 
-    <record id="joint_buying_manager" model="res.users">
+    <record id="joint_buying_manager" model="res.users"
+        context="{'no_reset_password': True}">
         <field name="name">Logistic Manager</field>
         <field name="login">LOG_manager</field>
         <field name="password">demo</field>
