@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<odoo>
+
+    <record id="partner_category_chocolate" model="res.partner.category">
+        <field name="is_joint_buying" eval="True"/>
+        <field name="name">Chocolate Factory</field>
+        <field name="color">1</field>
+    </record>
+
+    <record id="partner_category_bakery" model="res.partner.category">
+        <field name="is_joint_buying" eval="True"/>
+        <field name="name">Bakery</field>
+        <field name="color">2</field>
+    </record>
+
+    <record id="partner_category_vegetable" model="res.partner.category">
+        <field name="is_joint_buying" eval="True"/>
+        <field name="name">Vegetable</field>
+        <field name="color">3</field>
+    </record>
+
+    <record id="partner_category_fishmonger" model="res.partner.category">
+        <field name="is_joint_buying" eval="True"/>
+        <field name="name">Fishmonger</field>
+        <field name="color">4</field>
+    </record>
+
+    <record id="partner_category_poultry" model="res.partner.category">
+        <field name="is_joint_buying" eval="True"/>
+        <field name="name">Poultry Shop</field>
+        <field name="color">5</field>
+    </record>
+
+
+</odoo>

@@ -11,7 +11,7 @@ class JointBuyingMixin(models.AbstractModel):
     _description = "Joint Buying Mixin"
 
     is_joint_buying = fields.Boolean(
-        string="For Joint Buying",
+        string="For Joint Buyings",
         readonly=True,
         default=lambda x: x._default_is_joint_buying(),
     )
@@ -19,8 +19,12 @@ class JointBuyingMixin(models.AbstractModel):
     def _default_is_joint_buying(self):
         return bool(self.env.context.get("joint_buying", False))
 
-    @api.constrains("is_joint_buying", "company_id")
     def _check_is_joint_buying_company_id(self):
+        """Technical note, you should call with @api.constrains
+        and super() this function in your overloaded model,
+        due to the fact that the field company_id is not present
+        in all model.
+        """
         for item in self:
             if item.is_joint_buying and item.company_id:
                 raise ValidationError(
