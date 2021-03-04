@@ -12,7 +12,5 @@ Available addons
 addon | version | summary
 --- | --- | ---
 [joint_buying_base](joint_buying_base/) | 12.0.1.0.2 | Joint Buying - Base
-[joint_buying_product](joint_buying_product/) | 12.0.1.0.2 | Joint Buying - Products
-[joint_buying_purchase](joint_buying_purchase/) | 12.0.1.0.2 | A module that allows activities to make grouped orders.
 
 [//]: # (end addons)
