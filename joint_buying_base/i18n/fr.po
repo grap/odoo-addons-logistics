@@ -6,8 +6,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Odoo Server 12.0\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2021-02-25 14:11+0000\n"
-"PO-Revision-Date: 2021-02-25 14:11+0000\n"
+"POT-Creation-Date: 2021-02-26 11:19+0000\n"
+"PO-Revision-Date: 2021-02-26 11:19+0000\n"
 "Last-Translator: <>\n"
 "Language-Team: \n"
 "MIME-Version: 1.0\n"
@@ -38,6 +38,11 @@ msgid "Address"
 msgstr "Adresse"
 
 #. module: joint_buying_base
+#: model:res.partner.category,name:joint_buying_base.partner_category_bakery
+msgid "Bakery"
+msgstr "Boulangerie"
+
+#. module: joint_buying_base
 #: model:ir.model.fields,help:joint_buying_base.field_res_company__is_joint_buying_customer
 msgid "Check this box if this contact is a customer. It can be selected in sales orders."
 msgstr "Cocher cette case si ce contact est un fournisseur. Il pourra être sélectionner comme client."
@@ -46,6 +51,11 @@ msgstr "Cocher cette case si ce contact est un fournisseur. Il pourra être sél
 #: model:ir.model.fields,help:joint_buying_base.field_res_company__is_joint_buying_supplier
 msgid "Check this box if this contact is a vendor. It can be selected in purchase orders."
 msgstr "Cocher cette case si ce contact est un fournisseur. Il pourra être sélectionner comme fournisseurs, dans les achats."
+
+#. module: joint_buying_base
+#: model:res.partner.category,name:joint_buying_base.partner_category_chocolate
+msgid "Chocolate Factory"
+msgstr "Chocolaterie"
 
 #. module: joint_buying_base
 #: model_terms:ir.ui.view,arch_db:joint_buying_base.view_res_partner_form
@@ -65,6 +75,18 @@ msgstr ""
 #. module: joint_buying_base
 #: model:ir.model,name:joint_buying_base.model_res_partner
 msgid "Contact"
+msgstr ""
+
+#. module: joint_buying_base
+#: model:ir.actions.act_window,name:joint_buying_base.action_res_partner_category_2
+#: model:ir.ui.menu,name:joint_buying_base.menu_res_partner_category
+msgid "Contact Tags"
+msgstr "Étiquettes de contact"
+
+#. module: joint_buying_base
+#: model:ir.actions.act_window,name:joint_buying_base.action_res_partner
+#: model:ir.ui.menu,name:joint_buying_base.menu_res_partner
+msgid "Contacts"
 msgstr ""
 
 #. module: joint_buying_base
@@ -94,8 +116,14 @@ msgid "Fav."
 msgstr ""
 
 #. module: joint_buying_base
+#: model:res.partner.category,name:joint_buying_base.partner_category_fishmonger
+msgid "Fishmonger"
+msgstr "Poissonnerie"
+
+#. module: joint_buying_base
 #: model:ir.model.fields,field_description:joint_buying_base.field_joint_buying_mixin__is_joint_buying
 #: model:ir.model.fields,field_description:joint_buying_base.field_res_partner__is_joint_buying
+#: model:ir.model.fields,field_description:joint_buying_base.field_res_partner_category__is_joint_buying
 #: model:ir.model.fields,field_description:joint_buying_base.field_res_users__is_joint_buying
 msgid "For Joint Buyings"
 msgstr "Pour les achats groupés"
@@ -128,10 +156,9 @@ msgid "Joint Buying Company"
 msgstr "Société achat groupé"
 
 #. module: joint_buying_base
-#: model:ir.actions.act_window,name:joint_buying_base.action_res_partner
-#: model:ir.ui.menu,name:joint_buying_base.menu_res_partner
-msgid "Joint Buying Contacts"
-msgstr "Contact pour les achats groupés"
+#: model:ir.model.fields,field_description:joint_buying_base.field_res_company__joint_buying_favorite_partner_ids
+msgid "Joint Buying Favorite Partner"
+msgstr ""
 
 #. module: joint_buying_base
 #: model:ir.model,name:joint_buying_base.model_joint_buying_mixin
@@ -162,15 +189,20 @@ msgid "Manager"
 msgstr "Responsable"
 
 #. module: joint_buying_base
-#: model_terms:ir.ui.view,arch_db:joint_buying_base.view_res_partner_tree
-msgid "Open"
-msgstr "Ouvrir"
+#: model:ir.model,name:joint_buying_base.model_res_partner_category
+msgid "Partner Tags"
+msgstr "Étiquettes du partenaire"
 
 #. module: joint_buying_base
 #: model:ir.model.fields,field_description:joint_buying_base.field_res_partner__pivot_company_id
 #: model:ir.model.fields,field_description:joint_buying_base.field_res_users__pivot_company_id
 msgid "Pivot Company"
 msgstr "Société pivot"
+
+#. module: joint_buying_base
+#: model:res.partner.category,name:joint_buying_base.partner_category_poultry
+msgid "Poultry Shop"
+msgstr "Volaillerie"
 
 #. module: joint_buying_base
 #: model_terms:ir.ui.view,arch_db:joint_buying_base.view_res_partner_form
@@ -193,30 +225,35 @@ msgid "User"
 msgstr "Utilisateur"
 
 #. module: joint_buying_base
+#: model:res.partner.category,name:joint_buying_base.partner_category_vegetable
+msgid "Vegetable"
+msgstr "Légumes"
+
+#. module: joint_buying_base
 #: model_terms:ir.ui.view,arch_db:joint_buying_base.view_res_partner_form
 msgid "Vendor"
 msgstr "Fournisseur"
 
 #. module: joint_buying_base
-#: code:addons/joint_buying_base/models/res_partner.py:43
+#: code:addons/joint_buying_base/models/res_partner.py:47
 #, python-format
 msgid "You can not create a customer joint buying partner. You should ask to you ERP manager to do it via the creation of a company."
-msgstr "Vous ne opuvez pas créer un client pour les achats groupés. Vous devez demander au responsable de lERP de le faire, via la création d'une société."
+msgstr "Vous ne opuvez pas créer un client pour les achats groupés. Vous devez demander au responsable de l'ERP de le faire, via la création d'une société."
 
 #. module: joint_buying_base
-#: code:addons/joint_buying_base/models/joint_buying_mixin.py:27
+#: code:addons/joint_buying_base/models/joint_buying_mixin.py:31
 #, python-format
 msgid "You can not create an item for 'joint buying' that has a company field defined."
 msgstr "Vous ne pouvez pas créer un élément pour les 'achats groupés' qui est une société définie."
 
 #. module: joint_buying_base
-#: code:addons/joint_buying_base/models/res_partner.py:90
+#: code:addons/joint_buying_base/models/res_partner.py:94
 #, python-format
 msgid "You can not delete this partner because it is related to a company for joint Buyings. Please archive it."
 msgstr "Vous ne pouvez pas supprimer ce contact, car il est lié à une société pour les achats groupés. Vous pouvez simplement l'archiver."
 
 #. module: joint_buying_base
-#: code:addons/joint_buying_base/models/res_partner.py:79
+#: code:addons/joint_buying_base/models/res_partner.py:83
 #, python-format
 msgid "You can not update this partner this way you should ask to your ERP Manager to update this field via the related company."
 msgstr "Vous ne pouvez pas mettre à jour ce contact de cette manière, vous devez demander au responsable de votre ERP de mettre à jour les données, via la société associée."

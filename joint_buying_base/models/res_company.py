@@ -14,6 +14,10 @@ class ResCompany(models.Model):
         comodel_name="res.partner", name="Favorite Vendors for Joint Buyings"
     )
 
+    joint_buying_auto_favorite = fields.Boolean(
+        string="Automatic Bookmarking", default=True
+    )
+
     joint_buying_partner_id = fields.Many2one(
         comodel_name="res.partner", name="Related Partner for Joint Buyings"
     )
