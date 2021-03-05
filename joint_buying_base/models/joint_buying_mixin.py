@@ -13,6 +13,7 @@ class JointBuyingMixin(models.AbstractModel):
     is_joint_buying = fields.Boolean(
         string="For Joint Buyings",
         readonly=True,
+        index=True,
         default=lambda x: x._default_is_joint_buying(),
     )
 
