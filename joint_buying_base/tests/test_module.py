@@ -13,6 +13,10 @@ class TestModule(TransactionCase):
         super().setUp()
         self.company_3PP = self.env.ref("joint_buying_base.company_3PP")
         self.ResCompany = self.env["res.company"]
+        self.ResPartner = self.env["res.partner"]
+        self.joint_buying_supplier = self.env.ref(
+            "joint_buying_base.supplier_fumer_dombes"
+        )
 
     # Test Section
     def test_01_write_company_to_partner_info(self):
@@ -38,3 +42,42 @@ class TestModule(TransactionCase):
     def test_03_write_joint_buying_partner(self):
         with self.assertRaises(AccessError):
             self.company_3PP.joint_buying_partner_id.email = "nonnon@non.non"
+
+    def test_04_search_partner(self):
+        # Check access without context (by search)
+        result = self.ResPartner.search(
+            [("name", "=", self.joint_buying_supplier.name)]
+        )
+        self.assertEqual(
+            len(result),
+            0,
+            "Search joint buying partner should not return result without context",
+        )
+
+        # Check access without context (by name_search)
+        result = self.ResPartner.name_search(self.joint_buying_supplier.name)
+        self.assertEqual(
+            len(result),
+            0,
+            "Name Search joint buying partner should not return result without context",
+        )
+
+        # Check access with context (by search)
+        result = self.ResPartner.with_context(joint_buying=True).search(
+            [("name", "=", self.joint_buying_supplier.name)]
+        )
+        self.assertEqual(
+            len(result),
+            1,
+            "Search joint buying partner should return result with context",
+        )
+
+        # Check access with context (by name_search)
+        result = self.ResPartner.with_context(joint_buying=True).name_search(
+            self.joint_buying_supplier.name
+        )
+        self.assertEqual(
+            len(result),
+            1,
+            "Name Search joint buying partner should return result with context",
+        )

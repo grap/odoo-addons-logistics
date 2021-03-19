@@ -8,7 +8,7 @@
     "author": "GRAP",
     "website": "http://www.grap.coop",
     "license": "AGPL-3",
-    "depends": ["base", "mail"],
+    "depends": ["base", "mail", "name_search_reset_res_partner"],
     "data": [
         "security/ir_module_category.xml",
         "security/res_groups.xml",
