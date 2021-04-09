@@ -21,14 +21,14 @@ msgid "<b>Company Address:</b>"
 msgstr "<b>Adresse de la société:</b>"
 
 #. module: joint_buying_base
-#: model:ir.model.fields,help:joint_buying_base.field_res_partner__pivot_company_id
-#: model:ir.model.fields,help:joint_buying_base.field_res_users__pivot_company_id
+#: model:ir.model.fields,help:joint_buying_base.field_res_partner__joint_buying_pivot_company_id
+#: model:ir.model.fields,help:joint_buying_base.field_res_users__joint_buying_pivot_company_id
 msgid "Activity that has a commercial relationship with this supplier"
 msgstr "Société qui entretient un lien commercial avec ce fournisseur"
 
 #. module: joint_buying_base
-#: model:ir.model.fields,help:joint_buying_base.field_res_partner__deposit_company_id
-#: model:ir.model.fields,help:joint_buying_base.field_res_users__deposit_company_id
+#: model:ir.model.fields,help:joint_buying_base.field_res_partner__joint_buying_deposit_company_id
+#: model:ir.model.fields,help:joint_buying_base.field_res_users__joint_buying_deposit_company_id
 msgid "Activity that will serve as a deposit for this supplier"
 msgstr "Société qui servira de dépôt pour ce fournisseur"
 
@@ -100,8 +100,8 @@ msgid "Customer"
 msgstr "Client"
 
 #. module: joint_buying_base
-#: model:ir.model.fields,field_description:joint_buying_base.field_res_partner__deposit_company_id
-#: model:ir.model.fields,field_description:joint_buying_base.field_res_users__deposit_company_id
+#: model:ir.model.fields,field_description:joint_buying_base.field_res_partner__joint_buying_deposit_company_id
+#: model:ir.model.fields,field_description:joint_buying_base.field_res_users__joint_buying_deposit_company_id
 msgid "Deposit Company"
 msgstr "Société dépôt"
 
@@ -194,8 +194,8 @@ msgid "Partner Tags"
 msgstr "Étiquettes du partenaire"
 
 #. module: joint_buying_base
-#: model:ir.model.fields,field_description:joint_buying_base.field_res_partner__pivot_company_id
-#: model:ir.model.fields,field_description:joint_buying_base.field_res_users__pivot_company_id
+#: model:ir.model.fields,field_description:joint_buying_base.field_res_partner__joint_buying_pivot_company_id
+#: model:ir.model.fields,field_description:joint_buying_base.field_res_users__joint_buying_pivot_company_id
 msgid "Pivot Company"
 msgstr "Société pivot"
 

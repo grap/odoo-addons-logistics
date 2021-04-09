@@ -12,6 +12,12 @@ class ResPartner(models.Model):
     _inherit = ["res.partner", "joint.buying.mixin"]
     _name = "res.partner"
 
+    joint_buying_favorite_company_ids = fields.Many2many(
+        relation="res_company_res_partner_favorite_rel",
+        comodel_name="res.company",
+        name="Favorite Companies for Joint Buyings",
+    )
+
     is_favorite = fields.Boolean(
         compute="_compute_is_favorite",
         inverse="_inverse_is_favorite",
@@ -21,19 +27,20 @@ class ResPartner(models.Model):
     joint_buying_partner_id = fields.Many2one(
         name="Global Partner for joint Buying",
         domain="[('is_joint_buying', '=', True), ('supplier', '=', True)]",
-        comodel_name="res.partner")
+        comodel_name="res.partner",
+    )
 
     joint_buying_company_id = fields.Many2one(
         comodel_name="res.company", name="Related Company for Joint Buyings"
     )
 
-    pivot_company_id = fields.Many2one(
+    joint_buying_pivot_company_id = fields.Many2one(
         comodel_name="res.company",
         string="Pivot Company",
         help="Activity that has a commercial relationship with this supplier",
     )
 
-    deposit_company_id = fields.Many2one(
+    joint_buying_deposit_company_id = fields.Many2one(
         comodel_name="res.company",
         string="Deposit Company",
         help="Activity that will serve as a deposit for this supplier",
@@ -43,18 +50,31 @@ class ResPartner(models.Model):
     def _check_joint_buying_partner_id(self):
         check_partners = self.filtered(lambda x: x.joint_buying_partner_id)
         for partner in check_partners:
-            other_partners = self.search([
-                ('id', '!=', partner.id),
-                ('joint_buying_partner_id', '=', partner.joint_buying_partner_id.id),
-                ('company_id', '=', partner.company_id.id)
-            ])
+            other_partners = self.search(
+                [
+                    ("id", "!=", partner.id),
+                    (
+                        "joint_buying_partner_id",
+                        "=",
+                        partner.joint_buying_partner_id.id,
+                    ),
+                    ("company_id", "=", partner.company_id.id),
+                ]
+            )
             if other_partners:
                 raise ValidationError(
-                    "You can not link the supplier %s to the Joint Buying partner %s"
-                    " because you have other suppliers that are still"
-                    " related to him : \n\n %s" % (
-                        partner.name, partner.joint_buying_partner_id.name,
-                        ", ".join([x.name for x in other_partners])))
+                    _(
+                        "You can not link the supplier %s to the Joint"
+                        " Buying partner %s"
+                        " because you have other suppliers that are still"
+                        " related to him : \n\n %s"
+                        % (
+                            partner.name,
+                            partner.joint_buying_partner_id.name,
+                            ", ".join([x.name for x in other_partners]),
+                        )
+                    )
+                )
 
     @api.constrains("is_joint_buying", "company_id")
     def _check_is_joint_buying_company_id(self):
@@ -90,6 +110,11 @@ class ResPartner(models.Model):
             self.env.user.company_id.write(
                 {"joint_buying_favorite_partner_ids": [(3, x.id) for x in partners]}
             )
+
+    def toggle_is_favorite(self):
+        self.ensure_one()
+        self.is_favorite = not self.is_favorite
+        return True
 
     def write(self, vals):
         res = super().write(vals)

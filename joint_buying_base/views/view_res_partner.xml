@@ -24,6 +24,8 @@ License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl.html).
         <field name="priority" eval="20"/>
         <field name="arch" type="xml">
             <form>
+                <header>
+                </header>
                 <sheet>
                     <div class="oe_button_box" name="button_box">
                         <button name="toggle_active" type="object"
@@ -37,6 +39,9 @@ License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl.html).
                         <h1>
                             <field name="name" default_focus="1" required="1"/>
                         </h1>
+                        <h2>
+                            <field name="joint_buying_company_id" readonly="1" attrs="{'invisible': [('joint_buying_company_id', '=', False)]}"/>
+                        </h2>
                     </div>
                     <group>
                         <group>
@@ -70,8 +75,9 @@ License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl.html).
                                 </group>
                                 <group string="Vendor" name="vendor" priority="1">
                                     <field name="supplier"/>
-                                    <field name="pivot_company_id" attrs="{'invisible': [('supplier', '=', False)]}"/>
-                                    <field name="deposit_company_id" attrs="{'invisible': [('supplier', '=', False)]}"/>
+                                    <field name="is_favorite" widget="boolean_favorite" attrs="{'invisible': [('supplier', '=', False)]}"/>
+                                    <field name="joint_buying_pivot_company_id" attrs="{'invisible': [('supplier', '=', False)]}"/>
+                                    <field name="joint_buying_deposit_company_id" attrs="{'invisible': [('supplier', '=', False)]}"/>
                                 </group>
                             </group>
                         </page>
@@ -87,24 +93,22 @@ License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl.html).
     </record>
 
 
-
-
     <record id="view_res_partner_tree" model="ir.ui.view">
         <field name="model">res.partner</field>
         <field name="arch" type="xml">
             <tree>
-                <field name="is_favorite" widget="boolean_favorite" nolabel="1" string="Fav." attrs="{'invisible': [('supplier', '=', False)]}"/>
                 <field name="name"/>
                 <field name="category_id" widget="many2many_tags" options="{'color_field': 'color'}"/>
                 <field name="city"/>
                 <field name="zip"/>
-                <field name="deposit_company_id" attrs="{'invisible': [('supplier', '=', False)]}"/>
-                <field name="pivot_company_id" attrs="{'invisible': [('supplier', '=', False)]}"/>
+                <field name="joint_buying_deposit_company_id" attrs="{'invisible': [('supplier', '=', False)]}"/>
+                <field name="joint_buying_pivot_company_id" attrs="{'invisible': [('supplier', '=', False)]}"/>
                 <field name="customer"/>
                 <field name="supplier"/>
             </tree>
         </field>
     </record>
+
 
     <record id="action_res_partner" model="ir.actions.act_window">
         <field name="name">Contacts</field>
@@ -122,6 +126,7 @@ License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl.html).
             }
         </field>
     </record>
+
 
     <menuitem id="menu_res_partner"
         name="Contacts"
