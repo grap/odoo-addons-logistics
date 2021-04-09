@@ -6,12 +6,21 @@ License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl.html).
 -->
 <odoo>
 
-<!--     <record id="view_product_product_tree_joint_buying" model="ir.ui.view">
+    <record id="view_product_product_search" model="ir.ui.view">
+        <field name="model">product.product</field>
+        <field name="inherit_id" ref="product.product_template_search_view"/>
+        <field name="groups_id" eval="[(4, ref('joint_buying_base.group_joint_buying_user'))]"/>
+        <field name="arch" type="xml">
+            <field name="joint_buying_partner_id" />
+        </field>
+    </record>
+
+    <record id="view_product_product_tree_joint_buying" model="ir.ui.view">
         <field name="model">product.product</field>
         <field name="priority" eval="20"/>
         <field name="arch" type="xml">
             <tree>
-                <field name="is_joint_buying"/>
+                <field name="is_joint_buying" invisible="1"/>
                 <field name="default_code"/>
                 <field name="barcode"/>
                 <field name="name"/>
@@ -24,7 +33,7 @@ License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl.html).
             </tree>
         </field>
     </record>
- -->
+
 
     <record id="action_product_product" model="ir.actions.act_window">
         <field name="name">Products</field>
@@ -35,11 +44,11 @@ License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl.html).
         <field name="context">
             {
                 "joint_buying": 1,
+                "tree_view_ref": "joint_buying_product.view_product_product_tree_joint_buying",
             }
         </field>
     </record>
 
-                <!-- "tree_view_ref": "joint_buying_product.view_product_product_tree_joint_buying", -->
 
 
     <menuitem id="menu_product_product"

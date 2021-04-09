@@ -9,12 +9,13 @@ from odoo.tests.common import TransactionCase, at_install, post_install
 @at_install(False)
 @post_install(True)
 class TestModule(TransactionCase):
-
     def setUp(self):
         super().setUp()
         self.company_3PP = self.env.ref("joint_buying_base.company_3PP")
         self.ResCompany = self.env["res.company"]
-        self.ResPartner = self.env["res.partner"].with_context(mail_create_nosubscribe=True)
+        self.ResPartner = self.env["res.partner"].with_context(
+            mail_create_nosubscribe=True
+        )
         self.joint_buying_supplier = self.env.ref(
             "joint_buying_base.supplier_fumer_dombes"
         )
@@ -101,8 +102,7 @@ class TestModule(TransactionCase):
 
             # We should not have the possibility to link two suppliers
             # to the same joint buying supplier for the same company
-            vals.update({
-                "name": "Test Chocolate-Lala @ 3PP",
-                "company_id": self.company_3PP.id,
-            })
+            vals.update(
+                {"name": "Test Chocolate-Lala @ 3PP", "company_id": self.company_3PP.id}
+            )
             self.ResPartner.create(vals)

@@ -21,7 +21,8 @@ class ResPartner(models.Model):
     joint_buying_partner_id = fields.Many2one(
         name="Global Partner for joint Buying",
         domain="[('is_joint_buying', '=', True), ('supplier', '=', True)]",
-        comodel_name="res.partner")
+        comodel_name="res.partner",
+    )
 
     joint_buying_company_id = fields.Many2one(
         comodel_name="res.company", name="Related Company for Joint Buyings"
@@ -43,18 +44,31 @@ class ResPartner(models.Model):
     def _check_joint_buying_partner_id(self):
         check_partners = self.filtered(lambda x: x.joint_buying_partner_id)
         for partner in check_partners:
-            other_partners = self.search([
-                ('id', '!=', partner.id),
-                ('joint_buying_partner_id', '=', partner.joint_buying_partner_id.id),
-                ('company_id', '=', partner.company_id.id)
-            ])
+            other_partners = self.search(
+                [
+                    ("id", "!=", partner.id),
+                    (
+                        "joint_buying_partner_id",
+                        "=",
+                        partner.joint_buying_partner_id.id,
+                    ),
+                    ("company_id", "=", partner.company_id.id),
+                ]
+            )
             if other_partners:
                 raise ValidationError(
-                    "You can not link the supplier %s to the Joint Buying partner %s"
-                    " because you have other suppliers that are still"
-                    " related to him : \n\n %s" % (
-                        partner.name, partner.joint_buying_partner_id.name,
-                        ", ".join([x.name for x in other_partners])))
+                    _(
+                        "You can not link the supplier %s to the Joint"
+                        " Buying partner %s"
+                        " because you have other suppliers that are still"
+                        " related to him : \n\n %s"
+                        % (
+                            partner.name,
+                            partner.joint_buying_partner_id.name,
+                            ", ".join([x.name for x in other_partners]),
+                        )
+                    )
+                )
 
     @api.constrains("is_joint_buying", "company_id")
     def _check_is_joint_buying_company_id(self):

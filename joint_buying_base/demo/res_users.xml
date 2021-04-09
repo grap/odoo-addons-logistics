@@ -18,9 +18,13 @@
             (4, ref('joint_buying_base.group_joint_buying_manager')),
         ]" />
         <field name="company_ids" eval="[
+            (4, ref('joint_buying_base.company_1GG')),
             (4, ref('joint_buying_base.company_3PP')),
-            (4, ref('joint_buying_base.company_DOZ')),
+            (4, ref('joint_buying_base.company_CHE')),
             (4, ref('joint_buying_base.company_CHO')),
+            (4, ref('joint_buying_base.company_DOZ')),
+            (4, ref('joint_buying_base.company_ELD')),
+            (4, ref('joint_buying_base.company_LSE')),
         ]" />
     </record>
 
@@ -31,9 +35,13 @@
             (4, ref('joint_buying_base.group_joint_buying_manager')),
         ]" />
         <field name="company_ids" eval="[
+            (4, ref('joint_buying_base.company_1GG')),
             (4, ref('joint_buying_base.company_3PP')),
-            (4, ref('joint_buying_base.company_DOZ')),
+            (4, ref('joint_buying_base.company_CHE')),
             (4, ref('joint_buying_base.company_CHO')),
+            (4, ref('joint_buying_base.company_DOZ')),
+            (4, ref('joint_buying_base.company_ELD')),
+            (4, ref('joint_buying_base.company_LSE')),
         ]" />
     </record>
 

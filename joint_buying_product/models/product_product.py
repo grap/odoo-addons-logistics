@@ -2,7 +2,7 @@
 # @author: Sylvain LE GAL (https://twitter.com/legalsylvain)
 # License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl.html).
 
-from odoo import api, fields, models
+from odoo import fields, models
 
 
 class ProductProduct(models.Model):
@@ -27,25 +27,3 @@ class ProductProduct(models.Model):
     # joint_buying_product_id = fields.Many2one(
     #     string="Joint Buying Product",
     #     comodel_name="product.product")
-
-    # @api.model
-    # def _search(
-    #     self,
-    #     args,
-    #     offset=0,
-    #     limit=None,
-    #     order=None,
-    #     count=False,
-    #     access_rights_uid=None,
-    # ):
-    #     res_partner_id = self.env.context.get("search_default_seller_ids", False)
-    #     if res_partner_id:
-    #         args += [("seller_ids.name", "in", res_partner_id)]
-    #     return super()._search(
-    #         args=args,
-    #         offset=offset,
-    #         limit=limit,
-    #         order=order,
-    #         count=count,
-    #         access_rights_uid=access_rights_uid,
-    #     )
