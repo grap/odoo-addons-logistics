@@ -3,7 +3,7 @@
 # License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl.html).
 
 from odoo import _, api, fields, models
-from odoo.exceptions import AccessError, UserError
+from odoo.exceptions import AccessError, UserError, ValidationError
 
 from odoo.addons.base.models.res_partner import ADDRESS_FIELDS
 
@@ -17,6 +17,11 @@ class ResPartner(models.Model):
         inverse="_inverse_is_favorite",
         string="Is Favorite Vendor",
     )
+
+    joint_buying_partner_id = fields.Many2one(
+        name="Global Partner for joint Buying",
+        domain="[('is_joint_buying', '=', True), ('supplier', '=', True)]",
+        comodel_name="res.partner")
 
     joint_buying_company_id = fields.Many2one(
         comodel_name="res.company", name="Related Company for Joint Buyings"
@@ -33,6 +38,23 @@ class ResPartner(models.Model):
         string="Deposit Company",
         help="Activity that will serve as a deposit for this supplier",
     )
+
+    @api.constrains("joint_buying_partner_id", "company_id")
+    def _check_joint_buying_partner_id(self):
+        check_partners = self.filtered(lambda x: x.joint_buying_partner_id)
+        for partner in check_partners:
+            other_partners = self.search([
+                ('id', '!=', partner.id),
+                ('joint_buying_partner_id', '=', partner.joint_buying_partner_id.id),
+                ('company_id', '=', partner.company_id.id)
+            ])
+            if other_partners:
+                raise ValidationError(
+                    "You can not link the supplier %s to the Joint Buying partner %s"
+                    " because you have other suppliers that are still"
+                    " related to him : \n\n %s" % (
+                        partner.name, partner.joint_buying_partner_id.name,
+                        ", ".join([x.name for x in other_partners])))
 
     @api.constrains("is_joint_buying", "company_id")
     def _check_is_joint_buying_company_id(self):
@@ -112,15 +134,4 @@ class ResPartner(models.Model):
     # period = fields.Integer(default=0, string="Period between each order")
     # init_period_date = fields.Date(
     #     string="Initial date to start the periods between each order."
-    # )
-
-    # # Customer
-    # supplier_ids = fields.One2many(
-    #     "res.partner",
-    #     inverse_name="activity_id",
-    #     string=("Suppliers to manage"),
-    #     domain=[
-    #         ("is_joint_buying", "=", True),
-    #         ("is_joint_buying_supplier", "=", True),
-    #     ],
     # )
