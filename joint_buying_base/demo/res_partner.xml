@@ -2,7 +2,7 @@
 
 <odoo>
 
-    <record id="supplier_fumer_dombes" model="res.partner">
+    <record id="supplier_fumet_dombes" model="res.partner">
         <field name="name">le Fumet des Dombes</field>
         <field name="street">Z.I. Sure</field>
         <field name="street2">93 rue de l'artisanat</field>
@@ -21,6 +21,30 @@
             (4, ref('joint_buying_base.partner_category_fishmonger')),
             (4, ref('joint_buying_base.partner_category_poultry')),
         ]"/>
+    </record>
+
+    <record id="supplier_CHO_at_3PP" model="res.partner">
+        <field name="name">Chocolate-Lala @ Three Peas</field>
+        <field name="company_id" ref="joint_buying_base.company_3PP"/>
+        <field name="customer" eval="False"/>
+        <field name="supplier" eval="True"/>
+        <field name="joint_buying_partner_id"  model="res.partner" eval="obj().env.ref('joint_buying_base.company_CHO').joint_buying_partner_id.id"/>
+    </record>
+
+    <record id="supplier_ELD_at_3PP" model="res.partner">
+        <field name="name">Elodia D @ Three Peas</field>
+        <field name="company_id" ref="joint_buying_base.company_3PP"/>
+        <field name="customer" eval="False"/>
+        <field name="supplier" eval="True"/>
+        <field name="joint_buying_partner_id"  model="res.partner" eval="obj().env.ref('joint_buying_base.company_ELD').joint_buying_partner_id.id"/>
+    </record>
+
+    <record id="supplier_fumet_dombes_at_3PP" model="res.partner">
+        <field name="name">Fumet des Dombes @ Three Peas</field>
+        <field name="company_id" ref="joint_buying_base.company_3PP"/>
+        <field name="customer" eval="False"/>
+        <field name="supplier" eval="True"/>
+        <field name="joint_buying_partner_id" ref="supplier_fumet_dombes"/>
     </record>
 
 </odoo>

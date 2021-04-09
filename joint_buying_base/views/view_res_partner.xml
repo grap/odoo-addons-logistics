@@ -6,7 +6,20 @@ License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl.html).
 -->
 <odoo>
 
+
     <record id="view_res_partner_form" model="ir.ui.view">
+        <field name="model">res.partner</field>
+        <field name="inherit_id" ref="base.view_partner_form"/>
+        <field name="arch" type="xml">
+            <group name="purchase" position="inside">
+                <field name="joint_buying_partner_id" context="{'joint_buying':1}"
+                    attrs="{'invisible': [('supplier', '=', False)]}"/>
+            </group>
+        </field>
+    </record>
+
+
+    <record id="view_res_partner_form_joint_buying" model="ir.ui.view">
         <field name="model">res.partner</field>
         <field name="priority" eval="20"/>
         <field name="arch" type="xml">
@@ -74,44 +87,7 @@ License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl.html).
     </record>
 
 
-<!--
-    <record id="view_res_partner" model="ir.ui.view">
-        <field name="model">res.partner</field>
-        <field name="inherit_id" ref="base.view_partner_form"/>
-        <field name="arch" type="xml">
-            <field name="type" position="before">
-                <field name="is_joint_buying"/>
-            </field>
 
-            <notebook position="before">
-                <group attrs="{'invisible': [('is_joint_buying','=',False)]}">
-                    <group name="joint_buying_common_info">
-                        <field name="is_joint_buying_customer"/>
-                        <field name="is_joint_buying_supplier"/>
-                    </group>
-                    <group>
-                        <field name="activity_id" context="{'joint_buying':1}"/>
-                        <br />
-                        <field name="supplier_ids" readonly="1" widget="many2many_tags" context="{'joint_buying':1}"/>
-                    </group>
-                </group>
-            </notebook>
-
-            <page autofocus="autofocus" position="before">
-                <page string="Supplier info for joint buying" attrs="{'invisible': [('is_joint_buying_supplier', '=', False)]}" autofocus="autofocus">
-                    <group modifier="{}">
-                        <group modifier="{}" col="3">
-                            <field name="delay" required="True"/>
-                            <field name="period" required="True"/>
-                            <field name="init_period_date" required="True"/>
-                        </group>
-                    </group>
-                </page>
-            </page>
-
-        </field>
-    </record>
- -->
 
     <record id="view_res_partner_tree" model="ir.ui.view">
         <field name="model">res.partner</field>
@@ -142,7 +118,7 @@ License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl.html).
                 "default_customer": 0,
                 "default_supplier": 1,
                 "default_is_company": 1,
-                "form_view_ref": "joint_buying_base.view_res_partner_form",
+                "form_view_ref": "joint_buying_base.view_res_partner_form_joint_buying",
             }
         </field>
     </record>
