@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<odoo>
+
+
+    <record id="view_res_partner" model="ir.ui.view">
+        <field name="model">res.partner</field>
+        <field name="inherit_id" ref="joint_buying_base.view_res_partner_form_joint_buying"/>
+        <field name="groups_id" eval="[(4, ref('joint_buying_base.group_joint_buying_user'))]"/>
+        <field name="arch" type="xml">
+            <div name="button_box" position="inside">
+                <button type="action" class="oe_stat_button" icon="fa-lemon-o"
+                        name="joint_buying_product.action_product_product"
+                        context="{'search_default_joint_buying_partner_id': active_id}"
+                        attrs="{'invisible': [('supplier', '=', False)]}">
+                    <div class="o_form_field o_stat_info">
+                        <span class="o_stat_value">
+                            <field name="joint_buying_product_qty" widget="integer"/>
+                        </span>
+                        <span class="o_stat_text">Products</span>
+                    </div>
+                </button>
+            </div>
+
+        </field>
+    </record>
+
+
+</odoo>
