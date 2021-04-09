@@ -24,6 +24,32 @@ class ProductProduct(models.Model):
         readonly=False,
     )
 
-    # joint_buying_product_id = fields.Many2one(
-    #     string="Joint Buying Product",
-    #     comodel_name="product.product")
+    joint_buying_product_id = fields.Many2one(
+        string="Joint Buying Product", comodel_name="product.product", readonly=True
+    )
+
+    def _check_create_joint_buying_product(self):
+        pass
+        # Check product company are all the same
+        # check if the company is a supplier company for joint Buying
+        # check if the product doesn't have a joint_buying_product
+        return self.filtered(lambda x: not x.joint_buying_product_id)
+
+    def create_joint_buying_product(self):
+        products = self._check_create_joint_buying_product()
+        for product in products:
+            vals = product._prepare_joint_buying_product()
+            self.create(vals)
+
+    def _prepare_joint_buying_product(self):
+        self.ensure_one()
+        vals = {
+            "name": self.name,
+            "weight": self.weight,
+            "barcode": self.barcode,
+            "categ_id": self.env.ref("joint_buying_product.product_category").id,
+            "company_id": False,
+            "is_joint_buying": False,
+            "joint_buying_partner_id": self.company_id.joint_buying_partner_id.id,
+        }
+        return vals

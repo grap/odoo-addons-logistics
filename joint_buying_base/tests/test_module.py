@@ -17,7 +17,7 @@ class TestModule(TransactionCase):
             mail_create_nosubscribe=True
         )
         self.joint_buying_supplier = self.env.ref(
-            "joint_buying_base.supplier_fumer_dombes"
+            "joint_buying_base.supplier_fumet_dombes"
         )
         self.company_CHO = self.env.ref("joint_buying_base.company_CHO")
         self.company_CHE = self.env.ref("joint_buying_base.company_CHE")

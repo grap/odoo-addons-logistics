@@ -14,6 +14,7 @@
         "views/view_product_template.xml",
         "views/view_product_supplier_info.xml",
         "views/view_res_partner.xml",
+        "data/product_category.xml",
     ],
     "demo": ["demo/product_product.xml"],
     "installable": True,
