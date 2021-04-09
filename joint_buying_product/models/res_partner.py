@@ -5,11 +5,11 @@ class ResPartner(models.Model):
     _inherit = "res.partner"
 
     joint_buying_product_ids = fields.One2many(
-        "product.product", inverse_name="joint_buying_partner_id")
+        "product.product", inverse_name="joint_buying_partner_id"
+    )
 
     joint_buying_product_qty = fields.Integer(
-        compute="_compute_joint_buying_product_qty",
-        store=True,
+        compute="_compute_joint_buying_product_qty"
     )
 
     @api.depends("joint_buying_product_ids")

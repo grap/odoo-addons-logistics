@@ -9,11 +9,10 @@ class ProductSupplierInfo(models.Model):
     _inherit = "product.supplierinfo"
 
     joint_buying_partner_id = fields.Many2one(
-        comodel_name="res.partner",
-        related="name.joint_buying_partner_id",
-        store=True,
+        comodel_name="res.partner", related="name.joint_buying_partner_id", store=True
     )
 
     joint_buying_product_id = fields.Many2one(
         comodel_name="product.product",
-        domain="[('joint_buying_partner_id', '=', joint_buying_partner_id)]")
+        domain="[('joint_buying_partner_id', '=', joint_buying_partner_id)]",
+    )

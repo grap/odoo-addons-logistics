@@ -13,12 +13,12 @@ class ProductTemplate(models.Model):
     joint_buying_partner_id = fields.Many2one(
         name="Joint Buying Supplier",
         domain="[('is_joint_buying', '=', True), ('supplier', '=', True)]",
-        comodel_name="res.partner"
+        comodel_name="res.partner",
     )
 
     @api.constrains("is_joint_buying", "joint_buying_partner_id")
     def _check_joint_buying_partner_id(self):
         if self.filtered(lambda x: x.is_joint_buying and not x.joint_buying_partner_id):
-            raise ValidationError(_(
-                "You should set a Joint Buying Supplier"
-                " for Joint Buying Products"))
+            raise ValidationError(
+                _("You should set a Joint Buying Supplier" " for Joint Buying Products")
+            )
