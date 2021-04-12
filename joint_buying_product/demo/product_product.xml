@@ -2,25 +2,46 @@
 
 <odoo>
 
-        <!-- Joint Buying Products -->
-        <record id="product_dombes_smoked_salmon_100" model="product.product">
-            <field name="is_joint_buying" eval="True"/>
-            <field name="company_id" eval="False"/>
-            <field name="name">Saumon fumé des Dombes 100g (Global)</field>
-            <field name="joint_buying_partner_id" ref="joint_buying_base.supplier_fumet_dombes"/>
-            <field name="barcode">3356997201003</field>
-            <field name="price">6</field>
-        </record>
+    <!-- Joint Buying Products -->
+    <record id="product_dombes_smoked_salmon_100" model="product.product"
+        context="{'joint_buying': True}">
+        <field name="name">Saumon fumé des Dombes 100g (Global)</field>
+        <field name="joint_buying_partner_id" ref="joint_buying_base.supplier_fumet_dombes"/>
+        <field name="barcode">3356997201003</field>
+        <field name="price">6</field>
+    </record>
 
-        <record id="product_dombes_smoked_salmon_200" model="product.product">
-            <field name="is_joint_buying" eval="True"/>
-            <field name="company_id" eval="False"/>
-            <field name="name">Saumon fumé des Dombes 200g (Global)</field>
-            <field name="joint_buying_partner_id" ref="joint_buying_base.supplier_fumet_dombes"/>
-            <field name="barcode">3356997202000</field>
-            <field name="price">11</field>
-        </record>
+    <record id="product_dombes_smoked_salmon_200" model="product.product"
+        context="{'joint_buying': True}">
+        <field name="name">Saumon fumé des Dombes 200g (Global)</field>
+        <field name="joint_buying_partner_id" ref="joint_buying_base.supplier_fumet_dombes"/>
+        <field name="barcode">3356997202000</field>
+        <field name="price">11</field>
+    </record>
 
+    <!-- Local Products ELD -->
+    <record id="product_ELD_orangettes" model="product.product">
+        <field name="default_code">ELD-ORANGETTE</field>
+        <field name="is_joint_buying" eval="False"/>
+        <field name="company_id" ref="joint_buying_base.company_ELD"/>
+        <field name="name">Orangette Sachet 200gr</field>
+        <field name="price">12</field>
+    </record>
+
+    <record id="product_ELD_gingembrettes" model="product.product">
+        <field name="default_code">ELD-GINGEMBRETTE</field>
+        <field name="is_joint_buying" eval="False"/>
+        <field name="company_id" ref="joint_buying_base.company_ELD"/>
+        <field name="name">Gingembrette Sachet 200gr</field>
+        <field name="price">10</field>
+    </record>
+
+    <function model="product.product" name="create_joint_buying_product">
+        <value eval="[
+            ref('joint_buying_product.product_ELD_orangettes'),
+            ref('joint_buying_product.product_ELD_gingembrettes')]"
+        />
+    </function>
 
 
 

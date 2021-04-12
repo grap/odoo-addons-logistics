@@ -34,6 +34,30 @@ License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl.html).
         </field>
     </record>
 
+    <record id="view_product_product" model="ir.ui.view">
+        <field name="model">product.product</field>
+        <field name="inherit_id" ref="product.product_normal_form_view"/>
+        <field name="groups_id" eval="[(4, ref('joint_buying_base.group_joint_buying_user'))]"/>
+        <field name="arch" type="xml">
+            <xpath expr="//header" position="inside">
+                <button string="Offer For joint Buying" type="object" name="create_joint_buying_product"
+                    attrs="{'invisible': ['|', ('display_joint_buying_propagation', '=', False), ('joint_buying_product_id', '!=', False)]}"/>
+            </xpath>
+            <xpath expr="//field[@name='description']/.." position="before">
+                <group name="joint_buying" string="Joint Buying">
+                    <group name="group_joint_buying_global">
+                        <field name="joint_buying_partner_id" context="{'joint_buying': 1}"
+                            attrs="{'invisible': [('is_joint_buying', '=', False)], 'required': [('is_joint_buying', '=', True)]}"/>
+                    </group>
+                    <group name="group_joint_buying_local">
+                        <!-- TODO set invisible -->
+                        <field name="display_joint_buying_propagation"/>
+                        <field name="joint_buying_product_id"/>
+                    </group>
+                </group>
+            </xpath>
+        </field>
+    </record>
 
     <record id="action_product_product" model="ir.actions.act_window">
         <field name="name">Products</field>

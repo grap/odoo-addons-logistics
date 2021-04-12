@@ -2,7 +2,8 @@
 # @author: Sylvain LE GAL (https://twitter.com/legalsylvain)
 # License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl.html).
 
-from odoo import fields, models
+from odoo import _, api, fields, models
+from odoo.exceptions import ValidationError
 
 
 class ProductProduct(models.Model):
@@ -17,29 +18,41 @@ class ProductProduct(models.Model):
     )
 
     joint_buying_partner_id = fields.Many2one(
-        string="Joint Buying Supplier",
+        name="Joint Buying Supplier",
+        domain="[('is_joint_buying', '=', True), ('supplier', '=', True)]",
         comodel_name="res.partner",
-        related="product_tmpl_id.joint_buying_partner_id",
+    )
+
+    display_joint_buying_propagation = fields.Boolean(
+        string="Display Joint Buying Propagation button",
+        help="Technical field to know if the button to create or see"
+        " the joint buying products is visible",
+        related="company_id.is_joint_buying_customer",
         store=True,
-        readonly=False,
     )
 
     joint_buying_product_id = fields.Many2one(
         string="Joint Buying Product", comodel_name="product.product", readonly=True
     )
 
-    def _check_create_joint_buying_product(self):
-        pass
-        # Check product company are all the same
-        # check if the company is a supplier company for joint Buying
-        # check if the product doesn't have a joint_buying_product
-        return self.filtered(lambda x: not x.joint_buying_product_id)
+    @api.constrains("is_joint_buying", "joint_buying_partner_id")
+    def _check_joint_buying_partner_id(self):
+        if self.filtered(lambda x: x.is_joint_buying and not x.joint_buying_partner_id):
+            raise ValidationError(
+                _("You should set a Joint Buying Supplier for Joint Buying Products")
+            )
 
     def create_joint_buying_product(self):
-        products = self._check_create_joint_buying_product()
+        products = self.filtered(
+            lambda x: (
+                not x.joint_buying_product_id and x.display_joint_buying_propagation
+            )
+        )
         for product in products:
             vals = product._prepare_joint_buying_product()
-            self.create(vals)
+            product.joint_buying_product_id = self.with_context(
+                joint_buying=True
+            ).create(vals)
 
     def _prepare_joint_buying_product(self):
         self.ensure_one()
@@ -48,8 +61,6 @@ class ProductProduct(models.Model):
             "weight": self.weight,
             "barcode": self.barcode,
             "categ_id": self.env.ref("joint_buying_product.product_category").id,
-            "company_id": False,
-            "is_joint_buying": False,
             "joint_buying_partner_id": self.company_id.joint_buying_partner_id.id,
         }
         return vals
