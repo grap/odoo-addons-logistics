@@ -35,12 +35,42 @@ class ProductProduct(models.Model):
         string="Joint Buying Product", comodel_name="product.product", readonly=True
     )
 
-    @api.constrains("is_joint_buying", "joint_buying_partner_id")
+    @api.constrains(
+        "is_joint_buying", "joint_buying_partner_id", "display_joint_buying_propagation"
+    )
     def _check_joint_buying_partner_id(self):
         if self.filtered(lambda x: x.is_joint_buying and not x.joint_buying_partner_id):
             raise ValidationError(
                 _("You should set a Joint Buying Supplier for Joint Buying Products")
             )
+
+    @api.model
+    def create(self, vals):
+        res = super().create(vals)
+        if self.env.context.get("joint_buying", False) and not self.env.context.get(
+            "joint_buying_local_to_global", False
+        ):
+            if res.joint_buying_partner_id.joint_buying_company_id:
+                raise ValidationError(
+                    _(
+                        "You can not create a Joint buying Product for this supplier."
+                        " Please ask to the saler to do it by clicking on"
+                        " 'Offer For Joint Buying' on him product."
+                    )
+                )
+        return res
+
+    @api.multi
+    def write(self, vals):
+        if vals.get("joint_buying_partner_id", False):
+            for product in self:
+                if product.joint_buying_partner_id.id != vals.get(
+                    "joint_buying_partner_id"
+                ):
+                    raise ValidationError(
+                        _("You can not change the value of the Joint buying partner.")
+                    )
+        return super().write(vals)
 
     def create_joint_buying_product(self):
         products = self.filtered(
@@ -51,7 +81,7 @@ class ProductProduct(models.Model):
         for product in products:
             vals = product._prepare_joint_buying_product()
             product.joint_buying_product_id = self.with_context(
-                joint_buying=True
+                joint_buying=True, joint_buying_local_to_global=True
             ).create(vals)
 
     def _prepare_joint_buying_product(self):

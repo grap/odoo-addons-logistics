@@ -37,6 +37,9 @@ License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl.html).
                         <h1>
                             <field name="name" default_focus="1" required="1"/>
                         </h1>
+                        <h2>
+                            <field name="joint_buying_company_id" readonly="1" attrs="{'invisible': [('joint_buying_company_id', '=', False)]}"/>
+                        </h2>
                     </div>
                     <group>
                         <group>

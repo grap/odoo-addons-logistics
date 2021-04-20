@@ -12,8 +12,7 @@ License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl.html).
         <field name="groups_id" eval="[(4, ref('joint_buying_base.group_joint_buying_user'))]"/>
         <field name="arch" type="xml">
             <xpath expr="//field[@name='sale_ok']/.." position="before">
-               <div>
-                    <!-- TODO set invisible -->
+               <div invisible="1">
                     <field name="is_joint_buying"/>
                     <label for="is_joint_buying"/>
                 </div>

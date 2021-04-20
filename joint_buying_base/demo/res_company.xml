@@ -18,6 +18,15 @@
         <field name="country_id" ref="base.fr"/>
     </record>
 
+    <record id="company_CDA" model="res.company">
+        <field name="name">[Artichoke Heart]</field>
+        <field name="street"> 22 rue de saint Agrève  </field>
+        <field name="city">Tence</field>
+        <field name="zip">43190</field>
+        <field name="country_id" ref="base.fr"/>
+    </record>
+
+
     <record id="company_CHE" model="res.company">
         <field name="name">[The Goat and Cabbage]</field>
         <field name="street">2 Grande Rue</field>
