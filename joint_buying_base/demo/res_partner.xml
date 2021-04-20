@@ -15,8 +15,8 @@
         <field name="customer" eval="False"/>
         <field name="supplier" eval="True"/>
         <field name="company_id" eval="False"/>
-        <field name="pivot_company_id" ref="joint_buying_base.company_1GG"/>
-        <field name="deposit_company_id" ref="joint_buying_base.company_LSE"/>
+        <field name="joint_buying_pivot_company_id" ref="joint_buying_base.company_1GG"/>
+        <field name="joint_buying_deposit_company_id" ref="joint_buying_base.company_LSE"/>
         <field name="category_id" eval="[
             (4, ref('joint_buying_base.partner_category_fishmonger')),
             (4, ref('joint_buying_base.partner_category_poultry')),
@@ -30,8 +30,8 @@
         <field name="customer" eval="False"/>
         <field name="supplier" eval="True"/>
         <field name="company_id" eval="False"/>
-        <field name="pivot_company_id" ref="joint_buying_base.company_CDA"/>
-        <field name="deposit_company_id" ref="joint_buying_base.company_CDA"/>
+        <field name="joint_buying_pivot_company_id" ref="joint_buying_base.company_CDA"/>
+        <field name="joint_buying_deposit_company_id" ref="joint_buying_base.company_CDA"/>
         <field name="category_id" eval="[
             (4, ref('joint_buying_base.partner_category_delicatessen')),
         ]"/>
@@ -51,8 +51,8 @@
         <field name="customer" eval="False"/>
         <field name="supplier" eval="True"/>
         <field name="company_id" eval="False"/>
-        <field name="pivot_company_id" ref="joint_buying_base.company_1GG"/>
-        <field name="deposit_company_id" ref="joint_buying_base.company_LSE"/>
+        <field name="joint_buying_pivot_company_id" ref="joint_buying_base.company_1GG"/>
+        <field name="joint_buying_deposit_company_id" ref="joint_buying_base.company_LSE"/>
         <field name="category_id" eval="[
             (4, ref('joint_buying_base.partner_category_fishmonger')),
             (4, ref('joint_buying_base.partner_category_poultry')),

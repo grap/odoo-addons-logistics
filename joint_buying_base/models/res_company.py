@@ -41,7 +41,7 @@ class ResCompany(models.Model):
             "joint_buying_company_id": self.id,
             "company_id": False,
             "is_company": True,
-            "pivot_company_id": self.id,
+            "joint_buying_pivot_company_id": self.id,
             "email": self.email,
             "phone": self.phone,
         }

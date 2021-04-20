@@ -28,13 +28,13 @@ class ResPartner(models.Model):
         comodel_name="res.company", name="Related Company for Joint Buyings"
     )
 
-    pivot_company_id = fields.Many2one(
+    joint_buying_pivot_company_id = fields.Many2one(
         comodel_name="res.company",
         string="Pivot Company",
         help="Activity that has a commercial relationship with this supplier",
     )
 
-    deposit_company_id = fields.Many2one(
+    joint_buying_deposit_company_id = fields.Many2one(
         comodel_name="res.company",
         string="Deposit Company",
         help="Activity that will serve as a deposit for this supplier",
