@@ -73,8 +73,8 @@ License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl.html).
                                 </group>
                                 <group string="Vendor" name="vendor" priority="1">
                                     <field name="supplier"/>
-                                    <field name="pivot_company_id" attrs="{'invisible': [('supplier', '=', False)]}"/>
-                                    <field name="deposit_company_id" attrs="{'invisible': [('supplier', '=', False)]}"/>
+                                    <field name="joint_buying_pivot_company_id" attrs="{'invisible': [('supplier', '=', False)]}"/>
+                                    <field name="joint_buying_deposit_company_id" attrs="{'invisible': [('supplier', '=', False)]}"/>
                                 </group>
                             </group>
                         </page>
@@ -101,8 +101,8 @@ License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl.html).
                 <field name="category_id" widget="many2many_tags" options="{'color_field': 'color'}"/>
                 <field name="city"/>
                 <field name="zip"/>
-                <field name="deposit_company_id" attrs="{'invisible': [('supplier', '=', False)]}"/>
-                <field name="pivot_company_id" attrs="{'invisible': [('supplier', '=', False)]}"/>
+                <field name="joint_buying_deposit_company_id" attrs="{'invisible': [('supplier', '=', False)]}"/>
+                <field name="joint_buying_pivot_company_id" attrs="{'invisible': [('supplier', '=', False)]}"/>
                 <field name="customer"/>
                 <field name="supplier"/>
             </tree>
