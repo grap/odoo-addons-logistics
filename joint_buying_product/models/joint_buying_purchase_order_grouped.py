@@ -8,6 +8,7 @@ from odoo import api, fields, models
 class JointBuyingPurchaseOrderGrouped(models.Model):
     _name = "joint.buying.purchase.order.grouped"
     _description = "Joint Buying Grouped Purchase Order"
+    _inherit = ["mail.thread", "mail.activity.mixin"]
 
     supplier_id = fields.Many2one(
         comodel_name="res.partner",

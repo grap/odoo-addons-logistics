@@ -19,7 +19,7 @@ class JointBuyingPurchaseOrder(models.Model):
         comodel_name="res.partner",
         related="grouped_order_id.supplier_id",
         string="Supplier",
-        required=True,
+        readonly=True,
         store=True,
     )
 
@@ -35,6 +35,6 @@ class JointBuyingPurchaseOrder(models.Model):
     )
 
     @api.model
-    def _prepare_order_vals(self, grouped_order, customer):
+    def _prepare_order_vals(self, customer):
         vals = {"customer_id": customer.id}
         return vals
