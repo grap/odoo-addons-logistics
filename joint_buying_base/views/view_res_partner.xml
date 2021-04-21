@@ -30,9 +30,14 @@ License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl.html).
                     <div class="oe_button_box" name="button_box">
                         <button name="toggle_is_favorite"
                                 class="oe_stat_button"
-                                type="object" icon="fa-globe">
+                                type="object" icon="fa-star">
                             <field name="is_favorite" widget="boolean_button"
-                                options='{"terminology": {"string_true": "Favorite", "hover_false": "Opt-in"}}'/>
+                                options='{"terminology": {
+                                    "string_true": "Favorite",
+                                    "string_false": "Not Favorite",
+                                    "hover_true": "Opt-Out",
+                                    "hover_false": "Opt-in",
+                                }}'/>
                         </button>
                         <button name="toggle_active" type="object"
                                 class="oe_stat_button" icon="fa-archive">
