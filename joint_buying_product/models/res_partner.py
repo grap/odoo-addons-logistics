@@ -1,4 +1,6 @@
-from datetime import timedelta
+# Copyright (C) 2021-Today: GRAP (http://www.grap.coop)
+# @author: Sylvain LE GAL (https://twitter.com/legalsylvain)
+# License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl.html).
 
 from odoo import api, fields, models
 
@@ -16,36 +18,10 @@ class ResPartner(models.Model):
 
     joint_buying_frequency = fields.Integer(string="Days between orders")
 
-    joint_buying_next_date_availability = fields.Date(string="Next Availability Date")
+    joint_buying_next_date_deposit = fields.Date(string="Next Deposit Date")
 
-    joint_buying_delay_begin = fields.Integer(string="Delay before Purchase Begin")
-
-    joint_buying_delay_end = fields.Integer(string="Delay before Purchase End")
-
-    joint_buying_next_date_begin = fields.Date(
-        string="Next Purchase Begin Date",
-        compute="_compute_next_date_begin",
-        store=True,
-    )
-    joint_buying_next_date_end = fields.Date(
-        string="Next Purchase End Date", compute="_compute_next_date_end", store=True
-    )
-
-    @api.depends("joint_buying_next_date_availability", "joint_buying_delay_begin")
-    def _compute_next_date_begin(self):
-        for partner in self.filtered(lambda x: x.joint_buying_next_date_availability):
-            partner.joint_buying_next_date_begin = (
-                partner.joint_buying_next_date_availability
-                + timedelta(days=-partner.joint_buying_delay_begin)
-            )
-
-    @api.depends("joint_buying_next_date_availability", "joint_buying_delay_end")
-    def _compute_next_date_end(self):
-        for partner in self.filtered(lambda x: x.joint_buying_next_date_availability):
-            partner.joint_buying_next_date_end = (
-                partner.joint_buying_next_date_availability
-                + timedelta(days=-partner.joint_buying_delay_end)
-            )
+    joint_buying_next_date_begin = fields.Date(string="Next Purchase Begin Date")
+    joint_buying_next_date_end = fields.Datetime(string="Next Purchase End Date")
 
     @api.depends("joint_buying_product_ids")
     def _compute_joint_buying_product_qty(self):

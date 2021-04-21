@@ -31,10 +31,10 @@
             <field name="joint_buying_deposit_company_id" position="after">
                 <field name="joint_buying_next_date_begin" attrs="{'invisible': [('supplier', '=', False)]}"/>
                 <field name="joint_buying_next_date_end" attrs="{'invisible': [('supplier', '=', False)]}"/>
-                <field name="joint_buying_next_date_availability" attrs="{'invisible': [('supplier', '=', False)]}"/>
-                <field name="joint_buying_delay_begin" attrs="{'invisible': [('supplier', '=', False)]}"/>
-                <field name="joint_buying_delay_end" attrs="{'invisible': [('supplier', '=', False)]}"/>
                 <field name="joint_buying_frequency" attrs="{'invisible': [('supplier', '=', False)]}"/>
+                <field name="joint_buying_next_date_deposit" attrs="{'invisible': ['|', ('supplier', '=', False), ('joint_buying_frequency', '=', 0)], 'required': [('joint_buying_frequency', '!=', 0]}"/>
+                <field name="joint_buying_delay_begin" attrs="{'invisible': ['|', ('supplier', '=', False), ('joint_buying_frequency', '=', 0)], 'required': [('joint_buying_frequency', '!=', 0]}"/>
+                <field name="joint_buying_delay_end" attrs="{'invisible': ['|', ('supplier', '=', False), ('joint_buying_frequency', '=', 0)], 'required': [('joint_buying_frequency', '!=', 0]}"/>
             </field>
             <xpath expr="//header" position="inside">
 
