@@ -12,6 +12,12 @@ class ResPartner(models.Model):
     _inherit = ["res.partner", "joint.buying.mixin"]
     _name = "res.partner"
 
+    joint_buying_favorite_company_ids = fields.Many2many(
+        relation="res_company_res_partner_favorite_rel",
+        comodel_name="res.company",
+        name="Favorite Companies for Joint Buyings",
+    )
+
     is_favorite = fields.Boolean(
         compute="_compute_is_favorite",
         inverse="_inverse_is_favorite",

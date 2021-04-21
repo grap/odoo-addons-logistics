@@ -11,7 +11,9 @@ class ResCompany(models.Model):
     _inherit = "res.company"
 
     joint_buying_favorite_partner_ids = fields.Many2many(
-        comodel_name="res.partner", name="Favorite Vendors for Joint Buyings"
+        relation="res_company_res_partner_favorite_rel",
+        comodel_name="res.partner",
+        name="Favorite Vendors for Joint Buyings",
     )
 
     joint_buying_auto_favorite = fields.Boolean(
