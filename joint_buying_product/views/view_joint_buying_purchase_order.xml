@@ -6,20 +6,22 @@ License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl.html).
 -->
 <odoo>
 
-    <record id="view_joint_buying_purchase_order_grouped_search" model="ir.ui.view">
-        <field name="model">joint.buying.purchase.order.grouped</field>
+    <record id="view_joint_buying_purchase_order_search" model="ir.ui.view">
+        <field name="model">joint.buying.purchase.order</field>
         <field name="arch" type="xml">
             <search>
                 <field name="supplier_id"/>
+                <field name="customer_id"/>
             </search>
         </field>
     </record>
 
-    <record id="view_joint_buying_purchase_order_grouped_tree" model="ir.ui.view">
-        <field name="model">joint.buying.purchase.order.grouped</field>
+    <record id="view_joint_buying_purchase_order_tree" model="ir.ui.view">
+        <field name="model">joint.buying.purchase.order</field>
         <field name="arch" type="xml">
             <tree>
                 <field name="supplier_id"/>
+                <field name="customer_id"/>
                 <field name="start_date"/>
                 <field name="end_date"/>
                 <field name="deposit_date"/>
@@ -27,8 +29,8 @@ License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl.html).
         </field>
     </record>
 
-    <record id="action_order_grouped_2_order" model="ir.actions.act_window">
-        <field name="name">Products</field>
+    <record id="action_order_2_order_line" model="ir.actions.act_window">
+        <field name="name">Order Lines</field>
         <field name="type">ir.actions.act_window</field>
         <field name="res_model">joint.buying.purchase.order</field>
         <field name="view_type">form</field>
@@ -41,8 +43,8 @@ License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl.html).
         </field>
     </record>
 
-    <record id="view_joint_buying_purchase_order_grouped_form" model="ir.ui.view">
-        <field name="model">joint.buying.purchase.order.grouped</field>
+    <record id="view_joint_buying_purchase_order_form" model="ir.ui.view">
+        <field name="model">joint.buying.purchase.order</field>
         <field name="arch" type="xml">
             <form>
                 <header>
@@ -50,13 +52,13 @@ License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl.html).
                 <sheet>
                     <div class="oe_button_box" name="button_box">
                         <button type="action" class="oe_stat_button" icon="fa-list"
-                                name="%(joint_buying_product.action_order_grouped_2_order)d"
-                                attrs="{'invisible': [('order_qty', '=', 0)]}">
+                                name="%(joint_buying_product.action_order_2_order_line)d"
+                                attrs="{'invisible': [('line_qty', '=', 0)]}">
                             <div class="o_form_field o_stat_info">
                                 <span class="o_stat_value">
-                                    <field name="order_qty" widget="integer"/>
+                                    <field name="line_qty" widget="integer"/>
                                 </span>
-                                <span class="o_stat_text">Orders</span>
+                                <span class="o_stat_text">Order Lines</span>
                             </div>
                         </button>
                     </div>
@@ -65,6 +67,7 @@ License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl.html).
                             <field name="supplier_id" default_focus="1" required="1"/>
                         </h1>
                         <h2>
+                            <field name="customer_id" required="1"/>
                         </h2>
                     </div>
                     <group>
@@ -86,44 +89,20 @@ License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl.html).
         </field>
     </record>
 
-
-<!--     <record id="view_joint_buying_purchase_order_grouped" model="ir.ui.view">
-        <field name="model">joint.buying.purchase.order.grouped</field>
-        <field name="inherit_id" ref="joint.buying.purchase.order.grouped_normal_form_view"/>
-        <field name="groups_id" eval="[(4, ref('joint_buying_base.group_joint_buying_user'))]"/>
-        <field name="arch" type="xml">
-            <xpath expr="//header" position="inside">
-                <button string="Offer For joint Buying" type="object" name="create_joint_buying_product"
-                    attrs="{'invisible': ['|', ('display_joint_buying_propagation', '=', False), ('joint_buying_product_id', '!=', False)]}"/>
-            </xpath>
-            <xpath expr="//field[@name='description']/.." position="before">
-                <group name="joint_buying" string="Joint Buying">
-                    <field name="display_joint_buying_propagation" invisible="1"/>
-                    <field name="joint_buying_partner_id" context="{'joint_buying': 1}"
-                            attrs="{'invisible': [('is_joint_buying', '=', False)], 'required': [('is_joint_buying', '=', True)]}"/>
-                    <field name="joint_buying_product_id" attrs="{'invisible': [('display_joint_buying_propagation', '=', False)]}"/>
-                </group>
-            </xpath>
-        </field>
-    </record>
--->
-
-
-
-    <record id="action_joint_buying_purchase_order_grouped" model="ir.actions.act_window">
-        <field name="name">Grouped Orders</field>
+    <record id="action_joint_buying_purchase_order" model="ir.actions.act_window">
+        <field name="name">Orders</field>
         <field name="type">ir.actions.act_window</field>
-        <field name="res_model">joint.buying.purchase.order.grouped</field>
+        <field name="res_model">joint.buying.purchase.order</field>
         <field name="view_type">form</field>
         <field name="view_mode">tree,form</field>
     </record>
 
-    <menuitem id="menu_joint_buying_purchase_order_grouped"
-        name="Grouped Orders"
+    <menuitem id="menu_joint_buying_purchase_order"
+        name="Orders"
         parent="joint_buying_product.menu_orders"
-        action="action_joint_buying_purchase_order_grouped"
+        action="action_joint_buying_purchase_order"
         groups="joint_buying_base.group_joint_buying_manager"
-        sequence="10"
+        sequence="12"
     />
 
 </odoo>
