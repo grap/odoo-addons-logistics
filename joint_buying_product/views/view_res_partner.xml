@@ -29,12 +29,15 @@
                 </button>
             </div>
             <field name="joint_buying_deposit_company_id" position="after">
-                <field name="joint_buying_next_date_begin" attrs="{'invisible': [('supplier', '=', False)]}"/>
-                <field name="joint_buying_next_date_end" attrs="{'invisible': [('supplier', '=', False)]}"/>
                 <field name="joint_buying_frequency" attrs="{'invisible': [('supplier', '=', False)]}"/>
-                <field name="joint_buying_next_date_begin" attrs="{'invisible': ['|', ('supplier', '=', False), ('joint_buying_frequency', '=', 0)], 'required': [('joint_buying_frequency', '!=', 0)]}"/>
-                <field name="joint_buying_next_date_end" attrs="{'invisible': ['|', ('supplier', '=', False), ('joint_buying_frequency', '=', 0)], 'required': [('joint_buying_frequency', '!=', 0)]}"/>
-                <field name="joint_buying_next_date_deposit" attrs="{'invisible': ['|', ('supplier', '=', False), ('joint_buying_frequency', '=', 0)], 'required': [('joint_buying_frequency', '!=', 0)]}"/>
+                <group string="Next Dates" attrs="{'invisible': ['|', ('supplier', '=', False), ('joint_buying_frequency', '=', 0)]}">
+                    <field name="joint_buying_next_date_start" string="Order Start Date"
+                        attrs="{'required': [('joint_buying_frequency', '!=', 0)]}"/>
+                    <field name="joint_buying_next_date_end" string="Order End Date"
+                        attrs="{'required': [('joint_buying_frequency', '!=', 0)]}"/>
+                    <field name="joint_buying_next_date_deposit" string="Deposit Date"
+                        attrs="{'required': [('joint_buying_frequency', '!=', 0)]}"/>
+                </group>
             </field>
             <xpath expr="//header" position="inside">
                 <button type="action" class="oe_stat_button" string="Generate Joint Buying Purchase"

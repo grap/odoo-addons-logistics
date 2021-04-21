@@ -20,8 +20,9 @@ class ResPartner(models.Model):
 
     joint_buying_next_date_deposit = fields.Date(string="Next Deposit Date")
 
-    joint_buying_next_date_begin = fields.Date(string="Next Purchase Begin Date")
-    joint_buying_next_date_end = fields.Datetime(string="Next Purchase End Date")
+    joint_buying_next_date_start = fields.Date(string="Next Order Start Date")
+
+    joint_buying_next_date_end = fields.Datetime(string="Next Order End Date")
 
     @api.depends("joint_buying_product_ids")
     def _compute_joint_buying_product_qty(self):
