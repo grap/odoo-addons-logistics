@@ -17,7 +17,7 @@
         <field name="groups_id" eval="[(4, ref('joint_buying_base.group_joint_buying_user'))]"/>
         <field name="arch" type="xml">
             <div name="button_box" position="inside">
-                <button type="action" class="oe_stat_button" icon="fa-lemon-o"
+                <button type="action" class="oe_stat_button" icon="fa-list-o"
                         name="%(joint_buying_product.action_res_partner_2_product_product)d"
                         attrs="{'invisible': [('supplier', '=', False)]}">
                     <div class="o_form_field o_stat_info">
@@ -32,9 +32,9 @@
                 <field name="joint_buying_next_date_begin" attrs="{'invisible': [('supplier', '=', False)]}"/>
                 <field name="joint_buying_next_date_end" attrs="{'invisible': [('supplier', '=', False)]}"/>
                 <field name="joint_buying_frequency" attrs="{'invisible': [('supplier', '=', False)]}"/>
-                <field name="joint_buying_next_date_deposit" attrs="{'invisible': ['|', ('supplier', '=', False), ('joint_buying_frequency', '=', 0)], 'required': [('joint_buying_frequency', '!=', 0]}"/>
-                <field name="joint_buying_delay_begin" attrs="{'invisible': ['|', ('supplier', '=', False), ('joint_buying_frequency', '=', 0)], 'required': [('joint_buying_frequency', '!=', 0]}"/>
-                <field name="joint_buying_delay_end" attrs="{'invisible': ['|', ('supplier', '=', False), ('joint_buying_frequency', '=', 0)], 'required': [('joint_buying_frequency', '!=', 0]}"/>
+                <field name="joint_buying_next_date_deposit" attrs="{'invisible': ['|', ('supplier', '=', False), ('joint_buying_frequency', '=', 0)], 'required': [('joint_buying_frequency', '!=', 0)]}"/>
+                <field name="joint_buying_delay_begin" attrs="{'invisible': ['|', ('supplier', '=', False), ('joint_buying_frequency', '=', 0)], 'required': [('joint_buying_frequency', '!=', 0]=}"/>
+                <field name="joint_buying_delay_end" attrs="{'invisible': ['|', ('supplier', '=', False), ('joint_buying_frequency', '=', 0)], 'required': [('joint_buying_frequency', '!=', 0)]}"/>
             </field>
             <xpath expr="//header" position="inside">
 
