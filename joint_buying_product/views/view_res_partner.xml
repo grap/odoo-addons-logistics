@@ -30,7 +30,9 @@
             </div>
             <field name="joint_buying_deposit_company_id" position="after">
                 <field name="joint_buying_frequency" attrs="{'invisible': [('supplier', '=', False)]}"/>
-                <group string="Next Dates" attrs="{'invisible': ['|', ('supplier', '=', False), ('joint_buying_frequency', '=', 0)]}">
+            </field>
+            <group name="vendor" position="after">
+                <group string="Recurring Orders" attrs="{'invisible': ['|', ('supplier', '=', False), ('joint_buying_frequency', '=', 0)]}">
                     <field name="joint_buying_next_date_start" string="Order Start Date"
                         attrs="{'required': [('joint_buying_frequency', '!=', 0)]}"/>
                     <field name="joint_buying_next_date_end" string="Order End Date"
@@ -38,7 +40,7 @@
                     <field name="joint_buying_next_date_deposit" string="Deposit Date"
                         attrs="{'required': [('joint_buying_frequency', '!=', 0)]}"/>
                 </group>
-            </field>
+            </group>
             <xpath expr="//header" position="inside">
                 <button type="action" class="oe_stat_button" string="Generate Joint Buying Purchase"
                         name="%(joint_buying_product.action_partner_2_wizard_create_order)d"
