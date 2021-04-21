@@ -2,7 +2,7 @@
 # @author: Sylvain LE GAL (https://twitter.com/legalsylvain)
 # License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl.html).
 
-from odoo import fields, models
+from odoo import api, fields, models
 
 
 class JointBuyingPurchaseOrderGrouped(models.Model):
@@ -19,3 +19,7 @@ class JointBuyingPurchaseOrderGrouped(models.Model):
     order_ids = fields.One2many(
         "joint.buying.purchase.order", inverse_name="grouped_order_id"
     )
+
+    @api.model
+    def generate_grouped_order(self, supplier, customers):
+        pass
