@@ -37,10 +37,10 @@ class JointBuyingWizardCreateOrder(models.TransientModel):
         return line_vals
 
     @api.multi
-    def create_orders(self):
+    def create_orders_grouped(self):
         for wizard in self:
-            wizard._create_order()
+            wizard._create_order_grouped()
 
-    def _create_order(self):
+    def _create_order_grouped(self):
         self.ensure_one()
         pass

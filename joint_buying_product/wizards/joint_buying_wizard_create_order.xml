@@ -14,7 +14,7 @@
                     </tree>
                 </field>
                 <footer>
-                    <button name="create_order"
+                    <button name="create_orders_grouped"
                             string="Create order"
                             type="object"
                             class="oe_highlight"/>
