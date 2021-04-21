@@ -11,7 +11,7 @@ class JointBuyingWizardCreateOrderLine(models.TransientModel):
 
     wizard_id = fields.Many2one(comodel_name="joint.buying.wizard.create.order")
 
-    partner_id = fields.Many2one(
+    customer_id = fields.Many2one(
         required=True,
         string="Customer",
         comodel_name="res.partner",
