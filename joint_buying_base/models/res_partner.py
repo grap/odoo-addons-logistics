@@ -111,6 +111,11 @@ class ResPartner(models.Model):
                 {"joint_buying_favorite_partner_ids": [(3, x.id) for x in partners]}
             )
 
+    def toggle_is_favorite(self):
+        self.ensure_one()
+        self.is_favorite = not self.is_favorite
+        return True
+
     def write(self, vals):
         res = super().write(vals)
         # Do not allow to update partner that have been created

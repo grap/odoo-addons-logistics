@@ -28,6 +28,12 @@ License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl.html).
                 </header>
                 <sheet>
                     <div class="oe_button_box" name="button_box">
+                        <button name="toggle_is_favorite"
+                                class="oe_stat_button"
+                                type="object" icon="fa-globe">
+                            <field name="is_favorite" widget="boolean_button"
+                                options='{"terminology": {"string_true": "Favorite", "hover_false": "Opt-in"}}'/>
+                        </button>
                         <button name="toggle_active" type="object"
                                 class="oe_stat_button" icon="fa-archive">
                             <field name="active" widget="boolean_button"
@@ -92,8 +98,6 @@ License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl.html).
     </record>
 
 
-
-
     <record id="view_res_partner_tree" model="ir.ui.view">
         <field name="model">res.partner</field>
         <field name="arch" type="xml">
@@ -111,6 +115,7 @@ License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl.html).
         </field>
     </record>
 
+
     <record id="action_res_partner" model="ir.actions.act_window">
         <field name="name">Contacts</field>
         <field name="type">ir.actions.act_window</field>
@@ -127,6 +132,7 @@ License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl.html).
             }
         </field>
     </record>
+
 
     <menuitem id="menu_res_partner"
         name="Contacts"

@@ -24,7 +24,10 @@
     </record>
 
     <record id="supplier_salaison_devidal" model="res.partner">
-        <field name="name">Salaison Devidal d'Yssingeaux</field>
+        <field name="name">Salaison Devidal</field>
+        <field name="street">La Besse</field>
+        <field name="city">Yssingeaux</field>
+        <field name="zip">43200</field>
         <field name="country_id" ref="base.fr"/>
         <field name="is_joint_buying" eval="True"/>
         <field name="customer" eval="False"/>
