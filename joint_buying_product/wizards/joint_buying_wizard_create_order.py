@@ -9,7 +9,7 @@ class JointBuyingWizardCreateOrder(models.TransientModel):
     _name = "joint.buying.wizard.create.order"
     _description = "Joint Buying Wizard Create Order"
 
-    partner_id = fields.Many2one(
+    supplier_id = fields.Many2one(
         required=True,
         string="Supplier",
         comodel_name="res.partner",
@@ -33,7 +33,7 @@ class JointBuyingWizardCreateOrder(models.TransientModel):
         for partner in partner.mapped(
             "joint_buying_favorite_company_ids.joint_buying_partner_id"
         ):
-            line_vals.append((0, 0, {"partner_id": partner.id}))
+            line_vals.append((0, 0, {"customer_id": partner.id}))
         return line_vals
 
     @api.multi
@@ -43,4 +43,6 @@ class JointBuyingWizardCreateOrder(models.TransientModel):
 
     def _create_order_grouped(self):
         self.ensure_one()
-        pass
+        self.generate_grouped_order(
+            self.supplier_id, self.mapped("line_ids.customer_id")
+        )
