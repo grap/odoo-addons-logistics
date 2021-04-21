@@ -14,7 +14,15 @@ class JointBuyingPurchaseOrder(models.Model):
         comodel_name="joint.buying.purchase.order.grouped",
         string="Grouped Purchase Order",
         required=True,
+        index=True,
         ondelete="cascade",
+    )
+
+    currency_id = fields.Many2one(
+        related="grouped_order_id.currency_id",
+        store=True,
+        string="Currency",
+        readonly=True,
     )
 
     start_date = fields.Date(
@@ -41,7 +49,8 @@ class JointBuyingPurchaseOrder(models.Model):
         comodel_name="res.partner",
         string="Customer",
         required=True,
-        domain="[('is_joint_buying', '=', True), ('customer', '=', True)]",
+        readonly=True,
+        # domain="[('is_joint_buying', '=', True), ('customer', '=', True)]",
     )
 
     line_ids = fields.One2many(

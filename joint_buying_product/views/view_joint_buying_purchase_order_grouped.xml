@@ -23,12 +23,13 @@ License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl.html).
                 <field name="start_date"/>
                 <field name="end_date"/>
                 <field name="deposit_date"/>
+                <field name="order_qty"/>
             </tree>
         </field>
     </record>
 
     <record id="action_order_grouped_2_order" model="ir.actions.act_window">
-        <field name="name">Products</field>
+        <field name="name">Orders</field>
         <field name="type">ir.actions.act_window</field>
         <field name="res_model">joint.buying.purchase.order</field>
         <field name="view_type">form</field>

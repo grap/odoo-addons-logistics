@@ -10,6 +10,7 @@ License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl.html).
         <field name="model">joint.buying.purchase.order</field>
         <field name="arch" type="xml">
             <search>
+                <field name="grouped_order_id"/>
                 <field name="supplier_id"/>
                 <field name="customer_id"/>
             </search>
@@ -78,6 +79,17 @@ License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl.html).
                         </group>
                     </group>
                     <notebook colspan="4">
+                        <page name="lines" string="Order line">
+                            <field name="line_ids">
+                                <tree editable="botttom">
+                                    <field name="product_id" context="{'joint_buying': 1}"/>
+                                    <field name="product_qty"/>
+                                    <field name="product_uom_id" force_save="True"/>
+                                    <field name="price_unit" force_save="True"/>
+                                    <field name="price_subtotal"/>
+                                </tree>
+                            </field>
+                        </page>
                     </notebook>
                 </sheet>
                 <div class="oe_chatter">
@@ -106,3 +118,12 @@ License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl.html).
     />
 
 </odoo>
+
+
+<!--                                         options='{
+                                            "fg_color": "
+                                                red:quantity_validation == 2 ;
+                                                orange:quantity_validation == 1;
+                                                green:quantity_validation == 0
+                                            "
+                                        }' -->
