@@ -22,4 +22,7 @@ class JointBuyingPurchaseOrderGrouped(models.Model):
 
     @api.model
     def generate_grouped_order(self, supplier, customers):
-        pass
+        JointBuyingPurchaseOrder = self.env["joint.buying.purchase.order"]
+        grouped_order = self.create({"supplier_id": supplier.id})
+        for customer in customers:
+            JointBuyingPurchaseOrder.generate_order(grouped_order, customer)
