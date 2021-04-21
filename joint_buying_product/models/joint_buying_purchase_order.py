@@ -2,7 +2,7 @@
 # @author: Sylvain LE GAL (https://twitter.com/legalsylvain)
 # License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl.html).
 
-from odoo import fields, models
+from odoo import api, fields, models
 
 
 class JointBuyingPurchaseOrder(models.Model):
@@ -33,3 +33,8 @@ class JointBuyingPurchaseOrder(models.Model):
     line_ids = fields.One2many(
         "joint.buying.purchase.order.line", inverse_name="order_id"
     )
+
+    @api.model
+    def _prepare_order_vals(self, grouped_order, customer):
+        vals = {"customer_id": customer.id}
+        return vals

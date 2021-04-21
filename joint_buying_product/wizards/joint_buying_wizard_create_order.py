@@ -43,6 +43,9 @@ class JointBuyingWizardCreateOrder(models.TransientModel):
 
     def _create_order_grouped(self):
         self.ensure_one()
-        self.generate_grouped_order(
-            self.supplier_id, self.mapped("line_ids.customer_id")
+        OrderGrouped = self.env["joint.buying.purchase.order.grouped"]
+        OrderGrouped.create(
+            OrderGrouped._prepare_order_grouped_vals(
+                self.supplier_id, self.mapped("line_ids.customer_id")
+            )
         )
