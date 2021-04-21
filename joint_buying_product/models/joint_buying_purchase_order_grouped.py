@@ -22,7 +22,9 @@ class JointBuyingPurchaseOrderGrouped(models.Model):
 
     @api.model
     def _prepare_order_grouped_vals(self, supplier, customers):
-        vals = {"supplier_id": supplier.id}
+        Order = self.env["joint.buying.purchase.order"]
+        vals = {"supplier_id": supplier.id, "order_ids": []}
+        for customer in customers:
+            vals["order_ids"].append((0, 0, Order._prepare_order_vals(customer)))
+
         return vals
-        # for customer in customers:
-        #     JointBuyingPurchaseOrder.generate_order(grouped_order, customer)
