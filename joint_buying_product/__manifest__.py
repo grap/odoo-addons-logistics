@@ -10,6 +10,7 @@
     "license": "AGPL-3",
     "depends": ["product", "joint_buying_base"],
     "data": [
+        "wizards/joint_buying_wizard_create_order.xml",
         "views/view_product_product.xml",
         "views/view_product_template.xml",
         "views/view_product_supplier_info.xml",
