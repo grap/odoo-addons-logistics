@@ -13,6 +13,7 @@ class JointBuyingPurchaseOrder(models.Model):
         comodel_name="joint.buying.purchase.order.grouped",
         string="Grouped Purchase Order",
         required=True,
+        ondelete="cascade",
     )
 
     supplier_id = fields.Many2one(
@@ -33,6 +34,15 @@ class JointBuyingPurchaseOrder(models.Model):
     line_ids = fields.One2many(
         "joint.buying.purchase.order.line", inverse_name="order_id"
     )
+
+    line_qty = fields.Integer(
+        string="Lines Quantity", compute="_compute_line_qty", store=True
+    )
+
+    @api.depends("line_ids")
+    def _compute_line_qty(self):
+        for order in self:
+            order.order_qty = len(order.line_ids)
 
     @api.model
     def _prepare_order_vals(self, customer):

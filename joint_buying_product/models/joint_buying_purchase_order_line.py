@@ -13,6 +13,7 @@ class JointBuyingPurchaseOrderLine(models.Model):
         comodel_name="joint.buying.purchase.order",
         string="Purchase Order",
         required=True,
+        ondelete="cascade",
     )
 
     grouped_order_id = fields.Many2one(

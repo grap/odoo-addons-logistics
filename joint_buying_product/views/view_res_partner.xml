@@ -33,11 +33,11 @@
             </field>
             <group name="vendor" position="after">
                 <group string="Recurring Orders" attrs="{'invisible': ['|', ('supplier', '=', False), ('joint_buying_frequency', '=', 0)]}">
-                    <field name="joint_buying_next_date_start" string="Order Start Date"
+                    <field name="joint_buying_next_start_date" string="Order Start Date"
                         attrs="{'required': [('joint_buying_frequency', '!=', 0)]}"/>
-                    <field name="joint_buying_next_date_end" string="Order End Date"
+                    <field name="joint_buying_next_end_date" string="Order End Date"
                         attrs="{'required': [('joint_buying_frequency', '!=', 0)]}"/>
-                    <field name="joint_buying_next_date_deposit" string="Deposit Date"
+                    <field name="joint_buying_next_deposit_date" string="Deposit Date"
                         attrs="{'required': [('joint_buying_frequency', '!=', 0)]}"/>
                 </group>
             </group>
