@@ -17,6 +17,14 @@ class JointBuyingPurchaseOrderGrouped(models.Model):
         domain="[('is_joint_buying', '=', True), ('supplier', '=', True)]",
     )
 
+    currency_id = fields.Many2one(
+        comodel_name="res.currency",
+        string="Currency",
+        required=True,
+        readonly=True,
+        default=lambda x: x._default_currency_id(),
+    )
+
     start_date = fields.Date(string="Start Date", required=True)
 
     end_date = fields.Datetime(string="End Date", required=True)
@@ -30,6 +38,9 @@ class JointBuyingPurchaseOrderGrouped(models.Model):
     order_qty = fields.Integer(
         string="Orders Quantity", compute="_compute_order_qty", store=True
     )
+
+    def _default_currency_id(self):
+        return self.env.user.company_id.currency_id.id
 
     @api.depends("order_ids")
     def _compute_order_qty(self):

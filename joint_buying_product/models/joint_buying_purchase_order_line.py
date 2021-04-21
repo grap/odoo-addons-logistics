@@ -2,7 +2,9 @@
 # @author: Sylvain LE GAL (https://twitter.com/legalsylvain)
 # License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl.html).
 
-from odoo import fields, models
+from odoo import api, fields, models
+
+from odoo.addons import decimal_precision as dp
 
 
 class JointBuyingPurchaseOrderLine(models.Model):
@@ -13,29 +15,57 @@ class JointBuyingPurchaseOrderLine(models.Model):
         comodel_name="joint.buying.purchase.order",
         string="Purchase Order",
         required=True,
+        index=True,
         ondelete="cascade",
     )
 
-    grouped_order_id = fields.Many2one(
-        comodel_name="res.partner",
-        related="order_id.grouped_order_id",
-        string="Grouped Purchase Order",
-        required=True,
-        store=True,
+    currency_id = fields.Many2one(
+        related="order_id.currency_id", store=True, string="Currency", readonly=True
     )
 
-    supplier_id = fields.Many2one(
-        comodel_name="res.partner",
-        related="order_id.grouped_order_id.supplier_id",
-        string="Supplier",
+    sequence = fields.Integer(string="Sequence", default=10)
+
+    product_id = fields.Many2one(
+        comodel_name="product.product",
+        string="Product",
+        domain="["
+        "('joint_buying_partner_id', '=', parent.supplier_id),"
+        " ('purchase_ok', '=', True)"
+        "]",
         required=True,
-        store=True,
     )
 
-    customer_id = fields.Many2one(
-        comodel_name="res.partner",
-        related="order_id.customer_id",
-        string="Customer",
+    product_qty = fields.Float(
+        string="Quantity",
+        digits=dp.get_precision("Product Unit of Measure"),
         required=True,
-        store=True,
     )
+
+    product_uom_id = fields.Many2one(
+        comodel_name="uom.uom", string="UoM", required=True, readonly=True
+    )
+
+    price_unit = fields.Float(
+        string="Unit Price",
+        digits=dp.get_precision("Product Price"),
+        required=True,
+        readonly=True,
+    )
+
+    price_subtotal = fields.Monetary(
+        string="Subtotal", compute="_compute_amount", store=True
+    )
+
+    @api.depends("product_qty", "price_unit")
+    def _compute_amount(self):
+        for line in self:
+            line.price_subtotal = line.product_qty * line.price_unit
+
+    @api.onchange("product_id")
+    def onchange_product_id(self):
+        if not self.product_id:
+            self.product_uom_id = False
+            self.price_unit = 0.0
+        else:
+            self.price_unit = self.product_id.lst_price
+            self.product_uom_id = self.product_id.uom_id.id
