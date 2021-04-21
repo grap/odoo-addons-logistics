@@ -21,37 +21,36 @@ class ResPartner(models.Model):
 
     joint_buying_frequency = fields.Integer(string="Days between orders")
 
-    joint_buying_next_date_start = fields.Date(string="Next Order Start Date")
+    joint_buying_next_start_date = fields.Date(string="Next Order Start Date")
 
-    joint_buying_next_date_end = fields.Datetime(string="Next Order End Date")
+    joint_buying_nextend_date = fields.Datetime(string="Next Order End Date")
 
-    joint_buying_next_date_deposit = fields.Date(string="Next Deposit Date")
+    joint_buying_next_deposit_date = fields.Date(string="Next Deposit Date")
 
     @api.constrains(
         "joint_buying_frequency",
-        "joint_buying_next_date_deposit",
-        "joint_buying_next_date_start",
-        "joint_buying_next_date_end",
+        "joint_buying_next_start_date",
+        "joint_buying_next_end_date",
+        "joint_buying_next_deposit_date",
     )
     def _check_joint_buying_correct_date(self):
         if not self.joint_buying_frequency:
             return
         if (
-            not self.joint_buying_next_date_start
-            or not self.joint_buying_next_date_end
-            or not self.joint_buying_next_date_deposit
+            not self.joint_buying_next_start_date
+            or not self.joint_buying_next_end_date
+            or not self.joint_buying_next_deposit_date
         ):
             raise ValidationError(
                 _("You should define Start, End and deposit Date for recurring orders.")
             )
         elif (
-            datetime.combine(self.joint_buying_next_date_start, time(0, 0))
-            < self.joint_buying_next_date_end
+            datetime.combine(self.joint_buying_next_start_date, time(0, 0))
+            >= self.joint_buying_next_end_date
         ):
             raise ValidationError(_("the start date must be less than the end date"))
-        elif (
-            datetime.combine(self.joint_buying_next_date_end, time(0, 0))
-            < self.joint_buying_next_date_deposit
+        elif self.joint_buying_next_end_date >= datetime.combine(
+            self.joint_buying_next_deposit_date, time(0, 0)
         ):
             raise ValidationError(_("the end date must be less than the deposit date"))
 
