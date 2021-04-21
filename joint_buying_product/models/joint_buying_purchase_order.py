@@ -8,12 +8,25 @@ from odoo import api, fields, models
 class JointBuyingPurchaseOrder(models.Model):
     _name = "joint.buying.purchase.order"
     _description = "Joint Buying Purchase Order"
+    _inherit = ["mail.thread", "mail.activity.mixin"]
 
     grouped_order_id = fields.Many2one(
         comodel_name="joint.buying.purchase.order.grouped",
         string="Grouped Purchase Order",
         required=True,
         ondelete="cascade",
+    )
+
+    start_date = fields.Date(
+        related="grouped_order_id.start_date", string="Start Date", store=True
+    )
+
+    end_date = fields.Datetime(
+        related="grouped_order_id.end_date", string="End Date", store=True
+    )
+
+    deposit_date = fields.Date(
+        related="grouped_order_id.deposit_date", string="Deposit Date", store=True
     )
 
     supplier_id = fields.Many2one(

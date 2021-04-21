@@ -17,11 +17,11 @@ class JointBuyingPurchaseOrderGrouped(models.Model):
         domain="[('is_joint_buying', '=', True), ('supplier', '=', True)]",
     )
 
-    start_date = fields.Date(string="Start Date")
+    start_date = fields.Date(string="Start Date", required=True)
 
-    end_start = fields.Datetime(string="End Date")
+    end_date = fields.Datetime(string="End Date", required=True)
 
-    deposit_date = fields.Date(string="Deposit Date")
+    deposit_date = fields.Date(string="Deposit Date", required=True)
 
     order_ids = fields.One2many(
         "joint.buying.purchase.order", inverse_name="grouped_order_id"
