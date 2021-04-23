@@ -4,6 +4,8 @@
 
 from odoo import api, fields, models
 
+from odoo.addons import decimal_precision as dp
+
 
 class JointBuyingPurchaseOrder(models.Model):
     _name = "joint.buying.purchase.order"
@@ -16,13 +18,6 @@ class JointBuyingPurchaseOrder(models.Model):
         required=True,
         index=True,
         ondelete="cascade",
-    )
-
-    currency_id = fields.Many2one(
-        related="grouped_order_id.currency_id",
-        store=True,
-        string="Currency",
-        readonly=True,
     )
 
     start_date = fields.Date(
@@ -46,11 +41,7 @@ class JointBuyingPurchaseOrder(models.Model):
     )
 
     customer_id = fields.Many2one(
-        comodel_name="res.partner",
-        string="Customer",
-        required=True,
-        readonly=True,
-        # domain="[('is_joint_buying', '=', True), ('customer', '=', True)]",
+        comodel_name="res.partner", string="Customer", required=True, readonly=True
     )
 
     line_ids = fields.One2many(
@@ -61,11 +52,25 @@ class JointBuyingPurchaseOrder(models.Model):
         string="Lines Quantity", compute="_compute_line_qty", store=True
     )
 
+    amount_subtotal = fields.Float(
+        string="Amount Subtotal",
+        compute="_compute_amount",
+        store=True,
+        digits=dp.get_precision("Product Price"),
+    )
+
+    # Compute Section
     @api.depends("line_ids")
     def _compute_line_qty(self):
         for order in self:
             order.order_qty = len(order.line_ids)
 
+    @api.depends("line_ids.price_subtotal")
+    def _compute_amount(self):
+        for order in self:
+            order.amount_subtotal = sum(order.mapped("line_ids.price_subtotal"))
+
+    # Custom Section
     @api.model
     def _prepare_order_vals(self, customer):
         vals = {"customer_id": customer.id}

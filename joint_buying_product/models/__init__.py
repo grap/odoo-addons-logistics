@@ -4,6 +4,7 @@ from . import (
     product_supplier_info,
     res_partner,
     joint_buying_purchase_order_grouped,
+    joint_buying_purchase_order_grouped_line,
     joint_buying_purchase_order,
     joint_buying_purchase_order_line,
 )
