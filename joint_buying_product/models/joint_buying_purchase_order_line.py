@@ -19,10 +19,6 @@ class JointBuyingPurchaseOrderLine(models.Model):
         ondelete="cascade",
     )
 
-    currency_id = fields.Many2one(
-        related="order_id.currency_id", store=True, string="Currency", readonly=True
-    )
-
     sequence = fields.Integer(string="Sequence", default=10)
 
     product_id = fields.Many2one(
@@ -52,8 +48,11 @@ class JointBuyingPurchaseOrderLine(models.Model):
         readonly=True,
     )
 
-    price_subtotal = fields.Monetary(
-        string="Subtotal", compute="_compute_amount", store=True
+    price_subtotal = fields.Float(
+        string="Subtotal",
+        compute="_compute_amount",
+        store=True,
+        digits=dp.get_precision("Product Price"),
     )
 
     @api.depends("product_qty", "price_unit")

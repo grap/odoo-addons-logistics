@@ -4,11 +4,17 @@
 
 from odoo import api, fields, models
 
+from odoo.addons import decimal_precision as dp
+
 
 class JointBuyingPurchaseOrderGrouped(models.Model):
     _name = "joint.buying.purchase.order.grouped"
     _description = "Joint Buying Grouped Purchase Order"
     _inherit = ["mail.thread", "mail.activity.mixin"]
+
+    name = fields.Char(
+        string="Number", required=True, copy=False, default=lambda x: x._default_name()
+    )
 
     supplier_id = fields.Many2one(
         comodel_name="res.partner",
@@ -17,12 +23,12 @@ class JointBuyingPurchaseOrderGrouped(models.Model):
         domain="[('is_joint_buying', '=', True), ('supplier', '=', True)]",
     )
 
-    currency_id = fields.Many2one(
-        comodel_name="res.currency",
-        string="Currency",
-        required=True,
-        readonly=True,
-        default=lambda x: x._default_currency_id(),
+    pivot_company_id = fields.Many2one(
+        comodel_name="res.company", string="Pivot Company", required=True
+    )
+
+    deposit_company_id = fields.Many2one(
+        comodel_name="res.company", string="Deposit Company", required=True
     )
 
     start_date = fields.Date(string="Start Date", required=True)
@@ -32,21 +38,68 @@ class JointBuyingPurchaseOrderGrouped(models.Model):
     deposit_date = fields.Date(string="Deposit Date", required=True)
 
     order_ids = fields.One2many(
-        "joint.buying.purchase.order", inverse_name="grouped_order_id"
+        "joint.buying.purchase.order", inverse_name="grouped_order_id", readonly=True
     )
 
     order_qty = fields.Integer(
         string="Orders Quantity", compute="_compute_order_qty", store=True
     )
 
-    def _default_currency_id(self):
-        return self.env.user.company_id.currency_id.id
+    amount_subtotal = fields.Float(
+        string="Amount Subtotal",
+        compute="_compute_amount",
+        store=True,
+        digits=dp.get_precision("Product Price"),
+    )
 
+    summary_line_ids = fields.One2many(
+        comodel_name="joint.buying.purchase.order.grouped.line",
+        compute="_compute_summary_line_ids",
+    )
+
+    # Default Section
+    def _default_name(self):
+        return self.env["ir.sequence"].next_by_code(
+            "joint.buying.purchase.order.grouped"
+        )
+
+    # Compute Section
     @api.depends("order_ids")
     def _compute_order_qty(self):
         for grouped_order in self:
             grouped_order.order_qty = len(grouped_order.order_ids)
 
+    @api.depends("order_ids.amount_subtotal")
+    def _compute_amount(self):
+        for order in self:
+            order.amount_subtotal = sum(order.mapped("order_ids.amount_subtotal"))
+
+    def _compute_summary_line_ids(self):
+        for grouped_order in self:
+            res = []
+            res = {
+                x.id: {"product_id": x.id, "product_qty": 0, "price_subtotal": 0}
+                for x in grouped_order.mapped("order_ids.line_ids")
+                .filtered(lambda line: line.product_qty)
+                .mapped("product_id")
+                .sorted(lambda x: x.name)
+            }
+            lines = grouped_order.mapped("order_ids.line_ids").filtered(
+                lambda x: x.product_qty
+            )
+            for line in lines:
+                res[line.product_id.id].update(
+                    {
+                        "price_unit": line.price_unit,
+                        "product_qty": res[line.product_id.id]["product_qty"]
+                        + line.product_qty,
+                        "price_subtotal": res[line.product_id.id]["price_subtotal"]
+                        + line.price_subtotal,
+                    }
+                )
+            grouped_order.summary_line_ids = [(0, 0, v) for k, v in res.items()]
+
+    # Custom Section
     @api.model
     def _prepare_order_grouped_vals(
         self, supplier, customers, start_date=False, end_date=False, deposit_date=False

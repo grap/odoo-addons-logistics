@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<odoo>
+
+    <record id="joint_buying_purchase_order_grouped_seq" model="ir.sequence">
+        <field name="name">Joint Buying Purchase Order Grouped</field>
+        <field name="code">joint.buying.purchase.order.grouped</field>
+        <field name="prefix">GPO-%(y)s-</field>
+        <field name="number_next">1</field>
+        <field name="number_increment">1</field>
+        <field name="company_id" eval="False"/>
+        <field name="padding">4</field>
+        <field name="use_date_range" eval="True"/>
+    </record>
+
+</odoo>
