@@ -97,6 +97,7 @@ License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl.html).
         <field name="model">res.partner</field>
         <field name="arch" type="xml">
             <tree>
+                <field name="is_favorite" widget="boolean_favorite" attrs="{'invisible': [('supplier', '=', False)]}"/>
                 <field name="name"/>
                 <field name="category_id" widget="many2many_tags" options="{'color_field': 'color'}"/>
                 <field name="city"/>
