@@ -4,11 +4,17 @@
         <field name="model">joint.buying.wizard.create.order</field>
         <field name="arch" type="xml">
             <form>
-                <group col="2" colspan="4">
-                    <field name="supplier_id" readonly="1"/>
-                    <field name="start_date"/>
-                    <field name="end_date"/>
-                    <field name="deposit_date"/>
+                <group>
+                    <group>
+                        <field name="supplier_id" readonly="1"/>
+                        <field name="pivot_company_id"/>
+                        <field name="deposit_company_id"/>
+                    </group>
+                    <group>
+                        <field name="start_date"/>
+                        <field name="end_date"/>
+                        <field name="deposit_date"/>
+                    </group>
                 </group>
                 <separator string="List of Customers"/>
                 <field name="line_ids">

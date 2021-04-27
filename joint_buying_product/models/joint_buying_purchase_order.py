@@ -72,6 +72,14 @@ class JointBuyingPurchaseOrder(models.Model):
 
     # Custom Section
     @api.model
-    def _prepare_order_vals(self, customer):
-        vals = {"customer_id": customer.id}
-        return vals
+    def _prepare_order_vals(self, supplier, customer):
+        res = {"customer_id": customer.id, "line_ids": []}
+        for product in supplier._get_joint_buying_products():
+            vals = {
+                "product_id": product.id,
+                "product_qty": 0.0,
+                "price_unit": product.lst_price,
+                "product_uom_id": product.uom_id.id,
+            }
+            res["line_ids"].append((0, 0, vals))
+        return res

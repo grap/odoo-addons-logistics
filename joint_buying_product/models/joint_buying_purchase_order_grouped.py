@@ -2,7 +2,10 @@
 # @author: Sylvain LE GAL (https://twitter.com/legalsylvain)
 # License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl.html).
 
-from odoo import api, fields, models
+from datetime import datetime, time
+
+from odoo import _, api, fields, models
+from odoo.exceptions import ValidationError
 
 from odoo.addons import decimal_precision as dp
 
@@ -11,6 +14,13 @@ class JointBuyingPurchaseOrderGrouped(models.Model):
     _name = "joint.buying.purchase.order.grouped"
     _description = "Joint Buying Grouped Purchase Order"
     _inherit = ["mail.thread", "mail.activity.mixin"]
+
+    _STATE_SELECTION = [
+        ("futur", "Futur"),
+        ("in_progress", "In Progress"),
+        ("closed", "Closed"),
+        ("deposited", "Deposited Products"),
+    ]
 
     name = fields.Char(
         string="Number", required=True, copy=False, default=lambda x: x._default_name()
@@ -21,6 +31,10 @@ class JointBuyingPurchaseOrderGrouped(models.Model):
         string="Supplier",
         required=True,
         domain="[('is_joint_buying', '=', True), ('supplier', '=', True)]",
+    )
+
+    state = fields.Selection(
+        selection=_STATE_SELECTION, string="State", required=True, readonly=True
     )
 
     pivot_company_id = fields.Many2one(
@@ -99,19 +113,48 @@ class JointBuyingPurchaseOrderGrouped(models.Model):
                 )
             grouped_order.summary_line_ids = [(0, 0, v) for k, v in res.items()]
 
+    # Overload Section
+    def create(self, vals):
+        if datetime.combine(vals["start_date"], time(0, 0)) > datetime.now():
+            vals.update({"state": "planned"})
+        elif vals["end_date"] > datetime.now():
+            vals.update({"state": "in_progress"})
+        else:
+            raise ValidationError(
+                _("You can not create a closed Grouped Purchase order")
+            )
+        return super().create(vals)
+
     # Custom Section
     @api.model
     def _prepare_order_grouped_vals(
-        self, supplier, customers, start_date=False, end_date=False, deposit_date=False
+        self,
+        supplier,
+        customers=False,
+        start_date=False,
+        end_date=False,
+        deposit_date=False,
+        deposit_company=False,
+        pivot_company=False,
     ):
         Order = self.env["joint.buying.purchase.order"]
         vals = {
             "supplier_id": supplier.id,
+            "deposit_company_id": deposit_company.id
+            or supplier.joint_buying_deposit_company_id.id,
+            "pivot_company_id": pivot_company.id
+            or supplier.joint_buying_pivot_company_id.id,
             "start_date": start_date or supplier.joint_buying_next_start_date,
             "end_date": end_date or supplier.joint_buying_next_end_date,
             "deposit_date": deposit_date or supplier.joint_buying_next_deposit_date,
             "order_ids": [],
         }
+        if not customers:
+            customers = supplier.mapped(
+                "joint_buying_favorite_company_ids.joint_buying_partner_id"
+            )
         for customer in customers:
-            vals["order_ids"].append((0, 0, Order._prepare_order_vals(customer)))
+            vals["order_ids"].append(
+                (0, 0, Order._prepare_order_vals(supplier, customer))
+            )
         return vals
