@@ -31,6 +31,13 @@
             <field name="joint_buying_deposit_company_id" position="after">
                 <field name="joint_buying_frequency" attrs="{'invisible': [('supplier', '=', False)]}"/>
             </field>
+            <field name="joint_buying_deposit_company_id" position="attributes">
+                <attribute name="attrs">{'invisible': [('supplier', '=', False)], 'required': [('joint_buying_frequency', '!=', 0)]}</attribute>
+            </field>
+            <field name="joint_buying_pivot_company_id" position="attributes">
+                <attribute name="attrs">{'invisible': [('supplier', '=', False)], 'required': [('joint_buying_frequency', '!=', 0)]}</attribute>
+            </field>
+
             <group name="vendor" position="after">
                 <group string="Recurring Orders" attrs="{'invisible': ['|', ('supplier', '=', False), ('joint_buying_frequency', '=', 0)]}">
                     <field name="joint_buying_next_start_date" string="Order Start Date"

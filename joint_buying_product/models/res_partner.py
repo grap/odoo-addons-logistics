@@ -27,6 +27,7 @@ class ResPartner(models.Model):
 
     joint_buying_next_deposit_date = fields.Date(string="Next Deposit Date")
 
+    # constrains Section
     @api.constrains(
         "joint_buying_frequency",
         "joint_buying_next_start_date",
@@ -54,7 +55,13 @@ class ResPartner(models.Model):
         ):
             raise ValidationError(_("the end date must be less than the deposit date"))
 
+    # Compute Section
     @api.depends("joint_buying_product_ids")
     def _compute_joint_buying_product_qty(self):
         for partner in self:
             partner.joint_buying_product_qty = len(partner.joint_buying_product_ids)
+
+    # Custom Section
+    def _get_joint_buying_products(self):
+        self.ensure_one()
+        return self.joint_buying_product_ids.filtered(lambda x: x.sale_ok and x.active)

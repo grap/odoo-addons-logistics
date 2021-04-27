@@ -31,6 +31,20 @@ class JointBuyingWizardCreateOrder(models.TransientModel):
         default=lambda x: x._default_deposit_date(),
     )
 
+    pivot_company_id = fields.Many2one(
+        comodel_name="res.company",
+        string="Pivot Company",
+        required=True,
+        default=lambda x: x._default_pivot_company_id(),
+    )
+
+    deposit_company_id = fields.Many2one(
+        comodel_name="res.company",
+        string="Deposit Company",
+        required=True,
+        default=lambda x: x._default_deposit_company_id(),
+    )
+
     line_ids = fields.One2many(
         comodel_name="joint.buying.wizard.create.order.line",
         required=True,
@@ -56,6 +70,14 @@ class JointBuyingWizardCreateOrder(models.TransientModel):
         if partner.joint_buying_frequency:
             return partner.joint_buying_next_deposit_date
 
+    def _default_pivot_company_id(self):
+        partner = self.env["res.partner"].browse(self.env.context.get("active_id"))
+        return partner.joint_buying_pivot_company_id
+
+    def _default_deposit_company_id(self):
+        partner = self.env["res.partner"].browse(self.env.context.get("active_id"))
+        return partner.joint_buying_deposit_company_id
+
     def _default_line_ids(self):
         partner = self.env["res.partner"].browse(self.env.context.get("active_id"))
         line_vals = []
@@ -71,7 +93,13 @@ class JointBuyingWizardCreateOrder(models.TransientModel):
         OrderGrouped = self.env["joint.buying.purchase.order.grouped"]
         group_order = OrderGrouped.create(
             OrderGrouped._prepare_order_grouped_vals(
-                self.supplier_id, self.mapped("line_ids.customer_id")
+                self.supplier_id,
+                customers=self.mapped("line_ids.customer_id"),
+                start_date=self.start_date,
+                end_date=self.end_date,
+                deposit_date=self.deposit_date,
+                deposit_company=self.deposit_company_id,
+                pivot_company=self.pivot_company_id,
             )
         )
 
