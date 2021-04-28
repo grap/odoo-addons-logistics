@@ -24,9 +24,9 @@ class ResPartner(models.Model):
         string="Subscribed",
     )
 
-    joint_buying_partner_id = fields.Many2one(
+    joint_buying_global_partner_id = fields.Many2one(
         name="Global Partner for joint Buying",
-        domain="[('is_joint_buying', '=', True), ('supplier', '=', True)]",
+        domain="[('is_joint_buying', '=', True)]",
         comodel_name="res.partner",
     )
 
@@ -46,17 +46,17 @@ class ResPartner(models.Model):
         help="Activity that will serve as a deposit for this supplier",
     )
 
-    @api.constrains("joint_buying_partner_id", "company_id")
-    def _check_joint_buying_partner_id(self):
-        check_partners = self.filtered(lambda x: x.joint_buying_partner_id)
+    @api.constrains("joint_buying_global_partner_id", "company_id")
+    def _check_joint_buying_global_partner_id(self):
+        check_partners = self.filtered(lambda x: x.joint_buying_global_partner_id)
         for partner in check_partners:
             other_partners = self.search(
                 [
                     ("id", "!=", partner.id),
                     (
-                        "joint_buying_partner_id",
+                        "joint_buying_global_partner_id",
                         "=",
-                        partner.joint_buying_partner_id.id,
+                        partner.joint_buying_global_partner_id.id,
                     ),
                     ("company_id", "=", partner.company_id.id),
                 ]
@@ -70,7 +70,7 @@ class ResPartner(models.Model):
                         " related to him : \n\n %s"
                         % (
                             partner.name,
-                            partner.joint_buying_partner_id.name,
+                            partner.joint_buying_global_partner_id.name,
                             ", ".join([x.name for x in other_partners]),
                         )
                     )
