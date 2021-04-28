@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<odoo>
+
+    <record id="uom_0_350_kg" model="uom.uom">
+        <field name="name">0.350 kg</field>
+        <field name="category_id" ref="uom.product_uom_categ_kgm"/>
+        <field name="uom_type">smaller</field>
+        <field name="factor">2.857142857</field>
+        <field name="rounding">0.001</field>
+    </record>
+
+    <record id="uom_0_300_kg" model="uom.uom">
+        <field name="name">0.300 kg</field>
+        <field name="category_id" ref="uom.product_uom_categ_kgm"/>
+        <field name="uom_type">smaller</field>
+        <field name="factor">3.333333333</field>
+        <field name="rounding">0.001</field>
+    </record>
+
+</odoo>

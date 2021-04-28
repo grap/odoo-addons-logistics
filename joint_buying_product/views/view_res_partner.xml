@@ -29,6 +29,8 @@
                 </button>
             </div>
             <field name="joint_buying_deposit_company_id" position="after">
+                <field name="joint_buying_minimum_amount" attrs="{'invisible': [('supplier', '=', False)]}"/>
+                <field name="joint_buying_minimum_unit_amount" attrs="{'invisible': [('supplier', '=', False)]}"/>
                 <field name="joint_buying_frequency" attrs="{'invisible': [('supplier', '=', False)]}"/>
             </field>
             <field name="joint_buying_deposit_company_id" position="attributes">
@@ -53,6 +55,18 @@
                         name="%(joint_buying_product.action_partner_2_wizard_create_order)d"
                         attrs="{'invisible': [('supplier', '=', False)]}" />
             </xpath>
+            <group name="group_joint_buying" position="after">
+                <group>
+                    <field name="joint_buying_product_ids" nolabel="1">
+                        <tree editable="bottom">
+                            <field name="default_code"/>
+                            <field name="name"/>
+                            <field name="uom_id"/>
+                            <field name="lst_price"/>
+                        </tree>
+                    </field>
+                </group>
+            </group>
         </field>
     </record>
 

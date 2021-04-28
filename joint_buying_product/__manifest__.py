@@ -8,7 +8,12 @@
     "author": "GRAP",
     "website": "http://www.grap.coop",
     "license": "AGPL-3",
-    "depends": ["product", "joint_buying_base"],
+    "depends": [
+        "product",
+        "joint_buying_base",
+        "product_uom_package",
+        "product_uom_po_domain",
+    ],
     "data": [
         "security/ir.model.access.csv",
         "views/menu.xml",
@@ -26,7 +31,7 @@
         "data/ir_sequence.xml",
         "data/mail_template.xml",
     ],
-    "demo": ["demo/product_product.xml"],
+    "demo": ["demo/uom_uom.xml", "demo/product_product.xml", "demo/res_partner.xml"],
     "installable": True,
     "auto_install": True,
 }

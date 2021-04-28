@@ -14,7 +14,9 @@ class JointBuyingPurchaseOrderGroupedLine(models.TransientModel):
 
     product_id = fields.Many2one(comodel_name="product.product")
 
-    product_qty = fields.Float(digits=dp.get_precision("Product Unit of Measure"))
+    product_uom_qty = fields.Float(digits=dp.get_precision("Product Unit of Measure"))
+
+    product_uom_id = fields.Many2one(comodel_name="uom.uom")
 
     price_unit = fields.Float(digits=dp.get_precision("Product Price"))
 

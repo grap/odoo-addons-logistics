@@ -26,6 +26,7 @@ class JointBuyingPurchaseOrder(models.Model):
         comodel_name="joint.buying.purchase.order.grouped",
         string="Grouped Purchase Order",
         required=True,
+        readonly=True,
         index=True,
         ondelete="cascade",
     )
@@ -54,6 +55,12 @@ class JointBuyingPurchaseOrder(models.Model):
         comodel_name="res.partner", string="Customer", required=True, readonly=True
     )
 
+    minimum_unit_amount = fields.Float(
+        string="Minimum Unit amount",
+        related="grouped_order_id.minimum_unit_amount",
+        store=True,
+    )
+
     line_ids = fields.One2many(
         "joint.buying.purchase.order.line", inverse_name="order_id"
     )
@@ -69,7 +76,9 @@ class JointBuyingPurchaseOrder(models.Model):
         digits=dp.get_precision("Product Price"),
     )
 
-    # Constrains section
+    total_weight = fields.Float(
+        string="Total Weight", compute="_compute_total_weight", store=True
+    )
 
     # Compute Section
     @api.depends("grouped_order_id", "customer_id")
@@ -90,6 +99,11 @@ class JointBuyingPurchaseOrder(models.Model):
         for order in self:
             order.amount_untaxed = sum(order.mapped("line_ids.amount_untaxed"))
 
+    @api.depends("line_ids.total_weight")
+    def _compute_total_weight(self):
+        for order in self:
+            order.total_weight = sum(order.mapped("line_ids.total_weight"))
+
     # Custom Section
     @api.model
     def _prepare_order_vals(self, supplier, customer):
@@ -97,9 +111,12 @@ class JointBuyingPurchaseOrder(models.Model):
         for product in supplier._get_joint_buying_products():
             vals = {
                 "product_id": product.id,
-                "product_qty": 0.0,
-                "price_unit": product.lst_price,
+                "product_uom_package_id": product.uom_package_id.id
+                or product.uom_id.id,
+                "product_uom_package_qty": product.uom_package_qty,
                 "product_uom_id": product.uom_id.id,
+                "product_weight": product.weight,
+                "price_unit": product.lst_price,
             }
             res["line_ids"].append((0, 0, vals))
         return res

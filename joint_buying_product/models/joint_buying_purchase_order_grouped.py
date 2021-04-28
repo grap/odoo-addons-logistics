@@ -8,6 +8,9 @@ from odoo import _, api, fields, models
 from odoo.exceptions import ValidationError
 
 from odoo.addons import decimal_precision as dp
+from odoo.addons.joint_buying_base.models.res_partner import (
+    _JOINT_BUYING_PARTNER_CONTEXT,
+)
 
 
 class JointBuyingPurchaseOrderGrouped(models.Model):
@@ -30,7 +33,8 @@ class JointBuyingPurchaseOrderGrouped(models.Model):
         comodel_name="res.partner",
         string="Supplier",
         required=True,
-        domain="[('is_joint_buying', '=', True), ('supplier', '=', True)]",
+        domain="[('supplier', '=', True)]",
+        context=_JOINT_BUYING_PARTNER_CONTEXT,
     )
 
     state = fields.Selection(
@@ -59,6 +63,12 @@ class JointBuyingPurchaseOrderGrouped(models.Model):
         string="Orders Quantity", compute="_compute_order_qty", store=True
     )
 
+    is_mail_sent = fields.Boolean(string="Mail Sent", default=False)
+
+    minimum_amount = fields.Float(string="Minimum Amount")
+
+    minimum_unit_amount = fields.Float(string="Minimum Unit Amount")
+
     amount_untaxed = fields.Float(
         string="Amount Subtotal",
         compute="_compute_amount",
@@ -66,12 +76,18 @@ class JointBuyingPurchaseOrderGrouped(models.Model):
         digits=dp.get_precision("Product Price"),
     )
 
+    total_weight = fields.Float(
+        string="Total Weight", compute="_compute_total_weight", store=True
+    )
+
     summary_line_ids = fields.One2many(
         comodel_name="joint.buying.purchase.order.grouped.line",
         compute="_compute_summary_line_ids",
     )
 
-    is_mail_sent = fields.Boolean(string="Mail Sent", default=False)
+    current_order_id = fields.Many2one(
+        comodel_name="joint.buying.purchase.order", compute="_compute_current_order_id"
+    )
 
     # Default Section
     def _default_name(self):
@@ -87,14 +103,24 @@ class JointBuyingPurchaseOrderGrouped(models.Model):
 
     @api.depends("order_ids.amount_untaxed")
     def _compute_amount(self):
-        for order in self:
-            order.amount_untaxed = sum(order.mapped("order_ids.amount_untaxed"))
+        for grouped_order in self:
+            grouped_order.amount_untaxed = sum(
+                grouped_order.mapped("order_ids.amount_untaxed")
+            )
 
+    @api.depends("order_ids.total_weight")
+    def _compute_total_weight(self):
+        for grouped_order in self:
+            grouped_order.total_weight = sum(
+                grouped_order.mapped("order_ids.total_weight")
+            )
+
+    # On the Fly Compute Section
     def _compute_summary_line_ids(self):
         for grouped_order in self:
             res = []
             res = {
-                x.id: {"product_id": x.id, "product_qty": 0, "price_untaxed": 0}
+                x.id: {"product_id": x.id, "product_qty": 0, "amount_untaxed": 0}
                 for x in grouped_order.mapped("order_ids.line_ids")
                 .filtered(lambda line: line.product_qty)
                 .mapped("product_id")
@@ -106,19 +132,24 @@ class JointBuyingPurchaseOrderGrouped(models.Model):
             for line in lines:
                 res[line.product_id.id].update(
                     {
+                        "grouped_order_id": grouped_order.id,
                         "price_unit": line.price_unit,
                         "product_qty": res[line.product_id.id]["product_qty"]
                         + line.product_qty,
-                        "price_untaxed": res[line.product_id.id]["price_untaxed"]
-                        + line.price_untaxed,
+                        "amount_untaxed": res[line.product_id.id]["amount_untaxed"]
+                        + line.amount_untaxed,
                     }
                 )
             grouped_order.summary_line_ids = [(0, 0, v) for k, v in res.items()]
 
+    def _compute_current_order_id(self):
+        # TODO
+        pass
+
     # Overload Section
     def create(self, vals):
         if datetime.combine(vals["start_date"], time(0, 0)) > datetime.now():
-            vals.update({"state": "planned"})
+            vals.update({"state": "futur"})
         elif vals["end_date"] > datetime.now():
             vals.update({"state": "in_progress"})
         else:
@@ -155,6 +186,8 @@ class JointBuyingPurchaseOrderGrouped(models.Model):
         deposit_date=False,
         deposit_company=False,
         pivot_company=False,
+        minimum_amount=False,
+        minimum_unit_amount=False,
     ):
         Order = self.env["joint.buying.purchase.order"]
         vals = {
@@ -166,6 +199,8 @@ class JointBuyingPurchaseOrderGrouped(models.Model):
             "start_date": start_date or supplier.joint_buying_next_start_date,
             "end_date": end_date or supplier.joint_buying_next_end_date,
             "deposit_date": deposit_date or supplier.joint_buying_next_deposit_date,
+            "minimum_amount": minimum_amount,
+            "minimum_unit_amount": minimum_unit_amount,
             "order_ids": [],
         }
         if not customers:

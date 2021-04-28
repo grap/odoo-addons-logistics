@@ -96,14 +96,17 @@ License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl.html).
                             <field name="start_date"/>
                             <field name="end_date"/>
                             <field name="deposit_date"/>
+                            <field name="minimum_amount"/>
+                            <field name="minimum_unit_amount"/>
                         </group>
                     </group>
                     <notebook colspan="4">
                         <page name="page_orders" string="Orders">
                             <field name="order_ids">
-                                <tree>
+                                <tree decoration-muted="amount_untaxed == 0">
                                     <field name="name"/>
                                     <field name="customer_id"/>
+                                    <field name="total_weight" sum="Total Weight"/>
                                     <field name="amount_untaxed" sum="Total Amount Untaxed"/>
                                 </tree>
                             </field>

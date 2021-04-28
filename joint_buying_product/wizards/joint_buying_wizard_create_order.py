@@ -45,6 +45,14 @@ class JointBuyingWizardCreateOrder(models.TransientModel):
         default=lambda x: x._default_deposit_company_id(),
     )
 
+    minimum_amount = fields.Float(
+        string="Minimum Amount", default=lambda x: x._default_minimum_amount()
+    )
+
+    minimum_unit_amount = fields.Float(
+        string="Minimum Unit Amount", default=lambda x: x._default_minimum_unit_amount()
+    )
+
     line_ids = fields.One2many(
         comodel_name="joint.buying.wizard.create.order.line",
         required=True,
@@ -57,8 +65,11 @@ class JointBuyingWizardCreateOrder(models.TransientModel):
 
     def _default_start_date(self):
         partner = self.env["res.partner"].browse(self.env.context.get("active_id"))
-        if partner.joint_buying_frequency:
-            return partner.joint_buying_next_start_date
+        return (
+            partner.joint_buying_frequency
+            and partner.joint_buying_next_start_date
+            or fields.datetime.now().date()
+        )
 
     def _default_end_date(self):
         partner = self.env["res.partner"].browse(self.env.context.get("active_id"))
@@ -77,6 +88,14 @@ class JointBuyingWizardCreateOrder(models.TransientModel):
     def _default_deposit_company_id(self):
         partner = self.env["res.partner"].browse(self.env.context.get("active_id"))
         return partner.joint_buying_deposit_company_id
+
+    def _default_minimum_amount(self):
+        partner = self.env["res.partner"].browse(self.env.context.get("active_id"))
+        return partner.joint_buying_minimum_amount
+
+    def _default_minimum_unit_amount(self):
+        partner = self.env["res.partner"].browse(self.env.context.get("active_id"))
+        return partner.joint_buying_minimum_unit_amount
 
     def _default_line_ids(self):
         partner = self.env["res.partner"].browse(self.env.context.get("active_id"))
@@ -100,6 +119,8 @@ class JointBuyingWizardCreateOrder(models.TransientModel):
                 deposit_date=self.deposit_date,
                 deposit_company=self.deposit_company_id,
                 pivot_company=self.pivot_company_id,
+                minimum_amount=self.minimum_amount,
+                minimum_unit_amount=self.minimum_unit_amount,
             )
         )
 

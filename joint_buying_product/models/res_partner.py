@@ -19,6 +19,14 @@ class ResPartner(models.Model):
         compute="_compute_joint_buying_product_qty"
     )
 
+    joint_buying_minimum_amount = fields.Float(
+        string="Minimum Amount For Grouped Order"
+    )
+
+    joint_buying_minimum_unit_amount = fields.Float(
+        string="Minimum Amount For Unit Order"
+    )
+
     joint_buying_frequency = fields.Integer(string="Days between orders")
 
     joint_buying_next_start_date = fields.Date(string="Next Order Start Date")

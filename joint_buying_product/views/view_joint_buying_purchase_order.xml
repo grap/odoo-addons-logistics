@@ -72,28 +72,36 @@ License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl.html).
                     </div>
                     <group>
                         <group>
+                            <field name="grouped_order_id"/>
                             <field name="supplier_id"
-                                context="{'form_view_ref': 'joint_buying_base.view_res_partner_form'}"/>
+                                context="{'joint_buying':1, 'form_view_ref': 'joint_buying_base.view_res_partner_form_joint_buying'}"/>
                             <field name="customer_id"
-                                context="{'form_view_ref': 'joint_buying_base.view_res_partner_form'}"/>
+                                context="{'joint_buying':1, 'form_view_ref': 'joint_buying_base.view_res_partner_form_joint_buying'}"/>
+                            <field name="total_weight"/>
                         </group>
-                    </group>
-                    <group>
                         <group>
                             <field name="start_date"/>
                             <field name="end_date"/>
                             <field name="deposit_date"/>
+                            <field name="minimum_unit_amount"/>
                         </group>
                     </group>
                     <notebook colspan="4">
                         <page name="lines" string="Order line">
                             <field name="line_ids">
-                                <tree editable="botttom">
+                                <tree editable="botttom" decoration-muted="qty == 0">
                                     <field name="product_id" context="{'joint_buying': 1}"/>
-                                    <field name="product_qty"/>
+                                    <field name="purchase_qty" force_save="True"/>
+                                    <field name="product_uom_package_id" force_save="True"
+                                        attrs="{'invisible': [('has_same_uom', '=', True)]}"/>
+                                    <field name="product_uom_package_qty" force_save="True"
+                                        attrs="{'invisible': [('product_uom_package_qty', '=', 0.0)]}"/>
+                                    <field name="qty" force_save="True"/>
                                     <field name="product_uom_id" force_save="True"/>
                                     <field name="price_unit" force_save="True"/>
                                     <field name="amount_untaxed" sum="Total Amount Untaxed"/>
+                                    <field name="product_weight" force_save="True" invisible="1"/>
+                                    <field name="has_same_uom" invisible="1"/>
                                 </tree>
                             </field>
                         </page>
