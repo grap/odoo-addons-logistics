@@ -7,6 +7,11 @@ from odoo.exceptions import AccessError, UserError, ValidationError
 
 from odoo.addons.base.models.res_partner import ADDRESS_FIELDS
 
+_JOINT_BUYING_PARTNER_CONTEXT = {
+    "joint_buying": 1,
+    "form_view_ref": "joint_buying_base.view_res_partner_form_joint_buying",
+}
+
 
 class ResPartner(models.Model):
     _inherit = ["res.partner", "joint.buying.mixin"]
@@ -24,10 +29,11 @@ class ResPartner(models.Model):
         string="Subscribed",
     )
 
-    joint_buying_partner_id = fields.Many2one(
+    joint_buying_global_partner_id = fields.Many2one(
         name="Global Partner for joint Buying",
-        domain="[('is_joint_buying', '=', True), ('supplier', '=', True)]",
+        domain="[('is_joint_buying', '=', True)]",
         comodel_name="res.partner",
+        context=_JOINT_BUYING_PARTNER_CONTEXT,
     )
 
     joint_buying_company_id = fields.Many2one(
@@ -46,17 +52,17 @@ class ResPartner(models.Model):
         help="Activity that will serve as a deposit for this supplier",
     )
 
-    @api.constrains("joint_buying_partner_id", "company_id")
-    def _check_joint_buying_partner_id(self):
-        check_partners = self.filtered(lambda x: x.joint_buying_partner_id)
+    @api.constrains("joint_buying_global_partner_id", "company_id")
+    def _check_joint_buying_global_partner_id(self):
+        check_partners = self.filtered(lambda x: x.joint_buying_global_partner_id)
         for partner in check_partners:
             other_partners = self.search(
                 [
                     ("id", "!=", partner.id),
                     (
-                        "joint_buying_partner_id",
+                        "joint_buying_global_partner_id",
                         "=",
-                        partner.joint_buying_partner_id.id,
+                        partner.joint_buying_global_partner_id.id,
                     ),
                     ("company_id", "=", partner.company_id.id),
                 ]
@@ -70,7 +76,7 @@ class ResPartner(models.Model):
                         " related to him : \n\n %s"
                         % (
                             partner.name,
-                            partner.joint_buying_partner_id.name,
+                            partner.joint_buying_global_partner_id.name,
                             ", ".join([x.name for x in other_partners]),
                         )
                     )
@@ -148,15 +154,16 @@ class ResPartner(models.Model):
     @api.model
     def _get_fields_no_writable_joint_buying_company(self):
         """return fields that can not be written on joint_buying companies"""
-
         res = list(ADDRESS_FIELDS)
-        res += ["name", "is_joint_buying", "company_id", "is_company", "email", "phone"]
+        res += [
+            "name",
+            "is_joint_buying",
+            "company_id",
+            "is_company",
+            "email",
+            "phone",
+            "mobile",
+            "website",
+            "vat",
+        ]
         return res
-
-    # delay = fields.Integer(
-    #     default=0, string="Timeframes for preparations before order."
-    # )
-    # period = fields.Integer(default=0, string="Period between each order")
-    # init_period_date = fields.Date(
-    #     string="Initial date to start the periods between each order."
-    # )
