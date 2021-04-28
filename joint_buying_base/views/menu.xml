@@ -8,7 +8,7 @@ License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl.html).
 
     <menuitem id="menu_root"
         name="Joint Buyings"
-        web_icon="joint_buying_base,static/src/img/icon.png"
+        web_icon="joint_buying_base,static/description/icon.png"
     />
 
     <menuitem id="menu_configuration"

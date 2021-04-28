@@ -12,7 +12,7 @@ License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl.html).
         <field name="inherit_id" ref="base.view_partner_form"/>
         <field name="arch" type="xml">
             <group name="purchase" position="inside">
-                <field name="joint_buying_partner_id" context="{'joint_buying':1}"
+                <field name="joint_buying_global_partner_id" context="{'joint_buying':1, 'form_view_ref': 'joint_buying_base.view_res_partner_form_joint_buying'}"
                     attrs="{'invisible': [('supplier', '=', False)]}"/>
             </group>
         </field>
@@ -97,7 +97,7 @@ License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl.html).
         <field name="model">res.partner</field>
         <field name="arch" type="xml">
             <tree>
-                <field name="joint_buying_is_subscribed" widget="boolean_favorite" attrs="{'invisible': [('supplier', '=', False)]}"/>
+                <field name="joint_buying_is_subscribed" widget="boolean_favorite" nolabel="1" attrs="{'invisible': [('supplier', '=', False)]}"/>
                 <field name="name"/>
                 <field name="category_id" widget="many2many_tags" options="{'color_field': 'color'}"/>
                 <field name="city"/>

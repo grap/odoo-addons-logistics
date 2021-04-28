@@ -73,9 +73,9 @@ License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl.html).
                     <group>
                         <group>
                             <field name="supplier_id"
-                                context="{'form_view_ref': 'joint_buying_base.view_res_partner_form'}"/>
+                                context="{'joint_buying':1, 'form_view_ref': 'joint_buying_base.view_res_partner_form_joint_buying'}"/>
                             <field name="customer_id"
-                                context="{'form_view_ref': 'joint_buying_base.view_res_partner_form'}"/>
+                                context="{'joint_buying':1, 'form_view_ref': 'joint_buying_base.view_res_partner_form_joint_buying'}"/>
                         </group>
                     </group>
                     <group>

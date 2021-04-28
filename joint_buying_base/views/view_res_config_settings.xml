@@ -20,19 +20,34 @@ License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl.html).
                             <div class="o_setting_left_pane"/>
                             <div class="o_setting_right_pane">
 
-                                <label for="multi_search_product_separator"/>
+                                <label for="joint_buying_auto_subscribe"/>
                                 <div class="text-muted">
-                                    The payments which have not been matched with a bank statement will not be shown in bank reconciliation data if they were made before this date.
+                                    TODO
                                 </div>
-                                <field name="multi_search_product_separator"/>
-                                <field name="multi_search_product_separator_changed" invisible="1"/>
+                                <field name="joint_buying_auto_subscribe"/>
                             </div>
                         </div>
                     </div>
-
                 </div>
             </xpath>
         </field>
     </record>
+
+    <record id="action_res_config_settings" model="ir.actions.act_window">
+        <field name="name">Settings</field>
+        <field name="type">ir.actions.act_window</field>
+        <field name="res_model">res.config.settings</field>
+        <field name="view_id" ref="view_res_config_settings_form"/>
+        <field name="view_mode">form</field>
+        <field name="target">inline</field>
+        <field name="context">{'module' : 'joint_buying_base'}</field>
+    </record>
+
+    <menuitem id="menu_res_config_settings"
+        name="Settings"
+        parent="menu_configuration"
+        sequence="0"
+        action="action_res_config_settings"
+        groups="base.group_system"/>
 
 </odoo>
