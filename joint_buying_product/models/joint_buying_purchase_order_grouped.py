@@ -59,7 +59,7 @@ class JointBuyingPurchaseOrderGrouped(models.Model):
         string="Orders Quantity", compute="_compute_order_qty", store=True
     )
 
-    amount_subtotal = fields.Float(
+    amount_untaxed = fields.Float(
         string="Amount Subtotal",
         compute="_compute_amount",
         store=True,
@@ -70,6 +70,8 @@ class JointBuyingPurchaseOrderGrouped(models.Model):
         comodel_name="joint.buying.purchase.order.grouped.line",
         compute="_compute_summary_line_ids",
     )
+
+    is_mail_sent = fields.Boolean(string="Mail Sent", default=False)
 
     # Default Section
     def _default_name(self):
@@ -83,16 +85,16 @@ class JointBuyingPurchaseOrderGrouped(models.Model):
         for grouped_order in self:
             grouped_order.order_qty = len(grouped_order.order_ids)
 
-    @api.depends("order_ids.amount_subtotal")
+    @api.depends("order_ids.amount_untaxed")
     def _compute_amount(self):
         for order in self:
-            order.amount_subtotal = sum(order.mapped("order_ids.amount_subtotal"))
+            order.amount_untaxed = sum(order.mapped("order_ids.amount_untaxed"))
 
     def _compute_summary_line_ids(self):
         for grouped_order in self:
             res = []
             res = {
-                x.id: {"product_id": x.id, "product_qty": 0, "price_subtotal": 0}
+                x.id: {"product_id": x.id, "product_qty": 0, "price_untaxed": 0}
                 for x in grouped_order.mapped("order_ids.line_ids")
                 .filtered(lambda line: line.product_qty)
                 .mapped("product_id")
@@ -107,8 +109,8 @@ class JointBuyingPurchaseOrderGrouped(models.Model):
                         "price_unit": line.price_unit,
                         "product_qty": res[line.product_id.id]["product_qty"]
                         + line.product_qty,
-                        "price_subtotal": res[line.product_id.id]["price_subtotal"]
-                        + line.price_subtotal,
+                        "price_untaxed": res[line.product_id.id]["price_untaxed"]
+                        + line.price_untaxed,
                     }
                 )
             grouped_order.summary_line_ids = [(0, 0, v) for k, v in res.items()]
@@ -158,3 +160,53 @@ class JointBuyingPurchaseOrderGrouped(models.Model):
                 (0, 0, Order._prepare_order_vals(supplier, customer))
             )
         return vals
+
+    @api.multi
+    def action_send_email(self):
+        """
+        This function opens a window to compose an email, with the edi purchase template
+        message loaded by default
+        """
+        self.ensure_one()
+        IrModelData = self.env["ir.model.data"]
+        template_id = IrModelData.get_object_reference(
+            "joint_buying_product", "email_template_purchase_order_grouped"
+        )[1]
+        compose_form_id = IrModelData.get_object_reference(
+            "mail", "email_compose_message_wizard_form"
+        )[1]
+        ctx = dict(self.env.context) or {}
+        ctx.update(
+            {
+                "model_description": _("Grouped Purchase Order"),
+                "default_model": "joint.buying.purchase.order.grouped",
+                "default_res_id": self.ids[0],
+                "default_use_template": True,
+                "default_template_id": template_id,
+                "default_composition_mode": "comment",
+                "force_email": True,
+                "mark_as_sent": True,
+            }
+        )
+
+        return {
+            "name": _("Compose Email"),
+            "type": "ir.actions.act_window",
+            "view_type": "form",
+            "view_mode": "form",
+            "res_model": "mail.compose.message",
+            "views": [(compose_form_id, "form")],
+            "view_id": compose_form_id,
+            "target": "new",
+            "context": ctx,
+        }
+
+    @api.multi
+    @api.returns("mail.message", lambda value: value.id)
+    def message_post(self, **kwargs):
+        if self.env.context.get("mark_as_sent"):
+            self.write({"is_mail_sent": True})
+        return super(
+            JointBuyingPurchaseOrderGrouped,
+            self.with_context(mail_post_autofollow=True),
+        ).message_post(**kwargs)

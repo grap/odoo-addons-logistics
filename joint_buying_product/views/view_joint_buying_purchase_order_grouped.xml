@@ -49,6 +49,8 @@ License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl.html).
         <field name="arch" type="xml">
             <form>
                 <header>
+                    <button name="action_send_email" string="Send by Email" type="object" class="oe_highlight" attrs="{'invisible': [('is_mail_sent', '=', True)]}"/>
+                    <button name="action_send_email" string="Resend by Email" type="object" attrs="{'invisible': [('is_mail_sent', '=', False)]}"/>
                     <field name="state" widget="statusbar"/>
                 </header>
                 <sheet>
@@ -74,6 +76,7 @@ License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl.html).
                             <field name="supplier_id"/>
                             <field name="pivot_company_id"/>
                             <field name="deposit_company_id"/>
+                            <field name="is_mail_sent"/>
                         </group>
                         <group>
                             <field name="start_date"/>
@@ -85,8 +88,9 @@ License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl.html).
                         <page name="page_orders" string="Orders">
                             <field name="order_ids">
                                 <tree>
+                                    <field name="name"/>
                                     <field name="customer_id"/>
-                                    <field name="amount_subtotal"/>
+                                    <field name="amount_untaxed" sum="Total Amount Untaxed"/>
                                 </tree>
                             </field>
                         </page>
@@ -142,3 +146,11 @@ License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl.html).
     />
 
 </odoo>
+
+
+<!--                             <group class="oe_subtotal_footer oe_right" colspan="2">
+                                <div class="oe_subtotal_footer_separator oe_inline o_td_label">
+                                    <label for="amount_untaxed" />
+                                </div>
+                                <field name="amount_untaxed" nolabel="1" class="oe_subtotal_footer_separator"/>
+                            </group> -->

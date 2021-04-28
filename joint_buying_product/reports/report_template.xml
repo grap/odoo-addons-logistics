@@ -50,7 +50,7 @@
                                      t-options="{'widget': 'monetary', 'display_currency': doc.pivot_company_id.currency_id}"/></td>
                                 <td class="text-right"><span t-field="line.product_qty"/></td>
                                 <td class="text-right"><span t-field="line.product_id.uom_id"/></td>
-                                <td class="text-right"><span t-field="line.price_subtotal"
+                                <td class="text-right"><span t-field="line.amount_untaxed"
                                     t-options="{'widget': 'monetary', 'display_currency': doc.pivot_company_id.currency_id}"/></td>
                             </tr>
                         </t>
@@ -59,7 +59,7 @@
                         <tr>
                             <td class="text-right" colspan="4"/>
                             <th class="text-right">Total</th>
-                            <td class="text-right"><span t-field="doc.amount_subtotal"
+                            <td class="text-right"><span t-field="doc.amount_untaxed"
                                 t-options="{'widget': 'monetary', 'display_currency': doc.pivot_company_id.currency_id}"/></td>
                         </tr>
                     </tfoot>
