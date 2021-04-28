@@ -8,6 +8,7 @@ from odoo import fields, models
 class ResUsers(models.Model):
     _inherit = "res.users"
 
-    joint_buying_auto_favorite = fields.Boolean(
-        related="company_id.joint_buying_auto_favorite", string="Automatic Bookmarking"
+    joint_buying_auto_subscribe = fields.Boolean(
+        related="company_id.joint_buying_auto_subscribe",
+        string="Automatic Supplier Subscription",
     )

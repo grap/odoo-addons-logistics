@@ -18,6 +18,7 @@
         "views/view_res_partner.xml",
         "views/view_res_partner_category.xml",
         "views/view_res_users.xml",
+        "views/view_res_config_settings.xml",
     ],
     "demo": [
         "demo/res_company.xml",
