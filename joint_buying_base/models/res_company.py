@@ -10,14 +10,14 @@ from odoo.addons.base.models.res_partner import ADDRESS_FIELDS
 class ResCompany(models.Model):
     _inherit = "res.company"
 
-    joint_buying_favorite_partner_ids = fields.Many2many(
-        relation="res_company_res_partner_favorite_rel",
+    joint_buying_subscribed_partner_ids = fields.Many2many(
+        relation="res_company_res_partner_subscribed_rel",
         comodel_name="res.partner",
-        name="Favorite Vendors for Joint Buyings",
+        name="Suppliers with subscription",
     )
 
-    joint_buying_auto_favorite = fields.Boolean(
-        string="Automatic Bookmarking", default=True
+    joint_buying_auto_subscribe = fields.Boolean(
+        string="Automatic Supplier Subscription", default=True
     )
 
     joint_buying_partner_id = fields.Many2one(
