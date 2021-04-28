@@ -18,4 +18,4 @@ class JointBuyingPurchaseOrderGroupedLine(models.TransientModel):
 
     price_unit = fields.Float(digits=dp.get_precision("Product Price"))
 
-    price_subtotal = fields.Float(digits=dp.get_precision("Product Price"))
+    amount_untaxed = fields.Float(digits=dp.get_precision("Product Price"))

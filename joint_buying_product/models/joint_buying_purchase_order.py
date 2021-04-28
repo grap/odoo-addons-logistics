@@ -12,6 +12,16 @@ class JointBuyingPurchaseOrder(models.Model):
     _description = "Joint Buying Purchase Order"
     _inherit = ["mail.thread", "mail.activity.mixin"]
 
+    _sql_constraints = [
+        (
+            "group_order_customer_uniq",
+            "unique (grouped_order_id,customer_id)",
+            "Customer can have only on purchase for this grouped order !",
+        )
+    ]
+
+    name = fields.Char(string="Number", compute="_compute_name", store=True)
+
     grouped_order_id = fields.Many2one(
         comodel_name="joint.buying.purchase.order.grouped",
         string="Grouped Purchase Order",
@@ -52,23 +62,33 @@ class JointBuyingPurchaseOrder(models.Model):
         string="Lines Quantity", compute="_compute_line_qty", store=True
     )
 
-    amount_subtotal = fields.Float(
+    amount_untaxed = fields.Float(
         string="Amount Subtotal",
         compute="_compute_amount",
         store=True,
         digits=dp.get_precision("Product Price"),
     )
 
+    # Constrains section
+
     # Compute Section
+    @api.depends("grouped_order_id", "customer_id")
+    def _compute_name(self):
+        for order in self:
+            order.name = "{}-{}".format(
+                order.grouped_order_id.name,
+                order.customer_id.joint_buying_company_id.code,
+            )
+
     @api.depends("line_ids")
     def _compute_line_qty(self):
         for order in self:
             order.order_qty = len(order.line_ids)
 
-    @api.depends("line_ids.price_subtotal")
+    @api.depends("line_ids.amount_untaxed")
     def _compute_amount(self):
         for order in self:
-            order.amount_subtotal = sum(order.mapped("line_ids.price_subtotal"))
+            order.amount_untaxed = sum(order.mapped("line_ids.amount_untaxed"))
 
     # Custom Section
     @api.model

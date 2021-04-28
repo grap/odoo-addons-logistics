@@ -23,6 +23,7 @@
         "reports/report.xml",
         "data/product_category.xml",
         "data/ir_sequence.xml",
+        "data/mail_template.xml",
     ],
     "demo": ["demo/product_product.xml"],
     "installable": True,
