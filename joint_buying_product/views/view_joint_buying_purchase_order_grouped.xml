@@ -26,7 +26,21 @@ License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl.html).
                 <field name="end_date"/>
                 <field name="deposit_date"/>
                 <field name="order_qty"/>
+                <field name="amount_untaxed" sum="Total Amount Untaxed"/>
+                <field name="state" invisible="1"/>
             </tree>
+        </field>
+    </record>
+
+    <record id="view_joint_buying_purchase_order_grouped_calendar" model="ir.ui.view">
+        <field name="model">joint.buying.purchase.order.grouped</field>
+        <field name="arch" type="xml">
+            <calendar date_start="start_date" date_stop="end_date" color="state">
+                <field name="name"/>
+                <field name="amount_untaxed"/>
+                <field name="supplier_id"/>
+                <field name="state" invisible="1"/>
+            </calendar>
         </field>
     </record>
 
@@ -134,7 +148,7 @@ License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl.html).
         <field name="type">ir.actions.act_window</field>
         <field name="res_model">joint.buying.purchase.order.grouped</field>
         <field name="view_type">form</field>
-        <field name="view_mode">tree,form</field>
+        <field name="view_mode">tree,form,calendar</field>
     </record>
 
     <menuitem id="menu_joint_buying_purchase_order_grouped"

@@ -21,6 +21,7 @@
         "views/view_joint_buying_purchase_order.xml",
         "reports/report_template.xml",
         "reports/report.xml",
+        "data/ir_cron.xml",
         "data/product_category.xml",
         "data/ir_sequence.xml",
         "data/mail_template.xml",

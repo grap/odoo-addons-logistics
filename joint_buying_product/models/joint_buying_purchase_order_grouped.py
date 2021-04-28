@@ -127,7 +127,24 @@ class JointBuyingPurchaseOrderGrouped(models.Model):
             )
         return super().create(vals)
 
+    @api.multi
+    @api.returns("mail.message", lambda value: value.id)
+    def message_post(self, **kwargs):
+        if self.env.context.get("mark_as_sent"):
+            self.write({"is_mail_sent": True})
+        return super(
+            JointBuyingPurchaseOrderGrouped,
+            self.with_context(mail_post_autofollow=True),
+        ).message_post(**kwargs)
+
     # Custom Section
+    @api.model
+    def cron_check_state(self):
+        # print("=============== CRON =============")
+        # print("=============== cron_check_state =")
+        # print("=============== CRON =============")
+        pass
+
     @api.model
     def _prepare_order_grouped_vals(
         self,
@@ -200,13 +217,3 @@ class JointBuyingPurchaseOrderGrouped(models.Model):
             "target": "new",
             "context": ctx,
         }
-
-    @api.multi
-    @api.returns("mail.message", lambda value: value.id)
-    def message_post(self, **kwargs):
-        if self.env.context.get("mark_as_sent"):
-            self.write({"is_mail_sent": True})
-        return super(
-            JointBuyingPurchaseOrderGrouped,
-            self.with_context(mail_post_autofollow=True),
-        ).message_post(**kwargs)
