@@ -12,16 +12,16 @@ class ResPartner(models.Model):
     _inherit = ["res.partner", "joint.buying.mixin"]
     _name = "res.partner"
 
-    joint_buying_favorite_company_ids = fields.Many2many(
-        relation="res_company_res_partner_favorite_rel",
+    joint_buying_subscribed_company_ids = fields.Many2many(
+        relation="res_company_res_partner_subscribed_rel",
         comodel_name="res.company",
-        name="Favorite Companies for Joint Buyings",
+        name="Companies with Subscription to the supplier",
     )
 
-    is_favorite = fields.Boolean(
-        compute="_compute_is_favorite",
-        inverse="_inverse_is_favorite",
-        string="Is Favorite Vendor",
+    joint_buying_is_subscribed = fields.Boolean(
+        compute="_compute_joint_buying_is_subscribed",
+        inverse="_inverse_joint_buying_is_subscribed",
+        string="Subscribed",
     )
 
     joint_buying_partner_id = fields.Many2one(
@@ -93,27 +93,27 @@ class ResPartner(models.Model):
                 )
             )
 
-    def _compute_is_favorite(self):
+    def _compute_joint_buying_is_subscribed(self):
         for partner in self.filtered(lambda x: x.is_joint_buying):
-            partner.is_favorite = (
-                partner in self.env.user.company_id.joint_buying_favorite_partner_ids
+            partner.joint_buying_is_subscribed = (
+                partner in self.env.user.company_id.joint_buying_subscribed_partner_ids
             )
 
-    def _inverse_is_favorite(self):
-        partners = self.filtered(lambda x: x.is_favorite)
+    def _inverse_joint_buying_is_subscribed(self):
+        partners = self.filtered(lambda x: x.joint_buying_is_subscribed)
         if partners:
             self.env.user.company_id.write(
-                {"joint_buying_favorite_partner_ids": [(4, x.id) for x in partners]}
+                {"joint_buying_subscribed_partner_ids": [(4, x.id) for x in partners]}
             )
-        partners = self.filtered(lambda x: not x.is_favorite)
+        partners = self.filtered(lambda x: not x.joint_buying_is_subscribed)
         if partners:
             self.env.user.company_id.write(
-                {"joint_buying_favorite_partner_ids": [(3, x.id) for x in partners]}
+                {"joint_buying_subscribed_partner_ids": [(3, x.id) for x in partners]}
             )
 
-    def toggle_is_favorite(self):
+    def toggle_joint_buying_is_subscribed(self):
         self.ensure_one()
-        self.is_favorite = not self.is_favorite
+        self.joint_buying_is_subscribed = not self.joint_buying_is_subscribed
         return True
 
     def write(self, vals):
