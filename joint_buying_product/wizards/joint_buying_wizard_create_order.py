@@ -82,7 +82,7 @@ class JointBuyingWizardCreateOrder(models.TransientModel):
         partner = self.env["res.partner"].browse(self.env.context.get("active_id"))
         line_vals = []
         for partner in partner.mapped(
-            "joint_buying_favorite_company_ids.joint_buying_partner_id"
+            "joint_buying_subscribed_company_ids.joint_buying_partner_id"
         ):
             line_vals.append((0, 0, {"customer_id": partner.id}))
         return line_vals

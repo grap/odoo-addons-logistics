@@ -170,7 +170,7 @@ class JointBuyingPurchaseOrderGrouped(models.Model):
         }
         if not customers:
             customers = supplier.mapped(
-                "joint_buying_favorite_company_ids.joint_buying_partner_id"
+                "joint_buying_subscribed_company_ids.joint_buying_partner_id"
             )
         for customer in customers:
             vals["order_ids"].append(
