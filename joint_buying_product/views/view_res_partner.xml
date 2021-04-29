@@ -53,6 +53,18 @@
                         name="%(joint_buying_product.action_partner_2_wizard_create_order)d"
                         attrs="{'invisible': [('supplier', '=', False)]}" />
             </xpath>
+            <group name="group_joint_buying" position="after">
+                <group>
+                    <field name="joint_buying_product_ids" nolabel="1">
+                        <tree editable="bottom">
+                            <field name="default_code"/>
+                            <field name="name"/>
+                            <field name="uom_id"/>
+                            <field name="lst_price"/>
+                        </tree>
+                    </field>
+                </group>
+            </group>
         </field>
     </record>
 

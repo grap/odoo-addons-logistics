@@ -72,13 +72,12 @@ License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl.html).
                     </div>
                     <group>
                         <group>
+                            <field name="grouped_order_id"/>
                             <field name="supplier_id"
                                 context="{'joint_buying':1, 'form_view_ref': 'joint_buying_base.view_res_partner_form_joint_buying'}"/>
                             <field name="customer_id"
                                 context="{'joint_buying':1, 'form_view_ref': 'joint_buying_base.view_res_partner_form_joint_buying'}"/>
                         </group>
-                    </group>
-                    <group>
                         <group>
                             <field name="start_date"/>
                             <field name="end_date"/>
@@ -90,10 +89,14 @@ License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl.html).
                             <field name="line_ids">
                                 <tree editable="botttom">
                                     <field name="product_id" context="{'joint_buying': 1}"/>
-                                    <field name="product_qty"/>
+                                    <field name="product_package_qty" force_save="True"/>
+                                    <field name="product_uom_package_id" force_save="True"/>
+                                    <field name="product_qty" force_save="True"/>
+                                    <!-- attrs="{'invisible': [('has_same_uom', '=', True)]}" -->
                                     <field name="product_uom_id" force_save="True"/>
                                     <field name="price_unit" force_save="True"/>
                                     <field name="amount_untaxed" sum="Total Amount Untaxed"/>
+                                    <field name="has_same_uom" invisible="1"/>
                                 </tree>
                             </field>
                         </page>

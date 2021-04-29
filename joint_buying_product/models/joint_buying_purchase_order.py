@@ -97,9 +97,12 @@ class JointBuyingPurchaseOrder(models.Model):
         for product in supplier._get_joint_buying_products():
             vals = {
                 "product_id": product.id,
+                "product_package_qty": 0.0,
+                "product_uom_package_id": product.uom_package_id.id
+                or product.uom_id.id,
                 "product_qty": 0.0,
-                "price_unit": product.lst_price,
                 "product_uom_id": product.uom_id.id,
+                "price_unit": product.lst_price,
             }
             res["line_ids"].append((0, 0, vals))
         return res

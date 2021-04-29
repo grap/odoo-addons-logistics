@@ -94,7 +94,7 @@ class JointBuyingPurchaseOrderGrouped(models.Model):
         for grouped_order in self:
             res = []
             res = {
-                x.id: {"product_id": x.id, "product_qty": 0, "price_untaxed": 0}
+                x.id: {"product_id": x.id, "product_qty": 0, "amount_untaxed": 0}
                 for x in grouped_order.mapped("order_ids.line_ids")
                 .filtered(lambda line: line.product_qty)
                 .mapped("product_id")
@@ -106,11 +106,12 @@ class JointBuyingPurchaseOrderGrouped(models.Model):
             for line in lines:
                 res[line.product_id.id].update(
                     {
+                        "grouped_order_id": grouped_order.id,
                         "price_unit": line.price_unit,
                         "product_qty": res[line.product_id.id]["product_qty"]
                         + line.product_qty,
-                        "price_untaxed": res[line.product_id.id]["price_untaxed"]
-                        + line.price_untaxed,
+                        "amount_untaxed": res[line.product_id.id]["amount_untaxed"]
+                        + line.amount_untaxed,
                     }
                 )
             grouped_order.summary_line_ids = [(0, 0, v) for k, v in res.items()]
