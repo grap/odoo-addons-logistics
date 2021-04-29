@@ -39,15 +39,27 @@ class JointBuyingPurchaseOrderLine(models.Model):
         required=True,
     )
 
-    product_qty = fields.Float(
-        string="Quantity",
+    product_uom_package_id = fields.Many2one(
+        comodel_name="uom.uom", string="Package UoM", readonly=True
+    )
+
+    product_package_qty = fields.Float(
+        string="Package Quantity",
         digits=dp.get_precision("Product Unit of Measure"),
         required=True,
+    )
+
+    product_qty = fields.Float(
+        string="Quantity",
+        compute="_compute_product_qty",
+        digits=dp.get_precision("Product Unit of Measure"),
     )
 
     product_uom_id = fields.Many2one(
         comodel_name="uom.uom", string="UoM", required=True, readonly=True
     )
+
+    has_same_uom = fields.Boolean(compute="_compute_has_same_uom", store="True")
 
     price_unit = fields.Float(
         string="Unit Price",
@@ -63,6 +75,18 @@ class JointBuyingPurchaseOrderLine(models.Model):
         digits=dp.get_precision("Product Price"),
     )
 
+    # Compute Section
+    @api.depends("product_package_qty", "product_uom_id", "product_uom_package_id")
+    def _compute_product_qty(self):
+        for line in self:
+            # TODO, handle package_qty
+            line.product_qty = line.product_package_qty
+
+    @api.depends("product_uom_package_id", "product_uom_id")
+    def _compute_has_same_uom(self):
+        for line in self:
+            line.has_same_uom = line.product_uom_package_id == line.product_uom_id
+
     @api.depends("product_qty", "price_unit")
     def _compute_amount(self):
         for line in self:
@@ -71,8 +95,12 @@ class JointBuyingPurchaseOrderLine(models.Model):
     @api.onchange("product_id")
     def onchange_product_id(self):
         if not self.product_id:
+            self.product_uom_package_id = False
             self.product_uom_id = False
             self.price_unit = 0.0
         else:
-            self.price_unit = self.product_id.lst_price
+            self.product_uom_package_id = (
+                self.product_id.uom_package_id.id or self.product_id.uom_id.id
+            )
             self.product_uom_id = self.product_id.uom_id.id
+            self.price_unit = self.product_id.lst_price
