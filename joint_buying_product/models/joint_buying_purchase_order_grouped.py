@@ -8,6 +8,9 @@ from odoo import _, api, fields, models
 from odoo.exceptions import ValidationError
 
 from odoo.addons import decimal_precision as dp
+from odoo.addons.joint_buying_base.models.res_partner import (
+    _JOINT_BUYING_PARTNER_CONTEXT,
+)
 
 
 class JointBuyingPurchaseOrderGrouped(models.Model):
@@ -30,7 +33,8 @@ class JointBuyingPurchaseOrderGrouped(models.Model):
         comodel_name="res.partner",
         string="Supplier",
         required=True,
-        domain="[('is_joint_buying', '=', True), ('supplier', '=', True)]",
+        domain="[('supplier', '=', True)]",
+        context=_JOINT_BUYING_PARTNER_CONTEXT,
     )
 
     state = fields.Selection(
