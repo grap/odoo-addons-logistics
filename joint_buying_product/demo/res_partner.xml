@@ -3,8 +3,8 @@
 <odoo>
 
     <function model="res.partner" name="write">
-        <value eval="[
-            ref('joint_buying_base.company_ELD').joint_buying_global_partner_id.id,
+        <value model="res.company" eval="[
+            obj().browse(ref('joint_buying_base.company_ELD')).joint_buying_partner_id.id
             ]"
         />
         <value eval="{'joint_buying_minimum_unit_amount': 70}"/>
