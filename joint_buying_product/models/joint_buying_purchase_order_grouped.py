@@ -70,6 +70,10 @@ class JointBuyingPurchaseOrderGrouped(models.Model):
         digits=dp.get_precision("Product Price"),
     )
 
+    total_weight = fields.Float(
+        string="Total Weight", compute="_compute_total_weight", store=True
+    )
+
     summary_line_ids = fields.One2many(
         comodel_name="joint.buying.purchase.order.grouped.line",
         compute="_compute_summary_line_ids",
@@ -91,8 +95,17 @@ class JointBuyingPurchaseOrderGrouped(models.Model):
 
     @api.depends("order_ids.amount_untaxed")
     def _compute_amount(self):
-        for order in self:
-            order.amount_untaxed = sum(order.mapped("order_ids.amount_untaxed"))
+        for grouped_order in self:
+            grouped_order.amount_untaxed = sum(
+                grouped_order.mapped("order_ids.amount_untaxed")
+            )
+
+    @api.depends("order_ids.total_weight")
+    def _compute_total_weight(self):
+        for grouped_order in self:
+            grouped_order.total_weight = sum(
+                grouped_order.mapped("order_ids.total_weight")
+            )
 
     def _compute_summary_line_ids(self):
         for grouped_order in self:
@@ -123,7 +136,7 @@ class JointBuyingPurchaseOrderGrouped(models.Model):
     # Overload Section
     def create(self, vals):
         if datetime.combine(vals["start_date"], time(0, 0)) > datetime.now():
-            vals.update({"state": "planned"})
+            vals.update({"state": "futur"})
         elif vals["end_date"] > datetime.now():
             vals.update({"state": "in_progress"})
         else:

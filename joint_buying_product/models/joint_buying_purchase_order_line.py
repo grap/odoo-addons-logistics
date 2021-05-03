@@ -23,6 +23,7 @@ class JointBuyingPurchaseOrderLine(models.Model):
         comodel_name="joint.buying.purchase.order",
         string="Purchase Order",
         required=True,
+        readonly=True,
         index=True,
         ondelete="cascade",
     )
@@ -39,25 +40,35 @@ class JointBuyingPurchaseOrderLine(models.Model):
         required=True,
     )
 
-    product_uom_package_id = fields.Many2one(
-        comodel_name="uom.uom", string="Package UoM", readonly=True
-    )
-
-    product_package_qty = fields.Float(
-        string="Package Quantity",
+    purchase_qty = fields.Float(
+        string="Purchase Quantity",
         digits=dp.get_precision("Product Unit of Measure"),
         required=True,
     )
 
-    product_qty = fields.Float(
-        string="Quantity",
-        compute="_compute_product_qty",
+    product_uom_package_id = fields.Many2one(
+        comodel_name="uom.uom", string="Package UoM", readonly=True
+    )
+
+    product_uom_package_qty = fields.Float(
+        string="Package Quantity",
         digits=dp.get_precision("Product Unit of Measure"),
+        readonly=True,
+        required=True,
+    )
+
+    qty = fields.Float(
+        string="Quantity",
+        compute="_compute_qty",
+        digits=dp.get_precision("Product Unit of Measure"),
+        store=True,
     )
 
     product_uom_id = fields.Many2one(
-        comodel_name="uom.uom", string="UoM", required=True, readonly=True
+        comodel_name="uom.uom", string="Purchase UoM", required=True, readonly=True
     )
+
+    product_weight = fields.Float(string="Product Weight", required=True, readonly=True)
 
     has_same_uom = fields.Boolean(compute="_compute_has_same_uom", store="True")
 
@@ -75,32 +86,71 @@ class JointBuyingPurchaseOrderLine(models.Model):
         digits=dp.get_precision("Product Price"),
     )
 
+    total_weight = fields.Float(
+        string="Total Weight", compute="_compute_total_weight", store=True
+    )
+
     # Compute Section
-    @api.depends("product_package_qty", "product_uom_id", "product_uom_package_id")
-    def _compute_product_qty(self):
+    @api.depends(
+        "purchase_qty",
+        "product_uom_id",
+        "product_uom_package_qty",
+        "product_uom_package_id",
+    )
+    def _compute_qty(self):
+        ProductTemplate = self.env["product.template"]
         for line in self:
-            # TODO, handle package_qty
-            line.product_qty = line.product_package_qty
+            line.qty = ProductTemplate._counvert_package_qty(
+                line.purchase_qty, line.product_uom_package_id, line.product_uom_id
+            )
+
+    @api.depends("qty", "product_uom_id", "product_weight")
+    def _compute_total_weight(self):
+        for line in self:
+            product_weight = (
+                line.product_id.measure_type == "unit" and line.product_weight or 1.0
+            )
+            line.total_weight = line.qty * product_weight
 
     @api.depends("product_uom_package_id", "product_uom_id")
     def _compute_has_same_uom(self):
         for line in self:
             line.has_same_uom = line.product_uom_package_id == line.product_uom_id
 
-    @api.depends("product_qty", "price_unit")
+    @api.depends("qty", "price_unit")
     def _compute_amount(self):
         for line in self:
-            line.amount_untaxed = line.product_qty * line.price_unit
+            line.amount_untaxed = line.qty * line.price_unit
+
+    @api.onchange("purchase_qty")
+    def onchange_purchase_qty(self):
+        res = {}
+        ProductTemplate = self.env["product.template"]
+        if self.purchase_qty:
+            result = ProductTemplate._round_package_quantity(
+                self.purchase_qty,
+                self.product_uom_package_qty,
+                self.product_uom_package_id,
+                self.product_uom_id,
+            )
+            if result["warning"]:
+                res["warning"] = result["warning"]
+            self.purchase_qty = result["qty"]
+        return res
 
     @api.onchange("product_id")
     def onchange_product_id(self):
         if not self.product_id:
             self.product_uom_package_id = False
+            self.product_uom_package_qty = False
             self.product_uom_id = False
             self.price_unit = 0.0
+            self.purchase_qty = 0.0
         else:
             self.product_uom_package_id = (
                 self.product_id.uom_package_id.id or self.product_id.uom_id.id
             )
+            self.product_uom_package_qty = self.product_id.uom_package_qty
             self.product_uom_id = self.product_id.uom_id.id
+            self.product_weight = self.product_id.weight
             self.price_unit = self.product_id.lst_price

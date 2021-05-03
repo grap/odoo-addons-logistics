@@ -87,12 +87,14 @@ License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl.html).
                     <notebook colspan="4">
                         <page name="lines" string="Order line">
                             <field name="line_ids">
-                                <tree editable="botttom">
+                                <tree editable="botttom" decoration-muted="qty == 0">
                                     <field name="product_id" context="{'joint_buying': 1}"/>
-                                    <field name="product_package_qty" force_save="True"/>
-                                    <field name="product_uom_package_id" force_save="True"/>
-                                    <field name="product_qty" force_save="True"/>
-                                    <!-- attrs="{'invisible': [('has_same_uom', '=', True)]}" -->
+                                    <field name="purchase_qty" force_save="True"/>
+                                    <field name="product_uom_package_id" force_save="True"
+                                        attrs="{'invisible': [('has_same_uom', '=', True)]}"/>
+                                    <field name="product_uom_package_qty" force_save="True"
+                                        attrs="{'invisible': [('product_uom_package_qty', '=', 0.0)]}"/>
+                                    <field name="qty" force_save="True"/>
                                     <field name="product_uom_id" force_save="True"/>
                                     <field name="price_unit" force_save="True"/>
                                     <field name="amount_untaxed" sum="Total Amount Untaxed"/>
