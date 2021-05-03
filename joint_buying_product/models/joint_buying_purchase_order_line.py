@@ -65,7 +65,7 @@ class JointBuyingPurchaseOrderLine(models.Model):
     )
 
     product_uom_id = fields.Many2one(
-        comodel_name="uom.uom", string="Purchase UoM", required=True, readonly=True
+        comodel_name="uom.uom", string="UoM", required=True, readonly=True
     )
 
     product_weight = fields.Float(string="Product Weight", required=True, readonly=True)
@@ -108,7 +108,9 @@ class JointBuyingPurchaseOrderLine(models.Model):
     def _compute_total_weight(self):
         for line in self:
             product_weight = (
-                line.product_id.measure_type == "unit" and line.product_weight or 1.0
+                line.product_id.uom_measure_type == "unit"
+                and line.product_weight
+                or 1.0
             )
             line.total_weight = line.qty * product_weight
 
@@ -146,6 +148,7 @@ class JointBuyingPurchaseOrderLine(models.Model):
             self.product_uom_id = False
             self.price_unit = 0.0
             self.purchase_qty = 0.0
+            self.product_weight = 0.0
         else:
             self.product_uom_package_id = (
                 self.product_id.uom_package_id.id or self.product_id.uom_id.id

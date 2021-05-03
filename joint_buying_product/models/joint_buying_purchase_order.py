@@ -92,7 +92,7 @@ class JointBuyingPurchaseOrder(models.Model):
         for order in self:
             order.amount_untaxed = sum(order.mapped("line_ids.amount_untaxed"))
 
-    @api.depends("line.total_weight")
+    @api.depends("line_ids.total_weight")
     def _compute_total_weight(self):
         for order in self:
             order.total_weight = sum(order.mapped("line_ids.total_weight"))
