@@ -91,6 +91,7 @@ License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl.html).
                             <field name="pivot_company_id"/>
                             <field name="deposit_company_id"/>
                             <field name="is_mail_sent"/>
+                            <field name="total_weight"/>
                         </group>
                         <group>
                             <field name="start_date"/>

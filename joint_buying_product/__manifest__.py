@@ -8,7 +8,12 @@
     "author": "GRAP",
     "website": "http://www.grap.coop",
     "license": "AGPL-3",
-    "depends": ["product", "joint_buying_base", "product_uom_package", "web_notify"],
+    "depends": [
+        "product",
+        "joint_buying_base",
+        "product_uom_package",
+        "product_uom_po_domain",
+    ],
     "data": [
         "security/ir.model.access.csv",
         "views/menu.xml",
