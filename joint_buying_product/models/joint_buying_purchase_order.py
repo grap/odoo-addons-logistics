@@ -69,7 +69,9 @@ class JointBuyingPurchaseOrder(models.Model):
         digits=dp.get_precision("Product Price"),
     )
 
-    # Constrains section
+    total_weight = fields.Float(
+        string="Total Weight", compute="_compute_total_weight", store=True
+    )
 
     # Compute Section
     @api.depends("grouped_order_id", "customer_id")
@@ -89,6 +91,11 @@ class JointBuyingPurchaseOrder(models.Model):
     def _compute_amount(self):
         for order in self:
             order.amount_untaxed = sum(order.mapped("line_ids.amount_untaxed"))
+
+    @api.depends("line.total_weight")
+    def _compute_total_weight(self):
+        for order in self:
+            order.total_weight = sum(order.mapped("line_ids.total_weight"))
 
     # Custom Section
     @api.model

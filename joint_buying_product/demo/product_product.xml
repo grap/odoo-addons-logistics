@@ -19,6 +19,38 @@
         <field name="price">11</field>
     </record>
 
+    <record id="product_devidal_caillette" model="product.product"
+        context="{'joint_buying': True}">
+        <field name="name">Caillette sous vide (~300gr) (Global)</field>
+        <field name="uom_id" ref="uom.product_uom_kgm"/>
+        <field name="uom_po_id" ref="uom.product_uom_kgm"/>
+        <field name="joint_buying_partner_id" ref="joint_buying_base.supplier_salaison_devidal"/>
+        <field name="price">13</field>
+        <field name="uom_package_id" ref="uom_0_300_kg"/>
+    </record>
+
+    <record id="product_devidal_saucisson" model="product.product"
+        context="{'joint_buying': True}">
+        <field name="name">Saucisson (~350gr) (Global)</field>
+        <field name="uom_id" ref="uom.product_uom_kgm"/>
+        <field name="uom_po_id" ref="uom.product_uom_kgm"/>
+        <field name="joint_buying_partner_id" ref="joint_buying_base.supplier_salaison_devidal"/>
+        <field name="price">19</field>
+        <field name="uom_package_id" ref="uom_0_350_kg"/>
+        <field name="uom_package_qty">3</field>
+    </record>
+
+    <record id="product_devidal_rillette" model="product.product"
+        context="{'joint_buying': True}">
+        <field name="name">Rillette (500gr) (Global)</field>
+        <field name="uom_id" ref="uom.product_uom_unit"/>
+        <field name="uom_po_id" ref="uom.product_uom_unit"/>
+        <field name="joint_buying_partner_id" ref="joint_buying_base.supplier_salaison_devidal"/>
+        <field name="weight">0.5</field>
+        <field name="price">8</field>
+        <field name="uom_package_qty">12</field>
+    </record>
+
     <!-- Local Products ELD -->
     <record id="product_ELD_orangettes" model="product.product">
         <field name="default_code">ELD-ORANGETTE</field>
