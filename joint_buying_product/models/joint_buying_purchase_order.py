@@ -54,6 +54,12 @@ class JointBuyingPurchaseOrder(models.Model):
         comodel_name="res.partner", string="Customer", required=True, readonly=True
     )
 
+    minimum_unit_amount = fields.Float(
+        string="Minimum Unit amount",
+        related="grouped_order_id.minimum_unit_amount",
+        store=True,
+    )
+
     line_ids = fields.One2many(
         "joint.buying.purchase.order.line", inverse_name="order_id"
     )
