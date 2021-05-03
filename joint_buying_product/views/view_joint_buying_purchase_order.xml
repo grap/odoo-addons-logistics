@@ -83,6 +83,7 @@ License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl.html).
                             <field name="start_date"/>
                             <field name="end_date"/>
                             <field name="deposit_date"/>
+                            <field name="minimum_unit_amount"/>
                         </group>
                     </group>
                     <notebook colspan="4">
@@ -98,7 +99,6 @@ License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl.html).
                                     <field name="qty" force_save="True"/>
                                     <field name="product_uom_id" force_save="True"/>
                                     <field name="price_unit" force_save="True"/>
-                                    <field name="total_weight" sum="Total Weight"/>
                                     <field name="amount_untaxed" sum="Total Amount Untaxed"/>
                                     <field name="product_weight" force_save="True" invisible="1"/>
                                     <field name="has_same_uom" invisible="1"/>

@@ -63,6 +63,12 @@ class JointBuyingPurchaseOrderGrouped(models.Model):
         string="Orders Quantity", compute="_compute_order_qty", store=True
     )
 
+    is_mail_sent = fields.Boolean(string="Mail Sent", default=False)
+
+    minimum_amount = fields.Float(string="Minimum Amount")
+
+    minimum_unit_amount = fields.Float(string="Minimum Unit Amount")
+
     amount_untaxed = fields.Float(
         string="Amount Subtotal",
         compute="_compute_amount",
@@ -79,7 +85,9 @@ class JointBuyingPurchaseOrderGrouped(models.Model):
         compute="_compute_summary_line_ids",
     )
 
-    is_mail_sent = fields.Boolean(string="Mail Sent", default=False)
+    current_order_id = fields.Many2one(
+        comodel_name="joint.buying.purchase.order", compute="_compute_current_order_id"
+    )
 
     # Default Section
     def _default_name(self):
@@ -107,6 +115,7 @@ class JointBuyingPurchaseOrderGrouped(models.Model):
                 grouped_order.mapped("order_ids.total_weight")
             )
 
+    # On the Fly Compute Section
     def _compute_summary_line_ids(self):
         for grouped_order in self:
             res = []
@@ -132,6 +141,10 @@ class JointBuyingPurchaseOrderGrouped(models.Model):
                     }
                 )
             grouped_order.summary_line_ids = [(0, 0, v) for k, v in res.items()]
+
+    def _compute_current_order_id(self):
+        # TODO
+        pass
 
     # Overload Section
     def create(self, vals):
@@ -173,6 +186,8 @@ class JointBuyingPurchaseOrderGrouped(models.Model):
         deposit_date=False,
         deposit_company=False,
         pivot_company=False,
+        minimum_amount=False,
+        minimum_unit_amount=False,
     ):
         Order = self.env["joint.buying.purchase.order"]
         vals = {
@@ -184,6 +199,8 @@ class JointBuyingPurchaseOrderGrouped(models.Model):
             "start_date": start_date or supplier.joint_buying_next_start_date,
             "end_date": end_date or supplier.joint_buying_next_end_date,
             "deposit_date": deposit_date or supplier.joint_buying_next_deposit_date,
+            "minimum_amount": minimum_amount,
+            "minimum_unit_amount": minimum_unit_amount,
             "order_ids": [],
         }
         if not customers:

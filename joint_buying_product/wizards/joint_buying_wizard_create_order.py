@@ -45,6 +45,10 @@ class JointBuyingWizardCreateOrder(models.TransientModel):
         default=lambda x: x._default_deposit_company_id(),
     )
 
+    minimum_amount = fields.Float(string="Minimum Amount")
+
+    minimum_unit_amount = fields.Float(string="Minimum Unit Amount")
+
     line_ids = fields.One2many(
         comodel_name="joint.buying.wizard.create.order.line",
         required=True,
@@ -100,6 +104,8 @@ class JointBuyingWizardCreateOrder(models.TransientModel):
                 deposit_date=self.deposit_date,
                 deposit_company=self.deposit_company_id,
                 pivot_company=self.pivot_company_id,
+                minimum_amount=self.minimum_amount,
+                minimum_unit_amount=self.minimum_unit_amount,
             )
         )
 

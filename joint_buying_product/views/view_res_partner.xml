@@ -29,6 +29,8 @@
                 </button>
             </div>
             <field name="joint_buying_deposit_company_id" position="after">
+                <field name="joint_buying_minimum_amount" attrs="{'invisible': [('supplier', '=', False)]}"/>
+                <field name="joint_buying_minimum_unit_amount" attrs="{'invisible': [('supplier', '=', False)]}"/>
                 <field name="joint_buying_frequency" attrs="{'invisible': [('supplier', '=', False)]}"/>
             </field>
             <field name="joint_buying_deposit_company_id" position="attributes">

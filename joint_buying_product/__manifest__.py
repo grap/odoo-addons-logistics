@@ -31,7 +31,7 @@
         "data/ir_sequence.xml",
         "data/mail_template.xml",
     ],
-    "demo": ["demo/uom_uom.xml", "demo/product_product.xml"],
+    "demo": ["demo/uom_uom.xml", "demo/product_product.xml", "demo/res_partner.xml"],
     "installable": True,
     "auto_install": True,
 }
