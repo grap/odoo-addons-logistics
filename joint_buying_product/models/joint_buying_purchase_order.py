@@ -26,6 +26,7 @@ class JointBuyingPurchaseOrder(models.Model):
         comodel_name="joint.buying.purchase.order.grouped",
         string="Grouped Purchase Order",
         required=True,
+        readonly=True,
         index=True,
         ondelete="cascade",
     )
@@ -110,11 +111,11 @@ class JointBuyingPurchaseOrder(models.Model):
         for product in supplier._get_joint_buying_products():
             vals = {
                 "product_id": product.id,
-                "product_package_qty": 0.0,
                 "product_uom_package_id": product.uom_package_id.id
                 or product.uom_id.id,
-                "product_qty": 0.0,
+                "product_uom_package_qty": product.uom_package_qty,
                 "product_uom_id": product.uom_id.id,
+                "product_weight": product.weight,
                 "price_unit": product.lst_price,
             }
             res["line_ids"].append((0, 0, vals))

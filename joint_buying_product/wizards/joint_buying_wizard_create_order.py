@@ -65,8 +65,11 @@ class JointBuyingWizardCreateOrder(models.TransientModel):
 
     def _default_start_date(self):
         partner = self.env["res.partner"].browse(self.env.context.get("active_id"))
-        if partner.joint_buying_frequency:
-            return partner.joint_buying_next_start_date
+        return (
+            partner.joint_buying_frequency
+            and partner.joint_buying_next_start_date
+            or fields.datetime.now().date()
+        )
 
     def _default_end_date(self):
         partner = self.env["res.partner"].browse(self.env.context.get("active_id"))
@@ -88,11 +91,11 @@ class JointBuyingWizardCreateOrder(models.TransientModel):
 
     def _default_minimum_amount(self):
         partner = self.env["res.partner"].browse(self.env.context.get("active_id"))
-        return partner.minimum_amount
+        return partner.joint_buying_minimum_amount
 
     def _default_minimum_unit_amount(self):
         partner = self.env["res.partner"].browse(self.env.context.get("active_id"))
-        return partner.minimum_unit_amount
+        return partner.joint_buying_minimum_unit_amount
 
     def _default_line_ids(self):
         partner = self.env["res.partner"].browse(self.env.context.get("active_id"))

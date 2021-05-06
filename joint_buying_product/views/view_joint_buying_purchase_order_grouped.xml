@@ -103,7 +103,7 @@ License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl.html).
                     <notebook colspan="4">
                         <page name="page_orders" string="Orders">
                             <field name="order_ids">
-                                <tree>
+                                <tree decoration-muted="amount_untaxed == 0">
                                     <field name="name"/>
                                     <field name="customer_id"/>
                                     <field name="total_weight" sum="Total Weight"/>
