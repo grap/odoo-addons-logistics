@@ -3,12 +3,12 @@
 # License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl.html).
 {
     "name": "Joint Buying - Base",
-    "version": "12.0.1.1.2",
+    "version": "12.0.1.1.3",
     "category": "GRAP - Logistics",
     "author": "GRAP",
     "website": "http://www.grap.coop",
     "license": "AGPL-3",
-    "depends": ["base", "mail", "name_search_reset_res_partner"],
+    "depends": ["base", "mail", "name_search_reset_res_partner", "res_company_code"],
     "data": [
         "security/ir_module_category.xml",
         "security/res_groups.xml",
@@ -18,6 +18,7 @@
         "views/view_res_partner.xml",
         "views/view_res_partner_category.xml",
         "views/view_res_users.xml",
+        "views/view_res_config_settings.xml",
     ],
     "demo": [
         "demo/res_company.xml",

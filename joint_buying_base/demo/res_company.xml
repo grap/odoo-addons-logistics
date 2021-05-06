@@ -3,6 +3,7 @@
 <odoo>
 
     <record id="company_1GG" model="res.company">
+        <field name="code">1GG</field>
         <field name="name">[A Grain in the Granary]</field>
         <field name="street">1, rue du mail</field>
         <field name="city">Lyon</field>
@@ -10,23 +11,8 @@
         <field name="country_id" ref="base.fr"/>
     </record>
 
-    <record id="company_LSE" model="res.company">
-        <field name="name">[The Super Mall]</field>
-        <field name="street">105, avenue Jean Jaurès</field>
-        <field name="city">Oullins</field>
-        <field name="zip">69600</field>
-        <field name="country_id" ref="base.fr"/>
-    </record>
-
-    <record id="company_CHE" model="res.company">
-        <field name="name">[The Goat and Cabbage]</field>
-        <field name="street">2 Grande Rue</field>
-        <field name="city">Saint-Sauveur-de-Montagut</field>
-        <field name="zip">07190</field>
-        <field name="country_id" ref="base.fr"/>
-    </record>
-
     <record id="company_3PP" model="res.company">
+        <field name="code">3PP</field>
         <field name="name">[Three Peas]</field>
         <field name="street">124 Rue Sébastien Gryphe</field>
         <field name="city">Lyon</field>
@@ -34,7 +20,27 @@
         <field name="country_id" ref="base.fr"/>
     </record>
 
+    <record id="company_CDA" model="res.company">
+        <field name="code">CDA</field>
+        <field name="name">[Artichoke Heart]</field>
+        <field name="street"> 22 rue de saint Agrève  </field>
+        <field name="city">Tence</field>
+        <field name="zip">43190</field>
+        <field name="country_id" ref="base.fr"/>
+    </record>
+
+
+    <record id="company_CHE" model="res.company">
+        <field name="code">CHE</field>
+        <field name="name">[The Goat and Cabbage]</field>
+        <field name="street">2 Grande Rue</field>
+        <field name="city">Saint-Sauveur-de-Montagut</field>
+        <field name="zip">07190</field>
+        <field name="country_id" ref="base.fr"/>
+    </record>
+
     <record id="company_CHO" model="res.company">
+        <field name="code">CHO</field>
         <field name="name">[Chocolate-Lala]</field>
         <field name="street">18 Rue de l'Armèllerie</field>
         <field name="city">Die</field>
@@ -42,11 +48,30 @@
         <field name="country_id" ref="base.fr"/>
     </record>
 
+    <record id="company_ELD" model="res.company">
+        <field name="code">ELD</field>
+        <field name="name">[Elodia-D]</field>
+        <field name="street">18 Rue de l'Armèllerie</field>
+        <field name="city">Die</field>
+        <field name="zip">26150</field>
+        <field name="country_id" ref="base.fr"/>
+    </record>
+
     <record id="company_DOZ" model="res.company">
+        <field name="code">DOZ</field>
         <field name="name">[The Right Doze]</field>
         <field name="street">2 Rue Henri Legay</field>
         <field name="city">Villeurbanne</field>
         <field name="zip">69100</field>
+        <field name="country_id" ref="base.fr"/>
+    </record>
+
+    <record id="company_LSE" model="res.company">
+        <field name="code">LSE</field>
+        <field name="name">[The Super Mall]</field>
+        <field name="street">105, avenue Jean Jaurès</field>
+        <field name="city">Oullins</field>
+        <field name="zip">69600</field>
         <field name="country_id" ref="base.fr"/>
     </record>
 
@@ -64,7 +89,7 @@
     </function>
 
     <function model="res.company" name="write">
-        <value eval="[ref('joint_buying_base.company_CHO')]"/>
+        <value eval="[ref('joint_buying_base.company_CHO'), ref('joint_buying_base.company_ELD')]"/>
         <value eval="{
             'is_joint_buying_supplier': True,
         }"/>

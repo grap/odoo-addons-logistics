@@ -9,30 +9,15 @@ License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl.html).
     <record id="view_product_template" model="ir.ui.view">
         <field name="model">product.template</field>
         <field name="inherit_id" ref="product.product_template_form_view"/>
+        <field name="groups_id" eval="[(4, ref('joint_buying_base.group_joint_buying_user'))]"/>
         <field name="arch" type="xml">
             <xpath expr="//field[@name='sale_ok']/.." position="before">
-               <div>
+               <div invisible="1">
                     <field name="is_joint_buying"/>
                     <label for="is_joint_buying"/>
                 </div>
             </xpath>
         </field>
     </record>
-
-    <record id="action_product_template" model="ir.actions.act_window">
-        <field name="name">Joint Buying Products</field>
-        <field name="type">ir.actions.act_window</field>
-        <field name="res_model">product.template</field>
-        <field name="view_type">form</field>
-        <field name="view_mode">tree,form</field>
-        <field name="context">{"joint_buying":1}</field>
-    </record>
-
-    <menuitem id="menu_product_template"
-        name="Joint Buying Products"
-        parent="joint_buying_base.menu_configuration"
-        action="action_product_template"
-        sequence="11"
-    />
 
 </odoo>
