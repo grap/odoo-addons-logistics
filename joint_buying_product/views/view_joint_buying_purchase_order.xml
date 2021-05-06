@@ -13,6 +13,7 @@ License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl.html).
                 <field name="grouped_order_id"/>
                 <field name="supplier_id"/>
                 <field name="customer_id"/>
+                <field name="purchase_state"/>
                 <field name="state"/>
             </search>
         </field>
@@ -29,6 +30,7 @@ License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl.html).
                 <field name="end_date"/>
                 <field name="deposit_date"/>
                 <field name="amount_untaxed" sum="Total Amount Untaxed"/>
+                <field name="purchase_state"/>
                 <field name="state"/>
             </tree>
         </field>
@@ -53,6 +55,14 @@ License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl.html).
         <field name="arch" type="xml">
             <form>
                 <header>
+                    <button name="action_confirm_purchase" type="object" string="Confirm order" class="oe_highlight"
+                        attrs="{'invisible': ['|', '|', ('purchase_state', '!=', 'draft'), ('state', '!=', 'in_progress'), ('is_purchase_ok', '=', False)]}"/>
+                    <button name="action_confirm_purchase" type="object" string="Confirm order"
+                        attrs="{'invisible': ['|', '|', ('purchase_state', '!=', 'draft'), ('state', '!=', 'in_progress'), ('is_purchase_ok', '=', True)]}"/>
+                    <button name="action_draft_purchase" type="object" string="Reset to Draft"
+                        attrs="{'invisible': ['|', ('purchase_state', '!=', 'done'), ('state', '!=', 'in_progress')]}"/>
+                    <field name="purchase_state" widget="statusbar"/>
+                    <field name="state" widget="statusbar"/>
                 </header>
                 <sheet>
                     <div class="oe_button_box" name="button_box">
@@ -80,17 +90,21 @@ License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl.html).
                             <field name="customer_id"
                                 context="{'joint_buying':1, 'form_view_ref': 'joint_buying_base.view_res_partner_form_joint_buying'}"/>
                             <field name="total_weight"/>
+                            <field name="line_qty" invisible="1"/>
+                            <field name="is_purchase_ok" invisible="1"/>
+                            <field name="amount_untaxed" invisible="1"/>
                         </group>
                         <group>
                             <field name="start_date"/>
                             <field name="end_date"/>
                             <field name="deposit_date"/>
-                            <field name="minimum_unit_amount" attrs="{'invisible': [('minimum_unit_amount', '=', 0)]}"/>
+                            <field name="minimum_unit_amount" attrs="{'invisible': [('minimum_unit_amount', '=', 0)]}"
+                                decoration-warning="minimum_unit_amount &gt; amount_untaxed"/>
                         </group>
                     </group>
                     <notebook colspan="4">
                         <page name="lines" string="Order line">
-                            <field name="line_ids">
+                            <field name="line_ids" attrs="{'readonly': ['|', ('purchase_state', '=', 'done'), ('state', '!=', 'in_progress')]}">
                                 <tree editable="botttom" decoration-muted="qty == 0">
                                     <field name="product_id" context="{'joint_buying': 1}"/>
                                     <field name="purchase_qty" force_save="True"/>

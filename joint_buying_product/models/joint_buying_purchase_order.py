@@ -2,7 +2,8 @@
 # @author: Sylvain LE GAL (https://twitter.com/legalsylvain)
 # License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl.html).
 
-from odoo import api, fields, models
+from odoo import _, api, fields, models
+from odoo.exceptions import ValidationError
 
 from odoo.addons import decimal_precision as dp
 
@@ -11,6 +12,8 @@ class JointBuyingPurchaseOrder(models.Model):
     _name = "joint.buying.purchase.order"
     _description = "Joint Buying Purchase Order"
     _inherit = ["mail.thread", "mail.activity.mixin"]
+
+    _PURCHASE_STATE = [("draft", "To Enter"), ("done", "Confirmed")]
 
     _sql_constraints = [
         (
@@ -64,11 +67,17 @@ class JointBuyingPurchaseOrder(models.Model):
         related="grouped_order_id.state", string="State", store=True
     )
 
+    purchase_state = fields.Selection(
+        selection=_PURCHASE_STATE, required=True, default="draft", track_visibility=True
+    )
+
     minimum_unit_amount = fields.Float(
         string="Minimum amount",
         related="grouped_order_id.minimum_unit_amount",
         store=True,
     )
+
+    is_purchase_ok = fields.Boolean(compute="_compute_is_purchase_ok")
 
     line_ids = fields.One2many(
         "joint.buying.purchase.order.line", inverse_name="order_id"
@@ -99,6 +108,18 @@ class JointBuyingPurchaseOrder(models.Model):
     )
 
     # Compute Section
+    @api.depends("amount_untaxed", "minimum_unit_amount", "line_ids")
+    def _compute_is_purchase_ok(self):
+        for order in self:
+            if not order.line_qty:
+                order.is_purchase_ok = False
+            elif order.minimum_unit_amount > order.amount_untaxed:
+                order.is_purchase_ok = False
+            elif order.amount_untaxed == 0.0:
+                order.is_purchase_ok = False
+            else:
+                order.is_purchase_ok = True
+
     @api.depends("grouped_order_id", "customer_id")
     def _compute_name(self):
         for order in self:
@@ -129,7 +150,7 @@ class JointBuyingPurchaseOrder(models.Model):
     @api.depends("line_ids")
     def _compute_line_qty(self):
         for order in self:
-            order.order_qty = len(order.line_ids)
+            order.line_qty = len(order.line_ids)
 
     @api.depends("line_ids.amount_untaxed")
     def _compute_amount(self):
@@ -157,3 +178,26 @@ class JointBuyingPurchaseOrder(models.Model):
             }
             res["line_ids"].append((0, 0, vals))
         return res
+
+    def action_confirm_purchase(self):
+        for order in self.filtered(lambda x: x.purchase_state == "draft"):
+            if not order.line_qty:
+                raise ValidationError(
+                    _("You can not confirm an order without any lines.")
+                )
+            elif not order.amount_untaxed:
+                raise ValidationError(
+                    _("You can not confirm an order with null amount.")
+                )
+            elif order.minimum_unit_amount > order.amount_untaxed:
+                raise ValidationError(
+                    _(
+                        "you cannot confirm an order for which you have"
+                        " not reached the minimum purchase amount."
+                    )
+                )
+            order.purchase_state = "done"
+
+    def action_draft_purchase(self):
+        for order in self.filtered(lambda x: x.purchase_state == "done"):
+            order.purchase_state = "draft"

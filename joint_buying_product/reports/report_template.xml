@@ -47,8 +47,8 @@
                                 <td class="text-right"><span t-field="line.product_id.default_code"/></td>
                                 <td class="text-left"><span t-field="line.product_id"/></td>
                                 <td class="text-left"><span t-field="line.price_unit"/></td>
-                                <td class="text-right"><span t-field="line.product_qty"/></td>
-                                <td class="text-right"><span t-field="line.product_id.uom_id"/></td>
+                                <td class="text-right"><span t-field="line.product_uom_qty"/></td>
+                                <td class="text-right"><span t-field="line.product_uom_id"/></td>
                                 <td class="text-right"><span t-field="line.amount_untaxed"/></td>
                             </tr>
                         </t>
@@ -86,12 +86,12 @@
                                 <th class="text-right" colspan="1"><span t-field="order.amount_untaxed"/></th>
                             </tr>
                             <t t-foreach="order.line_ids" t-as="line">
-                                <tr t-if="line.product_qty">
+                                <tr t-if="line.qty">
                                     <td class="text-right"><span t-field="line.product_id.default_code"/></td>
                                     <td class="text-left"><span t-field="line.product_id"/></td>
                                     <td class="text-left"><span t-field="line.price_unit"/></td>
-                                    <td class="text-right"><span t-field="line.product_qty"/></td>
-                                    <td class="text-right"><span t-field="line.product_id.uom_id"/></td>
+                                    <td class="text-right"><span t-field="line.qty"/></td>
+                                    <td class="text-right"><span t-field="line.product_uom_id"/></td>
                                     <td class="text-right"><span t-field="line.amount_untaxed"/></td>
                                 </tr>
                             </t>
