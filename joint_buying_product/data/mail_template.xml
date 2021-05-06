@@ -1,7 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <odoo>
-    <record id="email_template_purchase_order_grouped" model="mail.template">
-        <field name="name">Joint Buying Purchase Order: Send Order</field>
+
+    <record id="email_template_purchase_order_grouped_for_supplier" model="mail.template">
+        <field name="name">Joint Buying Purchase Order: Send Grouped Order to Supplier</field>
         <field name="model_id" ref="joint_buying_product.model_joint_buying_purchase_order_grouped"/>
         <field name="subject">Grouped Purchase Order (Ref ${object.name})</field>
         <field name="partner_to">${object.supplier_id.id}</field>
@@ -11,27 +12,44 @@
                     Dear ${object.supplier_id.name}
                     <br/><br/>
                     Here is in attachment a Grouped Purchase Order <strong>${object.name}</strong>
+                    <br/>
+                    <ul>
+                        <li>Total Amount Untaxed : <strong>${object.amount_untaxed} €</strong></li>
+                        <li>Place of deposit: <strong>${object.deposit_company_id.name} </strong>(${object.deposit_company_id.street} ${object.deposit_company_id.street2}, ${object.deposit_company_id.zip} ${object.deposit_company_id.city})</li>
+                        <li>Maximum date of Deposit: <strong>${object.deposit_date}</strong></li>
+                    </ul>
+                    <br/>
+                    If you see in this document, incorrect informations (product not for sale or out of stock, incorrect price, etc. ...) please contact your pivot activity <strong>${object.pivot_company_id.name}</strong> as soon as possible.
+                    <br/><br/>
+                    Have a nice day.
                 </p>
             </div>
         </field>
         <field name="report_template" ref="action_report_joint_buying_purchase_order_grouped"/>
-        <field name="report_name">RFQ_${(object.name or '').replace('/','_')}</field>
+        <field name="report_name">Global_purchase_order_${(object.name or '').replace('/','_')}</field>
         <field name="lang">${object.supplier_id.lang}</field>
         <field name="user_signature" eval="False"/>
         <field name="auto_delete" eval="True"/>
     </record>
-</odoo>
-<!--
-        <ul>
-            <li>Amount Untaxed : ${object.company_id.eshop_url}</li>
-            <li>Login: ${object.email}</li>
-            <li>Password: ${object.eshop_password}</li>
-        </ul>
 
-        amounting in <strong>${format_amount(object.amount_total, object.currency_id)}</strong>
-        from ${object.company_id.name}.
-        <br/><br/>
-        If you have any questions, please do not hesitate to contact us.
-        <br/><br/>
-        Best regards,
- -->
+    <record id="email_template_purchase_order_grouped_for_pivot_company" model="mail.template">
+        <field name="name">Joint Buying Purchase Order: Send Grouped Order to Pivot Company</field>
+        <field name="model_id" ref="joint_buying_product.model_joint_buying_purchase_order_grouped"/>
+        <field name="subject">Grouped Purchase Order (Ref ${object.name}) has just ended</field>
+        <field name="partner_to">${object.pivot_company_id.partner_id.id}</field>
+        <field name="body_html" type="html">
+            <div style="margin: 0px; padding: 0px;">
+                <p style="margin: 0px; padding: 0px; font-size: 13px;">
+                    Hello ${object.pivot_company_id.name}
+                    <br/><br/>
+                    The Grouped Purchase Order <strong>${object.name}</strong> for the supplier ${object.supplier_id.name} has just ended. Please check the ordered products and send the order to the supplier, by clicking on the link below.
+                </p>
+            </div>
+        </field>
+        <field name="report_template" ref="action_report_joint_buying_purchase_order_grouped"/>
+        <field name="lang">${object.pivot_company_id.partner_id.lang}</field>
+        <field name="user_signature" eval="False"/>
+        <field name="auto_delete" eval="True"/>
+    </record>
+
+</odoo>

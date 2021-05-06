@@ -2,15 +2,28 @@
 # @author: Sylvain LE GAL (https://twitter.com/legalsylvain)
 # License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl.html).
 
-from odoo import api, fields, models
+from odoo import _, api, fields, models
+from odoo.exceptions import ValidationError
 
 from odoo.addons import decimal_precision as dp
+from odoo.addons.joint_buying_base.models.res_partner import (
+    _JOINT_BUYING_PARTNER_CONTEXT,
+)
 
 
 class JointBuyingPurchaseOrder(models.Model):
     _name = "joint.buying.purchase.order"
     _description = "Joint Buying Purchase Order"
     _inherit = ["mail.thread", "mail.activity.mixin"]
+
+    _PURCHASE_STATE = [("draft", "To Enter"), ("done", "Confirmed")]
+
+    _PURCHASE_OK_SELECTION = [
+        ("no_line", "No Lines"),
+        ("no_minimum_amount", "Minimum Amount Not reached"),
+        ("no_qty", "No Quantity"),
+        ("ok", "OK"),
+    ]
 
     _sql_constraints = [
         (
@@ -50,6 +63,7 @@ class JointBuyingPurchaseOrder(models.Model):
         readonly=True,
         store=True,
         index=True,
+        context=_JOINT_BUYING_PARTNER_CONTEXT,
     )
 
     customer_id = fields.Many2one(
@@ -58,16 +72,25 @@ class JointBuyingPurchaseOrder(models.Model):
         required=True,
         readonly=True,
         index=True,
+        context=_JOINT_BUYING_PARTNER_CONTEXT,
     )
 
     state = fields.Selection(
         related="grouped_order_id.state", string="State", store=True
     )
 
+    purchase_state = fields.Selection(
+        selection=_PURCHASE_STATE, required=True, default="draft", track_visibility=True
+    )
+
     minimum_unit_amount = fields.Float(
         string="Minimum amount",
         related="grouped_order_id.minimum_unit_amount",
         store=True,
+    )
+
+    purchase_ok = fields.Selection(
+        selection=_PURCHASE_OK_SELECTION, compute="_compute_purchase_ok", store=True
     )
 
     line_ids = fields.One2many(
@@ -99,6 +122,18 @@ class JointBuyingPurchaseOrder(models.Model):
     )
 
     # Compute Section
+    @api.depends("amount_untaxed", "minimum_unit_amount", "line_ids")
+    def _compute_purchase_ok(self):
+        for order in self:
+            if not order.line_qty:
+                order.purchase_ok = "no_line"
+            elif order.minimum_unit_amount > order.amount_untaxed:
+                order.purchase_ok = "no_minimum_amount"
+            elif order.amount_untaxed == 0.0:
+                order.purchase_ok = "no_qty"
+            else:
+                order.purchase_ok = "ok"
+
     @api.depends("grouped_order_id", "customer_id")
     def _compute_name(self):
         for order in self:
@@ -129,7 +164,7 @@ class JointBuyingPurchaseOrder(models.Model):
     @api.depends("line_ids")
     def _compute_line_qty(self):
         for order in self:
-            order.order_qty = len(order.line_ids)
+            order.line_qty = len(order.line_ids)
 
     @api.depends("line_ids.amount_untaxed")
     def _compute_amount(self):
@@ -153,7 +188,31 @@ class JointBuyingPurchaseOrder(models.Model):
                 "product_uom_package_qty": product.uom_package_qty,
                 "product_uom_id": product.uom_id.id,
                 "product_weight": product.weight,
+                "purchase_qty": 0.0,
                 "price_unit": product.lst_price,
             }
             res["line_ids"].append((0, 0, vals))
         return res
+
+    def action_confirm_purchase(self):
+        for order in self.filtered(lambda x: x.purchase_state == "draft"):
+            if not order.line_qty:
+                raise ValidationError(
+                    _("You can not confirm an order without any lines.")
+                )
+            elif not order.amount_untaxed:
+                raise ValidationError(
+                    _("You can not confirm an order with null amount.")
+                )
+            elif order.minimum_unit_amount > order.amount_untaxed:
+                raise ValidationError(
+                    _(
+                        "you cannot confirm an order for which you have"
+                        " not reached the minimum purchase amount."
+                    )
+                )
+            order.purchase_state = "done"
+
+    def action_draft_purchase(self):
+        for order in self.filtered(lambda x: x.purchase_state == "done"):
+            order.purchase_state = "draft"

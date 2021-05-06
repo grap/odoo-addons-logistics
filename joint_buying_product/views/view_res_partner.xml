@@ -62,6 +62,8 @@
                             <field name="default_code"/>
                             <field name="name"/>
                             <field name="uom_id"/>
+                            <field name="uom_package_id"/>
+                            <field name="uom_package_qty"/>
                             <field name="lst_price"/>
                         </tree>
                     </field>
