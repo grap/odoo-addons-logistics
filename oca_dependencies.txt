@@ -2,3 +2,6 @@ web
 
 odoo-addons-extra       https://github.com/grap/odoo-addons-extra.git           12.0
 grap-odoo-incubator     https://github.com/grap/grap-odoo-incubator.git         12.0
+
+
+grap-odoo-incubator__product_uom_package     https://github.com/legalsylvain/grap-odoo-incubator.git         12.0-ADD-product_uom_package
