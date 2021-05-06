@@ -13,6 +13,7 @@ License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl.html).
                 <field name="grouped_order_id"/>
                 <field name="supplier_id"/>
                 <field name="customer_id"/>
+                <field name="state"/>
             </search>
         </field>
     </record>
@@ -28,6 +29,7 @@ License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl.html).
                 <field name="end_date"/>
                 <field name="deposit_date"/>
                 <field name="amount_untaxed" sum="Total Amount Untaxed"/>
+                <field name="state"/>
             </tree>
         </field>
     </record>
@@ -83,7 +85,7 @@ License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl.html).
                             <field name="start_date"/>
                             <field name="end_date"/>
                             <field name="deposit_date"/>
-                            <field name="minimum_unit_amount"/>
+                            <field name="minimum_unit_amount" attrs="{'invisible': [('minimum_unit_amount', '=', 0)]}"/>
                         </group>
                     </group>
                     <notebook colspan="4">
@@ -116,7 +118,7 @@ License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl.html).
         </field>
     </record>
 
-    <record id="action_joint_buying_purchase_order" model="ir.actions.act_window">
+    <record id="action_joint_buying_purchase_order_all_orders" model="ir.actions.act_window">
         <field name="name">Orders</field>
         <field name="type">ir.actions.act_window</field>
         <field name="res_model">joint.buying.purchase.order</field>
@@ -124,21 +126,30 @@ License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl.html).
         <field name="view_mode">tree,form</field>
     </record>
 
-    <menuitem id="menu_joint_buying_purchase_order"
+    <menuitem id="menu_joint_buying_purchase_order_all_orders"
         name="Orders"
-        parent="joint_buying_product.menu_orders"
-        action="action_joint_buying_purchase_order"
+        parent="joint_buying_product.menu_all_orders"
+        action="action_joint_buying_purchase_order_all_orders"
         groups="joint_buying_base.group_joint_buying_manager"
         sequence="12"
     />
 
+    <record id="action_joint_buying_purchase_order_my_orders" model="ir.actions.act_window">
+        <field name="name">My Orders</field>
+        <field name="type">ir.actions.act_window</field>
+        <field name="res_model">joint.buying.purchase.order</field>
+        <field name="view_type">form</field>
+        <field name="view_mode">tree,form</field>
+        <field name="domain">[('is_my_purchase', '=', True)]</field>
+    </record>
+
+    <menuitem id="menu_joint_buying_purchase_order_my_orders"
+        name="My Orders"
+        parent="joint_buying_product.menu_my_orders"
+        action="action_joint_buying_purchase_order_my_orders"
+        groups="joint_buying_base.group_joint_buying_manager"
+        sequence="12"
+    />
+
+
 </odoo>
-
-
-<!--                                         options='{
-                                            "fg_color": "
-                                                red:quantity_validation == 2 ;
-                                                orange:quantity_validation == 1;
-                                                green:quantity_validation == 0
-                                            "
-                                        }' -->
