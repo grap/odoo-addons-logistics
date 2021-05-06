@@ -68,7 +68,12 @@ class JointBuyingPurchaseOrderLine(models.Model):
         comodel_name="uom.uom", string="UoM", required=True, readonly=True
     )
 
-    product_weight = fields.Float(string="Product Weight", required=True, readonly=True)
+    product_weight = fields.Float(
+        string="Product Weight",
+        required=True,
+        readonly=True,
+        digits=dp.get_precision("Stock Weight"),
+    )
 
     has_same_uom = fields.Boolean(compute="_compute_has_same_uom", store="True")
 

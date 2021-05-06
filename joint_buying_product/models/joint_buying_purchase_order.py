@@ -49,14 +49,23 @@ class JointBuyingPurchaseOrder(models.Model):
         string="Supplier",
         readonly=True,
         store=True,
+        index=True,
     )
 
     customer_id = fields.Many2one(
-        comodel_name="res.partner", string="Customer", required=True, readonly=True
+        comodel_name="res.partner",
+        string="Customer",
+        required=True,
+        readonly=True,
+        index=True,
+    )
+
+    state = fields.Selection(
+        related="grouped_order_id.state", string="State", store=True
     )
 
     minimum_unit_amount = fields.Float(
-        string="Minimum Unit amount",
+        string="Minimum amount",
         related="grouped_order_id.minimum_unit_amount",
         store=True,
     )
@@ -77,7 +86,16 @@ class JointBuyingPurchaseOrder(models.Model):
     )
 
     total_weight = fields.Float(
-        string="Total Weight", compute="_compute_total_weight", store=True
+        string="Total Weight",
+        compute="_compute_total_weight",
+        store=True,
+        digits=dp.get_precision("Stock Weight"),
+    )
+
+    is_my_purchase = fields.Boolean(
+        string="Is My Purchase",
+        compute="_compute_is_my_purchase",
+        search="_search_is_my_purchase",
     )
 
     # Compute Section
@@ -88,6 +106,25 @@ class JointBuyingPurchaseOrder(models.Model):
                 order.grouped_order_id.name,
                 order.customer_id.joint_buying_company_id.code,
             )
+
+    def _compute_is_my_purchase(self):
+        current_customer_partner = self.env.user.company_id.joint_buying_partner_id
+        for order in self:
+            order.is_my_purchase = order.customer_id == current_customer_partner
+
+    def _search_is_my_purchase(self, operator, value):
+        current_customer_partner = self.env.user.company_id.joint_buying_partner_id
+        if (operator == "=" and value) or (operator == "!=" and not value):
+            search_operator = "in"
+        else:
+            search_operator = "not in"
+        return [
+            (
+                "id",
+                search_operator,
+                self.search([("customer_id", "=", current_customer_partner.id)]).ids,
+            )
+        ]
 
     @api.depends("line_ids")
     def _compute_line_qty(self):

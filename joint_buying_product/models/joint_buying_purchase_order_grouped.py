@@ -77,7 +77,10 @@ class JointBuyingPurchaseOrderGrouped(models.Model):
     )
 
     total_weight = fields.Float(
-        string="Total Weight", compute="_compute_total_weight", store=True
+        string="Total Weight",
+        compute="_compute_total_weight",
+        store=True,
+        digits=dp.get_precision("Stock Weight"),
     )
 
     summary_line_ids = fields.One2many(
