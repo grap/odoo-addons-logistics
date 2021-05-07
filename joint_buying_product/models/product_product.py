@@ -5,6 +5,15 @@
 from odoo import _, api, fields, models
 from odoo.exceptions import ValidationError
 
+from odoo.addons.joint_buying_base.models.res_partner import (
+    _JOINT_BUYING_PARTNER_CONTEXT,
+)
+
+_JOINT_BUYING_PRODUCT_CONTEXT = {
+    "joint_buying": 1,
+    "form_view_ref": "joint_buying_product.view_product_product_form_joint_buying",
+}
+
 
 class ProductProduct(models.Model):
     _inherit = ["product.product", "joint.buying.mixin"]
@@ -19,8 +28,9 @@ class ProductProduct(models.Model):
 
     joint_buying_partner_id = fields.Many2one(
         name="Joint Buying Supplier",
-        domain="[('is_joint_buying', '=', True), ('supplier', '=', True)]",
+        domain="[('supplier', '=', True)]",
         comodel_name="res.partner",
+        context=_JOINT_BUYING_PARTNER_CONTEXT,
     )
 
     display_joint_buying_propagation = fields.Boolean(
@@ -32,7 +42,10 @@ class ProductProduct(models.Model):
     )
 
     joint_buying_product_id = fields.Many2one(
-        string="Joint Buying Product", comodel_name="product.product", readonly=True
+        string="Joint Buying Product",
+        comodel_name="product.product",
+        readonly=True,
+        context=_JOINT_BUYING_PRODUCT_CONTEXT,
     )
 
     @api.constrains(

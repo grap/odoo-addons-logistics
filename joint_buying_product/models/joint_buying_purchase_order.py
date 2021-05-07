@@ -6,6 +6,9 @@ from odoo import _, api, fields, models
 from odoo.exceptions import ValidationError
 
 from odoo.addons import decimal_precision as dp
+from odoo.addons.joint_buying_base.models.res_partner import (
+    _JOINT_BUYING_PARTNER_CONTEXT,
+)
 
 
 class JointBuyingPurchaseOrder(models.Model):
@@ -60,6 +63,7 @@ class JointBuyingPurchaseOrder(models.Model):
         readonly=True,
         store=True,
         index=True,
+        context=_JOINT_BUYING_PARTNER_CONTEXT,
     )
 
     customer_id = fields.Many2one(
@@ -68,6 +72,7 @@ class JointBuyingPurchaseOrder(models.Model):
         required=True,
         readonly=True,
         index=True,
+        context=_JOINT_BUYING_PARTNER_CONTEXT,
     )
 
     state = fields.Selection(

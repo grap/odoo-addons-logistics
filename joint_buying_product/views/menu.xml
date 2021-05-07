@@ -13,8 +13,8 @@ License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl.html).
         groups="joint_buying_base.group_joint_buying_user"
     />
 
-    <menuitem id="menu_my_orders"
-        name="My Orders"
+    <menuitem id="menu_my_purchase"
+        name="My Purchases"
         parent="menu_orders"
         sequence="1"
         groups="joint_buying_base.group_joint_buying_user"

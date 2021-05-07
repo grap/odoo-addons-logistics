@@ -5,12 +5,17 @@
 from odoo import api, fields, models
 
 from odoo.addons import decimal_precision as dp
+from odoo.addons.joint_buying_base.models.res_partner import (
+    _JOINT_BUYING_PARTNER_CONTEXT,
+)
+
+from .product_product import _JOINT_BUYING_PRODUCT_CONTEXT
 
 
 class JointBuyingPurchaseOrderLine(models.Model):
     _name = "joint.buying.purchase.order.line"
     _description = "Joint Buying Purchase Order"
-    _order = "product_id"
+    _order = "supplier_id, product_id"
 
     _sql_constraints = [
         (
@@ -29,6 +34,26 @@ class JointBuyingPurchaseOrderLine(models.Model):
         ondelete="cascade",
     )
 
+    supplier_id = fields.Many2one(
+        related="order_id.supplier_id",
+        comodel_name="res.partner",
+        string="Supplier",
+        readonly=True,
+        index=True,
+        store=True,
+        context=_JOINT_BUYING_PARTNER_CONTEXT,
+    )
+
+    customer_id = fields.Many2one(
+        related="order_id.customer_id",
+        comodel_name="res.partner",
+        string="Customer",
+        readonly=True,
+        index=True,
+        store=True,
+        context=_JOINT_BUYING_PARTNER_CONTEXT,
+    )
+
     sequence = fields.Integer(string="Sequence", default=10)
 
     product_id = fields.Many2one(
@@ -39,6 +64,7 @@ class JointBuyingPurchaseOrderLine(models.Model):
         " ('purchase_ok', '=', True)"
         "]",
         required=True,
+        context=_JOINT_BUYING_PRODUCT_CONTEXT,
     )
 
     purchase_qty = fields.Float(
@@ -96,6 +122,12 @@ class JointBuyingPurchaseOrderLine(models.Model):
         string="Total Weight", compute="_compute_total_weight", store=True
     )
 
+    is_my_purchase = fields.Boolean(
+        string="Is My Purchase",
+        compute="_compute_is_my_purchase",
+        search="_search_is_my_purchase",
+    )
+
     # Compute Section
     @api.depends(
         "purchase_qty",
@@ -129,6 +161,25 @@ class JointBuyingPurchaseOrderLine(models.Model):
     def _compute_amount(self):
         for line in self:
             line.amount_untaxed = line.qty * line.price_unit
+
+    def _compute_is_my_purchase(self):
+        current_customer_partner = self.env.user.company_id.joint_buying_partner_id
+        for line in self:
+            line.is_my_purchase = line.customer_id == current_customer_partner
+
+    def _search_is_my_purchase(self, operator, value):
+        current_customer_partner = self.env.user.company_id.joint_buying_partner_id
+        if (operator == "=" and value) or (operator == "!=" and not value):
+            search_operator = "in"
+        else:
+            search_operator = "not in"
+        return [
+            (
+                "id",
+                search_operator,
+                self.search([("customer_id", "=", current_customer_partner.id)]).ids,
+            )
+        ]
 
     @api.onchange("purchase_qty")
     def onchange_purchase_qty(self):

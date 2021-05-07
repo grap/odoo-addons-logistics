@@ -33,6 +33,7 @@ class ResPartner(models.Model):
         name="Global Partner for joint Buying",
         domain="[('is_joint_buying', '=', True)]",
         comodel_name="res.partner",
+        context=_JOINT_BUYING_PARTNER_CONTEXT,
     )
 
     joint_buying_company_id = fields.Many2one(

@@ -27,7 +27,7 @@ License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl.html).
             <tree decoration-info="purchase_state == 'draft'">
                 <field name="name"/>
                 <field name="supplier_id"/>
-                <field name="customer_id"/>
+                <field name="customer_id" invisible="context.get('invisible_customer_id', False)"/>
                 <field name="start_date"/>
                 <field name="end_date"/>
                 <field name="deposit_date"/>
@@ -128,8 +128,8 @@ License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl.html).
         sequence="12"
     />
 
-    <record id="action_joint_buying_purchase_order_my_orders" model="ir.actions.act_window">
-        <field name="name">My Orders</field>
+    <record id="action_joint_buying_purchase_order_my_purchase_orders" model="ir.actions.act_window">
+        <field name="name">My Purchase Orders</field>
         <field name="type">ir.actions.act_window</field>
         <field name="res_model">joint.buying.purchase.order</field>
         <field name="view_type">form</field>
@@ -137,13 +137,14 @@ License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl.html).
         <field name="domain">[('is_my_purchase', '=', True)]</field>
         <field name="context">{
             'search_default_to_enter_by_customer': 1,
+            'invisible_customer_id': 1,
         }</field>
     </record>
 
-    <menuitem id="menu_joint_buying_purchase_order_my_orders"
-        name="My Orders"
-        parent="joint_buying_product.menu_my_orders"
-        action="action_joint_buying_purchase_order_my_orders"
+    <menuitem id="menu_joint_buying_purchase_order_my_purchase_orders"
+        name="My Purchase Orders"
+        parent="joint_buying_product.menu_my_purchase"
+        action="action_joint_buying_purchase_order_my_purchase_orders"
         groups="joint_buying_base.group_joint_buying_manager"
         sequence="12"
     />

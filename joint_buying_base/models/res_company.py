@@ -5,6 +5,9 @@
 from odoo import _, api, fields, models
 
 from odoo.addons.base.models.res_partner import ADDRESS_FIELDS
+from odoo.addons.joint_buying_base.models.res_partner import (
+    _JOINT_BUYING_PARTNER_CONTEXT,
+)
 
 
 class ResCompany(models.Model):
@@ -21,7 +24,10 @@ class ResCompany(models.Model):
     )
 
     joint_buying_partner_id = fields.Many2one(
-        comodel_name="res.partner", name="Related Partner for Joint Buyings"
+        comodel_name="res.partner",
+        name="Related Partner for Joint Buyings",
+        context=_JOINT_BUYING_PARTNER_CONTEXT,
+        readonly=True,
     )
 
     is_joint_buying_customer = fields.Boolean(
