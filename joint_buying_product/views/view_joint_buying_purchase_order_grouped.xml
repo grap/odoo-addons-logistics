@@ -29,7 +29,7 @@ License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl.html).
                 <field name="order_qty"/>
                 <field name="amount_untaxed" sum="Total Amount Untaxed"/>
                 <field name="state"/>
-                <field name="current_order_id"/>
+                <field name="current_order_id" invisible="1"/>
                 <button name="see_current_order" string="See My Order" type="object" attrs="{'invisible': [('current_order_id', '=', False)]}"/>
                 <button name="create_current_order" string="Create Order" type="object" attrs="{'invisible': ['|', ('current_order_id', '!=', False), ('state', '!=', 'in_progress')]}"/>
             </tree>
@@ -69,6 +69,8 @@ License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl.html).
                 <header>
                     <button name="action_send_email" string="Send by Email" type="object" class="oe_highlight" attrs="{'invisible': [('is_mail_sent', '=', True)]}"/>
                     <button name="action_send_email" string="Resend by Email" type="object" attrs="{'invisible': [('is_mail_sent', '=', False)]}"/>
+                    <button name="see_current_order" string="See My Order" type="object" attrs="{'invisible': [('current_order_id', '=', False)]}"/>
+                    <button name="create_current_order" string="Create Order" type="object" attrs="{'invisible': ['|', ('current_order_id', '!=', False), ('state', '!=', 'in_progress')]}"/>
                     <field name="state" widget="statusbar"/>
                 </header>
                 <sheet>
@@ -102,16 +104,18 @@ License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl.html).
                             <field name="deposit_date"/>
                             <field name="minimum_amount"/>
                             <field name="minimum_unit_amount"/>
+                            <field name="current_order_id" invisible="1"/>
                         </group>
                     </group>
                     <notebook colspan="4">
                         <page name="page_orders" string="Orders">
                             <field name="order_ids">
-                                <tree decoration-muted="amount_untaxed == 0">
+                                <tree decoration-info="purchase_state == 'draft'">
                                     <field name="name"/>
                                     <field name="customer_id"/>
                                     <field name="total_weight" sum="Total Weight"/>
                                     <field name="amount_untaxed" sum="Total Amount Untaxed"/>
+                                    <field name="purchase_state"/>
                                 </tree>
                             </field>
                         </page>

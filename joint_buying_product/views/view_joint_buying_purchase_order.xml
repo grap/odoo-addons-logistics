@@ -15,6 +15,8 @@ License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl.html).
                 <field name="customer_id"/>
                 <field name="purchase_state"/>
                 <field name="state"/>
+                <filter name="to_enter_by_customer" string="To Enter"
+                    domain="[('state', '=', 'in_progress'), ('purchase_state', '=', 'draft')]"/>
             </search>
         </field>
     </record>
@@ -22,7 +24,7 @@ License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl.html).
     <record id="view_joint_buying_purchase_order_tree" model="ir.ui.view">
         <field name="model">joint.buying.purchase.order</field>
         <field name="arch" type="xml">
-            <tree>
+            <tree decoration-info="purchase_state == 'draft'">
                 <field name="name"/>
                 <field name="supplier_id"/>
                 <field name="customer_id"/>
@@ -133,6 +135,9 @@ License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl.html).
         <field name="view_type">form</field>
         <field name="view_mode">tree,form</field>
         <field name="domain">[('is_my_purchase', '=', True)]</field>
+        <field name="context">{
+            'search_default_to_enter_by_customer': 1,
+        }</field>
     </record>
 
     <menuitem id="menu_joint_buying_purchase_order_my_orders"
