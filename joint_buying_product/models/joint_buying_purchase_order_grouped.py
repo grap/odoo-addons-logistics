@@ -120,32 +120,49 @@ class JointBuyingPurchaseOrderGrouped(models.Model):
 
     # On the Fly Compute Section
     def _compute_summary_line_ids(self):
+        def _get_keys(line):
+            return tuple(
+                [
+                    line.product_id.id,
+                    line.product_uom_id.id,
+                    line.product_weight,
+                    line.product_uom_package_id.id,
+                    line.price_unit,
+                ]
+            )
+
         for grouped_order in self:
-            res = []
-            res = {
-                x.id: {"product_id": x.id, "product_uom_qty": 0, "amount_untaxed": 0}
-                for x in grouped_order.mapped("order_ids.line_ids")
-                .filtered(lambda line: line.qty)
-                .mapped("product_id")
-                .sorted(lambda x: x.name)
-            }
+            res = {}
             lines = grouped_order.mapped("order_ids.line_ids").filtered(lambda x: x.qty)
             for line in lines:
-                res[line.product_id.id].update(
-                    {
-                        "grouped_order_id": grouped_order.id,
+                key = _get_keys(line)
+                if key not in res:
+                    res[key] = {
+                        "product_id": line.product_id.id,
+                        "product_uom_id": line.product_uom_id.id,
+                        "product_weight": line.product_weight,
+                        "product_uom_package_id": line.product_uom_package_id.id,
+                        "product_uom_package_qty": 0.0,
                         "price_unit": line.price_unit,
-                        "product_uom_qty": res[line.product_id.id]["product_uom_qty"]
-                        + line.qty,
-                        "amount_untaxed": res[line.product_id.id]["amount_untaxed"]
+                        "product_uom_qty": 0.0,
+                        "amount_untaxed": 0.0,
+                    }
+                res[key].update(
+                    {
+                        "product_uom_package_qty": res[key]["product_uom_package_qty"]
+                        + line.product_uom_package_qty,
+                        "product_uom_qty": res[key]["product_uom_qty"] + line.qty,
+                        "amount_untaxed": res[key]["amount_untaxed"]
                         + line.amount_untaxed,
                     }
                 )
             grouped_order.summary_line_ids = [(0, 0, v) for k, v in res.items()]
 
     def _compute_current_order_id(self):
-        # TODO
-        pass
+        for grouped_order in self:
+            grouped_order.current_order_id = grouped_order.order_ids.filtered(
+                lambda x: x.is_my_purchase
+            )
 
     # Overload Section
     def create(self, vals):
@@ -172,9 +189,6 @@ class JointBuyingPurchaseOrderGrouped(models.Model):
     # Custom Section
     @api.model
     def cron_check_state(self):
-        # print("=============== CRON =============")
-        # print("=============== cron_check_state =")
-        # print("=============== CRON =============")
         pass
 
     @api.model
@@ -253,3 +267,31 @@ class JointBuyingPurchaseOrderGrouped(models.Model):
             "target": "new",
             "context": ctx,
         }
+
+    def see_current_order(self):
+        result = self.env.ref(
+            "joint_buying_product.action_joint_buying_purchase_order_my_orders"
+        ).read()[0]
+        form_view = self.env.ref(
+            "joint_buying_product.view_joint_buying_purchase_order_form"
+        ).id
+        order_ids = self.mapped("current_order_id").ids
+        if len(order_ids) == 1:
+            result.update({"views": [(form_view, "form")], "res_id": order_ids[0]})
+        else:
+            result["domain"] = "[('id','in',%s)]" % (order_ids)
+        result["context"] = {
+            "form_view_initial_mode": "edit",
+            "force_detailed_view": "true",
+        }
+        return result
+
+    def create_current_order(self):
+        self.ensure_one()
+        Order = self.env["joint.buying.purchase.order"]
+        current_customer_partner = self.env.user.company_id.joint_buying_partner_id
+
+        vals = Order._prepare_order_vals(self.supplier_id, current_customer_partner)
+        vals.update({"grouped_order_id": self.id})
+        Order.create(vals)
+        return self.see_current_order()

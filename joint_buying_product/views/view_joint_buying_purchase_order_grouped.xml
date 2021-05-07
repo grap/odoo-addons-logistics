@@ -29,6 +29,9 @@ License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl.html).
                 <field name="order_qty"/>
                 <field name="amount_untaxed" sum="Total Amount Untaxed"/>
                 <field name="state"/>
+                <field name="current_order_id"/>
+                <button name="see_current_order" string="See My Order" type="object" attrs="{'invisible': [('current_order_id', '=', False)]}"/>
+                <button name="create_current_order" string="Create Order" type="object" attrs="{'invisible': ['|', ('current_order_id', '!=', False), ('state', '!=', 'in_progress')]}"/>
             </tree>
         </field>
     </record>

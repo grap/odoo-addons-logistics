@@ -35,9 +35,9 @@
                         <tr>
                             <th class="text-right">Code</th>
                             <th class="text-left">Product</th>
-                            <th class="text-left">Unit Price</th>
                             <th class="text-right">Quantity</th>
                             <th class="text-right">UoM</th>
+                            <th class="text-left">Unit Price</th>
                             <th class="text-right">Subtotal</th>
                         </tr>
                     </thead>
@@ -46,10 +46,10 @@
                             <tr>
                                 <td class="text-right"><span t-field="line.product_id.default_code"/></td>
                                 <td class="text-left"><span t-field="line.product_id"/></td>
-                                <td class="text-left"><span t-field="line.price_unit"/></td>
                                 <td class="text-right"><span t-field="line.product_uom_qty"/></td>
                                 <td class="text-right"><span t-field="line.product_uom_id"/></td>
-                                <td class="text-right"><span t-field="line.amount_untaxed"/></td>
+                                <td class="text-left"><span t-field="line.price_unit"/> €</td>
+                                <td class="text-right"><span t-field="line.amount_untaxed"/> €</td>
                             </tr>
                         </t>
                     </tbody>
@@ -72,9 +72,9 @@
                         <tr>
                             <th class="text-right">Code</th>
                             <th class="text-left">Product</th>
-                            <th class="text-left">Unit Price</th>
                             <th class="text-right">Quantity</th>
                             <th class="text-right">UoM</th>
+                            <th class="text-left">Unit Price</th>
                             <th class="text-right">Subtotal</th>
                         </tr>
                     </thead>
@@ -89,10 +89,10 @@
                                 <tr t-if="line.qty">
                                     <td class="text-right"><span t-field="line.product_id.default_code"/></td>
                                     <td class="text-left"><span t-field="line.product_id"/></td>
-                                    <td class="text-left"><span t-field="line.price_unit"/></td>
                                     <td class="text-right"><span t-field="line.qty"/></td>
                                     <td class="text-right"><span t-field="line.product_uom_id"/></td>
-                                    <td class="text-right"><span t-field="line.amount_untaxed"/></td>
+                                    <td class="text-left"><span t-field="line.price_unit"/> €</td>
+                                    <td class="text-right"><span t-field="line.amount_untaxed"/> €</td>
                                 </tr>
                             </t>
                         </t>

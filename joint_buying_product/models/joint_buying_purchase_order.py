@@ -15,6 +15,13 @@ class JointBuyingPurchaseOrder(models.Model):
 
     _PURCHASE_STATE = [("draft", "To Enter"), ("done", "Confirmed")]
 
+    _PURCHASE_OK_SELECTION = [
+        ("no_line", "No Lines"),
+        ("no_minimum_amount", "Minimum Amount Not reached"),
+        ("no_qty", "No Quantity"),
+        ("ok", "OK"),
+    ]
+
     _sql_constraints = [
         (
             "group_order_customer_uniq",
@@ -77,7 +84,9 @@ class JointBuyingPurchaseOrder(models.Model):
         store=True,
     )
 
-    is_purchase_ok = fields.Boolean(compute="_compute_is_purchase_ok")
+    purchase_ok = fields.Selection(
+        selection=_PURCHASE_OK_SELECTION, compute="_compute_purchase_ok", store=True
+    )
 
     line_ids = fields.One2many(
         "joint.buying.purchase.order.line", inverse_name="order_id"
@@ -109,16 +118,16 @@ class JointBuyingPurchaseOrder(models.Model):
 
     # Compute Section
     @api.depends("amount_untaxed", "minimum_unit_amount", "line_ids")
-    def _compute_is_purchase_ok(self):
+    def _compute_purchase_ok(self):
         for order in self:
             if not order.line_qty:
-                order.is_purchase_ok = False
+                order.purchase_ok = "no_line"
             elif order.minimum_unit_amount > order.amount_untaxed:
-                order.is_purchase_ok = False
+                order.purchase_ok = "no_minimum_amount"
             elif order.amount_untaxed == 0.0:
-                order.is_purchase_ok = False
+                order.purchase_ok = "no_qty"
             else:
-                order.is_purchase_ok = True
+                order.purchase_ok = "ok"
 
     @api.depends("grouped_order_id", "customer_id")
     def _compute_name(self):

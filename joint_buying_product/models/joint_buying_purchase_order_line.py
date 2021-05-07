@@ -10,6 +10,7 @@ from odoo.addons import decimal_precision as dp
 class JointBuyingPurchaseOrderLine(models.Model):
     _name = "joint.buying.purchase.order.line"
     _description = "Joint Buying Purchase Order"
+    _order = "product_id"
 
     _sql_constraints = [
         (

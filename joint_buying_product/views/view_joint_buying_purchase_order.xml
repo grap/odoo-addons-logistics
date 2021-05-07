@@ -36,29 +36,15 @@ License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl.html).
         </field>
     </record>
 
-    <record id="action_order_2_order_line" model="ir.actions.act_window">
-        <field name="name">Order Lines</field>
-        <field name="type">ir.actions.act_window</field>
-        <field name="res_model">joint.buying.purchase.order</field>
-        <field name="view_type">form</field>
-        <field name="view_mode">tree,form</field>
-        <field name="context">
-            {
-                "search_default_grouped_order_id": active_id,
-                "default_grouped_order_id": active_id,
-            }
-        </field>
-    </record>
-
     <record id="view_joint_buying_purchase_order_form" model="ir.ui.view">
         <field name="model">joint.buying.purchase.order</field>
         <field name="arch" type="xml">
             <form>
                 <header>
                     <button name="action_confirm_purchase" type="object" string="Confirm order" class="oe_highlight"
-                        attrs="{'invisible': ['|', '|', ('purchase_state', '!=', 'draft'), ('state', '!=', 'in_progress'), ('is_purchase_ok', '=', False)]}"/>
+                        attrs="{'invisible': ['|', '|', ('purchase_state', '!=', 'draft'), ('state', '!=', 'in_progress'), ('purchase_ok', '!=', 'ok')]}"/>
                     <button name="action_confirm_purchase" type="object" string="Confirm order"
-                        attrs="{'invisible': ['|', '|', ('purchase_state', '!=', 'draft'), ('state', '!=', 'in_progress'), ('is_purchase_ok', '=', True)]}"/>
+                        attrs="{'invisible': ['|', '|', ('purchase_state', '!=', 'draft'), ('state', '!=', 'in_progress'), ('purchase_ok', '=', 'ok')]}"/>
                     <button name="action_draft_purchase" type="object" string="Reset to Draft"
                         attrs="{'invisible': ['|', ('purchase_state', '!=', 'done'), ('state', '!=', 'in_progress')]}"/>
                     <field name="purchase_state" widget="statusbar"/>
@@ -66,16 +52,6 @@ License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl.html).
                 </header>
                 <sheet>
                     <div class="oe_button_box" name="button_box">
-                        <button type="action" class="oe_stat_button" icon="fa-list"
-                                name="%(joint_buying_product.action_order_2_order_line)d"
-                                attrs="{'invisible': [('line_qty', '=', 0)]}">
-                            <div class="o_form_field o_stat_info">
-                                <span class="o_stat_value">
-                                    <field name="line_qty" widget="integer"/>
-                                </span>
-                                <span class="o_stat_text">Order Lines</span>
-                            </div>
-                        </button>
                     </div>
                     <div class="oe_title">
                         <h1>
@@ -91,15 +67,14 @@ License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl.html).
                                 context="{'joint_buying':1, 'form_view_ref': 'joint_buying_base.view_res_partner_form_joint_buying'}"/>
                             <field name="total_weight"/>
                             <field name="line_qty" invisible="1"/>
-                            <field name="is_purchase_ok" invisible="1"/>
+                            <field name="purchase_ok" invisible="1"/>
                             <field name="amount_untaxed" invisible="1"/>
                         </group>
                         <group>
                             <field name="start_date"/>
                             <field name="end_date"/>
                             <field name="deposit_date"/>
-                            <field name="minimum_unit_amount" attrs="{'invisible': [('minimum_unit_amount', '=', 0)]}"
-                                decoration-warning="minimum_unit_amount &gt; amount_untaxed"/>
+                            <field name="minimum_unit_amount" attrs="{'invisible': [('minimum_unit_amount', '=', 0)]}"/>
                         </group>
                     </group>
                     <notebook colspan="4">
@@ -120,6 +95,9 @@ License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl.html).
                                     <field name="has_same_uom" invisible="1"/>
                                 </tree>
                             </field>
+                             <!--  -->
+                            <p class="alert alert-danger" role="alert"
+                                attrs="{'invisible': [('purchase_ok', '!=', 'no_minimum_amount')]}">You have not reached the minimum amount.</p>
                         </page>
                     </notebook>
                 </sheet>
