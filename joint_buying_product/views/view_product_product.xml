@@ -48,7 +48,7 @@ License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl.html).
             <xpath expr="//field[@name='description']/.." position="before">
                 <group name="joint_buying" string="Joint Buying">
                     <field name="display_joint_buying_propagation" invisible="1"/>
-                    <field name="joint_buying_partner_id" context="{'joint_buying': 1}"
+                    <field name="joint_buying_partner_id"
                             attrs="{'invisible': [('is_joint_buying', '=', False)], 'required': [('is_joint_buying', '=', True)]}"/>
                     <field name="joint_buying_product_id" attrs="{'invisible': [('display_joint_buying_propagation', '=', False)]}"/>
                 </group>

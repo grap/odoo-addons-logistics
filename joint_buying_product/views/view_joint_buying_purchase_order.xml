@@ -63,10 +63,8 @@ License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl.html).
                     <group>
                         <group>
                             <field name="grouped_order_id"/>
-                            <field name="supplier_id"
-                                context="{'joint_buying':1, 'form_view_ref': 'joint_buying_base.view_res_partner_form_joint_buying'}"/>
-                            <field name="customer_id"
-                                context="{'joint_buying':1, 'form_view_ref': 'joint_buying_base.view_res_partner_form_joint_buying'}"/>
+                            <field name="supplier_id"/>
+                            <field name="customer_id"/>
                             <field name="total_weight"/>
                             <field name="line_qty" invisible="1"/>
                             <field name="purchase_ok" invisible="1"/>
@@ -83,7 +81,7 @@ License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl.html).
                         <page name="lines" string="Order line">
                             <field name="line_ids" attrs="{'readonly': ['|', ('purchase_state', '=', 'done'), ('state', '!=', 'in_progress')]}">
                                 <tree editable="botttom" decoration-muted="qty == 0">
-                                    <field name="product_id" context="{'joint_buying': 1}"/>
+                                    <field name="product_id"/>
                                     <field name="purchase_qty" force_save="True"/>
                                     <field name="product_uom_package_id" force_save="True"
                                         attrs="{'invisible': [('has_same_uom', '=', True)]}"/>

@@ -12,6 +12,7 @@ from odoo.addons.joint_buying_base.models.res_partner import (
 _JOINT_BUYING_PRODUCT_CONTEXT = {
     "joint_buying": 1,
     "form_view_ref": "joint_buying_product.view_product_product_form_joint_buying",
+    "tree_view_ref": "joint_buying_product.view_product_product_tree_joint_buying",
 }
 
 

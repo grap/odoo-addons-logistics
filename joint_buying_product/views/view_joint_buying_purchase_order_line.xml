@@ -19,7 +19,7 @@ License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl.html).
         <field name="arch" type="xml">
             <tree editable="bottom">
                 <field name="supplier_id"/>
-                <field name="product_id" context="{'joint_buying': 1}" readonly="1"/>
+                <field name="product_id" readonly="1"/>
                 <field name="purchase_qty"/>
                 <field name="product_uom_package_id"
                     attrs="{'invisible': [('has_same_uom', '=', True)]}"/>
