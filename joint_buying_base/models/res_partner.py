@@ -154,15 +154,16 @@ class ResPartner(models.Model):
     @api.model
     def _get_fields_no_writable_joint_buying_company(self):
         """return fields that can not be written on joint_buying companies"""
-
         res = list(ADDRESS_FIELDS)
-        res += ["name", "is_joint_buying", "company_id", "is_company", "email", "phone"]
+        res += [
+            "name",
+            "is_joint_buying",
+            "company_id",
+            "is_company",
+            "email",
+            "phone",
+            "mobile",
+            "website",
+            "vat",
+        ]
         return res
-
-    # delay = fields.Integer(
-    #     default=0, string="Timeframes for preparations before order."
-    # )
-    # period = fields.Integer(default=0, string="Period between each order")
-    # init_period_date = fields.Date(
-    #     string="Initial date to start the periods between each order."
-    # )

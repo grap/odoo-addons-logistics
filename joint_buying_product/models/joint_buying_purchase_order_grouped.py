@@ -229,15 +229,11 @@ class JointBuyingPurchaseOrderGrouped(models.Model):
         return vals
 
     @api.multi
-    def action_send_email(self):
-        """
-        This function opens a window to compose an email, with the edi purchase template
-        message loaded by default
-        """
+    def action_send_email_for_supplier(self):
         self.ensure_one()
         IrModelData = self.env["ir.model.data"]
         template_id = IrModelData.get_object_reference(
-            "joint_buying_product", "email_template_purchase_order_grouped"
+            "joint_buying_product", "email_template_purchase_order_grouped_for_supplier"
         )[1]
         compose_form_id = IrModelData.get_object_reference(
             "mail", "email_compose_message_wizard_form"
@@ -256,6 +252,40 @@ class JointBuyingPurchaseOrderGrouped(models.Model):
             }
         )
 
+        return {
+            "name": _("Compose Email"),
+            "type": "ir.actions.act_window",
+            "view_type": "form",
+            "view_mode": "form",
+            "res_model": "mail.compose.message",
+            "views": [(compose_form_id, "form")],
+            "view_id": compose_form_id,
+            "target": "new",
+            "context": ctx,
+        }
+
+    def action_send_email_for_pivot(self):
+        self.ensure_one()
+        IrModelData = self.env["ir.model.data"]
+        template_id = IrModelData.get_object_reference(
+            "joint_buying_product",
+            "email_template_purchase_order_grouped_for_pivot_company",
+        )[1]
+        compose_form_id = IrModelData.get_object_reference(
+            "mail", "email_compose_message_wizard_form"
+        )[1]
+        ctx = dict(self.env.context) or {}
+        ctx.update(
+            {
+                "model_description": _("Grouped Purchase Order"),
+                "default_model": "joint.buying.purchase.order.grouped",
+                "default_res_id": self.ids[0],
+                "default_use_template": True,
+                "default_template_id": template_id,
+                "default_composition_mode": "comment",
+                "force_email": True,
+            }
+        )
         return {
             "name": _("Compose Email"),
             "type": "ir.actions.act_window",
@@ -295,3 +325,10 @@ class JointBuyingPurchaseOrderGrouped(models.Model):
         vals.update({"grouped_order_id": self.id})
         Order.create(vals)
         return self.see_current_order()
+
+    def get_mail_url(self):
+        self.ensure_one()
+        # res = self.env["ir.config_parameter"].sudo().get_param("web.base.url")
+        # action = self.env(
+        #     "joint_buying_product.action_joint_buying_purchase_order_grouped"
+        # )
