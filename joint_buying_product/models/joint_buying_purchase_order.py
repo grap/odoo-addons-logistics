@@ -188,6 +188,7 @@ class JointBuyingPurchaseOrder(models.Model):
                 "product_uom_package_qty": product.uom_package_qty,
                 "product_uom_id": product.uom_id.id,
                 "product_weight": product.weight,
+                "purchase_qty": 0.0,
                 "price_unit": product.lst_price,
             }
             res["line_ids"].append((0, 0, vals))

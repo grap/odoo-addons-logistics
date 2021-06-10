@@ -45,7 +45,7 @@
         <field name="company_id" ref="joint_buying_base.company_3PP"/>
         <field name="customer" eval="False"/>
         <field name="supplier" eval="True"/>
-        <field name="joint_buying_global_partner_id"  model="res.partner" eval="obj().env.ref('joint_buying_base.company_CHO').joint_buying_global_partner_id.id"/>
+        <field name="joint_buying_global_partner_id"  model="res.partner" eval="obj().env.ref('joint_buying_base.company_CHO').joint_buying_partner_id.id"/>
     </record>
 
     <record id="supplier_ELD_at_3PP" model="res.partner">
@@ -53,7 +53,7 @@
         <field name="company_id" ref="joint_buying_base.company_3PP"/>
         <field name="customer" eval="False"/>
         <field name="supplier" eval="True"/>
-        <field name="joint_buying_global_partner_id"  model="res.partner" eval="obj().env.ref('joint_buying_base.company_ELD').joint_buying_global_partner_id.id"/>
+        <field name="joint_buying_global_partner_id"  model="res.partner" eval="obj().env.ref('joint_buying_base.company_ELD').joint_buying_partner_id.id"/>
     </record>
 
     <record id="supplier_fumet_dombes_at_3PP" model="res.partner">

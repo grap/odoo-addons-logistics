@@ -300,7 +300,7 @@ class JointBuyingPurchaseOrderGrouped(models.Model):
 
     def see_current_order(self):
         result = self.env.ref(
-            "joint_buying_product.action_joint_buying_purchase_order_my_orders"
+            "joint_buying_product.action_joint_buying_purchase_order_my_purchase_orders"
         ).read()[0]
         form_view = self.env.ref(
             "joint_buying_product.view_joint_buying_purchase_order_form"
