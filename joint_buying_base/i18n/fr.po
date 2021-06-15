@@ -6,8 +6,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Odoo Server 12.0\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2021-02-26 11:19+0000\n"
-"PO-Revision-Date: 2021-02-26 11:19+0000\n"
+"POT-Creation-Date: 2021-06-13 20:39+0000\n"
+"PO-Revision-Date: 2021-06-13 20:39+0000\n"
 "Last-Translator: <>\n"
 "Language-Team: \n"
 "MIME-Version: 1.0\n"
@@ -16,7 +16,7 @@ msgstr ""
 "Plural-Forms: \n"
 
 #. module: joint_buying_base
-#: model_terms:ir.ui.view,arch_db:joint_buying_base.view_res_partner_form
+#: model_terms:ir.ui.view,arch_db:joint_buying_base.view_res_partner_form_joint_buying
 msgid "<b>Company Address:</b>"
 msgstr "<b>Adresse de la société:</b>"
 
@@ -33,9 +33,16 @@ msgid "Activity that will serve as a deposit for this supplier"
 msgstr "Société qui servira de dépôt pour ce fournisseur"
 
 #. module: joint_buying_base
-#: model_terms:ir.ui.view,arch_db:joint_buying_base.view_res_partner_form
+#: model_terms:ir.ui.view,arch_db:joint_buying_base.view_res_partner_form_joint_buying
 msgid "Address"
 msgstr "Adresse"
+
+#. module: joint_buying_base
+#: model:ir.model.fields,field_description:joint_buying_base.field_res_company__joint_buying_auto_subscribe
+#: model:ir.model.fields,field_description:joint_buying_base.field_res_config_settings__joint_buying_auto_subscribe
+#: model:ir.model.fields,field_description:joint_buying_base.field_res_users__joint_buying_auto_subscribe
+msgid "Automatic Supplier Subscription"
+msgstr "Abonnement automatique au fournisseur"
 
 #. module: joint_buying_base
 #: model:res.partner.category,name:joint_buying_base.partner_category_bakery
@@ -58,7 +65,7 @@ msgid "Chocolate Factory"
 msgstr "Chocolaterie"
 
 #. module: joint_buying_base
-#: model_terms:ir.ui.view,arch_db:joint_buying_base.view_res_partner_form
+#: model_terms:ir.ui.view,arch_db:joint_buying_base.view_res_partner_form_joint_buying
 msgid "City"
 msgstr "Ville"
 
@@ -66,6 +73,16 @@ msgstr "Ville"
 #: model:ir.model,name:joint_buying_base.model_res_company
 msgid "Companies"
 msgstr "Sociétés"
+
+#. module: joint_buying_base
+#: model_terms:ir.ui.view,arch_db:joint_buying_base.view_res_config_settings_form
+msgid "Company Dependant Settings"
+msgstr "Paramétrage dépendant de la société"
+
+#. module: joint_buying_base
+#: model:ir.model,name:joint_buying_base.model_res_config_settings
+msgid "Config Settings"
+msgstr "Paramètres de config"
 
 #. module: joint_buying_base
 #: model:ir.ui.menu,name:joint_buying_base.menu_configuration
@@ -78,7 +95,7 @@ msgid "Contact"
 msgstr ""
 
 #. module: joint_buying_base
-#: model:ir.actions.act_window,name:joint_buying_base.action_res_partner_category_2
+#: model:ir.actions.act_window,name:joint_buying_base.action_res_partner_category
 #: model:ir.ui.menu,name:joint_buying_base.menu_res_partner_category
 msgid "Contact Tags"
 msgstr "Étiquettes de contact"
@@ -90,14 +107,19 @@ msgid "Contacts"
 msgstr ""
 
 #. module: joint_buying_base
-#: model_terms:ir.ui.view,arch_db:joint_buying_base.view_res_partner_form
+#: model_terms:ir.ui.view,arch_db:joint_buying_base.view_res_partner_form_joint_buying
 msgid "Country"
 msgstr "Pays"
 
 #. module: joint_buying_base
-#: model_terms:ir.ui.view,arch_db:joint_buying_base.view_res_partner_form
+#: model_terms:ir.ui.view,arch_db:joint_buying_base.view_res_partner_form_joint_buying
 msgid "Customer"
 msgstr "Client"
+
+#. module: joint_buying_base
+#: model:res.partner.category,name:joint_buying_base.partner_category_delicatessen
+msgid "Delicatessen"
+msgstr "Charcuterie"
 
 #. module: joint_buying_base
 #: model:ir.model.fields,field_description:joint_buying_base.field_res_partner__joint_buying_deposit_company_id
@@ -109,11 +131,6 @@ msgstr "Société dépôt"
 #: model:ir.model.fields,field_description:joint_buying_base.field_joint_buying_mixin__display_name
 msgid "Display Name"
 msgstr "Nom affiché"
-
-#. module: joint_buying_base
-#: model_terms:ir.ui.view,arch_db:joint_buying_base.view_res_partner_tree
-msgid "Fav."
-msgstr ""
 
 #. module: joint_buying_base
 #: model:res.partner.category,name:joint_buying_base.partner_category_fishmonger
@@ -134,12 +151,6 @@ msgid "ID"
 msgstr ""
 
 #. module: joint_buying_base
-#: model:ir.model.fields,field_description:joint_buying_base.field_res_partner__is_favorite
-#: model:ir.model.fields,field_description:joint_buying_base.field_res_users__is_favorite
-msgid "Is Favorite Vendor"
-msgstr "Est un fournisseur favori"
-
-#. module: joint_buying_base
 #: model:ir.model.fields,field_description:joint_buying_base.field_res_company__is_joint_buying_customer
 msgid "Is a Customer"
 msgstr "Est un Client"
@@ -150,15 +161,21 @@ msgid "Is a Vendor"
 msgstr "Est un Fournisseur"
 
 #. module: joint_buying_base
+#: model_terms:ir.ui.view,arch_db:joint_buying_base.view_res_config_settings_form
+msgid "Joint Buying"
+msgstr "Achat Groupé"
+
+#. module: joint_buying_base
 #: model:ir.model.fields,field_description:joint_buying_base.field_res_partner__joint_buying_company_id
 #: model:ir.model.fields,field_description:joint_buying_base.field_res_users__joint_buying_company_id
 msgid "Joint Buying Company"
 msgstr "Société achat groupé"
 
 #. module: joint_buying_base
-#: model:ir.model.fields,field_description:joint_buying_base.field_res_company__joint_buying_favorite_partner_ids
-msgid "Joint Buying Favorite Partner"
-msgstr ""
+#: model:ir.model.fields,field_description:joint_buying_base.field_res_partner__joint_buying_global_partner_id
+#: model:ir.model.fields,field_description:joint_buying_base.field_res_users__joint_buying_global_partner_id
+msgid "Joint Buying Global Partner"
+msgstr "Fournisseur d'achat groupé"
 
 #. module: joint_buying_base
 #: model:ir.model,name:joint_buying_base.model_joint_buying_mixin
@@ -171,10 +188,22 @@ msgid "Joint Buying Partner"
 msgstr "Partneraire Achats Groupés"
 
 #. module: joint_buying_base
+#: model:ir.model.fields,field_description:joint_buying_base.field_res_partner__joint_buying_subscribed_company_ids
+#: model:ir.model.fields,field_description:joint_buying_base.field_res_users__joint_buying_subscribed_company_ids
+msgid "Joint Buying Subscribed Company"
+msgstr "Sociétés abonnées aux achats groupés"
+
+#. module: joint_buying_base
+#: model:ir.model.fields,field_description:joint_buying_base.field_res_company__joint_buying_subscribed_partner_ids
+msgid "Joint Buying Subscribed Partner"
+msgstr "Partenaire abonné aux achats groupés"
+
+#. module: joint_buying_base
 #: model:ir.module.category,name:joint_buying_base.module_category_joint_buying
 #: model:ir.ui.menu,name:joint_buying_base.menu_root
 #: model_terms:ir.ui.view,arch_db:joint_buying_base.view_res_company_form
-#: model_terms:ir.ui.view,arch_db:joint_buying_base.view_res_partner_form
+#: model_terms:ir.ui.view,arch_db:joint_buying_base.view_res_partner_form_joint_buying
+#: model_terms:ir.ui.view,arch_db:joint_buying_base.view_res_users_form
 msgid "Joint Buyings"
 msgstr "Achats Groupés"
 
@@ -205,19 +234,36 @@ msgid "Poultry Shop"
 msgstr "Volaillerie"
 
 #. module: joint_buying_base
-#: model_terms:ir.ui.view,arch_db:joint_buying_base.view_res_partner_form
+#: model:ir.actions.act_window,name:joint_buying_base.action_res_config_settings
+#: model:ir.ui.menu,name:joint_buying_base.menu_res_config_settings
+msgid "Settings"
+msgstr "Configuration"
+
+#. module: joint_buying_base
+#: model_terms:ir.ui.view,arch_db:joint_buying_base.view_res_partner_form_joint_buying
 msgid "State"
 msgstr "État"
 
 #. module: joint_buying_base
-#: model_terms:ir.ui.view,arch_db:joint_buying_base.view_res_partner_form
+#: model_terms:ir.ui.view,arch_db:joint_buying_base.view_res_partner_form_joint_buying
 msgid "Street 2..."
 msgstr "Rue 2..."
 
 #. module: joint_buying_base
-#: model_terms:ir.ui.view,arch_db:joint_buying_base.view_res_partner_form
+#: model_terms:ir.ui.view,arch_db:joint_buying_base.view_res_partner_form_joint_buying
 msgid "Street..."
 msgstr "Rue..."
+
+#. module: joint_buying_base
+#: model:ir.model.fields,field_description:joint_buying_base.field_res_partner__joint_buying_is_subscribed
+#: model:ir.model.fields,field_description:joint_buying_base.field_res_users__joint_buying_is_subscribed
+msgid "Subscribed"
+msgstr "Abonné"
+
+#. module: joint_buying_base
+#: model_terms:ir.ui.view,arch_db:joint_buying_base.view_res_config_settings_form
+msgid "TODO"
+msgstr ""
 
 #. module: joint_buying_base
 #: model:res.groups,name:joint_buying_base.group_joint_buying_user
@@ -225,46 +271,61 @@ msgid "User"
 msgstr "Utilisateur"
 
 #. module: joint_buying_base
+#: model:ir.model,name:joint_buying_base.model_res_users
+msgid "Users"
+msgstr "Utilisateurs"
+
+#. module: joint_buying_base
 #: model:res.partner.category,name:joint_buying_base.partner_category_vegetable
 msgid "Vegetable"
 msgstr "Légumes"
 
 #. module: joint_buying_base
-#: model_terms:ir.ui.view,arch_db:joint_buying_base.view_res_partner_form
+#: model_terms:ir.ui.view,arch_db:joint_buying_base.view_res_partner_form_joint_buying
 msgid "Vendor"
 msgstr "Fournisseur"
 
 #. module: joint_buying_base
-#: code:addons/joint_buying_base/models/res_partner.py:47
+#: code:addons/joint_buying_base/models/res_partner.py:95
 #, python-format
 msgid "You can not create a customer joint buying partner. You should ask to you ERP manager to do it via the creation of a company."
 msgstr "Vous ne opuvez pas créer un client pour les achats groupés. Vous devez demander au responsable de l'ERP de le faire, via la création d'une société."
 
 #. module: joint_buying_base
-#: code:addons/joint_buying_base/models/joint_buying_mixin.py:31
+#: code:addons/joint_buying_base/models/joint_buying_mixin.py:32
 #, python-format
 msgid "You can not create an item for 'joint buying' that has a company field defined."
 msgstr "Vous ne pouvez pas créer un élément pour les 'achats groupés' qui est une société définie."
 
 #. module: joint_buying_base
-#: code:addons/joint_buying_base/models/res_partner.py:94
+#: code:addons/joint_buying_base/models/res_partner.py:147
 #, python-format
 msgid "You can not delete this partner because it is related to a company for joint Buyings. Please archive it."
 msgstr "Vous ne pouvez pas supprimer ce contact, car il est lié à une société pour les achats groupés. Vous pouvez simplement l'archiver."
 
 #. module: joint_buying_base
-#: code:addons/joint_buying_base/models/res_partner.py:83
+#: code:addons/joint_buying_base/models/res_partner.py:80
+#, python-format
+msgid "You can not link the supplier %s to the Joint Buying partner %s because you have other suppliers that are still related to him : \n"
+"\n"
+" %s"
+msgstr "Vous ne pouvez pas lier le fournisseur %s au fournisseur d'achats groupés %s car celui est déjà relié à d'autres de vos fournisseurs : \n"
+"\n"
+" %s"
+
+#. module: joint_buying_base
+#: code:addons/joint_buying_base/models/res_partner.py:136
 #, python-format
 msgid "You can not update this partner this way you should ask to your ERP Manager to update this field via the related company."
 msgstr "Vous ne pouvez pas mettre à jour ce contact de cette manière, vous devez demander au responsable de votre ERP de mettre à jour les données, via la société associée."
 
 #. module: joint_buying_base
-#: model_terms:ir.ui.view,arch_db:joint_buying_base.view_res_partner_form
+#: model_terms:ir.ui.view,arch_db:joint_buying_base.view_res_partner_form_joint_buying
 msgid "ZIP"
 msgstr "Code postal"
 
 #. module: joint_buying_base
-#: code:addons/joint_buying_base/models/res_company.py:35
+#: code:addons/joint_buying_base/models/res_company.py:47
 #, python-format
 msgid "{} (Joint Buyings)"
 msgstr "{} (Achat Groupés)"

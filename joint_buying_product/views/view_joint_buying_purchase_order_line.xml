@@ -44,7 +44,7 @@ License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl.html).
     </record>
 
     <menuitem id="menu_joint_buying_purchase_order_my_purchase_lines"
-        name="My Purchase Lines Orders"
+        name="My Purchase Lines"
         parent="joint_buying_product.menu_my_purchase"
         action="action_joint_buying_purchase_order_line_my_purchase_lines"
         groups="joint_buying_base.group_joint_buying_manager"
