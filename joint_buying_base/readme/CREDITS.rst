@@ -4,4 +4,4 @@ The development of this module has been financially supported by:
 
 * La Région Auvergne Rhône-Alpes
 
-.. figure:: ../../static/logo_region_auvergne_rhone_alpes.png
+.. figure:: ../static/description/logo_region_auvergne_rhone_alpes.png
