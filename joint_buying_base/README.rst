@@ -35,29 +35,6 @@ Add the possibility to have "Joint Buying" partners in a specific menu entry.
 .. contents::
    :local:
 
-Known issues / Roadmap
-======================
-
-TODO
-~~~~
-
-- retravailler sur le ``res.partner``." activity_key"
-- mettre un message d'avertissement quand on créé un client frs, en disant attention, le nouveau client frs ne doit pas faire partie de la coopérative.
-
-- overwriter la vue partner.
-
-EN COURS
-~~~~~~~~
-
-
-
-Done
-~~~~
-
-
-- pouvoir créer un client / frs depuis une société
-- Faire un nouveau logo d'accueil, SANS TEXTE.
-
 Bug Tracker
 ===========
 
@@ -75,6 +52,8 @@ Authors
 ~~~~~~~
 
 * GRAP
+* La Jardinière
+* Hashbang
 
 Contributors
 ~~~~~~~~~~~~
@@ -86,6 +65,12 @@ Other credits
 ~~~~~~~~~~~~~
 
 * Module Icon come from https://icon-icons.com/fr/icone/groupe/129531
+
+The development of this module has been financially supported by:
+
+* La Région Auvergne Rhône-Alpes
+
+.. figure:: https://raw.githubusercontent.com/grap/odoo-addons-logistics/12.0/joint_buying_base/static/logo_region_auvergne_rhone_alpes.png
 
 Maintainers
 ~~~~~~~~~~~
