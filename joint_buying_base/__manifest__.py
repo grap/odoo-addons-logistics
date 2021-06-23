@@ -5,8 +5,8 @@
     "name": "Joint Buying - Base",
     "version": "12.0.1.1.2",
     "category": "GRAP - Logistics",
-    "author": "GRAP",
-    "website": "http://www.grap.coop",
+    "author": "GRAP,La Jardinière,Hashbang",
+    "website": "https://github.com/grap/odoo-addons-logistics/",
     "license": "AGPL-3",
     "depends": ["base", "mail", "name_search_reset_res_partner"],
     "data": [
