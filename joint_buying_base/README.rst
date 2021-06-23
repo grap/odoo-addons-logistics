@@ -70,7 +70,7 @@ The development of this module has been financially supported by:
 
 * La Région Auvergne Rhône-Alpes
 
-.. figure:: https://raw.githubusercontent.com/grap/odoo-addons-logistics/12.0/joint_buying_base/static/logo_region_auvergne_rhone_alpes.png
+.. figure:: https://raw.githubusercontent.com/grap/odoo-addons-logistics/12.0/joint_buying_base/static/description/logo_region_auvergne_rhone_alpes.png
 
 Maintainers
 ~~~~~~~~~~~
