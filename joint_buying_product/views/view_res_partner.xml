@@ -1,0 +1,75 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<odoo>
+
+    <record id="action_partner_2_wizard_create_order" model="ir.actions.act_window">
+        <field name="name">Create Order</field>
+        <field name="type">ir.actions.act_window</field>
+        <field name="res_model">joint.buying.wizard.create.order</field>
+        <field name="view_type">form</field>
+        <field name="view_mode">form</field>
+        <field name="target">new</field>
+    </record>
+
+    <record id="view_res_partner" model="ir.ui.view">
+        <field name="model">res.partner</field>
+        <field name="inherit_id" ref="joint_buying_base.view_res_partner_form_joint_buying"/>
+        <field name="groups_id" eval="[(4, ref('joint_buying_base.group_joint_buying_user'))]"/>
+        <field name="arch" type="xml">
+            <div name="button_box" position="inside">
+                <button type="action" class="oe_stat_button" icon="fa-list"
+                        name="%(joint_buying_product.action_res_partner_2_product_product)d"
+                        attrs="{'invisible': [('supplier', '=', False)]}">
+                    <div class="o_form_field o_stat_info">
+                        <span class="o_stat_value">
+                            <field name="joint_buying_product_qty" widget="integer"/>
+                        </span>
+                        <span class="o_stat_text">Products</span>
+                    </div>
+                </button>
+            </div>
+            <field name="joint_buying_deposit_company_id" position="after">
+                <field name="joint_buying_minimum_amount" attrs="{'invisible': [('supplier', '=', False)]}"/>
+                <field name="joint_buying_minimum_unit_amount" attrs="{'invisible': [('supplier', '=', False)]}"/>
+                <field name="joint_buying_frequency" attrs="{'invisible': [('supplier', '=', False)]}"/>
+            </field>
+            <field name="joint_buying_deposit_company_id" position="attributes">
+                <attribute name="attrs">{'invisible': [('supplier', '=', False)], 'required': [('joint_buying_frequency', '!=', 0)]}</attribute>
+            </field>
+            <field name="joint_buying_pivot_company_id" position="attributes">
+                <attribute name="attrs">{'invisible': [('supplier', '=', False)], 'required': [('joint_buying_frequency', '!=', 0)]}</attribute>
+            </field>
+
+            <group name="vendor" position="after">
+                <group string="Recurring Orders" attrs="{'invisible': ['|', ('supplier', '=', False), ('joint_buying_frequency', '=', 0)]}">
+                    <field name="joint_buying_next_start_date" string="Order Start Date"
+                        attrs="{'required': [('joint_buying_frequency', '!=', 0)]}"/>
+                    <field name="joint_buying_next_end_date" string="Order End Date"
+                        attrs="{'required': [('joint_buying_frequency', '!=', 0)]}"/>
+                    <field name="joint_buying_next_deposit_date" string="Deposit Date"
+                        attrs="{'required': [('joint_buying_frequency', '!=', 0)]}"/>
+                </group>
+            </group>
+            <xpath expr="//header" position="inside">
+                <button type="action" class="oe_stat_button" string="Generate Joint Buying Purchase"
+                        name="%(joint_buying_product.action_partner_2_wizard_create_order)d"
+                        attrs="{'invisible': [('supplier', '=', False)]}" />
+            </xpath>
+            <group name="group_joint_buying" position="after">
+                <group>
+                    <field name="joint_buying_product_ids" nolabel="1">
+                        <tree editable="bottom">
+                            <field name="default_code"/>
+                            <field name="name"/>
+                            <field name="uom_id"/>
+                            <field name="uom_package_id"/>
+                            <field name="uom_package_qty"/>
+                            <field name="lst_price"/>
+                        </tree>
+                    </field>
+                </group>
+            </group>
+        </field>
+    </record>
+
+</odoo>

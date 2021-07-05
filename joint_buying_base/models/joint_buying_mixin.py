@@ -42,7 +42,7 @@ class JointBuyingMixin(models.AbstractModel):
     def create(self, vals):
         if "joint_buying" not in vals.keys():
             if bool(self.env.context.get("joint_buying", False)):
-                vals.update({"joint_buying": True, "company_id": False})
+                vals.update({"is_joint_buying": True, "company_id": False})
         return super().create(vals)
 
     # Overload the private _search function:

@@ -5,21 +5,29 @@
 from odoo import _, api, fields, models
 
 from odoo.addons.base.models.res_partner import ADDRESS_FIELDS
+from odoo.addons.joint_buying_base.models.res_partner import (
+    _JOINT_BUYING_PARTNER_CONTEXT,
+)
 
 
 class ResCompany(models.Model):
     _inherit = "res.company"
 
-    joint_buying_favorite_partner_ids = fields.Many2many(
-        comodel_name="res.partner", name="Favorite Vendors for Joint Buyings"
+    joint_buying_subscribed_partner_ids = fields.Many2many(
+        relation="res_company_res_partner_subscribed_rel",
+        comodel_name="res.partner",
+        name="Suppliers with subscription",
     )
 
-    joint_buying_auto_favorite = fields.Boolean(
-        string="Automatic Bookmarking", default=True
+    joint_buying_auto_subscribe = fields.Boolean(
+        string="Automatic Supplier Subscription", default=True
     )
 
     joint_buying_partner_id = fields.Many2one(
-        comodel_name="res.partner", name="Related Partner for Joint Buyings"
+        comodel_name="res.partner",
+        name="Related Partner for Joint Buyings",
+        context=_JOINT_BUYING_PARTNER_CONTEXT,
+        readonly=True,
     )
 
     is_joint_buying_customer = fields.Boolean(
@@ -41,7 +49,7 @@ class ResCompany(models.Model):
             "joint_buying_company_id": self.id,
             "company_id": False,
             "is_company": True,
-            "pivot_company_id": self.id,
+            "joint_buying_pivot_company_id": self.id,
             "email": self.email,
             "phone": self.phone,
         }

@@ -2,21 +2,26 @@
 # @author: Sylvain LE GAL (https://twitter.com/legalsylvain)
 # License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl.html).
 
-from odoo.exceptions import AccessError
-from odoo.tests.common import TransactionCase
+from odoo.exceptions import AccessError, ValidationError
+from odoo.tests.common import TransactionCase, at_install, post_install
 
 
+@at_install(False)
+@post_install(True)
 class TestModule(TransactionCase):
-    """Tests for 'Duplication Tools - Account Invoice' Module"""
-
     def setUp(self):
         super().setUp()
         self.company_3PP = self.env.ref("joint_buying_base.company_3PP")
         self.ResCompany = self.env["res.company"]
-        self.ResPartner = self.env["res.partner"]
-        self.joint_buying_supplier = self.env.ref(
-            "joint_buying_base.supplier_fumer_dombes"
+        self.ResPartner = self.env["res.partner"].with_context(
+            mail_create_nosubscribe=True
         )
+        self.joint_buying_supplier = self.env.ref(
+            "joint_buying_base.supplier_fumet_dombes"
+        )
+        self.company_CHO = self.env.ref("joint_buying_base.company_CHO")
+        self.company_CHE = self.env.ref("joint_buying_base.company_CHE")
+        self.company_3PP = self.env.ref("joint_buying_base.company_3PP")
 
     # Test Section
     def test_01_write_company_to_partner_info(self):
@@ -81,3 +86,24 @@ class TestModule(TransactionCase):
             1,
             "Name Search joint buying partner should return result with context",
         )
+
+    def test_05_double_link_supplier_to_joint_buying_partner(self):
+        # Create a new supplier in a company linked to a joint buying partner should
+        # success
+        partner_id = self.company_CHO.joint_buying_partner_id.id
+        vals = {
+            "name": "Test Chocolate-Lala @ CHE",
+            "company_id": self.company_CHE.id,
+            "supplier": True,
+            "joint_buying_global_partner_id": partner_id,
+        }
+        self.ResPartner.create(vals)
+
+        with self.assertRaises(ValidationError):
+
+            # We should not have the possibility to link two suppliers
+            # to the same joint buying supplier for the same company
+            vals.update(
+                {"name": "Test Chocolate-Lala @ 3PP", "company_id": self.company_3PP.id}
+            )
+            self.ResPartner.create(vals)

@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+Copyright (C) 2021 - Today: GRAP (http://www.grap.coop)
+@author: Sylvain LE GAL (https://twitter.com/legalsylvain)
+License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl.html).
+-->
+<odoo>
+
+    <menuitem id="menu_orders"
+        name="Orders"
+        parent="joint_buying_base.menu_root"
+        sequence="1"
+        groups="joint_buying_base.group_joint_buying_user"
+    />
+
+    <menuitem id="menu_my_purchase"
+        name="My Purchases"
+        parent="menu_orders"
+        sequence="1"
+        groups="joint_buying_base.group_joint_buying_user"
+    />
+
+    <menuitem id="menu_all_orders"
+        name="All Orders"
+        parent="menu_orders"
+        sequence="2"
+        groups="joint_buying_base.group_joint_buying_user"
+    />
+
+</odoo>

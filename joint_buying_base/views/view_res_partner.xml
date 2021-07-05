@@ -6,11 +6,26 @@ License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl.html).
 -->
 <odoo>
 
+
     <record id="view_res_partner_form" model="ir.ui.view">
+        <field name="model">res.partner</field>
+        <field name="inherit_id" ref="base.view_partner_form"/>
+        <field name="arch" type="xml">
+            <group name="purchase" position="inside">
+                <field name="joint_buying_global_partner_id"
+                    attrs="{'invisible': [('supplier', '=', False)]}"/>
+            </group>
+        </field>
+    </record>
+
+
+    <record id="view_res_partner_form_joint_buying" model="ir.ui.view">
         <field name="model">res.partner</field>
         <field name="priority" eval="20"/>
         <field name="arch" type="xml">
             <form>
+                <header>
+                </header>
                 <sheet>
                     <div class="oe_button_box" name="button_box">
                         <button name="toggle_active" type="object"
@@ -24,6 +39,9 @@ License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl.html).
                         <h1>
                             <field name="name" default_focus="1" required="1"/>
                         </h1>
+                        <h2>
+                            <field name="joint_buying_company_id" readonly="1" attrs="{'invisible': [('joint_buying_company_id', '=', False)]}"/>
+                        </h2>
                     </div>
                     <group>
                         <group>
@@ -51,14 +69,15 @@ License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl.html).
                     </group>
                     <notebook colspan="4">
                         <page name='joint_buying' string="Joint Buyings">
-                            <group >
+                            <group name="group_joint_buying">
                                 <group string="Customer" name="customer" priority="2">
                                     <field name="customer"/>
                                 </group>
                                 <group string="Vendor" name="vendor" priority="1">
                                     <field name="supplier"/>
-                                    <field name="pivot_company_id" attrs="{'invisible': [('supplier', '=', False)]}"/>
-                                    <field name="deposit_company_id" attrs="{'invisible': [('supplier', '=', False)]}"/>
+                                    <field name="joint_buying_is_subscribed" widget="boolean_favorite" attrs="{'invisible': [('supplier', '=', False)]}"/>
+                                    <field name="joint_buying_pivot_company_id" attrs="{'invisible': [('supplier', '=', False)]}"/>
+                                    <field name="joint_buying_deposit_company_id" attrs="{'invisible': [('supplier', '=', False)]}"/>
                                 </group>
                             </group>
                         </page>
@@ -74,61 +93,23 @@ License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl.html).
     </record>
 
 
-<!--
-    <record id="view_res_partner" model="ir.ui.view">
-        <field name="model">res.partner</field>
-        <field name="inherit_id" ref="base.view_partner_form"/>
-        <field name="arch" type="xml">
-            <field name="type" position="before">
-                <field name="is_joint_buying"/>
-            </field>
-
-            <notebook position="before">
-                <group attrs="{'invisible': [('is_joint_buying','=',False)]}">
-                    <group name="joint_buying_common_info">
-                        <field name="is_joint_buying_customer"/>
-                        <field name="is_joint_buying_supplier"/>
-                    </group>
-                    <group>
-                        <field name="activity_id" context="{'joint_buying':1}"/>
-                        <br />
-                        <field name="supplier_ids" readonly="1" widget="many2many_tags" context="{'joint_buying':1}"/>
-                    </group>
-                </group>
-            </notebook>
-
-            <page autofocus="autofocus" position="before">
-                <page string="Supplier info for joint buying" attrs="{'invisible': [('is_joint_buying_supplier', '=', False)]}" autofocus="autofocus">
-                    <group modifier="{}">
-                        <group modifier="{}" col="3">
-                            <field name="delay" required="True"/>
-                            <field name="period" required="True"/>
-                            <field name="init_period_date" required="True"/>
-                        </group>
-                    </group>
-                </page>
-            </page>
-
-        </field>
-    </record>
- -->
-
     <record id="view_res_partner_tree" model="ir.ui.view">
         <field name="model">res.partner</field>
         <field name="arch" type="xml">
             <tree>
-                <field name="is_favorite" widget="boolean_favorite" nolabel="1" string="Fav." attrs="{'invisible': [('supplier', '=', False)]}"/>
+                <field name="joint_buying_is_subscribed" widget="boolean_favorite" nolabel="1" attrs="{'invisible': [('supplier', '=', False)]}"/>
                 <field name="name"/>
                 <field name="category_id" widget="many2many_tags" options="{'color_field': 'color'}"/>
                 <field name="city"/>
                 <field name="zip"/>
-                <field name="deposit_company_id" attrs="{'invisible': [('supplier', '=', False)]}"/>
-                <field name="pivot_company_id" attrs="{'invisible': [('supplier', '=', False)]}"/>
+                <field name="joint_buying_deposit_company_id" attrs="{'invisible': [('supplier', '=', False)]}"/>
+                <field name="joint_buying_pivot_company_id" attrs="{'invisible': [('supplier', '=', False)]}"/>
                 <field name="customer"/>
                 <field name="supplier"/>
             </tree>
         </field>
     </record>
+
 
     <record id="action_res_partner" model="ir.actions.act_window">
         <field name="name">Contacts</field>
@@ -142,10 +123,11 @@ License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl.html).
                 "default_customer": 0,
                 "default_supplier": 1,
                 "default_is_company": 1,
-                "form_view_ref": "joint_buying_base.view_res_partner_form",
+                "form_view_ref": "joint_buying_base.view_res_partner_form_joint_buying",
             }
         </field>
     </record>
+
 
     <menuitem id="menu_res_partner"
         name="Contacts"

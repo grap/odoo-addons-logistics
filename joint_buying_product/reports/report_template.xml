@@ -1,0 +1,114 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <template id="report_joint_buying_purchase_order_grouped_document">
+        <!-- Make the header based on the pivot company -->
+        <t t-set="company" t-value="doc.pivot_company_id" />
+        <t t-call="web.external_layout">
+            <t t-set="doc" t-value="doc.with_context(lang=doc.supplier_id.lang)" />
+            <t t-set="address">
+                <div t-field="doc.supplier_id"
+                    t-options='{"widget": "contact", "fields": ["address", "name"], "no_marker": True}' />
+                <p t-if="doc.supplier_id.vat">Tax ID: <span t-field="doc.supplier_id.vat"/></p>
+            </t>
+
+            <div class="page">
+                <div class="oe_structure"/>
+                <h2>
+                    <span>Grouped Purchase Order # </span>
+                    <span t-field="doc.name"/>
+                </h2>
+
+                <div class="row mt32 mb32" id="informations">
+                    <div class="col-auto mw-100 mb-2">
+                        <strong>Deposit Date:</strong>
+                        <p class="m-0" t-field="doc.deposit_date"/>
+                    </div>
+                    <div class="col-auto mw-100 mb-2">
+                        <strong>Deposit Place:</strong>
+                        <p class="m-0" t-field="doc.deposit_company_id.name"/>
+                    </div>
+                </div>
+
+                <table class="table table-sm o_main_table">
+                    <thead>
+                        <tr>
+                            <th class="text-right">Code</th>
+                            <th class="text-left">Product</th>
+                            <th class="text-right">Quantity</th>
+                            <th class="text-right">UoM</th>
+                            <th class="text-left">Unit Price</th>
+                            <th class="text-right">Subtotal</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <t t-foreach="doc.summary_line_ids" t-as="line">
+                            <tr>
+                                <td class="text-right"><span t-field="line.product_id.default_code"/></td>
+                                <td class="text-left"><span t-field="line.product_id"/></td>
+                                <td class="text-right"><span t-field="line.product_uom_qty"/></td>
+                                <td class="text-right"><span t-field="line.product_uom_id"/></td>
+                                <td class="text-left"><span t-field="line.price_unit"/> €</td>
+                                <td class="text-right"><span t-field="line.amount_untaxed"/> €</td>
+                            </tr>
+                        </t>
+                    </tbody>
+                    <tfoot>
+                        <tr>
+                            <td class="text-right" colspan="4"/>
+                            <th class="text-right">Total</th>
+                            <td class="text-right"><span t-field="doc.amount_untaxed"/></td>
+                        </tr>
+                    </tfoot>
+                </table>
+            </div>
+            <div class="page">
+                <div class="oe_structure"/>
+                <h2>
+                    <span>Details</span>
+                </h2>
+                <table class="table table-sm o_main_table">
+                    <thead>
+                        <tr>
+                            <th class="text-right">Code</th>
+                            <th class="text-left">Product</th>
+                            <th class="text-right">Quantity</th>
+                            <th class="text-right">UoM</th>
+                            <th class="text-left">Unit Price</th>
+                            <th class="text-right">Subtotal</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <t t-foreach="doc.order_ids" t-as="order">
+                            <tr class="bg-200 font-weight-bold o_line_section">
+                                <th class="text-right" colspan="1"><span t-field="order.customer_id.joint_buying_company_id.code" /></th>
+                                <th class="text-center" colspan="4"><span t-field="order.customer_id.joint_buying_company_id" /></th>
+                                <th class="text-right" colspan="1"><span t-field="order.amount_untaxed"/></th>
+                            </tr>
+                            <t t-foreach="order.line_ids" t-as="line">
+                                <tr t-if="line.qty">
+                                    <td class="text-right"><span t-field="line.product_id.default_code"/></td>
+                                    <td class="text-left"><span t-field="line.product_id"/></td>
+                                    <td class="text-right"><span t-field="line.qty"/></td>
+                                    <td class="text-right"><span t-field="line.product_uom_id"/></td>
+                                    <td class="text-left"><span t-field="line.price_unit"/> €</td>
+                                    <td class="text-right"><span t-field="line.amount_untaxed"/> €</td>
+                                </tr>
+                            </t>
+                        </t>
+                    </tbody>
+                </table>
+            </div>
+
+        </t>
+    </template>
+
+    <template id="report_joint_buying_purchase_order_grouped">
+        <t t-call="web.html_container">
+            <t t-foreach="docs" t-as="doc">
+                <t t-call="joint_buying_product.report_joint_buying_purchase_order_grouped_document" t-lang="doc.supplier_id.lang"/>
+            </t>
+        </t>
+    </template>
+
+</odoo>
