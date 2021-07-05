@@ -26,10 +26,18 @@ Add the possibility to have "Joint Buying" products in a specific menu
 
 * There are unavailable from all the Odoo, except, if the context contains the key ``joint_buying``.
 
+TO COMPLETE
+
 **Table of contents**
 
 .. contents::
    :local:
+
+Known issues / Roadmap
+======================
+
+* ``joint.buying.purchase.order.grouped.line`` + ``joint.buying.purchase.order.line``
+  think about a mixin.
 
 Bug Tracker
 ===========
