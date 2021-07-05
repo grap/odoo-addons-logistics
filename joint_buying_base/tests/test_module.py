@@ -90,11 +90,12 @@ class TestModule(TransactionCase):
     def test_05_double_link_supplier_to_joint_buying_partner(self):
         # Create a new supplier in a company linked to a joint buying partner should
         # success
+        partner_id = self.company_CHO.joint_buying_partner_id.id
         vals = {
             "name": "Test Chocolate-Lala @ CHE",
             "company_id": self.company_CHE.id,
             "supplier": True,
-            "joint_buying_partner_id": self.company_CHO.joint_buying_partner_id.id,
+            "joint_buying_global_partner_id": partner_id,
         }
         self.ResPartner.create(vals)
 
