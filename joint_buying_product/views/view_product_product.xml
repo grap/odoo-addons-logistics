@@ -123,6 +123,7 @@ License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl.html).
         <field name="context">
             {
                 "joint_buying": 1,
+                "form_view_ref": "joint_buying_product.view_product_product_form_joint_buying",
                 "tree_view_ref": "joint_buying_product.view_product_product_tree_joint_buying",
                 "search_default_joint_buying_partner_id": active_id,
                 "default_joint_buying_partner_id": active_id,
