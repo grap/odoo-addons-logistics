@@ -14,6 +14,7 @@
         "product_uom_package",
         "product_uom_po_domain",
     ],
+    'pre_init_hook': 'pre_init_product_db',
     "data": [
         "security/ir.model.access.csv",
         "views/menu.xml",
