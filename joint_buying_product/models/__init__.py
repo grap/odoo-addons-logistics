@@ -7,4 +7,6 @@ from . import (
     joint_buying_purchase_order_grouped_line,
     joint_buying_purchase_order,
     joint_buying_purchase_order_line,
+    joint_buying_tour,
+    joint_buying_tour_line,
 )
