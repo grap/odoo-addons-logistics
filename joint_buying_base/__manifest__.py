@@ -9,6 +9,7 @@
     "website": "https://github.com/grap/odoo-addons-logistics/",
     "license": "AGPL-3",
     "depends": ["base", "mail", "name_search_reset_res_partner", "res_company_code"],
+    "external_dependencies": {"python": ["openupgradelib"]},
     "data": [
         "security/ir_module_category.xml",
         "security/res_groups.xml",
