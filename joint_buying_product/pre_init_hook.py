@@ -6,14 +6,17 @@
 def pre_init_product_db(cr):
 
     # Add product_product.is_joint_buying
-    cr.execute("""
+    cr.execute(
+        """
         ALTER TABLE product_product
         ADD COLUMN is_joint_buying boolean;
         UPDATE product_product set is_joint_buying = false;
-    """)
+    """
+    )
 
     # Add product_product.display_joint_buying_propagation
-    cr.execute("""
+    cr.execute(
+        """
         ALTER TABLE product_product
         ADD COLUMN display_joint_buying_propagation boolean;
         UPDATE product_product pp
@@ -21,17 +24,22 @@ def pre_init_product_db(cr):
         FROM product_template pt, res_company rc
         WHERE pt.id = pp.product_tmpl_id
         AND pt.company_id = rc.id;
-    """)
+    """
+    )
 
     # Add product_template.is_joint_buying
-    cr.execute("""
+    cr.execute(
+        """
         ALTER TABLE product_template
         ADD COLUMN is_joint_buying boolean;
         UPDATE product_template set is_joint_buying = false;
-    """)
+    """
+    )
 
     # Add product_supplierinfo.joint_buying_partner_id
-    cr.execute("""
+    cr.execute(
+        """
         ALTER TABLE product_supplierinfo
         ADD COLUMN joint_buying_partner_id integer;
-    """)
+    """
+    )
