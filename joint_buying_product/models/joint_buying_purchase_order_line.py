@@ -83,7 +83,7 @@ class JointBuyingPurchaseOrderLine(models.Model):
         required=True,
     )
 
-    product_brut_weight = fields.Float(
+    product_gross_weight = fields.Float(
         string="Brut Weight",
         required=True,
         readonly=True,
@@ -104,8 +104,8 @@ class JointBuyingPurchaseOrderLine(models.Model):
         digits=dp.get_precision("Product Price"),
     )
 
-    total_brut_weight = fields.Float(
-        string="Total Weight", compute="_compute_total_brut_weight", store=True
+    total_gross_weight = fields.Float(
+        string="Total Weight", compute="_compute_total_gross_weight", store=True
     )
 
     is_my_purchase = fields.Boolean(
@@ -115,10 +115,10 @@ class JointBuyingPurchaseOrderLine(models.Model):
     )
 
     # Compute Section
-    @api.depends("qty", "product_brut_weight")
-    def _compute_total_brut_weight(self):
+    @api.depends("qty", "product_gross_weight")
+    def _compute_total_gross_weight(self):
         for line in self:
-            line.total_brut_weight = line.qty * line.product_brut_weight
+            line.total_gross_weight = line.qty * line.product_gross_weight
 
     @api.depends("qty", "price_unit")
     def _compute_amount(self):
@@ -164,9 +164,9 @@ class JointBuyingPurchaseOrderLine(models.Model):
             self.uom_id = False
             self.price_unit = 0.0
             self.qty = 0.0
-            self.product_brut_weight = 0.0
+            self.product_gross_weight = 0.0
         else:
             self.product_uom_package_qty = self.product_id.uom_package_qty
             self.uom_id = self.product_id.uom_id.id
-            self.product_brut_weight = self.product_id.weight
+            self.product_gross_weight = self.product_id.weight
             self.price_unit = self.product_id.lst_price

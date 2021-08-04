@@ -26,4 +26,4 @@ class JointBuyingPurchaseOrderGroupedLine(models.TransientModel):
 
     amount_untaxed = fields.Float(digits=dp.get_precision("Product Price"))
 
-    total_brut_weight = fields.Float(digits=dp.get_precision("Product Price"))
+    total_gross_weight = fields.Float(digits=dp.get_precision("Product Price"))

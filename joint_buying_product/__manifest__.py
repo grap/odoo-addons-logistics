@@ -12,7 +12,7 @@
         "product",
         "joint_buying_base",
         "product_uom_package",
-        "product_brut_weight",
+        "product_gross_weight",
     ],
     "pre_init_hook": "pre_init_product_db",
     "data": [
@@ -34,7 +34,12 @@
         "data/ir_sequence.xml",
         "data/mail_template.xml",
     ],
-    "demo": ["demo/uom_uom.xml", "demo/product_product.xml", "demo/res_partner.xml"],
+    "demo": [
+        "demo/res_groups.xml",
+        "demo/uom_uom.xml",
+        "demo/product_product.xml",
+        "demo/res_partner.xml",
+    ],
     "installable": True,
     "auto_install": True,
 }

@@ -76,9 +76,9 @@ class JointBuyingPurchaseOrderGrouped(models.Model):
         digits=dp.get_precision("Product Price"),
     )
 
-    total_brut_weight = fields.Float(
+    total_gross_weight = fields.Float(
         string="Total Weight",
-        compute="_compute_total_brut_weight",
+        compute="_compute_total_gross_weight",
         store=True,
         digits=dp.get_precision("Stock Weight"),
     )
@@ -111,11 +111,11 @@ class JointBuyingPurchaseOrderGrouped(models.Model):
                 grouped_order.mapped("order_ids.amount_untaxed")
             )
 
-    @api.depends("order_ids.total_brut_weight")
-    def _compute_total_brut_weight(self):
+    @api.depends("order_ids.total_gross_weight")
+    def _compute_total_gross_weight(self):
         for grouped_order in self:
-            grouped_order.total_brut_weight = sum(
-                grouped_order.mapped("order_ids.total_brut_weight")
+            grouped_order.total_gross_weight = sum(
+                grouped_order.mapped("order_ids.total_gross_weight")
             )
 
     # On the Fly Compute Section
@@ -125,7 +125,7 @@ class JointBuyingPurchaseOrderGrouped(models.Model):
                 [
                     line.product_id.id,
                     line.uom_id.id,
-                    line.product_brut_weight,
+                    line.product_gross_weight,
                     line.price_unit,
                 ]
             )
@@ -139,7 +139,7 @@ class JointBuyingPurchaseOrderGrouped(models.Model):
                     res[key] = {
                         "product_id": line.product_id.id,
                         "uom_id": line.uom_id.id,
-                        "product_brut_weight": line.product_brut_weight,
+                        "product_gross_weight": line.product_gross_weight,
                         "product_uom_package_qty": 0.0,
                         "price_unit": line.price_unit,
                         "qty": 0.0,

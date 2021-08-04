@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<odoo>
+
+    <record id="uom.group_uom" model="res.groups">
+        <field name="users" eval="[
+            (4, ref('base.user_root')),
+            (4, ref('base.user_admin')),
+            (4, ref('joint_buying_base.user_joint_buying_user')),
+            (4, ref('joint_buying_base.user_joint_buying_manager')),
+        ]"/>
+    </record>
+</odoo>

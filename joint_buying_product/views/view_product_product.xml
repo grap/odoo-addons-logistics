@@ -23,12 +23,12 @@ License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl.html).
         <field name="arch" type="xml">
             <tree>
                 <field name="is_joint_buying" invisible="1"/>
-                <field name="default_code"/>
                 <field name="barcode"/>
                 <field name="name"/>
                 <field name="lst_price"/>
                 <field name="type" invisible="1"/>
-                <field name="uom_id" groups="uom.group_uom"/>
+                <field name="uom_id"/>
+                <field name="uom_po_id" groups="uom.group_uom"/>
                 <field name="product_tmpl_id" invisible="1"/>
                 <field name="active" invisible="1"/>
                 <field name="joint_buying_partner_id"/>
@@ -88,14 +88,14 @@ License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl.html).
                         <page string="General Information" name="general_information">
                             <group>
                                 <group name="group_general" string="General">
-                                    <field name="joint_buying_partner_id"/>
+                                    <field name="joint_buying_partner_id" required="1"/>
                                     <field name="uom_id"/>
                                     <field name="uom_po_id"/>
                                     <field name="lst_price"/>
                                     <field name="uom_package_qty"/>
                                 </group>
                                 <group name="group_logistic" string="Logistics">
-                                    <field name="brut_weight"/>
+                                    <field name="gross_weight"/>
                                 </group>
                             </group>
                         </page>
