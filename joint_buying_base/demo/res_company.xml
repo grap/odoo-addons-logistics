@@ -98,7 +98,6 @@
                 ref('joint_buying_base.company_1GG'),
                 ref('joint_buying_base.company_3PP'),
                 ref('joint_buying_base.company_CHE'),
-                ref('joint_buying_base.company_CHO'),
                 ref('joint_buying_base.company_DOZ'),
             ]"/>
         <value eval="{
@@ -107,7 +106,7 @@
     </function>
 
     <function model="res.company" name="write">
-        <value eval="[ref('joint_buying_base.company_CHO'), ref('joint_buying_base.company_ELD')]"/>
+        <value eval="[ref('joint_buying_base.company_ELD')]"/>
         <value eval="{
             'is_joint_buying_supplier': True,
         }"/>

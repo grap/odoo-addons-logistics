@@ -43,6 +43,7 @@ License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl.html).
                         <group>
                             <field name="date_tour"/>
                             <field name="starting_point_id"/>
+                            <field name="arrival_point_id"/>
                             <field name="distance"/>
                         </group>
                         <group/>
@@ -79,9 +80,9 @@ License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl.html).
 
     <menuitem id="menu_joint_buying_tour_all_tours"
         name="Tours"
-        parent="joint_buying_product.menu_all_tours"
+        parent="menu_all_tours"
         action="action_joint_buying_tour_all_tours"
-        groups="joint_buying_base.group_joint_buying_manager"
+        groups="group_joint_buying_manager"
         sequence="1"
     />
 

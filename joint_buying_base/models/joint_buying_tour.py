@@ -4,10 +4,6 @@
 
 from odoo import api, fields, models
 
-from odoo.addons.joint_buying_base.models.res_partner import (
-    _JOINT_BUYING_PARTNER_CONTEXT,
-)
-
 
 class JointBuyingTour(models.Model):
     _name = "joint.buying.tour"
@@ -26,13 +22,17 @@ class JointBuyingTour(models.Model):
     date_tour = fields.Date(required=True, track_visibility=True)
 
     starting_point_id = fields.Many2one(
-        comodel_name="res.partner", context=_JOINT_BUYING_PARTNER_CONTEXT, required=True
+        comodel_name="res.partner", compute="_compute_points", store=True
+    )
+
+    arrival_point_id = fields.Many2one(
+        comodel_name="res.partner", compute="_compute_points", store=True
     )
 
     complete_name = fields.Char(compute="_compute_complete_name")
 
     line_ids = fields.One2many(
-        comodel_name="joint.buying.tour.line", inverse_name="tour_id"
+        comodel_name="joint.buying.tour.line", inverse_name="tour_id", readonly=True
     )
 
     @api.depends("name", "date_tour")
@@ -44,3 +44,10 @@ class JointBuyingTour(models.Model):
     def _compute_distance(self):
         for tour in self:
             tour.distance = sum(tour.mapped("line_ids.distance"))
+
+    @api.depends(
+        "line_ids.starting_point_id", "line_ids.sequence", "line_ids.arrival_point_id"
+    )
+    def _compute_points(self):
+        # TODO
+        pass
