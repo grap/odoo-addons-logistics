@@ -6,5 +6,5 @@ from odoo import models
 
 
 class ProductTemplate(models.Model):
-    _inherit = ["product.template", "joint.buying.mixin"]
     _name = "product.template"
+    _inherit = ["product.template", "joint.buying.mixin"]

@@ -46,8 +46,8 @@
                             <tr>
                                 <td class="text-right"><span t-field="line.product_id.default_code"/></td>
                                 <td class="text-left"><span t-field="line.product_id"/></td>
-                                <td class="text-right"><span t-field="line.product_uom_qty"/></td>
-                                <td class="text-right"><span t-field="line.product_uom_id"/></td>
+                                <td class="text-right"><span t-field="line.qty"/></td>
+                                <td class="text-right"><span t-field="line.uom_id"/></td>
                                 <td class="text-left"><span t-field="line.price_unit"/> €</td>
                                 <td class="text-right"><span t-field="line.amount_untaxed"/> €</td>
                             </tr>
@@ -90,7 +90,7 @@
                                     <td class="text-right"><span t-field="line.product_id.default_code"/></td>
                                     <td class="text-left"><span t-field="line.product_id"/></td>
                                     <td class="text-right"><span t-field="line.qty"/></td>
-                                    <td class="text-right"><span t-field="line.product_uom_id"/></td>
+                                    <td class="text-right"><span t-field="line.uom_id"/></td>
                                     <td class="text-left"><span t-field="line.price_unit"/> €</td>
                                     <td class="text-right"><span t-field="line.amount_untaxed"/> €</td>
                                 </tr>

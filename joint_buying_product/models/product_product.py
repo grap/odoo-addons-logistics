@@ -17,8 +17,16 @@ _JOINT_BUYING_PRODUCT_CONTEXT = {
 
 
 class ProductProduct(models.Model):
-    _inherit = ["product.product", "joint.buying.mixin"]
     _name = "product.product"
+    _inherit = [
+        "product.product",
+        "joint.buying.mixin",
+        "joint.buying.check.access.mixin",
+    ]
+
+    _check_write_access_company_field_id = (
+        "joint_buying_partner_id.joint_buying_pivot_company_id"
+    )
 
     is_joint_buying = fields.Boolean(
         string="For Joint Buying",

@@ -124,9 +124,8 @@ class JointBuyingPurchaseOrderGrouped(models.Model):
             return tuple(
                 [
                     line.product_id.id,
-                    line.product_uom_id.id,
+                    line.uom_id.id,
                     line.product_weight,
-                    line.product_uom_package_id.id,
                     line.price_unit,
                 ]
             )
@@ -139,19 +138,18 @@ class JointBuyingPurchaseOrderGrouped(models.Model):
                 if key not in res:
                     res[key] = {
                         "product_id": line.product_id.id,
-                        "product_uom_id": line.product_uom_id.id,
+                        "uom_id": line.uom_id.id,
                         "product_weight": line.product_weight,
-                        "product_uom_package_id": line.product_uom_package_id.id,
                         "product_uom_package_qty": 0.0,
                         "price_unit": line.price_unit,
-                        "product_uom_qty": 0.0,
+                        "qty": 0.0,
                         "amount_untaxed": 0.0,
                     }
                 res[key].update(
                     {
                         "product_uom_package_qty": res[key]["product_uom_package_qty"]
                         + line.product_uom_package_qty,
-                        "product_uom_qty": res[key]["product_uom_qty"] + line.qty,
+                        "qty": res[key]["qty"] + line.qty,
                         "amount_untaxed": res[key]["amount_untaxed"]
                         + line.amount_untaxed,
                     }
