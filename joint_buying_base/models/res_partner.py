@@ -14,8 +14,10 @@ _JOINT_BUYING_PARTNER_CONTEXT = {
 
 
 class ResPartner(models.Model):
-    _inherit = ["res.partner", "joint.buying.mixin"]
+    _inherit = ["res.partner", "joint.buying.mixin", "joint.buying.check.access.mixin"]
     _name = "res.partner"
+
+    _check_write_access_company_field_id = "joint_buying_pivot_company_id"
 
     joint_buying_subscribed_company_ids = fields.Many2many(
         relation="res_company_res_partner_subscribed_rel",

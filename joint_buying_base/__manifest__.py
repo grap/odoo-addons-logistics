@@ -19,6 +19,7 @@
     "data": [
         "security/ir_module_category.xml",
         "security/res_groups.xml",
+        "security/ir.model.access.csv",
         "security/ir_rule.xml",
         "views/menu.xml",
         "views/view_res_company.xml",

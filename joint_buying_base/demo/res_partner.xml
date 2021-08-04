@@ -40,6 +40,23 @@
         ]"/>
     </record>
 
+    <record id="supplier_oscar_morell" model="res.partner">
+        <field name="name">Frutas Oscar Morell S.L.</field>
+        <field name="street"> Calle Chiva 61</field>
+        <field name="city">Cheste</field>
+        <field name="zip">46380</field>
+        <field name="country_id" ref="base.es"/>
+        <field name="is_joint_buying" eval="True"/>
+        <field name="customer" eval="False"/>
+        <field name="supplier" eval="True"/>
+        <field name="company_id" eval="False"/>
+        <field name="joint_buying_pivot_company_id" ref="joint_buying_base.company_3PP"/>
+        <field name="joint_buying_deposit_company_id" ref="joint_buying_base.company_3PP"/>
+        <field name="category_id" eval="[
+            (4, ref('joint_buying_base.partner_category_fruits')),
+        ]"/>
+    </record>
+
     <record id="supplier_CHO_at_3PP" model="res.partner">
         <field name="name">Chocolate-Lala @ Three Peas</field>
         <field name="company_id" ref="joint_buying_base.company_3PP"/>

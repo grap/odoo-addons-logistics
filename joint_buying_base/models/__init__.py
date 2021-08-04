@@ -1,3 +1,4 @@
+from . import joint_buying_check_access_mixin
 from . import joint_buying_mixin
 from . import res_company
 from . import res_partner

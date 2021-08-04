@@ -15,7 +15,6 @@ License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl.html).
         name="Configuration"
         parent="menu_root"
         sequence="100"
-        groups="joint_buying_base.group_joint_buying_manager"
     />
 
 </odoo>
