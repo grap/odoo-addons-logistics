@@ -95,7 +95,7 @@ License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl.html).
                                     <field name="uom_package_qty"/>
                                 </group>
                                 <group name="group_logistic" string="Logistics">
-                                    <field name="gross_weight"/>
+                                    <field name="weight"/>
                                 </group>
                             </group>
                         </page>

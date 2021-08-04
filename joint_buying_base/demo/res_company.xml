@@ -4,7 +4,7 @@
 
     <record id="company_1GG" model="res.company">
         <field name="code">1GG</field>
-        <field name="name">[A Grain in the Granary]</field>
+        <field name="name">[1GG - A Grain in the Granary]</field>
         <field name="street">1, rue du mail</field>
         <field name="city">Lyon</field>
         <field name="zip">69004</field>
@@ -13,44 +13,62 @@
 
     <record id="company_3PP" model="res.company">
         <field name="code">3PP</field>
-        <field name="name">[Three Peas]</field>
+        <field name="name">[3PP - Three Peas]</field>
         <field name="street">124 Rue Sébastien Gryphe</field>
         <field name="city">Lyon</field>
         <field name="zip">69007</field>
         <field name="country_id" ref="base.fr"/>
     </record>
 
+    <record id="company_VEV" model="res.company">
+        <field name="code">VEV</field>
+        <field name="name">[VEV - Bulk in Green]</field>
+        <field name="street">7 Rue Roger Salengro</field>
+        <field name="city">Saint-Etienne</field>
+        <field name="zip">42000</field>
+        <field name="country_id" ref="base.fr"/>
+    </record>
+
+    <record id="company_TOU" model="res.company">
+        <field name="code">TOU</field>
+        <field name="name">[TOU - With Sunflower]</field>
+        <field name="street">22 route de l'Eyrieux</field>
+        <field name="street2">Quartier Fortuné</field>
+        <field name="city">Beauchastel</field>
+        <field name="zip">07800</field>
+        <field name="country_id" ref="base.fr"/>
+    </record>
+
+    <record id="company_C3P" model="res.company">
+        <field name="code">C3P</field>
+        <field name="name">[C3P - Like Three Apples]</field>
+        <field name="street">335 Chemin de l’Olagnier</field>
+        <field name="city">Portes-lès-Valence</field>
+        <field name="zip">26800</field>
+        <field name="country_id" ref="base.fr"/>
+    </record>
+
     <record id="company_CDA" model="res.company">
         <field name="code">CDA</field>
-        <field name="name">[Artichoke Heart]</field>
+        <field name="name">[CDA - Artichoke Heart]</field>
         <field name="street"> 22 rue de saint Agrève  </field>
         <field name="city">Tence</field>
         <field name="zip">43190</field>
         <field name="country_id" ref="base.fr"/>
     </record>
 
-
     <record id="company_CHE" model="res.company">
         <field name="code">CHE</field>
-        <field name="name">[The Goat and Cabbage]</field>
+        <field name="name">[CHE - The Goat and Cabbage]</field>
         <field name="street">2 Grande Rue</field>
         <field name="city">Saint-Sauveur-de-Montagut</field>
         <field name="zip">07190</field>
         <field name="country_id" ref="base.fr"/>
     </record>
 
-    <record id="company_CHO" model="res.company">
-        <field name="code">CHO</field>
-        <field name="name">[Chocolate-Lala]</field>
-        <field name="street">18 Rue de l'Armèllerie</field>
-        <field name="city">Die</field>
-        <field name="zip">26150</field>
-        <field name="country_id" ref="base.fr"/>
-    </record>
-
     <record id="company_ELD" model="res.company">
         <field name="code">ELD</field>
-        <field name="name">[Elodia-D]</field>
+        <field name="name">[ELD - Elodia-D]</field>
         <field name="street">520 route de Combe Boiron</field>
         <field name="city">St Maurice sur Dargoire</field>
         <field name="zip">69440</field>
@@ -59,7 +77,7 @@
 
     <record id="company_DOZ" model="res.company">
         <field name="code">DOZ</field>
-        <field name="name">[The Right Doze]</field>
+        <field name="name">[DOZ - The Right Doze]</field>
         <field name="street">2 Rue Henri Legay</field>
         <field name="city">Villeurbanne</field>
         <field name="zip">69100</field>
@@ -68,7 +86,7 @@
 
     <record id="company_LSE" model="res.company">
         <field name="code">LSE</field>
-        <field name="name">[The Super Mall]</field>
+        <field name="name">[LSE - The Super Mall]</field>
         <field name="street">105, avenue Jean Jaurès</field>
         <field name="city">Oullins</field>
         <field name="zip">69600</field>

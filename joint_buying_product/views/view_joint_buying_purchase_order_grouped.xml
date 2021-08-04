@@ -114,7 +114,7 @@ License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl.html).
                                 <tree decoration-info="purchase_state == 'draft'">
                                     <field name="name"/>
                                     <field name="customer_id"/>
-                                    <field name="total_gross_weight" sum="Total Weight"/>
+                                    <field name="total_weight" sum="Total Weight"/>
                                     <field name="amount_untaxed" sum="Total Amount Untaxed"/>
                                     <field name="purchase_state"/>
                                 </tree>
