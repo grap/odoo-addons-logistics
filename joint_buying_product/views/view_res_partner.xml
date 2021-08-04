@@ -59,13 +59,12 @@
                 <group>
                     <field name="joint_buying_product_ids" nolabel="1">
                         <tree editable="bottom">
-                            <field name="default_code"/>
                             <field name="name"/>
                             <field name="uom_id"/>
-                            <field name="uom_po_id" invisible="1" force_save="1"/>
-                            <field name="uom_package_id"/>
+                            <field name="uom_po_id"/>
                             <field name="uom_package_qty"/>
                             <field name="lst_price"/>
+                            <field name="purchase_ok"/>
                         </tree>
                     </field>
                 </group>

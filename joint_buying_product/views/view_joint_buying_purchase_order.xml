@@ -65,7 +65,7 @@ License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl.html).
                             <field name="grouped_order_id"/>
                             <field name="supplier_id"/>
                             <field name="customer_id"/>
-                            <field name="total_weight"/>
+                            <field name="total_brut_weight"/>
                             <field name="line_qty" invisible="1"/>
                             <field name="purchase_ok" invisible="1"/>
                             <field name="amount_untaxed" invisible="1"/>
@@ -80,19 +80,15 @@ License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl.html).
                     <notebook colspan="4">
                         <page name="lines" string="Order line">
                             <field name="line_ids" attrs="{'readonly': ['|', ('purchase_state', '=', 'done'), ('state', '!=', 'in_progress')]}">
-                                <tree editable="botttom" decoration-muted="qty == 0">
-                                    <field name="product_id"/>
-                                    <field name="purchase_qty" force_save="True"/>
-                                    <field name="product_uom_package_id" force_save="True"
-                                        attrs="{'invisible': [('has_same_uom', '=', True)]}"/>
+                                <tree editable="botttom" decoration-info="qty == 0">
+                                    <field name="product_id" force_save="True"/>
+                                    <field name="qty" force_save="True"/>
+                                    <field name="uom_id" force_save="True"/>
                                     <field name="product_uom_package_qty" force_save="True"
                                         attrs="{'invisible': [('product_uom_package_qty', '=', 0.0)]}"/>
-                                    <field name="qty" force_save="True"/>
-                                    <field name="product_uom_id" force_save="True"/>
                                     <field name="price_unit" force_save="True"/>
                                     <field name="amount_untaxed" sum="Total Amount Untaxed"/>
-                                    <field name="product_weight" force_save="True" invisible="1"/>
-                                    <field name="has_same_uom" invisible="1"/>
+                                    <field name="product_brut_weight" force_save="True" invisible="1"/>
                                 </tree>
                             </field>
                              <!--  -->

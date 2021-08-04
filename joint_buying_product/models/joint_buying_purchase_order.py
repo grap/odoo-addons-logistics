@@ -108,9 +108,9 @@ class JointBuyingPurchaseOrder(models.Model):
         digits=dp.get_precision("Product Price"),
     )
 
-    total_weight = fields.Float(
-        string="Total Weight",
-        compute="_compute_total_weight",
+    total_brut_weight = fields.Float(
+        string="Total Brut Weight",
+        compute="_compute_total_brut_weight",
         store=True,
         digits=dp.get_precision("Stock Weight"),
     )
@@ -171,10 +171,10 @@ class JointBuyingPurchaseOrder(models.Model):
         for order in self:
             order.amount_untaxed = sum(order.mapped("line_ids.amount_untaxed"))
 
-    @api.depends("line_ids.total_weight")
-    def _compute_total_weight(self):
+    @api.depends("line_ids.total_brut_weight")
+    def _compute_total_brut_weight(self):
         for order in self:
-            order.total_weight = sum(order.mapped("line_ids.total_weight"))
+            order.total_brut_weight = sum(order.mapped("line_ids.total_brut_weight"))
 
     # Custom Section
     @api.model
@@ -183,12 +183,10 @@ class JointBuyingPurchaseOrder(models.Model):
         for product in supplier._get_joint_buying_products():
             vals = {
                 "product_id": product.id,
-                "product_uom_package_id": product.uom_package_id.id
-                or product.uom_id.id,
+                "qty": 0.0,
+                "uom_id": product.uom_id.id,
                 "product_uom_package_qty": product.uom_package_qty,
-                "product_uom_id": product.uom_id.id,
-                "product_weight": product.weight,
-                "purchase_qty": 0.0,
+                "product_brut_weight": product.brut_weight,
                 "price_unit": product.lst_price,
             }
             res["line_ids"].append((0, 0, vals))

@@ -76,9 +76,9 @@ class JointBuyingPurchaseOrderGrouped(models.Model):
         digits=dp.get_precision("Product Price"),
     )
 
-    total_weight = fields.Float(
+    total_brut_weight = fields.Float(
         string="Total Weight",
-        compute="_compute_total_weight",
+        compute="_compute_total_brut_weight",
         store=True,
         digits=dp.get_precision("Stock Weight"),
     )
@@ -111,11 +111,11 @@ class JointBuyingPurchaseOrderGrouped(models.Model):
                 grouped_order.mapped("order_ids.amount_untaxed")
             )
 
-    @api.depends("order_ids.total_weight")
-    def _compute_total_weight(self):
+    @api.depends("order_ids.total_brut_weight")
+    def _compute_total_brut_weight(self):
         for grouped_order in self:
-            grouped_order.total_weight = sum(
-                grouped_order.mapped("order_ids.total_weight")
+            grouped_order.total_brut_weight = sum(
+                grouped_order.mapped("order_ids.total_brut_weight")
             )
 
     # On the Fly Compute Section
@@ -124,9 +124,8 @@ class JointBuyingPurchaseOrderGrouped(models.Model):
             return tuple(
                 [
                     line.product_id.id,
-                    line.product_uom_id.id,
-                    line.product_weight,
-                    line.product_uom_package_id.id,
+                    line.uom_id.id,
+                    line.product_brut_weight,
                     line.price_unit,
                 ]
             )
@@ -139,19 +138,18 @@ class JointBuyingPurchaseOrderGrouped(models.Model):
                 if key not in res:
                     res[key] = {
                         "product_id": line.product_id.id,
-                        "product_uom_id": line.product_uom_id.id,
-                        "product_weight": line.product_weight,
-                        "product_uom_package_id": line.product_uom_package_id.id,
+                        "uom_id": line.uom_id.id,
+                        "product_brut_weight": line.product_brut_weight,
                         "product_uom_package_qty": 0.0,
                         "price_unit": line.price_unit,
-                        "product_uom_qty": 0.0,
+                        "qty": 0.0,
                         "amount_untaxed": 0.0,
                     }
                 res[key].update(
                     {
                         "product_uom_package_qty": res[key]["product_uom_package_qty"]
                         + line.product_uom_package_qty,
-                        "product_uom_qty": res[key]["product_uom_qty"] + line.qty,
+                        "qty": res[key]["qty"] + line.qty,
                         "amount_untaxed": res[key]["amount_untaxed"]
                         + line.amount_untaxed,
                     }

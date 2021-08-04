@@ -78,10 +78,6 @@ License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl.html).
                         </h1>
                         <div name="options">
                             <div>
-                                <field name="sale_ok"/>
-                                <label for="sale_ok"/>
-                            </div>
-                            <div>
                                 <field name="purchase_ok"/>
                                 <label for="purchase_ok"/>
                             </div>
@@ -94,12 +90,12 @@ License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl.html).
                                 <group name="group_general" string="General">
                                     <field name="joint_buying_partner_id"/>
                                     <field name="uom_id"/>
+                                    <field name="uom_po_id"/>
                                     <field name="lst_price"/>
-                                    <field name="uom_package_id"/>
                                     <field name="uom_package_qty"/>
                                 </group>
                                 <group name="group_logistic" string="Logistics">
-                                    <field name="weight" string="Net Weight"/>
+                                    <field name="brut_weight"/>
                                 </group>
                             </group>
                         </page>

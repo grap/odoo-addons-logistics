@@ -51,9 +51,9 @@
     <record id="company_ELD" model="res.company">
         <field name="code">ELD</field>
         <field name="name">[Elodia-D]</field>
-        <field name="street">18 Rue de l'Armèllerie</field>
-        <field name="city">Die</field>
-        <field name="zip">26150</field>
+        <field name="street">520 route de Combe Boiron</field>
+        <field name="city">St Maurice sur Dargoire</field>
+        <field name="zip">69440</field>
         <field name="country_id" ref="base.fr"/>
     </record>
 

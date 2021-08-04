@@ -38,5 +38,11 @@
         <field name="color">6</field>
     </record>
 
+    <record id="partner_category_fruits" model="res.partner.category">
+        <field name="is_joint_buying" eval="True"/>
+        <field name="name">Fruits</field>
+        <field name="color">7</field>
+    </record>
+
 
 </odoo>

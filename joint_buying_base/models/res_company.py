@@ -65,7 +65,7 @@ class ResCompany(models.Model):
         ResPartner = self.env["res.partner"]
         res = super().create(vals)
         res.joint_buying_partner_id = ResPartner.with_context(
-            write_joint_buying_partner=True
+            write_joint_buying_partner=True, no_check_joint_buying=True
         ).create(res._prepare_joint_buying_partner_vals())
         return res
 
@@ -73,7 +73,10 @@ class ResCompany(models.Model):
         # Technical Note: we add context key here
         # to avoid error when recomputing related / computed values
         res = super(
-            ResCompany, self.with_context(write_joint_buying_partner=True)
+            ResCompany,
+            self.with_context(
+                write_joint_buying_partner=True, no_check_joint_buying=True
+            ),
         ).write(vals)
         for company in self:
             partner_vals = company._prepare_joint_buying_partner_vals()

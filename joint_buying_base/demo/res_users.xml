@@ -7,13 +7,55 @@
 
 <odoo>
 
-    <record id="joint_buying_manager" model="res.users"
-        context="{'no_reset_password': True}">
+    <record id="base.user_admin" model="res.users">
+        <field name="groups_id" eval="[
+            (4, ref('joint_buying_base.group_joint_buying_manager')),
+        ]" />
+    </record>
+
+    <record id="base.user_root" model="res.users">
+        <field name="groups_id" eval="[
+            (4, ref('joint_buying_base.group_joint_buying_manager')),
+        ]" />
+    </record>
+
+    <record id="partner_joint_buying_user" model="res.partner">
+        <field name="name">Logistic User</field>
+        <field name="company_id" ref="joint_buying_base.company_3PP"/>
+        <field name="customer" eval="False"/>
+        <field name="email">LOG_user@grap.coop</field>
+    </record>
+
+    <record id="user_joint_buying_user" model="res.users" context="{'no_reset_password': True}">
+        <field name="name">Logistic User</field>
+        <field name="partner_id" ref="partner_joint_buying_user"/>
+        <field name="login">LOG_user</field>
+        <field name="password">demo</field>
+        <field name="groups_id" eval="[
+            (4, ref('base.group_user')),
+            (4, ref('joint_buying_base.group_joint_buying_user')),
+        ]" />
+        <field name="company_id" ref="joint_buying_base.company_3PP"/>
+        <field name="company_ids" eval="[
+            (4, ref('joint_buying_base.company_3PP')),
+        ]" />
+    </record>
+
+    <record id="partner_joint_buying_manager" model="res.partner">
         <field name="name">Logistic Manager</field>
+        <field name="company_id" ref="joint_buying_base.company_3PP"/>
+        <field name="customer" eval="False"/>
+        <field name="email">LOG_manager@grap.coop</field>
+    </record>
+
+    <record id="user_joint_buying_manager" model="res.users" context="{'no_reset_password': True}">
+        <field name="name">Logistic Manager</field>
+        <field name="partner_id" ref="partner_joint_buying_manager"/>
         <field name="login">LOG_manager</field>
         <field name="password">demo</field>
         <field name="company_id" ref="joint_buying_base.company_3PP"/>
         <field name="groups_id" eval="[
+            (4, ref('base.group_user')),
             (4, ref('base.group_multi_company')),
             (4, ref('joint_buying_base.group_joint_buying_manager')),
         ]" />
@@ -27,7 +69,6 @@
             (4, ref('joint_buying_base.company_LSE')),
         ]" />
     </record>
-
 
     <record id="base.user_admin" model="res.users">
         <field name="groups_id" eval="[

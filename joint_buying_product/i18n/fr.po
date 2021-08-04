@@ -904,7 +904,7 @@ msgstr ""
 #: model_terms:ir.ui.view,arch_db:joint_buying_product.view_joint_buying_purchase_order_grouped_form
 #: model_terms:ir.ui.view,arch_db:joint_buying_product.view_joint_buying_purchase_order_grouped_tree
 msgid "See My Order"
-msgstr "Voir mes commandes"
+msgstr "Voir ma commande"
 
 #. module: joint_buying_product
 #: model_terms:ir.ui.view,arch_db:joint_buying_product.view_joint_buying_purchase_order_grouped_form
