@@ -19,7 +19,7 @@ class TestModule(TransactionCase):
         self.joint_buying_supplier = self.env.ref(
             "joint_buying_base.supplier_fumet_dombes"
         )
-        self.company_CHO = self.env.ref("joint_buying_base.company_CHO")
+        self.company_ELD = self.env.ref("joint_buying_base.company_ELD")
         self.company_CHE = self.env.ref("joint_buying_base.company_CHE")
         self.company_3PP = self.env.ref("joint_buying_base.company_3PP")
 
@@ -90,9 +90,9 @@ class TestModule(TransactionCase):
     def test_05_double_link_supplier_to_joint_buying_partner(self):
         # Create a new supplier in a company linked to a joint buying partner should
         # success
-        partner_id = self.company_CHO.joint_buying_partner_id.id
+        partner_id = self.company_ELD.joint_buying_partner_id.id
         vals = {
-            "name": "Test Chocolate-Lala @ CHE",
+            "name": "Test Elodie-D @ CHE",
             "company_id": self.company_CHE.id,
             "supplier": True,
             "joint_buying_global_partner_id": partner_id,
@@ -104,6 +104,6 @@ class TestModule(TransactionCase):
             # We should not have the possibility to link two suppliers
             # to the same joint buying supplier for the same company
             vals.update(
-                {"name": "Test Chocolate-Lala @ 3PP", "company_id": self.company_3PP.id}
+                {"name": "Test Elodie-D @ 3PP", "company_id": self.company_3PP.id}
             )
             self.ResPartner.create(vals)

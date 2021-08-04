@@ -27,6 +27,7 @@
         "views/view_res_partner_category.xml",
         "views/view_res_users.xml",
         "views/view_res_config_settings.xml",
+        "views/view_joint_buying_tour.xml",
     ],
     "demo": [
         "demo/res_company.xml",
