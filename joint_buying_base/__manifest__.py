@@ -15,7 +15,7 @@
         "res_company_code",
         "base_geolocalize_openstreetmap",
     ],
-    "external_dependencies": {"python": ["openupgradelib"]},
+    "external_dependencies": {"python": ["openupgradelib", "geopy"]},
     "data": [
         "security/ir_module_category.xml",
         "security/res_groups.xml",
