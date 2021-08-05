@@ -68,7 +68,7 @@
         <field name="zip">38480 </field>
         <field name="country_id" ref="base.fr"/>
         <field name="is_joint_buying" eval="True"/>
-        <field name="is_joint_buying_deposit" eval="True"/>
+        <field name="is_joint_buying_stage" eval="True"/>
         <field name="customer" eval="False"/>
         <field name="supplier" eval="False"/>
         <field name="company_id" eval="False"/>
@@ -97,7 +97,7 @@
             obj().env.ref('joint_buying_base.place_romagnieu').id,
         ]"/>
         <value eval="{
-            'is_joint_buying_night_deposit': True,
+            'is_joint_buying_final_stage': True,
         }"/>
     </function>
 

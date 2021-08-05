@@ -89,6 +89,7 @@ License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl.html).
                             <group>
                                 <group name="group_general" string="General">
                                     <field name="joint_buying_partner_id" required="1"/>
+                                    <field name="default_code"/>
                                     <field name="uom_id"/>
                                     <field name="uom_po_id"/>
                                     <field name="lst_price"/>
@@ -97,6 +98,9 @@ License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl.html).
                                 <group name="group_logistic" string="Logistics">
                                     <field name="weight"/>
                                 </group>
+                            </group>
+                            <group string="Internal Notes">
+                                <field name="description" nolabel="1" placeholder="This note is only for internal purposes."/>
                             </group>
                         </page>
                     </notebook>

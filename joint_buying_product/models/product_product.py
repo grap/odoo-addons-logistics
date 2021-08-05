@@ -57,6 +57,7 @@ class ProductProduct(models.Model):
         context=_JOINT_BUYING_PRODUCT_CONTEXT,
     )
 
+    # Constrains Sections
     @api.constrains(
         "is_joint_buying", "joint_buying_partner_id", "display_joint_buying_propagation"
     )
@@ -66,6 +67,7 @@ class ProductProduct(models.Model):
                 _("You should set a Joint Buying Supplier for Joint Buying Products")
             )
 
+    # Overload Section
     @api.model
     def create(self, vals):
         res = super().create(vals)
@@ -94,6 +96,7 @@ class ProductProduct(models.Model):
                     )
         return super().write(vals)
 
+    # custom Section
     def create_joint_buying_product(self):
         products = self.filtered(
             lambda x: (

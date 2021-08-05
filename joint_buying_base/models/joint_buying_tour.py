@@ -41,7 +41,11 @@ class JointBuyingTour(models.Model):
     complete_name = fields.Char(compute="_compute_complete_name", store=True)
 
     line_ids = fields.One2many(
-        comodel_name="joint.buying.tour.line", inverse_name="tour_id", readonly=True
+        comodel_name="joint.buying.tour.line",
+        inverse_name="tour_id",
+        readonly=True,
+        copy=True,
+        auto_join=True,
     )
 
     line_qty = fields.Char(
@@ -50,6 +54,7 @@ class JointBuyingTour(models.Model):
 
     is_loop = fields.Boolean(string="Is a Loop", compute="_compute_is_loop", store=True)
 
+    # Compute Section
     @api.depends("name", "date_tour")
     def _compute_complete_name(self):
         for tour in self:
@@ -80,11 +85,20 @@ class JointBuyingTour(models.Model):
             tour.starting_point_id = tour.line_ids[0].starting_point_id
             tour.arrival_point_id = tour.line_ids[-1].arrival_point_id
 
+    # Overload Section
+    @api.multi
+    def copy(self, default=None):
+        self.ensure_one()
+        default = default or {}
+        default["name"] = _("%s (copy)") % self.name
+        return super().copy(default)
+
+    # Custom Section
     def _check_points(self):
         for tour in self:
             if (
                 tour.starting_point_id
-                and not tour.starting_point_id.is_joint_buying_night_deposit
+                and not tour.starting_point_id.is_joint_buying_final_stage
             ):
                 raise UserError(
                     _(
@@ -95,7 +109,7 @@ class JointBuyingTour(models.Model):
                 )
             if (
                 tour.arrival_point_id
-                and not tour.arrival_point_id.is_joint_buying_night_deposit
+                and not tour.arrival_point_id.is_joint_buying_final_stage
             ):
                 raise UserError(
                     _(

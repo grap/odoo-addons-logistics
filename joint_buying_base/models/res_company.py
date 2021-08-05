@@ -47,7 +47,7 @@ class ResCompany(models.Model):
         vals = {
             "name": _("{} (Joint Buyings)").format(sanitized_name),
             "is_joint_buying": True,
-            "is_joint_buying_deposit": True,
+            "is_joint_buying_stage": True,
             "joint_buying_company_id": self.id,
             "company_id": False,
             "is_company": True,

@@ -54,19 +54,20 @@ class ResPartner(models.Model):
         help="Activity that will serve as a deposit for this supplier",
     )
 
-    is_joint_buying_deposit = fields.Boolean(
-        string="Deposit",
+    is_joint_buying_stage = fields.Boolean(
+        string="Is Stage",
         default=False,
         help="Check this box if that address can be a step of a tour",
     )
 
-    is_joint_buying_night_deposit = fields.Boolean(
-        string="Night Deposit",
+    is_joint_buying_final_stage = fields.Boolean(
+        string="Is Final Stage",
         default=False,
         help="Check this box if that address can be an starting"
         " or arrival point of a tour",
     )
 
+    # Constraint Section
     @api.constrains("joint_buying_global_partner_id", "company_id")
     def _check_joint_buying_global_partner_id(self):
         check_partners = self.filtered(lambda x: x.joint_buying_global_partner_id)
@@ -114,6 +115,7 @@ class ResPartner(models.Model):
                 )
             )
 
+    # Compute Section
     def _compute_joint_buying_is_subscribed(self):
         for partner in self.filtered(lambda x: x.is_joint_buying):
             partner.joint_buying_is_subscribed = (
@@ -132,11 +134,7 @@ class ResPartner(models.Model):
                 {"joint_buying_subscribed_partner_ids": [(3, x.id) for x in partners]}
             )
 
-    def toggle_joint_buying_is_subscribed(self):
-        self.ensure_one()
-        self.joint_buying_is_subscribed = not self.joint_buying_is_subscribed
-        return True
-
+    # Overload Section
     def write(self, vals):
         res = super().write(vals)
         # Do not allow to update partner that have been created
@@ -165,6 +163,12 @@ class ResPartner(models.Model):
                 )
             )
         return super().unlink()
+
+    # Custom section
+    def toggle_joint_buying_is_subscribed(self):
+        self.ensure_one()
+        self.joint_buying_is_subscribed = not self.joint_buying_is_subscribed
+        return True
 
     @api.model
     def _get_fields_no_writable_joint_buying_company(self):
