@@ -1,5 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
-
+<!--
+    Copyright (C) 2021 - Today: GRAP (http://www.grap.coop)
+    @author: Sylvain LE GAL (https://twitter.com/legalsylvain)
+    License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl.html).
+-->
 <odoo>
 
     <record id="company_1GG" model="res.company">
@@ -84,6 +88,34 @@
         <field name="country_id" ref="base.fr"/>
     </record>
 
+    <record id="company_PZI" model="res.company">
+        <field name="code">PZI</field>
+        <field name="name">[PZI - small Zests from Italy and elsewhere]</field>
+        <field name="street">7 bis rue du Pré Paillard</field>
+        <field name="street2">PAE les Glaisins</field>
+        <field name="city">Annecy-Le-Vieux</field>
+        <field name="zip">74940</field>
+        <field name="country_id" ref="base.fr"/>
+    </record>
+
+    <record id="company_EDC" model="res.company">
+        <field name="code">EDC</field>
+        <field name="name">[EDC - The Quince Grocery]</field>
+        <field name="street">75 place du Bourniau</field>
+        <field name="city">Novalaise</field>
+        <field name="zip">73470</field>
+        <field name="country_id" ref="base.fr"/>
+    </record>
+
+    <record id="company_CRB" model="res.company">
+        <field name="code">CRB</field>
+        <field name="name">[CRB - Fang Bauges]</field>
+        <field name="street">Impasse du Nant d'Orange</field>
+        <field name="city">Lescheraines</field>
+        <field name="zip">73340</field>
+        <field name="country_id" ref="base.fr"/>
+    </record>
+
     <record id="company_LSE" model="res.company">
         <field name="code">LSE</field>
         <field name="name">[LSE - The Super Mall]</field>
@@ -111,5 +143,19 @@
             'is_joint_buying_supplier': True,
         }"/>
     </function>
+
+    <function model="res.company" name="demo_geolocalize" eval="[[
+        ref('company_LSE'),
+        ref('company_VEV'),
+        ref('company_CDA'),
+        ref('company_TOU'),
+        ref('company_C3P'),
+        ref('company_CHE'),
+        ref('company_TOU'),
+        ref('company_PZI'),
+        ref('company_CRB'),
+        ref('company_EDC'),
+    ]]"/>
+
 
 </odoo>

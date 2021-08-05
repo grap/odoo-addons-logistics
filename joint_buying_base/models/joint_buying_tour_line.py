@@ -18,8 +18,6 @@ class JointBuyingTourLine(models.Model):
 
     sequence = fields.Integer()
 
-    date_tour = fields.Date(related="tour_id.date_tour", readonly=True, store=True)
-
     distance = fields.Float(
         compute="_compute_distance",
         store=True,
@@ -31,32 +29,29 @@ class JointBuyingTourLine(models.Model):
     )
 
     starting_point_id = fields.Many2one(
-        comodel_name="res.partner",
-        context=_JOINT_BUYING_PARTNER_CONTEXT,
-        compute="_compute_starting_point_id",
-        store=True,
+        comodel_name="res.partner", context=_JOINT_BUYING_PARTNER_CONTEXT, required=True
     )
 
     arrival_point_id = fields.Many2one(
         comodel_name="res.partner", context=_JOINT_BUYING_PARTNER_CONTEXT, required=True
     )
 
-    @api.depends(
-        "tour_id.starting_point_id",
-        "tour_id.line_ids.sequence",
-        "tour_id.line_ids.arrival_point_id",
-    )
-    def _compute_starting_point_id(self):
-        # This check prevent recompute on the fly,
-        # when editing a tour, because the recompute is partial.
-        # only the edited line, and so it is not possible to computed
-        # the starting_point, based on the arrival of the previous line
-        if len(self) == 1 and isinstance(self.id, models.NewId):
-            return
-        previous_point = self.mapped("tour_id").starting_point_id
-        for line in self.sorted("sequence"):
-            line.starting_point_id = previous_point.id
-            previous_point = line.arrival_point_id
+    # @api.depends(
+    #     "tour_id.starting_point_id",
+    #     "tour_id.line_ids.sequence",
+    #     "tour_id.line_ids.arrival_point_id",
+    # )
+    # def _compute_starting_point_id(self):
+    #     # This check prevent recompute on the fly,
+    #     # when editing a tour, because the recompute is partial.
+    #     # only the edited line, and so it is not possible to computed
+    #     # the starting_point, based on the arrival of the previous line
+    #     if len(self) == 1 and isinstance(self.id, models.NewId):
+    #         return
+    #     previous_point = self.mapped("tour_id").starting_point_id
+    #     for line in self.sorted("sequence"):
+    #         line.starting_point_id = previous_point.id
+    #         previous_point = line.arrival_point_id
 
     @api.depends(
         "starting_point_id.partner_latitude",

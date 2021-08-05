@@ -1,5 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
-
+<!--
+    Copyright (C) 2021 - Today: GRAP (http://www.grap.coop)
+    @author: Sylvain LE GAL (https://twitter.com/legalsylvain)
+    License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl.html).
+-->
 <odoo>
 
     <record id="supplier_fumet_dombes" model="res.partner">
@@ -57,6 +61,19 @@
         ]"/>
     </record>
 
+    <record id="place_romagnieu" model="res.partner">
+        <field name="name">Romagnieu</field>
+        <field name="street">Impasse du Martarey</field>
+        <field name="city">Romagnieu</field>
+        <field name="zip">38480 </field>
+        <field name="country_id" ref="base.fr"/>
+        <field name="is_joint_buying" eval="True"/>
+        <field name="is_joint_buying_deposit" eval="True"/>
+        <field name="customer" eval="False"/>
+        <field name="supplier" eval="False"/>
+        <field name="company_id" eval="False"/>
+    </record>
+
     <record id="supplier_ELD_at_3PP" model="res.partner">
         <field name="name">Elodia D @ Three Peas</field>
         <field name="company_id" ref="joint_buying_base.company_3PP"/>
@@ -72,5 +89,20 @@
         <field name="supplier" eval="True"/>
         <field name="joint_buying_global_partner_id" ref="supplier_fumet_dombes"/>
     </record>
+
+    <function model="res.partner" name="write">
+        <value model="res.partner" eval="[
+            obj().env.ref('joint_buying_base.company_LSE').joint_buying_partner_id.id,
+            obj().env.ref('joint_buying_base.company_TOU').joint_buying_partner_id.id,
+            obj().env.ref('joint_buying_base.place_romagnieu').id,
+        ]"/>
+        <value eval="{
+            'is_joint_buying_night_deposit': True,
+        }"/>
+    </function>
+
+    <function model="res.partner" name="demo_geolocalize" eval="[[
+        ref('place_romagnieu'),
+    ]]"/>
 
 </odoo>

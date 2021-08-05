@@ -56,6 +56,8 @@ License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl.html).
                                 <field name="country_id" placeholder="Country" class="o_address_country" options='{"no_open": True, "no_create": True}'/>
                             </div>
                             <field name="vat"/>
+                            <field name="is_joint_buying_deposit"/>
+                            <field name="is_joint_buying_night_deposit"/>
                            </group>
                         <group>
                             <field name="phone" widget="phone"/>
@@ -64,7 +66,7 @@ License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl.html).
                             <field name="website" widget="url"/>
                             <field name="category_id" widget="many2many_tags"
                                 options="{'color_field': 'color', 'no_create_edit': True}"
-                                context="{'joint_buying':1}"/>
+                                context="{'joint_buying': 1}"/>
                         </group>
                     </group>
                     <notebook colspan="4">

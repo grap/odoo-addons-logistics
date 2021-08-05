@@ -14,7 +14,7 @@ License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl.html).
                 <page string="Joint Buyings">
                     <group>
                         <group>
-                            <field name="joint_buying_partner_id"/>
+                            <field name="joint_buying_partner_id" context="{'joint_buying': 1}"/>
                             <field name="is_joint_buying_customer"/>
                             <field name="is_joint_buying_supplier"/>
                             <newline/>

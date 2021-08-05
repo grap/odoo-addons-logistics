@@ -1,76 +1,111 @@
 <?xml version="1.0" encoding="utf-8"?>
-
+<!--
+    Copyright (C) 2021 - Today: GRAP (http://www.grap.coop)
+    @author: Sylvain LE GAL (https://twitter.com/legalsylvain)
+    License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl.html).
+-->
 <odoo>
 
-    <record id="supplier_fumet_dombes" model="res.partner">
-        <field name="name">le Fumet des Dombes</field>
-        <field name="street">Z.I. Sure</field>
-        <field name="street2">93 rue de l'artisanat</field>
-        <field name="city">Saint-André-de-Corcy</field>
-        <field name="zip">01390</field>
-        <field name="country_id" ref="base.fr"/>
-        <field name="phone">04.72.26.44.42</field>
-        <field name="website">https://www.lefumetdesdombes.com</field>
-        <field name="is_joint_buying" eval="True"/>
-        <field name="customer" eval="False"/>
-        <field name="supplier" eval="True"/>
-        <field name="company_id" eval="False"/>
-        <field name="joint_buying_pivot_company_id" ref="joint_buying_base.company_1GG"/>
-        <field name="joint_buying_deposit_company_id" ref="joint_buying_base.company_LSE"/>
-        <field name="category_id" eval="[
-            (4, ref('joint_buying_base.partner_category_fishmonger')),
-            (4, ref('joint_buying_base.partner_category_poultry')),
-        ]"/>
+    <!-- Tournée Lyon - Loire -->
+    <record id="tour_lyon_loire_1" model="joint.buying.tour">
+        <field name="name">Lyon - Loire</field>
+        <field name="date_tour" eval="(DateTime.today() + relativedelta(day=10)).strftime('%Y-%m-%d 07:00')"/>
     </record>
 
-    <record id="supplier_salaison_devidal" model="res.partner">
-        <field name="name">Salaison Devidal</field>
-        <field name="street">La Besse</field>
-        <field name="city">Yssingeaux</field>
-        <field name="zip">43200</field>
-        <field name="country_id" ref="base.fr"/>
-        <field name="is_joint_buying" eval="True"/>
-        <field name="customer" eval="False"/>
-        <field name="supplier" eval="True"/>
-        <field name="company_id" eval="False"/>
-        <field name="joint_buying_pivot_company_id" ref="joint_buying_base.company_CDA"/>
-        <field name="joint_buying_deposit_company_id" ref="joint_buying_base.company_CDA"/>
-        <field name="category_id" eval="[
-            (4, ref('joint_buying_base.partner_category_delicatessen')),
-        ]"/>
+    <record id="tour_lyon_loire_1_line_1" model="joint.buying.tour.line">
+        <field name="tour_id" ref="tour_lyon_loire_1"/>
+        <field name="starting_point_id" model="res.partner" eval="obj().env.ref('joint_buying_base.company_LSE').joint_buying_partner_id.id"/>
+        <field name="arrival_point_id" model="res.partner" eval="obj().env.ref('joint_buying_base.company_VEV').joint_buying_partner_id.id"/>
     </record>
 
-    <record id="supplier_oscar_morell" model="res.partner">
-        <field name="name">Frutas Oscar Morell S.L.</field>
-        <field name="street"> Calle Chiva 61</field>
-        <field name="city">Cheste</field>
-        <field name="zip">46380</field>
-        <field name="country_id" ref="base.es"/>
-        <field name="is_joint_buying" eval="True"/>
-        <field name="customer" eval="False"/>
-        <field name="supplier" eval="True"/>
-        <field name="company_id" eval="False"/>
-        <field name="joint_buying_pivot_company_id" ref="joint_buying_base.company_3PP"/>
-        <field name="joint_buying_deposit_company_id" ref="joint_buying_base.company_3PP"/>
-        <field name="category_id" eval="[
-            (4, ref('joint_buying_base.partner_category_fruits')),
-        ]"/>
+    <record id="tour_lyon_loire_1_line_2" model="joint.buying.tour.line">
+        <field name="tour_id" ref="tour_lyon_loire_1"/>
+        <field name="starting_point_id" model="res.partner" eval="obj().env.ref('joint_buying_base.company_VEV').joint_buying_partner_id.id"/>
+        <field name="arrival_point_id" model="res.partner" eval="obj().env.ref('joint_buying_base.company_CDA').joint_buying_partner_id.id"/>
     </record>
 
-    <record id="supplier_ELD_at_3PP" model="res.partner">
-        <field name="name">Elodia D @ Three Peas</field>
-        <field name="company_id" ref="joint_buying_base.company_3PP"/>
-        <field name="customer" eval="False"/>
-        <field name="supplier" eval="True"/>
-        <field name="joint_buying_global_partner_id"  model="res.partner" eval="obj().env.ref('joint_buying_base.company_ELD').joint_buying_partner_id.id"/>
+    <record id="tour_lyon_loire_1_line_3" model="joint.buying.tour.line">
+        <field name="tour_id" ref="tour_lyon_loire_1"/>
+        <field name="starting_point_id" model="res.partner" eval="obj().env.ref('joint_buying_base.company_CDA').joint_buying_partner_id.id"/>
+        <field name="arrival_point_id" model="res.partner" eval="obj().env.ref('joint_buying_base.company_LSE').joint_buying_partner_id.id"/>
     </record>
 
-    <record id="supplier_fumet_dombes_at_3PP" model="res.partner">
-        <field name="name">Fumet des Dombes @ Three Peas</field>
-        <field name="company_id" ref="joint_buying_base.company_3PP"/>
-        <field name="customer" eval="False"/>
-        <field name="supplier" eval="True"/>
-        <field name="joint_buying_global_partner_id" ref="supplier_fumet_dombes"/>
+    <!-- Tournée Lyon - Drôme -->
+    <record id="tour_lyon_drome_1" model="joint.buying.tour">
+        <field name="name">Lyon - Drôme</field>
+        <field name="date_tour" eval="(DateTime.today() + relativedelta(day=15)).strftime('%Y-%m-%d 07:00')"/>
+    </record>
+
+    <record id="tour_lyon_drome_1_line_1" model="joint.buying.tour.line">
+        <field name="tour_id" ref="tour_lyon_drome_1"/>
+        <field name="starting_point_id" model="res.partner" eval="obj().env.ref('joint_buying_base.company_LSE').joint_buying_partner_id.id"/>
+        <field name="arrival_point_id" model="res.partner" eval="obj().env.ref('joint_buying_base.company_C3P').joint_buying_partner_id.id"/>
+    </record>
+
+    <record id="tour_lyon_drome_1_line_2" model="joint.buying.tour.line">
+        <field name="tour_id" ref="tour_lyon_drome_1"/>
+        <field name="starting_point_id" model="res.partner" eval="obj().env.ref('joint_buying_base.company_C3P').joint_buying_partner_id.id"/>
+        <field name="arrival_point_id" model="res.partner" eval="obj().env.ref('joint_buying_base.company_CHE').joint_buying_partner_id.id"/>
+    </record>
+
+    <record id="tour_lyon_drome_1_line_3" model="joint.buying.tour.line">
+        <field name="tour_id" ref="tour_lyon_drome_1"/>
+        <field name="starting_point_id" model="res.partner" eval="obj().env.ref('joint_buying_base.company_CHE').joint_buying_partner_id.id"/>
+        <field name="arrival_point_id" model="res.partner" eval="obj().env.ref('joint_buying_base.company_TOU').joint_buying_partner_id.id"/>
+    </record>
+
+    <record id="tour_lyon_drome_1_line_4" model="joint.buying.tour.line">
+        <field name="tour_id" ref="tour_lyon_drome_1"/>
+        <field name="starting_point_id" model="res.partner" eval="obj().env.ref('joint_buying_base.company_TOU').joint_buying_partner_id.id"/>
+        <field name="arrival_point_id" model="res.partner" eval="obj().env.ref('joint_buying_base.company_LSE').joint_buying_partner_id.id"/>
+    </record>
+
+    <!-- Tournée Lyon - Savoie -->
+    <record id="tour_lyon_savoie_1" model="joint.buying.tour">
+        <field name="name">Lyon - Romagnieu</field>
+        <field name="date_tour" eval="(DateTime.today() + relativedelta(day=18)).strftime('%Y-%m-%d 07:00')"/>
+    </record>
+
+    <record id="tour_lyon_savoie_1_line_1" model="joint.buying.tour.line">
+        <field name="tour_id" ref="tour_lyon_savoie_1"/>
+        <field name="starting_point_id" model="res.partner" eval="obj().env.ref('joint_buying_base.company_LSE').joint_buying_partner_id.id"/>
+        <field name="arrival_point_id" ref="place_romagnieu"/>
+    </record>
+
+    <record id="tour_lyon_savoie_1_line_2" model="joint.buying.tour.line">
+        <field name="tour_id" ref="tour_lyon_savoie_1"/>
+        <field name="starting_point_id" ref="place_romagnieu"/>
+        <field name="arrival_point_id" model="res.partner" eval="obj().env.ref('joint_buying_base.company_LSE').joint_buying_partner_id.id"/>
+    </record>
+
+    <!-- Tournée Savoie -->
+    <record id="tour_savoie_1" model="joint.buying.tour">
+        <field name="name">Romagnieu - Savoie</field>
+        <field name="date_tour" eval="(DateTime.today() + relativedelta(day=20)).strftime('%Y-%m-%d 07:00')"/>
+    </record>
+
+    <record id="tours_savoie_1_line_1" model="joint.buying.tour.line">
+        <field name="tour_id" ref="tour_savoie_1"/>
+        <field name="starting_point_id" ref="place_romagnieu"/>
+        <field name="arrival_point_id" model="res.partner" eval="obj().env.ref('joint_buying_base.company_EDC').joint_buying_partner_id.id"/>
+    </record>
+
+    <record id="tours_savoie_1_line_2" model="joint.buying.tour.line">
+        <field name="tour_id" ref="tour_savoie_1"/>
+        <field name="starting_point_id" model="res.partner" eval="obj().env.ref('joint_buying_base.company_EDC').joint_buying_partner_id.id"/>
+        <field name="arrival_point_id" model="res.partner" eval="obj().env.ref('joint_buying_base.company_PZI').joint_buying_partner_id.id"/>
+    </record>
+
+    <record id="tours_savoie_1_line_3" model="joint.buying.tour.line">
+        <field name="tour_id" ref="tour_savoie_1"/>
+        <field name="starting_point_id" model="res.partner" eval="obj().env.ref('joint_buying_base.company_PZI').joint_buying_partner_id.id"/>
+        <field name="arrival_point_id" model="res.partner" eval="obj().env.ref('joint_buying_base.company_CRB').joint_buying_partner_id.id"/>
+    </record>
+
+    <record id="tours_savoie_1_line_4" model="joint.buying.tour.line">
+        <field name="tour_id" ref="tour_savoie_1"/>
+        <field name="starting_point_id" model="res.partner" eval="obj().env.ref('joint_buying_base.company_CRB').joint_buying_partner_id.id"/>
+        <field name="arrival_point_id" ref="place_romagnieu"/>
     </record>
 
 </odoo>
