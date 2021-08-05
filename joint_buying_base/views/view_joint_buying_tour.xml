@@ -6,6 +6,15 @@ License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl.html).
 -->
 <odoo>
 
+    <record id="action_tour_2_wizard_set_tour" model="ir.actions.act_window">
+        <field name="name">Set Tour</field>
+        <field name="type">ir.actions.act_window</field>
+        <field name="res_model">joint.buying.wizard.set.tour</field>
+        <field name="view_type">form</field>
+        <field name="view_mode">form</field>
+        <field name="target">new</field>
+    </record>
+
     <record id="view_joint_buying_tour_search" model="ir.ui.view">
         <field name="model">joint.buying.tour</field>
         <field name="arch" type="xml">
@@ -20,8 +29,10 @@ License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl.html).
         <field name="model">joint.buying.tour</field>
         <field name="arch" type="xml">
             <tree>
-                <field name="name"/>
                 <field name="date_tour"/>
+                <field name="name"/>
+                <field name="starting_point_id" context="{'joint_buying': 1}"/>
+                <field name="line_qty"/>
                 <field name="distance"/>
             </tree>
         </field>
@@ -31,7 +42,10 @@ License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl.html).
         <field name="model">joint.buying.tour</field>
         <field name="arch" type="xml">
             <form>
-                <header />
+                <header>
+                    <button type="action" class="oe_stat_button" string="Configure"
+                            name="%(joint_buying_base.action_tour_2_wizard_set_tour)d"/>
+                </header>
                 <sheet>
                     <div class="oe_button_box" name="button_box" />
                     <div class="oe_title">
@@ -42,9 +56,10 @@ License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl.html).
                     <group>
                         <group>
                             <field name="date_tour"/>
-                            <field name="starting_point_id"/>
-                            <field name="arrival_point_id"/>
+                            <field name="starting_point_id" context="{'joint_buying': 1}"/>
+                            <field name="arrival_point_id" context="{'joint_buying': 1}" attrs="{'invisible': [('is_loop', '=', True)]}"/>
                             <field name="distance"/>
+                            <field name="is_loop" invisible="1"/>
                         </group>
                         <group/>
                     </group>

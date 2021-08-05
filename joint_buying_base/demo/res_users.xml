@@ -9,7 +9,16 @@
 
     <record id="base.user_admin" model="res.users">
         <field name="groups_id" eval="[
+            (4, ref('base.group_multi_company')),
             (4, ref('joint_buying_base.group_joint_buying_manager')),
+        ]" />
+        <field name="company_ids" eval="[
+            (4, ref('joint_buying_base.company_1GG')),
+            (4, ref('joint_buying_base.company_3PP')),
+            (4, ref('joint_buying_base.company_CHE')),
+            (4, ref('joint_buying_base.company_DOZ')),
+            (4, ref('joint_buying_base.company_ELD')),
+            (4, ref('joint_buying_base.company_LSE')),
         ]" />
     </record>
 
@@ -56,21 +65,6 @@
         <field name="company_id" ref="joint_buying_base.company_3PP"/>
         <field name="groups_id" eval="[
             (4, ref('base.group_user')),
-            (4, ref('base.group_multi_company')),
-            (4, ref('joint_buying_base.group_joint_buying_manager')),
-        ]" />
-        <field name="company_ids" eval="[
-            (4, ref('joint_buying_base.company_1GG')),
-            (4, ref('joint_buying_base.company_3PP')),
-            (4, ref('joint_buying_base.company_CHE')),
-            (4, ref('joint_buying_base.company_DOZ')),
-            (4, ref('joint_buying_base.company_ELD')),
-            (4, ref('joint_buying_base.company_LSE')),
-        ]" />
-    </record>
-
-    <record id="base.user_admin" model="res.users">
-        <field name="groups_id" eval="[
             (4, ref('base.group_multi_company')),
             (4, ref('joint_buying_base.group_joint_buying_manager')),
         ]" />

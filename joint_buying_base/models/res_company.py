@@ -47,6 +47,7 @@ class ResCompany(models.Model):
         vals = {
             "name": _("{} (Joint Buyings)").format(sanitized_name),
             "is_joint_buying": True,
+            "is_joint_buying_deposit": True,
             "joint_buying_company_id": self.id,
             "company_id": False,
             "is_company": True,
@@ -85,3 +86,7 @@ class ResCompany(models.Model):
                     write_joint_buying_partner=True
                 ).write(partner_vals)
         return res
+
+    @api.multi
+    def demo_geolocalize(self):
+        self.mapped("joint_buying_partner_id").demo_geolocalize()

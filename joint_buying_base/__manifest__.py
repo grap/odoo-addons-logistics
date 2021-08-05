@@ -13,7 +13,7 @@
         "mail",
         "name_search_reset_res_partner",
         "res_company_code",
-        "base_geolocalize",
+        "base_geolocalize_openstreetmap",
     ],
     "external_dependencies": {"python": ["openupgradelib"]},
     "data": [
@@ -28,12 +28,14 @@
         "views/view_res_users.xml",
         "views/view_res_config_settings.xml",
         "views/view_joint_buying_tour.xml",
+        "wizards/view_joint_buying_wizard_set_tour.xml",
     ],
     "demo": [
         "demo/res_company.xml",
         "demo/res_users.xml",
         "demo/res_partner_category.xml",
         "demo/res_partner.xml",
+        "demo/joint_buying_tour.xml",
     ],
     "post_init_hook": "_create_joint_buying_partner_for_companies",
     "installable": True,

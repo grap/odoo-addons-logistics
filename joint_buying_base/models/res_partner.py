@@ -54,6 +54,19 @@ class ResPartner(models.Model):
         help="Activity that will serve as a deposit for this supplier",
     )
 
+    is_joint_buying_deposit = fields.Boolean(
+        string="Deposit",
+        default=False,
+        help="Check this box if that address can be a step of a tour",
+    )
+
+    is_joint_buying_night_deposit = fields.Boolean(
+        string="Night Deposit",
+        default=False,
+        help="Check this box if that address can be an starting"
+        " or arrival point of a tour",
+    )
+
     @api.constrains("joint_buying_global_partner_id", "company_id")
     def _check_joint_buying_global_partner_id(self):
         check_partners = self.filtered(lambda x: x.joint_buying_global_partner_id)
@@ -169,3 +182,10 @@ class ResPartner(models.Model):
             "vat",
         ]
         return res
+
+    @api.multi
+    def demo_geolocalize(self):
+        partners = self.filtered(
+            lambda x: x.street and x.city and not x.partner_latitude
+        )
+        partners.geo_localize()
