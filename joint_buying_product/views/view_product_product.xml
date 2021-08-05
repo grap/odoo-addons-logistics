@@ -150,7 +150,6 @@ License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl.html).
         name="Products"
         parent="joint_buying_base.menu_configuration"
         action="action_product_product"
-        groups="product.group_product_variant"
         sequence="10"
     />
 
