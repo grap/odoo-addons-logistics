@@ -22,12 +22,6 @@
         ]" />
     </record>
 
-    <record id="base.user_root" model="res.users">
-        <field name="groups_id" eval="[
-            (4, ref('joint_buying_base.group_joint_buying_manager')),
-        ]" />
-    </record>
-
     <record id="partner_joint_buying_user" model="res.partner">
         <field name="name">Logistic User</field>
         <field name="company_id" ref="joint_buying_base.company_3PP"/>
