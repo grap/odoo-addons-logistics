@@ -3,7 +3,6 @@
 # License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl.html).
 
 from odoo import _, api, fields, models
-from odoo.exceptions import UserError
 
 from .res_partner import _JOINT_BUYING_PARTNER_CONTEXT
 
@@ -41,7 +40,11 @@ class JointBuyingTour(models.Model):
     complete_name = fields.Char(compute="_compute_complete_name", store=True)
 
     line_ids = fields.One2many(
-        comodel_name="joint.buying.tour.line", inverse_name="tour_id", readonly=True
+        comodel_name="joint.buying.tour.line",
+        inverse_name="tour_id",
+        readonly=True,
+        copy=True,
+        auto_join=True,
     )
 
     line_qty = fields.Char(
@@ -50,6 +53,7 @@ class JointBuyingTour(models.Model):
 
     is_loop = fields.Boolean(string="Is a Loop", compute="_compute_is_loop", store=True)
 
+    # Compute Section
     @api.depends("name", "date_tour")
     def _compute_complete_name(self):
         for tour in self:
@@ -80,31 +84,15 @@ class JointBuyingTour(models.Model):
             tour.starting_point_id = tour.line_ids[0].starting_point_id
             tour.arrival_point_id = tour.line_ids[-1].arrival_point_id
 
-    def _check_points(self):
-        for tour in self:
-            if (
-                tour.starting_point_id
-                and not tour.starting_point_id.is_joint_buying_night_deposit
-            ):
-                raise UserError(
-                    _(
-                        "You can not set %s as the start of your tour because"
-                        " it is not a night deposit"
-                    )
-                    % (tour.starting_point_id.name)
-                )
-            if (
-                tour.arrival_point_id
-                and not tour.arrival_point_id.is_joint_buying_night_deposit
-            ):
-                raise UserError(
-                    _(
-                        "You can not set %s as the arrival of your tour because"
-                        " it is not a night deposit"
-                    )
-                    % (tour.arrival_point_id.name)
-                )
+    # Overload Section
+    @api.multi
+    def copy(self, default=None):
+        self.ensure_one()
+        default = default or {}
+        default["name"] = _("%s (copy)") % self.name
+        return super().copy(default)
 
+    # Custom Section
     @api.multi
     def change_tour_lines(self, wizard_lines):
         self.ensure_one()
@@ -124,5 +112,3 @@ class JointBuyingTour(models.Model):
                     "arrival_point_id": wizard_lines[i + 1].point_id.id,
                 }
             )
-
-        self._check_points()

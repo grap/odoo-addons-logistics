@@ -23,5 +23,5 @@ class JointBuyingWizardSetTourLine(models.TransientModel):
         string="Step",
         comodel_name="res.partner",
         context=_JOINT_BUYING_PARTNER_CONTEXT,
-        domain="[('is_joint_buying_deposit', '=', True)]",
+        domain="[('is_joint_buying_stage', '=', True)]",
     )
