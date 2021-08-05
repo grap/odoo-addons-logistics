@@ -60,13 +60,6 @@ class ResPartner(models.Model):
         help="Check this box if that address can be a step of a tour",
     )
 
-    is_joint_buying_final_stage = fields.Boolean(
-        string="Is Final Stage",
-        default=False,
-        help="Check this box if that address can be an starting"
-        " or arrival point of a tour",
-    )
-
     # Constraint Section
     @api.constrains("joint_buying_global_partner_id", "company_id")
     def _check_joint_buying_global_partner_id(self):
