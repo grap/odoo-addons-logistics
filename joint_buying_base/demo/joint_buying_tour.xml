@@ -9,6 +9,7 @@
     <!-- Tournée Lyon - Loire -->
     <record id="tour_lyon_loire_1" model="joint.buying.tour">
         <field name="name">Lyon - Loire</field>
+        <field name="carrier_id" ref="carrier_coolivri_lyon"/>
         <field name="date_tour" eval="(DateTime.today() + relativedelta(day=10)).strftime('%Y-%m-%d 07:00')"/>
     </record>
 
@@ -33,6 +34,7 @@
     <!-- Tournée Lyon - Drôme -->
     <record id="tour_lyon_drome_1" model="joint.buying.tour">
         <field name="name">Lyon - Drôme</field>
+        <field name="carrier_id" ref="carrier_coolivri_lyon"/>
         <field name="date_tour" eval="(DateTime.today() + relativedelta(day=15)).strftime('%Y-%m-%d 07:00')"/>
     </record>
 
@@ -63,6 +65,7 @@
     <!-- Tournée Lyon - Savoie -->
     <record id="tour_lyon_savoie_1" model="joint.buying.tour">
         <field name="name">Lyon - Romagnieu</field>
+        <field name="carrier_id" ref="carrier_coolivri_lyon"/>
         <field name="date_tour" eval="(DateTime.today() + relativedelta(day=18)).strftime('%Y-%m-%d 07:00')"/>
     </record>
 
@@ -81,6 +84,7 @@
     <!-- Tournée Savoie -->
     <record id="tour_savoie_1" model="joint.buying.tour">
         <field name="name">Romagnieu - Savoie</field>
+        <field name="carrier_id" ref="carrier_coolivri_savoie"/>
         <field name="date_tour" eval="(DateTime.today() + relativedelta(day=20)).strftime('%Y-%m-%d 07:00')"/>
     </record>
 

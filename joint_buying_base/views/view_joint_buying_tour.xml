@@ -21,6 +21,7 @@ License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl.html).
             <search>
                 <field name="name"/>
                 <field name="date_tour"/>
+                <field name="carrier_id"/>
             </search>
         </field>
     </record>
@@ -31,9 +32,12 @@ License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl.html).
             <tree>
                 <field name="date_tour"/>
                 <field name="name"/>
+                <field name="carrier_id"/>
                 <field name="starting_point_id" context="{'joint_buying': 1}"/>
+                <field name="arrival_point_id" context="{'joint_buying': 1}" attrs="{'invisible': [('is_loop', '=', True)]}"/>
                 <field name="line_qty"/>
                 <field name="distance"/>
+                <field name="is_loop" invisible="1"/>
             </tree>
         </field>
     </record>
@@ -56,6 +60,7 @@ License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl.html).
                     <group>
                         <group>
                             <field name="date_tour"/>
+                            <field name="carrier_id"/>
                             <field name="starting_point_id" context="{'joint_buying': 1}"/>
                             <field name="arrival_point_id" context="{'joint_buying': 1}" attrs="{'invisible': [('is_loop', '=', True)]}"/>
                             <field name="distance"/>

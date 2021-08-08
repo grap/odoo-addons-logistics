@@ -90,17 +90,6 @@
         <field name="joint_buying_global_partner_id" ref="supplier_fumet_dombes"/>
     </record>
 
-    <function model="res.partner" name="write">
-        <value model="res.partner" eval="[
-            obj().env.ref('joint_buying_base.company_LSE').joint_buying_partner_id.id,
-            obj().env.ref('joint_buying_base.company_TOU').joint_buying_partner_id.id,
-            obj().env.ref('joint_buying_base.place_romagnieu').id,
-        ]"/>
-        <value eval="{
-            'is_joint_buying_final_stage': True,
-        }"/>
-    </function>
-
     <function model="res.partner" name="demo_geolocalize" eval="[[
         ref('place_romagnieu'),
     ]]"/>

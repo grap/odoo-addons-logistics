@@ -9,7 +9,7 @@
 
     <!-- We give first, access to user_root to avoid errors
     when loading demo data (by joint.buying.check.access.mixin)-->
-    <record id="joint_buying_base.group_joint_buying_manager" model="res.groups">
+    <record id="group_joint_buying_manager" model="res.groups">
         <field name="users" eval="[
             (4, ref('base.user_root')),
         ]" />
