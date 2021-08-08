@@ -49,6 +49,7 @@
         <field name="street"> Calle Chiva 61</field>
         <field name="city">Cheste</field>
         <field name="zip">46380</field>
+        <field name="email">frutasmorell@gmail.com</field>
         <field name="country_id" ref="base.es"/>
         <field name="is_joint_buying" eval="True"/>
         <field name="customer" eval="False"/>
@@ -89,17 +90,6 @@
         <field name="supplier" eval="True"/>
         <field name="joint_buying_global_partner_id" ref="supplier_fumet_dombes"/>
     </record>
-
-    <function model="res.partner" name="write">
-        <value model="res.partner" eval="[
-            obj().env.ref('joint_buying_base.company_LSE').joint_buying_partner_id.id,
-            obj().env.ref('joint_buying_base.company_TOU').joint_buying_partner_id.id,
-            obj().env.ref('joint_buying_base.place_romagnieu').id,
-        ]"/>
-        <value eval="{
-            'is_joint_buying_final_stage': True,
-        }"/>
-    </function>
 
     <function model="res.partner" name="demo_geolocalize" eval="[[
         ref('place_romagnieu'),

@@ -21,6 +21,10 @@ class JointBuyingTour(models.Model):
         help="Distance as the crow flies, in kilometer",
     )
 
+    carrier_id = fields.Many2one(
+        comodel_name="joint.buying.carrier", string="Carrier", required=True
+    )
+
     date_tour = fields.Datetime(required=True, track_visibility=True)
 
     starting_point_id = fields.Many2one(
