@@ -32,7 +32,6 @@
         "wizards/view_joint_buying_wizard_set_tour.xml",
     ],
     "demo": [
-        "demo/res_groups.xml",
         "demo/res_company.xml",
         "demo/res_users.xml",
         "demo/res_partner_category.xml",
