@@ -47,6 +47,7 @@ class ResCompany(models.Model):
         vals = {
             "name": _("{} (Joint Buyings)").format(sanitized_name),
             "is_joint_buying": True,
+            "is_joint_buying_stage": True,
             "joint_buying_company_id": self.id,
             "company_id": False,
             "is_company": True,
@@ -65,7 +66,7 @@ class ResCompany(models.Model):
         ResPartner = self.env["res.partner"]
         res = super().create(vals)
         res.joint_buying_partner_id = ResPartner.with_context(
-            write_joint_buying_partner=True
+            write_joint_buying_partner=True, no_check_joint_buying=True
         ).create(res._prepare_joint_buying_partner_vals())
         return res
 
@@ -73,7 +74,10 @@ class ResCompany(models.Model):
         # Technical Note: we add context key here
         # to avoid error when recomputing related / computed values
         res = super(
-            ResCompany, self.with_context(write_joint_buying_partner=True)
+            ResCompany,
+            self.with_context(
+                write_joint_buying_partner=True, no_check_joint_buying=True
+            ),
         ).write(vals)
         for company in self:
             partner_vals = company._prepare_joint_buying_partner_vals()
@@ -82,3 +86,7 @@ class ResCompany(models.Model):
                     write_joint_buying_partner=True
                 ).write(partner_vals)
         return res
+
+    @api.multi
+    def demo_geolocalize(self):
+        self.mapped("joint_buying_partner_id").demo_geolocalize()

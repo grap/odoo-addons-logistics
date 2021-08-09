@@ -1,0 +1,115 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+    Copyright (C) 2021 - Today: GRAP (http://www.grap.coop)
+    @author: Sylvain LE GAL (https://twitter.com/legalsylvain)
+    License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl.html).
+-->
+<odoo>
+
+    <!-- Tournée Lyon - Loire -->
+    <record id="tour_lyon_loire_1" model="joint.buying.tour">
+        <field name="name">Lyon - Loire</field>
+        <field name="carrier_id" ref="carrier_coolivri_lyon"/>
+        <field name="date_tour" eval="(DateTime.today() + relativedelta(day=10)).strftime('%Y-%m-%d 07:00')"/>
+    </record>
+
+    <record id="tour_lyon_loire_1_line_1" model="joint.buying.tour.line">
+        <field name="tour_id" ref="tour_lyon_loire_1"/>
+        <field name="starting_point_id" model="res.partner" eval="obj().env.ref('joint_buying_base.company_LSE').joint_buying_partner_id.id"/>
+        <field name="arrival_point_id" model="res.partner" eval="obj().env.ref('joint_buying_base.company_VEV').joint_buying_partner_id.id"/>
+    </record>
+
+    <record id="tour_lyon_loire_1_line_2" model="joint.buying.tour.line">
+        <field name="tour_id" ref="tour_lyon_loire_1"/>
+        <field name="starting_point_id" model="res.partner" eval="obj().env.ref('joint_buying_base.company_VEV').joint_buying_partner_id.id"/>
+        <field name="arrival_point_id" model="res.partner" eval="obj().env.ref('joint_buying_base.company_CDA').joint_buying_partner_id.id"/>
+    </record>
+
+    <record id="tour_lyon_loire_1_line_3" model="joint.buying.tour.line">
+        <field name="tour_id" ref="tour_lyon_loire_1"/>
+        <field name="starting_point_id" model="res.partner" eval="obj().env.ref('joint_buying_base.company_CDA').joint_buying_partner_id.id"/>
+        <field name="arrival_point_id" model="res.partner" eval="obj().env.ref('joint_buying_base.company_LSE').joint_buying_partner_id.id"/>
+    </record>
+
+    <!-- Tournée Lyon - Drôme -->
+    <record id="tour_lyon_drome_1" model="joint.buying.tour">
+        <field name="name">Lyon - Drôme</field>
+        <field name="carrier_id" ref="carrier_coolivri_lyon"/>
+        <field name="date_tour" eval="(DateTime.today() + relativedelta(day=15)).strftime('%Y-%m-%d 07:00')"/>
+    </record>
+
+    <record id="tour_lyon_drome_1_line_1" model="joint.buying.tour.line">
+        <field name="tour_id" ref="tour_lyon_drome_1"/>
+        <field name="starting_point_id" model="res.partner" eval="obj().env.ref('joint_buying_base.company_LSE').joint_buying_partner_id.id"/>
+        <field name="arrival_point_id" model="res.partner" eval="obj().env.ref('joint_buying_base.company_C3P').joint_buying_partner_id.id"/>
+    </record>
+
+    <record id="tour_lyon_drome_1_line_2" model="joint.buying.tour.line">
+        <field name="tour_id" ref="tour_lyon_drome_1"/>
+        <field name="starting_point_id" model="res.partner" eval="obj().env.ref('joint_buying_base.company_C3P').joint_buying_partner_id.id"/>
+        <field name="arrival_point_id" model="res.partner" eval="obj().env.ref('joint_buying_base.company_CHE').joint_buying_partner_id.id"/>
+    </record>
+
+    <record id="tour_lyon_drome_1_line_3" model="joint.buying.tour.line">
+        <field name="tour_id" ref="tour_lyon_drome_1"/>
+        <field name="starting_point_id" model="res.partner" eval="obj().env.ref('joint_buying_base.company_CHE').joint_buying_partner_id.id"/>
+        <field name="arrival_point_id" model="res.partner" eval="obj().env.ref('joint_buying_base.company_TOU').joint_buying_partner_id.id"/>
+    </record>
+
+    <record id="tour_lyon_drome_1_line_4" model="joint.buying.tour.line">
+        <field name="tour_id" ref="tour_lyon_drome_1"/>
+        <field name="starting_point_id" model="res.partner" eval="obj().env.ref('joint_buying_base.company_TOU').joint_buying_partner_id.id"/>
+        <field name="arrival_point_id" model="res.partner" eval="obj().env.ref('joint_buying_base.company_LSE').joint_buying_partner_id.id"/>
+    </record>
+
+    <!-- Tournée Lyon - Savoie -->
+    <record id="tour_lyon_savoie_1" model="joint.buying.tour">
+        <field name="name">Lyon - Romagnieu</field>
+        <field name="carrier_id" ref="carrier_coolivri_lyon"/>
+        <field name="date_tour" eval="(DateTime.today() + relativedelta(day=18)).strftime('%Y-%m-%d 07:00')"/>
+    </record>
+
+    <record id="tour_lyon_savoie_1_line_1" model="joint.buying.tour.line">
+        <field name="tour_id" ref="tour_lyon_savoie_1"/>
+        <field name="starting_point_id" model="res.partner" eval="obj().env.ref('joint_buying_base.company_LSE').joint_buying_partner_id.id"/>
+        <field name="arrival_point_id" ref="place_romagnieu"/>
+    </record>
+
+    <record id="tour_lyon_savoie_1_line_2" model="joint.buying.tour.line">
+        <field name="tour_id" ref="tour_lyon_savoie_1"/>
+        <field name="starting_point_id" ref="place_romagnieu"/>
+        <field name="arrival_point_id" model="res.partner" eval="obj().env.ref('joint_buying_base.company_LSE').joint_buying_partner_id.id"/>
+    </record>
+
+    <!-- Tournée Savoie -->
+    <record id="tour_savoie_1" model="joint.buying.tour">
+        <field name="name">Romagnieu - Savoie</field>
+        <field name="carrier_id" ref="carrier_coolivri_savoie"/>
+        <field name="date_tour" eval="(DateTime.today() + relativedelta(day=20)).strftime('%Y-%m-%d 07:00')"/>
+    </record>
+
+    <record id="tours_savoie_1_line_1" model="joint.buying.tour.line">
+        <field name="tour_id" ref="tour_savoie_1"/>
+        <field name="starting_point_id" ref="place_romagnieu"/>
+        <field name="arrival_point_id" model="res.partner" eval="obj().env.ref('joint_buying_base.company_EDC').joint_buying_partner_id.id"/>
+    </record>
+
+    <record id="tours_savoie_1_line_2" model="joint.buying.tour.line">
+        <field name="tour_id" ref="tour_savoie_1"/>
+        <field name="starting_point_id" model="res.partner" eval="obj().env.ref('joint_buying_base.company_EDC').joint_buying_partner_id.id"/>
+        <field name="arrival_point_id" model="res.partner" eval="obj().env.ref('joint_buying_base.company_PZI').joint_buying_partner_id.id"/>
+    </record>
+
+    <record id="tours_savoie_1_line_3" model="joint.buying.tour.line">
+        <field name="tour_id" ref="tour_savoie_1"/>
+        <field name="starting_point_id" model="res.partner" eval="obj().env.ref('joint_buying_base.company_PZI').joint_buying_partner_id.id"/>
+        <field name="arrival_point_id" model="res.partner" eval="obj().env.ref('joint_buying_base.company_CRB').joint_buying_partner_id.id"/>
+    </record>
+
+    <record id="tours_savoie_1_line_4" model="joint.buying.tour.line">
+        <field name="tour_id" ref="tour_savoie_1"/>
+        <field name="starting_point_id" model="res.partner" eval="obj().env.ref('joint_buying_base.company_CRB').joint_buying_partner_id.id"/>
+        <field name="arrival_point_id" ref="place_romagnieu"/>
+    </record>
+
+</odoo>

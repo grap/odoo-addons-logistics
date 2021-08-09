@@ -14,8 +14,8 @@
                     Here is in attachment a Grouped Purchase Order <strong>${object.name}</strong>
                     <br/>
                     <ul>
-                        <li>Total Amount Untaxed : <strong>${object.amount_untaxed} €</strong></li>
-                        <li>Place of deposit: <strong>${object.deposit_company_id.name} </strong>(${object.deposit_company_id.street} ${object.deposit_company_id.street2}, ${object.deposit_company_id.zip} ${object.deposit_company_id.city})</li>
+                        <li>Total Amount Untaxed : <strong>${round(object.amount_untaxed, 2)} €</strong></li>
+                        <li>Place of deposit: <strong>${object.deposit_company_id.name} </strong>(${object.deposit_company_id.street or ''} ${object.deposit_company_id.street2 or ''}, ${object.deposit_company_id.zip or ''} ${object.deposit_company_id.city or ''})</li>
                         <li>Maximum date of Deposit: <strong>${object.deposit_date}</strong></li>
                     </ul>
                     <br/>
@@ -26,7 +26,7 @@
             </div>
         </field>
         <field name="report_template" ref="action_report_joint_buying_purchase_order_grouped"/>
-        <field name="report_name">Global_purchase_order_${(object.name or '').replace('/','_')}</field>
+        <field name="report_name">${(object.name)} - ${(object.supplier_id.name).replace('/', '_')} - Grouped Purchase Order ${(object.deposit_date)}</field>
         <field name="lang">${object.supplier_id.lang}</field>
         <field name="user_signature" eval="False"/>
         <field name="auto_delete" eval="True"/>

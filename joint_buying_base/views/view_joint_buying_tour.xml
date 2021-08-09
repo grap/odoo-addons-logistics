@@ -1,0 +1,109 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+Copyright (C) 2021 - Today: GRAP (http://www.grap.coop)
+@author: Sylvain LE GAL (https://twitter.com/legalsylvain)
+License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl.html).
+-->
+<odoo>
+
+    <record id="action_tour_2_wizard_set_tour" model="ir.actions.act_window">
+        <field name="name">Set Tour</field>
+        <field name="type">ir.actions.act_window</field>
+        <field name="res_model">joint.buying.wizard.set.tour</field>
+        <field name="view_type">form</field>
+        <field name="view_mode">form</field>
+        <field name="target">new</field>
+    </record>
+
+    <record id="view_joint_buying_tour_search" model="ir.ui.view">
+        <field name="model">joint.buying.tour</field>
+        <field name="arch" type="xml">
+            <search>
+                <field name="name"/>
+                <field name="date_tour"/>
+                <field name="carrier_id"/>
+            </search>
+        </field>
+    </record>
+
+    <record id="view_joint_buying_tour_tree" model="ir.ui.view">
+        <field name="model">joint.buying.tour</field>
+        <field name="arch" type="xml">
+            <tree>
+                <field name="date_tour"/>
+                <field name="name"/>
+                <field name="carrier_id"/>
+                <field name="starting_point_id" context="{'joint_buying': 1}"/>
+                <field name="arrival_point_id" context="{'joint_buying': 1}" attrs="{'invisible': [('is_loop', '=', True)]}"/>
+                <field name="line_qty"/>
+                <field name="distance"/>
+                <field name="is_loop" invisible="1"/>
+            </tree>
+        </field>
+    </record>
+
+    <record id="view_joint_buying_tour_form" model="ir.ui.view">
+        <field name="model">joint.buying.tour</field>
+        <field name="arch" type="xml">
+            <form>
+                <header>
+                    <button type="action" class="oe_stat_button" string="Configure"
+                            name="%(joint_buying_base.action_tour_2_wizard_set_tour)d"/>
+                </header>
+                <sheet>
+                    <div class="oe_button_box" name="button_box" />
+                    <div class="oe_title">
+                        <h1>
+                            <field name="name"/>
+                        </h1>
+                    </div>
+                    <group>
+                        <group>
+                            <field name="date_tour"/>
+                            <field name="carrier_id"/>
+                            <field name="starting_point_id" context="{'joint_buying': 1}"/>
+                            <field name="arrival_point_id" context="{'joint_buying': 1}" attrs="{'invisible': [('is_loop', '=', True)]}"/>
+                            <field name="distance"/>
+                            <field name="is_loop" invisible="1"/>
+                        </group>
+                        <group/>
+                    </group>
+                    <notebook colspan="4">
+                        <page name="lines" string="Steps">
+                            <field name="line_ids">
+                                <tree editable="botttom">
+                                    <field name="sequence" widget="handle"/>
+                                    <field name="starting_point_id"/>
+                                    <field name="arrival_point_id"/>
+                                    <field name="distance"/>
+                                </tree>
+                            </field>
+                        </page>
+                    </notebook>
+                </sheet>
+                <div class="oe_chatter">
+                    <field name="message_follower_ids" widget="mail_followers"/>
+                    <field name="activity_ids" widget="mail_activity"/>
+                    <field name="message_ids" widget="mail_thread"/>
+                </div>
+            </form>
+        </field>
+    </record>
+
+    <record id="action_joint_buying_tour_all_tours" model="ir.actions.act_window">
+        <field name="name">Tours</field>
+        <field name="type">ir.actions.act_window</field>
+        <field name="res_model">joint.buying.tour</field>
+        <field name="view_type">form</field>
+        <field name="view_mode">tree,form</field>
+    </record>
+
+    <menuitem id="menu_joint_buying_tour_all_tours"
+        name="Tours"
+        parent="menu_all_tours"
+        action="action_joint_buying_tour_all_tours"
+        groups="group_joint_buying_manager"
+        sequence="1"
+    />
+
+</odoo>

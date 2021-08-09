@@ -11,11 +11,24 @@ License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl.html).
         web_icon="joint_buying_base,static/description/icon.png"
     />
 
+    <menuitem id="menu_tours"
+        name="Tours"
+        parent="menu_root"
+        sequence="10"
+        groups="group_joint_buying_manager"
+    />
+
+    <menuitem id="menu_all_tours"
+        name="All Tours"
+        parent="menu_tours"
+        sequence="2"
+        groups="group_joint_buying_user"
+    />
+
     <menuitem id="menu_configuration"
         name="Configuration"
         parent="menu_root"
         sequence="100"
-        groups="joint_buying_base.group_joint_buying_manager"
     />
 
 </odoo>

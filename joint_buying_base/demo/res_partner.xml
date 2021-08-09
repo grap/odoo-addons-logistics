@@ -1,5 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
-
+<!--
+    Copyright (C) 2021 - Today: GRAP (http://www.grap.coop)
+    @author: Sylvain LE GAL (https://twitter.com/legalsylvain)
+    License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl.html).
+-->
 <odoo>
 
     <record id="supplier_fumet_dombes" model="res.partner">
@@ -40,12 +44,35 @@
         ]"/>
     </record>
 
-    <record id="supplier_CHO_at_3PP" model="res.partner">
-        <field name="name">Chocolate-Lala @ Three Peas</field>
-        <field name="company_id" ref="joint_buying_base.company_3PP"/>
+    <record id="supplier_oscar_morell" model="res.partner">
+        <field name="name">Frutas Oscar Morell S.L.</field>
+        <field name="street"> Calle Chiva 61</field>
+        <field name="city">Cheste</field>
+        <field name="zip">46380</field>
+        <field name="email">frutasmorell@gmail.com</field>
+        <field name="country_id" ref="base.es"/>
+        <field name="is_joint_buying" eval="True"/>
         <field name="customer" eval="False"/>
         <field name="supplier" eval="True"/>
-        <field name="joint_buying_global_partner_id"  model="res.partner" eval="obj().env.ref('joint_buying_base.company_CHO').joint_buying_partner_id.id"/>
+        <field name="company_id" eval="False"/>
+        <field name="joint_buying_pivot_company_id" ref="joint_buying_base.company_3PP"/>
+        <field name="joint_buying_deposit_company_id" ref="joint_buying_base.company_3PP"/>
+        <field name="category_id" eval="[
+            (4, ref('joint_buying_base.partner_category_fruits')),
+        ]"/>
+    </record>
+
+    <record id="place_romagnieu" model="res.partner">
+        <field name="name">Romagnieu</field>
+        <field name="street">Impasse du Martarey</field>
+        <field name="city">Romagnieu</field>
+        <field name="zip">38480 </field>
+        <field name="country_id" ref="base.fr"/>
+        <field name="is_joint_buying" eval="True"/>
+        <field name="is_joint_buying_stage" eval="True"/>
+        <field name="customer" eval="False"/>
+        <field name="supplier" eval="False"/>
+        <field name="company_id" eval="False"/>
     </record>
 
     <record id="supplier_ELD_at_3PP" model="res.partner">
@@ -63,5 +90,9 @@
         <field name="supplier" eval="True"/>
         <field name="joint_buying_global_partner_id" ref="supplier_fumet_dombes"/>
     </record>
+
+    <function model="res.partner" name="demo_geolocalize" eval="[[
+        ref('place_romagnieu'),
+    ]]"/>
 
 </odoo>

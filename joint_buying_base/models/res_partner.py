@@ -14,8 +14,10 @@ _JOINT_BUYING_PARTNER_CONTEXT = {
 
 
 class ResPartner(models.Model):
-    _inherit = ["res.partner", "joint.buying.mixin"]
+    _inherit = ["res.partner", "joint.buying.mixin", "joint.buying.check.access.mixin"]
     _name = "res.partner"
+
+    _check_write_access_company_field_id = "joint_buying_pivot_company_id"
 
     joint_buying_subscribed_company_ids = fields.Many2many(
         relation="res_company_res_partner_subscribed_rel",
@@ -52,6 +54,13 @@ class ResPartner(models.Model):
         help="Activity that will serve as a deposit for this supplier",
     )
 
+    is_joint_buying_stage = fields.Boolean(
+        string="Is Stage",
+        default=False,
+        help="Check this box if that address can be a step of a tour",
+    )
+
+    # Constraint Section
     @api.constrains("joint_buying_global_partner_id", "company_id")
     def _check_joint_buying_global_partner_id(self):
         check_partners = self.filtered(lambda x: x.joint_buying_global_partner_id)
@@ -99,6 +108,7 @@ class ResPartner(models.Model):
                 )
             )
 
+    # Compute Section
     def _compute_joint_buying_is_subscribed(self):
         for partner in self.filtered(lambda x: x.is_joint_buying):
             partner.joint_buying_is_subscribed = (
@@ -117,11 +127,7 @@ class ResPartner(models.Model):
                 {"joint_buying_subscribed_partner_ids": [(3, x.id) for x in partners]}
             )
 
-    def toggle_joint_buying_is_subscribed(self):
-        self.ensure_one()
-        self.joint_buying_is_subscribed = not self.joint_buying_is_subscribed
-        return True
-
+    # Overload Section
     def write(self, vals):
         res = super().write(vals)
         # Do not allow to update partner that have been created
@@ -151,6 +157,12 @@ class ResPartner(models.Model):
             )
         return super().unlink()
 
+    # Custom section
+    def toggle_joint_buying_is_subscribed(self):
+        self.ensure_one()
+        self.joint_buying_is_subscribed = not self.joint_buying_is_subscribed
+        return True
+
     @api.model
     def _get_fields_no_writable_joint_buying_company(self):
         """return fields that can not be written on joint_buying companies"""
@@ -167,3 +179,10 @@ class ResPartner(models.Model):
             "vat",
         ]
         return res
+
+    @api.multi
+    def demo_geolocalize(self):
+        partners = self.filtered(
+            lambda x: x.street and x.city and not x.partner_latitude
+        )
+        partners.geo_localize()

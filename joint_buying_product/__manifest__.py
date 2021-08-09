@@ -14,8 +14,8 @@
         "security/ir.model.access.csv",
         "views/menu.xml",
         "wizards/joint_buying_wizard_create_order.xml",
-        "views/view_product_product.xml",
         "views/view_product_template.xml",
+        "views/view_product_product.xml",
         "views/view_product_supplier_info.xml",
         "views/view_res_partner.xml",
         "views/view_joint_buying_purchase_order_grouped.xml",
@@ -28,7 +28,12 @@
         "data/ir_sequence.xml",
         "data/mail_template.xml",
     ],
-    "demo": ["demo/uom_uom.xml", "demo/product_product.xml", "demo/res_partner.xml"],
+    "demo": [
+        "demo/res_groups.xml",
+        "demo/uom_uom.xml",
+        "demo/product_product.xml",
+        "demo/res_partner.xml",
+    ],
     "installable": True,
     "auto_install": True,
 }

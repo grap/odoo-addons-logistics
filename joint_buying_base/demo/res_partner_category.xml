@@ -1,5 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
-
+<!--
+    Copyright (C) 2021 - Today: GRAP (http://www.grap.coop)
+    @author: Sylvain LE GAL (https://twitter.com/legalsylvain)
+    License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl.html).
+-->
 <odoo>
 
     <record id="partner_category_chocolate" model="res.partner.category">
@@ -36,6 +40,12 @@
         <field name="is_joint_buying" eval="True"/>
         <field name="name">Delicatessen</field>
         <field name="color">6</field>
+    </record>
+
+    <record id="partner_category_fruits" model="res.partner.category">
+        <field name="is_joint_buying" eval="True"/>
+        <field name="name">Fruits</field>
+        <field name="color">7</field>
     </record>
 
 

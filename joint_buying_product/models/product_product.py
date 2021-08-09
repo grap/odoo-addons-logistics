@@ -17,8 +17,16 @@ _JOINT_BUYING_PRODUCT_CONTEXT = {
 
 
 class ProductProduct(models.Model):
-    _inherit = ["product.product", "joint.buying.mixin"]
     _name = "product.product"
+    _inherit = [
+        "product.product",
+        "joint.buying.mixin",
+        "joint.buying.check.access.mixin",
+    ]
+
+    _check_write_access_company_field_id = (
+        "joint_buying_partner_id.joint_buying_pivot_company_id"
+    )
 
     is_joint_buying = fields.Boolean(
         string="For Joint Buying",
@@ -49,6 +57,7 @@ class ProductProduct(models.Model):
         context=_JOINT_BUYING_PRODUCT_CONTEXT,
     )
 
+    # Constrains Sections
     @api.constrains(
         "is_joint_buying", "joint_buying_partner_id", "display_joint_buying_propagation"
     )
@@ -58,6 +67,7 @@ class ProductProduct(models.Model):
                 _("You should set a Joint Buying Supplier for Joint Buying Products")
             )
 
+    # Overload Section
     @api.model
     def create(self, vals):
         res = super().create(vals)
@@ -86,6 +96,7 @@ class ProductProduct(models.Model):
                     )
         return super().write(vals)
 
+    # custom Section
     def create_joint_buying_product(self):
         products = self.filtered(
             lambda x: (
