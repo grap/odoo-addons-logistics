@@ -27,8 +27,9 @@ License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl.html).
                 <field name="name"/>
                 <field name="lst_price"/>
                 <field name="type" invisible="1"/>
-                <field name="uom_id"/>
-                <field name="uom_po_id" groups="uom.group_uom"/>
+                <field name="uom_id" string="UoM"/>
+                <field name="uom_po_id" groups="uom.group_uom" string="Invoice Supplier UoM"/>
+                <field name="uom_package_id" groups="uom.group_uom" string="UoM Weight / Unit"/>
                 <field name="product_tmpl_id" invisible="1"/>
                 <field name="active" invisible="1"/>
                 <field name="joint_buying_partner_id"/>
