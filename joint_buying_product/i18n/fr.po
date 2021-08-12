@@ -6,8 +6,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Odoo Server 12.0\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2021-08-08 12:57+0000\n"
-"PO-Revision-Date: 2021-08-08 12:57+0000\n"
+"POT-Creation-Date: 2021-08-12 20:47+0000\n"
+"PO-Revision-Date: 2021-08-12 20:47+0000\n"
 "Last-Translator: <>\n"
 "Language-Team: \n"
 "MIME-Version: 1.0\n"
@@ -416,6 +416,12 @@ msgid "Internal Notes"
 msgstr "Notes internes"
 
 #. module: joint_buying_product
+#: model_terms:ir.ui.view,arch_db:joint_buying_product.view_product_product_tree_joint_buying
+#: model_terms:ir.ui.view,arch_db:joint_buying_product.view_res_partner
+msgid "Invoice Supplier UoM"
+msgstr "UdM Fact. Frs."
+
+#. module: joint_buying_product
 #: model:ir.model.fields,field_description:joint_buying_product.field_joint_buying_purchase_order__message_is_follower
 #: model:ir.model.fields,field_description:joint_buying_product.field_joint_buying_purchase_order_grouped__message_is_follower
 msgid "Is Follower"
@@ -795,7 +801,7 @@ msgstr "Modèle d'article"
 #. module: joint_buying_product
 #: model:ir.model.fields,field_description:joint_buying_product.field_joint_buying_purchase_order_grouped_line__product_uom_package_qty
 msgid "Product Uom Package Qty"
-msgstr ""
+msgstr "UdM Poids / Pièce"
 
 #. module: joint_buying_product
 #: model:ir.actions.act_window,name:joint_buying_product.action_product_product
@@ -1033,8 +1039,16 @@ msgstr "Compteur de messages non lus"
 #. module: joint_buying_product
 #: model:ir.model.fields,field_description:joint_buying_product.field_joint_buying_purchase_order_line__uom_id
 #: model_terms:ir.ui.view,arch_db:joint_buying_product.report_joint_buying_purchase_order_grouped_document
+#: model_terms:ir.ui.view,arch_db:joint_buying_product.view_product_product_tree_joint_buying
+#: model_terms:ir.ui.view,arch_db:joint_buying_product.view_res_partner
 msgid "UoM"
 msgstr "UdM"
+
+#. module: joint_buying_product
+#: model_terms:ir.ui.view,arch_db:joint_buying_product.view_product_product_tree_joint_buying
+#: model_terms:ir.ui.view,arch_db:joint_buying_product.view_res_partner
+msgid "UoM Weight / Unit"
+msgstr "UdM Poids / Pièce"
 
 #. module: joint_buying_product
 #: model:ir.model.fields,field_description:joint_buying_product.field_joint_buying_purchase_order_grouped_line__uom_id
