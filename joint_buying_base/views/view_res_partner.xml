@@ -61,7 +61,7 @@ License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl.html).
                         <group>
                             <field name="phone" widget="phone"/>
                             <field name="mobile" widget="phone"/>
-                            <field name="email" widget="email" required="True"/>
+                            <field name="email" widget="email" attrs="{'required': [('supplier', '=', True)]}"/>
                             <field name="website" widget="url"/>
                             <field name="category_id" widget="many2many_tags"
                                 options="{'color_field': 'color', 'no_create_edit': True}"
