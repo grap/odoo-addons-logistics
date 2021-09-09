@@ -150,9 +150,9 @@ License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl.html).
 
     <menuitem id="menu_product_product"
         name="Products"
-        parent="joint_buying_base.menu_configuration"
+        parent="joint_buying_base.menu_root"
         action="action_product_product"
-        sequence="10"
+        sequence="20"
     />
 
 </odoo>

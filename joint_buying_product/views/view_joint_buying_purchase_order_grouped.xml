@@ -24,7 +24,8 @@ License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl.html).
                 <field name="name"/>
                 <field name="supplier_id"/>
                 <field name="start_date"/>
-                <field name="end_date"/>
+                <field name="end_date" options="{'bg_color': 'orange: remaining_day_state == &quot;near&quot;; red: remaining_day_state == &quot;imminent&quot;'}"/>
+                <field name="remaining_day_state" invisible="1"/>
                 <field name="deposit_date"/>
                 <field name="order_qty"/>
                 <field name="amount_untaxed" sum="Total Amount Untaxed"/>
@@ -102,6 +103,8 @@ License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl.html).
                         <group>
                             <field name="start_date"/>
                             <field name="end_date"/>
+                            <field name="end_date" options="{'bg_color': 'orange: remaining_day_state == &quot;near&quot;; red: remaining_day_state == &quot;imminent&quot;'}"/>
+                            <field name="remaining_day_state" invisible="1"/>
                             <field name="deposit_date"/>
                             <field name="minimum_amount"/>
                             <field name="minimum_unit_amount"/>
@@ -131,8 +134,8 @@ License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl.html).
         </field>
     </record>
 
-    <record id="action_joint_buying_purchase_order_grouped" model="ir.actions.act_window">
-        <field name="name">Grouped Orders</field>
+    <record id="action_joint_buying_purchase_order_grouped_all" model="ir.actions.act_window">
+        <field name="name">All Grouped Orders</field>
         <field name="type">ir.actions.act_window</field>
         <field name="res_model">joint.buying.purchase.order.grouped</field>
         <field name="view_type">form</field>
@@ -140,11 +143,10 @@ License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl.html).
     </record>
 
     <menuitem id="menu_joint_buying_purchase_order_grouped"
-        name="Grouped Orders"
-        parent="joint_buying_product.menu_all_orders"
-        action="action_joint_buying_purchase_order_grouped"
-        groups="joint_buying_base.group_joint_buying_manager"
-        sequence="10"
+        name="All Grouped Orders"
+        parent="joint_buying_product.menu_order"
+        action="action_joint_buying_purchase_order_grouped_all"
+        sequence="50"
     />
 
 </odoo>

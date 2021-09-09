@@ -90,7 +90,7 @@ License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl.html).
         </field>
     </record>
 
-    <record id="action_joint_buying_tour_all_tours" model="ir.actions.act_window">
+    <record id="action_joint_buying_tour_all" model="ir.actions.act_window">
         <field name="name">Tours</field>
         <field name="type">ir.actions.act_window</field>
         <field name="res_model">joint.buying.tour</field>
@@ -98,12 +98,11 @@ License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl.html).
         <field name="view_mode">tree,form</field>
     </record>
 
-    <menuitem id="menu_joint_buying_tour_all_tours"
+    <menuitem id="menu_joint_buying_tour_all"
         name="Tours"
-        parent="menu_all_tours"
-        action="action_joint_buying_tour_all_tours"
-        groups="group_joint_buying_manager"
-        sequence="1"
+        parent="menu_root"
+        action="action_joint_buying_tour_all"
+        sequence="30"
     />
 
 </odoo>

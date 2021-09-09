@@ -2,8 +2,6 @@
 # @author: Sylvain LE GAL (https://twitter.com/legalsylvain)
 # License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl.html).
 
-import datetime
-
 from odoo import _, api, fields, models
 from odoo.exceptions import ValidationError
 
@@ -52,6 +50,10 @@ class JointBuyingPurchaseOrder(models.Model):
 
     end_date = fields.Datetime(
         related="grouped_order_id.end_date", string="End Date", store=True
+    )
+
+    remaining_day_state = fields.Selection(
+        related="grouped_order_id.remaining_day_state"
     )
 
     deposit_date = fields.Date(
@@ -122,23 +124,6 @@ class JointBuyingPurchaseOrder(models.Model):
         compute="_compute_is_my_purchase",
         search="_search_is_my_purchase",
     )
-
-    remaining_day_state = fields.Selection(
-        selection=[("near", "Near"), ("imminent", "Imminent")],
-        compute="_compute_remaining_day_state",
-    )
-
-    # Compute Section
-    @api.depends("end_date")
-    def _compute_remaining_day_state(self):
-        for order in self:
-            delta = order.end_date - fields.Datetime.now()
-            if delta >= datetime.timedelta(3):
-                continue
-            if delta >= datetime.timedelta(1):
-                order.remaining_day_state = "near"
-            elif delta >= datetime.timedelta(0):
-                order.remaining_day_state = "imminent"
 
     @api.depends("amount_untaxed", "minimum_unit_amount", "line_ids")
     def _compute_purchase_ok(self):
