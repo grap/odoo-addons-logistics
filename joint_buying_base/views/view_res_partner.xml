@@ -173,7 +173,7 @@ License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl.html).
 
     <menuitem id="menu_res_partner_supplier"
         name="Suppliers"
-        parent="joint_buying_base.menu_base_contact"
+        parent="joint_buying_base.menu_contact_base"
         action="action_res_partner_supplier"
         sequence="5"
         groups="group_joint_buying_user"
@@ -199,7 +199,7 @@ License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl.html).
 
     <menuitem id="menu_res_partner_all"
         name="All Contacts"
-        parent="joint_buying_base.menu_base_contact"
+        parent="joint_buying_base.menu_contact_base"
         action="action_res_partner_all"
         sequence="10"
         groups="group_joint_buying_manager"
