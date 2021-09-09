@@ -18,3 +18,5 @@ class JointBuyingCarrier(models.Model):
     tour_ids = fields.One2many(
         comodel_name="joint.buying.tour", inverse_name="carrier_id"
     )
+
+    payload = fields.Integer(string="Payload")

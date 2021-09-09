@@ -17,6 +17,12 @@ class ResPartner(models.Model):
     _inherit = ["res.partner", "joint.buying.mixin", "joint.buying.check.access.mixin"]
     _name = "res.partner"
 
+    _COMMISSION_STATE = [
+        ("signed", "Signed"),
+        ("rejected", "Rejected"),
+        ("not_applicable", "Not Applicable"),
+    ]
+
     _check_write_access_company_field_id = "joint_buying_pivot_company_id"
 
     joint_buying_subscribed_company_ids = fields.Many2many(
@@ -24,6 +30,7 @@ class ResPartner(models.Model):
         relation="res_company_res_partner_subscribed_rel",
         comodel_name="res.company",
         name="Companies with Subscription to the supplier",
+        default=lambda x: x._default_joint_buying_subscribed_company_ids(),
     )
 
     joint_buying_is_subscribed = fields.Boolean(
@@ -49,12 +56,15 @@ class ResPartner(models.Model):
         help="Activity that has a commercial relationship with this supplier",
     )
 
-    joint_buying_deposit_company_id = fields.Many2one(
-        comodel_name="res.company",
-        string="Deposit Company",
-        help="Activity that will serve as a deposit for this supplier",
+    joint_buying_deposit_partner_id = fields.Many2one(
+        comodel_name="res.partner",
+        string="Deposit Place",
+        help="Place that will serve as a deposit for this supplier",
+        domain="[('is_joint_buying_stage', '=', True)]",
+        context=_JOINT_BUYING_PARTNER_CONTEXT,
     )
 
+    # TODO, rename into joint_buying_is_stage
     is_joint_buying_stage = fields.Boolean(
         string="Is Stage",
         default=False,
@@ -62,6 +72,24 @@ class ResPartner(models.Model):
     )
 
     joint_buying_description = fields.Html(string="Complete Description")
+
+    joint_buying_is_mine = fields.Boolean(
+        compute="_compute_joint_buying_is_mine", search="_search_joint_buying_is_mine"
+    )
+
+    joint_buying_commission_state = fields.Selection(
+        selection=_COMMISSION_STATE, string="Joint Buying Commission Agreement"
+    )
+
+    joint_buying_commission_rate = fields.Float(string="Joint Buying Commission Rate")
+
+    # Onchange section
+    @api.onchange("joint_buying_pivot_company_id")
+    def onchange_joint_buying_pivot_company_id(self):
+        if self.joint_buying_pivot_company_id:
+            self.joint_buying_subscribed_company_ids |= (
+                self.joint_buying_pivot_company_id
+            )
 
     # Constraint Section
     @api.constrains("joint_buying_global_partner_id", "company_id")
@@ -111,13 +139,46 @@ class ResPartner(models.Model):
                 )
             )
 
+    # Default Section
+    def _default_joint_buying_subscribed_company_ids(self):
+        if self.env.context.get("joint_buying"):
+            companies = self.env["res.company"].search(
+                [("joint_buying_auto_subscribe", "=", True)]
+            )
+            return companies.ids
+
     # Compute Section
+    def _compute_joint_buying_is_mine(self):
+        current_company = self.env.user.company_id
+        for partner in self:
+            partner.joint_buying_is_mine = (
+                partner.joint_buying_pivot_company_id == current_company
+            )
+
     def _compute_joint_buying_is_subscribed(self):
         for partner in self.filtered(lambda x: x.is_joint_buying):
             partner.joint_buying_is_subscribed = (
                 partner in self.env.user.company_id.joint_buying_subscribed_partner_ids
             )
 
+    # Search Section
+    def _search_joint_buying_is_mine(self, operator, value):
+        current_company = self.env.user.company_id
+        if (operator == "=" and value) or (operator == "!=" and not value):
+            search_operator = "in"
+        else:
+            search_operator = "not in"
+        return [
+            (
+                "id",
+                search_operator,
+                self.search(
+                    [("joint_buying_pivot_company_id", "=", current_company.id)]
+                ).ids,
+            )
+        ]
+
+    # Inverse Section
     def _inverse_joint_buying_is_subscribed(self):
         partners = self.filtered(lambda x: x.joint_buying_is_subscribed)
         if partners:

@@ -12,10 +12,10 @@ License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl.html).
         groups="group_joint_buying_user"
     />
 
-    <menuitem id="menu_contact_base"
-        name="Contacts"
+    <menuitem id="menu_pivot"
+        name="Pivot Role"
         parent="menu_root"
-        sequence="10"
+        sequence="15"
     />
 
     <menuitem id="menu_configuration"
