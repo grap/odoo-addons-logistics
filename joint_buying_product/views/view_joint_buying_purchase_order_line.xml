@@ -30,8 +30,8 @@ License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl.html).
         </field>
     </record>
 
-    <record id="action_joint_buying_purchase_order_line_my_purchase_lines" model="ir.actions.act_window">
-        <field name="name">My Purchase Lines</field>
+    <record id="action_joint_buying_purchase_order_line_my" model="ir.actions.act_window">
+        <field name="name">My Order Lines</field>
         <field name="type">ir.actions.act_window</field>
         <field name="res_model">joint.buying.purchase.order.line</field>
         <field name="view_type">form</field>
@@ -40,9 +40,9 @@ License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl.html).
     </record>
 
     <menuitem id="menu_joint_buying_purchase_order_my_purchase_lines"
-        name="My Purchase Lines"
-        parent="joint_buying_product.menu_my_purchase"
-        action="action_joint_buying_purchase_order_line_my_purchase_lines"
+        name="My Order Lines"
+        parent="joint_buying_product.menu_order"
+        action="action_joint_buying_purchase_order_line_my"
         groups="joint_buying_base.group_joint_buying_manager"
         sequence="15"
     />
