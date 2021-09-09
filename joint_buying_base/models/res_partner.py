@@ -20,6 +20,7 @@ class ResPartner(models.Model):
     _check_write_access_company_field_id = "joint_buying_pivot_company_id"
 
     joint_buying_subscribed_company_ids = fields.Many2many(
+        string="Subscribed Companies",
         relation="res_company_res_partner_subscribed_rel",
         comodel_name="res.company",
         name="Companies with Subscription to the supplier",
@@ -59,6 +60,8 @@ class ResPartner(models.Model):
         default=False,
         help="Check this box if that address can be a step of a tour",
     )
+
+    joint_buying_description = fields.Html(string="Complete Description")
 
     # Constraint Section
     @api.constrains("joint_buying_global_partner_id", "company_id")
