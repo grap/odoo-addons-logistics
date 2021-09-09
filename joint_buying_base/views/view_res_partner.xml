@@ -33,6 +33,18 @@ License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl.html).
                             <field name="active" widget="boolean_button"
                                 options='{"terminology": "archive"}'/>
                         </button>
+
+                        <button name="toggle_joint_buying_is_subscribed" type="object" class="oe_stat_button" icon="fa-star">
+                            <field name="joint_buying_is_subscribed" widget="boolean_button"
+                                options='{"terminology": {
+                                    "string_true": "Subscribed",
+                                    "string_false": "Not Subscribed",
+                                    "hover_true": "Unsubscribe",
+                                    "hover_false": "Subscribe",
+                                    }}'
+                                />
+                        </button>
+
                     </div>
                     <field name="image" widget='image' class="oe_avatar" options='{"preview_image": "image_medium", "size": [90, 90]}'/>
                     <div class="oe_title">
@@ -42,6 +54,16 @@ License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl.html).
                         <h2>
                             <field name="joint_buying_company_id" readonly="1" attrs="{'invisible': [('joint_buying_company_id', '=', False)]}"/>
                         </h2>
+                        <div name="options">
+                            <div>
+                                <field name="customer"/>
+                                <label for="customer"/>
+                                <field name="supplier"/>
+                                <label for="supplier"/>
+                                <field name="is_joint_buying_stage"/>
+                                <label for="is_joint_buying_stage"/>
+                            </div>
+                        </div>
                     </div>
                     <group>
                         <group>
@@ -56,7 +78,6 @@ License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl.html).
                                 <field name="country_id" placeholder="Country" class="o_address_country" options='{"no_open": True, "no_create": True}' required="True"/>
                             </div>
                             <field name="vat"/>
-                            <field name="is_joint_buying_stage"/>
                            </group>
                         <group>
                             <field name="phone" widget="phone"/>
@@ -69,17 +90,21 @@ License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl.html).
                         </group>
                     </group>
                     <notebook colspan="4">
-                        <page name='joint_buying' string="Joint Buyings">
-                            <group name="group_joint_buying">
-                                <group string="Customer" name="customer" priority="2">
-                                    <field name="customer"/>
+                        <page name='joint_buying_supplier' string="Supplier"
+                            attrs="{'invisible': [('supplier', '=', False)]}">
+                            <group name="vendor">
+                                <group string="Subscribed Companies" colspan="4">
+                                    <field name="joint_buying_subscribed_company_ids" widget="many2many_tags" nolabel="1"/>
                                 </group>
-                                <group string="Vendor" name="vendor" priority="1">
-                                    <field name="supplier"/>
-                                    <field name="joint_buying_is_subscribed" widget="boolean_favorite" attrs="{'invisible': [('supplier', '=', False)]}"/>
-                                    <field name="joint_buying_subscribed_company_ids" widget="many2many_tags"/>
-                                    <field name="joint_buying_pivot_company_id" attrs="{'invisible': [('supplier', '=', False)]}"/>
-                                    <field name="joint_buying_deposit_company_id" attrs="{'invisible': [('supplier', '=', False)]}"/>
+                                <group name="vendor_setting" string="Settings" colspan="4" col="4">
+                                    <field name="joint_buying_pivot_company_id"/>
+                                    <field name="joint_buying_deposit_company_id"/>
+                                </group>
+                                <group string="Logistic Information" colspan="4">
+                                    <field name="comment" nolabel="1"/>
+                                </group>
+                                <group  string="Complete Description" colspan="4">
+                                    <field name="joint_buying_description" widget="html" nolabel="1"/>
                                 </group>
                             </group>
                         </page>
