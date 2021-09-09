@@ -2,12 +2,12 @@
 <odoo>
     <report
         id="action_report_joint_buying_purchase_order_grouped"
-        string="Grouped Purchase Order"
+        string="Grouped Order"
         model="joint.buying.purchase.order.grouped"
         report_type="qweb-pdf"
         file="joint_buying_product.report_joint_buying_purchase_order_grouped"
         name="joint_buying_product.report_joint_buying_purchase_order_grouped"
-        print_report_name="('%s - %s - Grouped Purchase Order (%s)' % (object.name, object.supplier_id.name, object.deposit_date)).replace('/', '_')"
+        print_report_name="('%s - %s - Grouped Order (%s)' % (object.name, object.supplier_id.name, object.deposit_date)).replace('/', '_')"
     />
 
 </odoo>

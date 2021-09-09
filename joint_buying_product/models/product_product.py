@@ -2,6 +2,8 @@
 # @author: Sylvain LE GAL (https://twitter.com/legalsylvain)
 # License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl.html).
 
+from datetime import timedelta
+
 from odoo import _, api, fields, models
 from odoo.exceptions import ValidationError
 
@@ -46,7 +48,7 @@ class ProductProduct(models.Model):
         string="Display Joint Buying Propagation button",
         help="Technical field to know if the button to create or see"
         " the joint buying products is visible",
-        related="company_id.is_joint_buying_customer",
+        related="company_id.is_joint_buying_supplier",
         store=True,
     )
 
@@ -55,7 +57,20 @@ class ProductProduct(models.Model):
         comodel_name="product.product",
         readonly=True,
         context=_JOINT_BUYING_PRODUCT_CONTEXT,
+        copy=False,
     )
+
+    joint_buying_is_new = fields.Boolean(
+        string="Is New",
+        help="Check this box if the product is new."
+        " This box will be automatically unchecked by cron task"
+        " after a given number of days.",
+        default=lambda x: x._default_joint_is_new(),
+    )
+
+    # Default Section
+    def _default_joint_is_new(self):
+        return self.env.context.get("joint_buying", False)
 
     # Constrains Sections
     @api.constrains(
@@ -97,6 +112,24 @@ class ProductProduct(models.Model):
         return super().write(vals)
 
     # custom Section
+    @api.model
+    def joint_byuing_cron_check_new(self):
+        """This cron function will unflag the field 'joint_buying_is_new'
+        for product that are not new anymore"""
+        new_product_day = int(
+            self.env["ir.config_parameter"]
+            .sudo()
+            .get_param("joint_buying_product.new_product_day")
+        )
+        threshold_old_date = fields.datetime.now() + timedelta(days=-new_product_day)
+        products = self.with_context(joint_buying=True).search(
+            [
+                ("create_date", "<", threshold_old_date),
+                ("joint_buying_is_new", "=", True),
+            ]
+        )
+        products.write({"joint_buying_is_new": False})
+
     def create_joint_buying_product(self):
         products = self.filtered(
             lambda x: (
@@ -108,14 +141,24 @@ class ProductProduct(models.Model):
             product.joint_buying_product_id = self.with_context(
                 joint_buying=True, joint_buying_local_to_global=True
             ).create(vals)
+        return products.mapped("joint_buying_product_id")
 
     def _prepare_joint_buying_product(self):
         self.ensure_one()
+        pricelist = self.company_id.joint_buying_pricelist_id
+        if not pricelist:
+            lst_price = self.lst_price
+        else:
+            lst_price = pricelist.get_product_price(self, 1, False)
         vals = {
             "name": self.name,
+            "uom_id": self.uom_id.id,
+            "uom_po_id": self.uom_id.id,
+            "default_code": self.default_code,
             "weight": self.weight,
             "barcode": self.barcode,
             "categ_id": self.env.ref("joint_buying_product.product_category").id,
             "joint_buying_partner_id": self.company_id.joint_buying_partner_id.id,
+            "lst_price": lst_price,
         }
         return vals

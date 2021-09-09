@@ -21,7 +21,8 @@ class JointBuyingPurchaseOrder(models.Model):
     _PURCHASE_OK_SELECTION = [
         ("no_line", "No Lines"),
         ("no_minimum_amount", "Minimum Amount Not reached"),
-        ("no_qty", "No Quantity"),
+        ("no_minimum_weight", "Minimum Weight Not reached"),
+        ("null_amount", "Null Amount"),
         ("ok", "OK"),
     ]
 
@@ -37,14 +38,14 @@ class JointBuyingPurchaseOrder(models.Model):
 
     grouped_order_id = fields.Many2one(
         comodel_name="joint.buying.purchase.order.grouped",
-        string="Grouped Purchase Order",
+        string="Grouped Order",
         required=True,
         readonly=True,
         index=True,
         ondelete="cascade",
     )
 
-    start_date = fields.Date(
+    start_date = fields.Datetime(
         related="grouped_order_id.start_date", string="Start Date", store=True
     )
 
@@ -52,11 +53,7 @@ class JointBuyingPurchaseOrder(models.Model):
         related="grouped_order_id.end_date", string="End Date", store=True
     )
 
-    remaining_day_state = fields.Selection(
-        related="grouped_order_id.remaining_day_state"
-    )
-
-    deposit_date = fields.Date(
+    deposit_date = fields.Datetime(
         related="grouped_order_id.deposit_date", string="Deposit Date", store=True
     )
 
@@ -69,6 +66,8 @@ class JointBuyingPurchaseOrder(models.Model):
         index=True,
         context=_JOINT_BUYING_PARTNER_CONTEXT,
     )
+
+    supplier_comment = fields.Text(related="supplier_id.comment")
 
     customer_id = fields.Many2one(
         comodel_name="res.partner",
@@ -93,8 +92,17 @@ class JointBuyingPurchaseOrder(models.Model):
         store=True,
     )
 
+    minimum_unit_weight = fields.Float(
+        string="Minimum Unit Weight",
+        related="grouped_order_id.minimum_unit_weight",
+        store=True,
+    )
+
     purchase_ok = fields.Selection(
-        selection=_PURCHASE_OK_SELECTION, compute="_compute_purchase_ok", store=True
+        string="Purchase OK ?",
+        selection=_PURCHASE_OK_SELECTION,
+        compute="_compute_purchase_ok",
+        store=True,
     )
 
     line_ids = fields.One2many(
@@ -106,7 +114,7 @@ class JointBuyingPurchaseOrder(models.Model):
     )
 
     amount_untaxed = fields.Float(
-        string="Amount Subtotal",
+        string="Total Untaxed Amount",
         compute="_compute_amount",
         store=True,
         digits=dp.get_precision("Product Price"),
@@ -119,21 +127,32 @@ class JointBuyingPurchaseOrder(models.Model):
         digits=dp.get_precision("Stock Weight"),
     )
 
-    is_my_purchase = fields.Boolean(
-        string="Is My Purchase",
-        compute="_compute_is_my_purchase",
-        search="_search_is_my_purchase",
-    )
+    is_mine = fields.Boolean(compute="_compute_is_mine", search="_search_is_mine")
 
-    @api.depends("amount_untaxed", "minimum_unit_amount", "line_ids")
+    # Compute Section
+    @api.depends(
+        "amount_untaxed",
+        "minimum_unit_amount",
+        "minimum_unit_weight",
+        "total_weight",
+        "line_qty",
+    )
     def _compute_purchase_ok(self):
         for order in self:
             if not order.line_qty:
                 order.purchase_ok = "no_line"
-            elif order.minimum_unit_amount > order.amount_untaxed:
-                order.purchase_ok = "no_minimum_amount"
             elif order.amount_untaxed == 0.0:
-                order.purchase_ok = "no_qty"
+                order.purchase_ok = "null_amount"
+            elif (
+                order.minimum_unit_amount
+                and order.minimum_unit_amount > order.amount_untaxed
+            ):
+                order.purchase_ok = "no_minimum_amount"
+            elif (
+                order.minimum_unit_weight
+                and order.minimum_unit_weight > order.total_weight
+            ):
+                order.purchase_ok = "no_minimum_weight"
             else:
                 order.purchase_ok = "ok"
 
@@ -145,12 +164,12 @@ class JointBuyingPurchaseOrder(models.Model):
                 order.customer_id.joint_buying_company_id.code,
             )
 
-    def _compute_is_my_purchase(self):
+    def _compute_is_mine(self):
         current_customer_partner = self.env.user.company_id.joint_buying_partner_id
         for order in self:
-            order.is_my_purchase = order.customer_id == current_customer_partner
+            order.is_mine = order.customer_id == current_customer_partner
 
-    def _search_is_my_purchase(self, operator, value):
+    def _search_is_mine(self, operator, value):
         current_customer_partner = self.env.user.company_id.joint_buying_partner_id
         if (operator == "=" and value) or (operator == "!=" and not value):
             search_operator = "in"
@@ -186,30 +205,43 @@ class JointBuyingPurchaseOrder(models.Model):
         for product in supplier._get_joint_buying_products():
             vals = {
                 "product_id": product.id,
+                "uom_measure_type": product.uom_measure_type,
+                "uom_id": product.uom_package_id.id or product.uom_po_id.id,
                 "qty": 0.0,
-                "uom_id": product.uom_id.id,
+                "product_uom_id": product.uom_id.id,
+                "product_uom_po_id": product.uom_po_id.id,
+                "product_qty": 0.0,
                 "product_uom_package_qty": product.uom_package_qty,
                 "product_weight": product.weight,
                 "price_unit": product.lst_price,
+                "amount_untaxed": 0.0,
+                "total_weight": 0.0,
             }
             res["line_ids"].append((0, 0, vals))
         return res
 
     def action_confirm_purchase(self):
         for order in self.filtered(lambda x: x.purchase_state == "draft"):
-            if not order.line_qty:
+            if order.purchase_ok == "no_line":
                 raise ValidationError(
                     _("You can not confirm an order without any lines.")
                 )
-            elif not order.amount_untaxed:
+            elif order.purchase_ok == "null_amount":
                 raise ValidationError(
                     _("You can not confirm an order with null amount.")
                 )
-            elif order.minimum_unit_amount > order.amount_untaxed:
+            elif order.purchase_ok == "no_minimum_amount":
                 raise ValidationError(
                     _(
                         "you cannot confirm an order for which you have"
                         " not reached the minimum purchase amount."
+                    )
+                )
+            elif order.purchase_ok == "no_minimum_weight":
+                raise ValidationError(
+                    _(
+                        "you cannot confirm an order for which you have"
+                        " not reached the minimum weight."
                     )
                 )
             order.purchase_state = "done"

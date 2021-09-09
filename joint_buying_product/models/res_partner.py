@@ -37,11 +37,11 @@ class ResPartner(models.Model):
 
     joint_buying_frequency = fields.Integer(string="Days between orders")
 
-    joint_buying_next_start_date = fields.Date(string="Next Order Start Date")
+    joint_buying_next_start_date = fields.Datetime(string="Next Order Start Date")
 
     joint_buying_next_end_date = fields.Datetime(string="Next Order End Date")
 
-    joint_buying_next_deposit_date = fields.Date(string="Next Deposit Date")
+    joint_buying_next_deposit_date = fields.Datetime(string="Next Deposit Date")
 
     # constrains Section
     @api.constrains(
@@ -53,6 +53,8 @@ class ResPartner(models.Model):
     def _check_joint_buying_correct_date(self):
         if not self.joint_buying_frequency:
             return
+        if self.joint_buying_frequency % 7:
+            raise ValidationError(_("Frequency should be a multiple of 7."))
         if (
             not self.joint_buying_next_start_date
             or not self.joint_buying_next_end_date
@@ -81,5 +83,5 @@ class ResPartner(models.Model):
     def _get_joint_buying_products(self):
         self.ensure_one()
         return self.with_context(joint_buying=1).joint_buying_product_ids.filtered(
-            lambda x: x.sale_ok and x.active
+            lambda x: x.purchase_ok and x.active
         )
