@@ -1,18 +1,23 @@
 # Copyright (C) 2021 - Today: GRAP (http://www.grap.coop)
 # @author: Sylvain LE GAL (https://twitter.com/legalsylvain)
 # License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl.html).
+from datetime import timedelta
 
+from odoo import fields
 from odoo.exceptions import AccessError, ValidationError
-from odoo.tests.common import TransactionCase, at_install, post_install
+from odoo.tests import tagged
+from odoo.tests.common import TransactionCase
 
 
-@at_install(False)
-@post_install(True)
+@tagged("post_install", "-at_install")
 class TestModule(TransactionCase):
     def setUp(self):
         super().setUp()
         self.company_3PP = self.env.ref("joint_buying_base.company_3PP")
+        self.user_3PP = self.env.ref("joint_buying_base.user_joint_buying_user")
         self.ResCompany = self.env["res.company"]
+        self.TourWizard = self.env["joint.buying.wizard.set.tour"]
+        self.JointBuyingTour = self.env["joint.buying.tour"]
         self.ResPartner = self.env["res.partner"].with_context(
             mail_create_nosubscribe=True
         )
@@ -22,6 +27,7 @@ class TestModule(TransactionCase):
         self.company_ELD = self.env.ref("joint_buying_base.company_ELD")
         self.company_CHE = self.env.ref("joint_buying_base.company_CHE")
         self.company_3PP = self.env.ref("joint_buying_base.company_3PP")
+        self.carrier = self.env.ref("joint_buying_base.carrier_coolivri_lyon")
 
     # Test Section
     def test_01_write_company_to_partner_info(self):
@@ -107,3 +113,89 @@ class TestModule(TransactionCase):
                 {"name": "Test Elodie-D @ 3PP", "company_id": self.company_3PP.id}
             )
             self.ResPartner.create(vals)
+
+    def test_06_create_partner_subscription(self):
+        self.env.user.company_id.joint_buying_auto_subscribe = False
+        supplier = self._create_supplier()
+        self.assertFalse(supplier.joint_buying_is_subscribed)
+
+        self.env.user.company_id.joint_buying_auto_subscribe = True
+        supplier = self._create_supplier()
+        self.assertTrue(supplier.joint_buying_is_subscribed)
+
+        supplier.toggle_joint_buying_is_subscribed()
+        self.assertFalse(supplier.joint_buying_is_subscribed)
+
+    def test_07_check_access_mixin_user(self):
+        # create a supplier. (pivot company != current company) should fail
+        with self.assertRaises(AccessError):
+            self._create_supplier(
+                user=self.user_3PP,
+                extra_vals={"joint_buying_pivot_company_id": self.company_CHE.id},
+            )
+
+        # create a supplier. (pivot company = current company) should success
+        partner = self._create_supplier(
+            user=self.user_3PP,
+            extra_vals={"joint_buying_pivot_company_id": self.company_3PP.id},
+        )
+
+        # write a supplier. (pivot company = current company) should success
+        partner.write({"name": "Altered name"})
+
+        # unlink a supplier. (pivot company = current company) should success
+        partner.unlink()
+
+        # Check write and unlink()
+        partner_id = self._create_supplier(
+            extra_vals={"joint_buying_pivot_company_id": self.company_CHE.id}
+        ).id
+
+        # write a supplier. (pivot company = current company) should fail
+        partner = self.ResPartner.sudo(user=self.user_3PP).browse(partner_id)
+        with self.assertRaises(AccessError):
+            partner.write({"name": "Altered name"})
+
+        # unlink a supplier. (pivot company = current company) should fail
+        with self.assertRaises(AccessError):
+            partner.unlink()
+
+    def test_08_check_access_mixin_manager(self):
+        # create a supplier. (pivot company != current company) should success
+        self._create_supplier(
+            extra_vals={"joint_buying_pivot_company_id": self.company_CHE.id}
+        )
+
+        # create a supplier. (pivot company = current company) should success
+        self._create_supplier(
+            extra_vals={"joint_buying_pivot_company_id": self.company_3PP.id}
+        )
+
+    def test_09_set_tour_via_wizard(self):
+        tour = self._create_tour()
+        self.assertEqual(tour.distance, 0)
+        self.assertEqual(len(tour.line_ids), 0)
+
+    # Custom Functions
+    def _create_supplier(self, user=False, extra_vals=False):
+        if not user:
+            user = self.env.user
+        vals = {"name": "My supplier", "supplier": True, "customer": False}
+        vals.update(extra_vals or {})
+        supplier = (
+            self.ResPartner.sudo(user).with_context(joint_buying=True).create(vals)
+        )
+        return supplier
+
+    def _create_tour(self, user=False, extra_vals=False):
+        if not user:
+            user = self.env.user
+        vals = {
+            "name": "My Tour",
+            "carrier_id": self.carrier.id,
+            "start_date": fields.datetime.now(),
+            "end_date": fields.datetime.now() + timedelta(hours=4),
+        }
+        vals.update(extra_vals or {})
+        tour = self.JointBuyingTour.sudo(user).create(vals)
+        return tour

@@ -2,7 +2,7 @@
 # @author: Sylvain LE GAL (https://twitter.com/legalsylvain)
 # License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl.html).
 
-from odoo import api, fields, models
+from odoo import _, api, fields, models
 
 from odoo.addons import decimal_precision as dp
 from odoo.addons.joint_buying_base.models.res_partner import (
@@ -68,7 +68,17 @@ class JointBuyingPurchaseOrderLine(models.Model):
         readonly=True,
     )
 
-    uom_id = fields.Many2one(comodel_name="uom.uom", string="UoM", readonly=True)
+    qty = fields.Float(
+        string="Purchase Quantity",
+        digits=dp.get_precision("Product Unit of Measure"),
+        required=True,
+    )
+
+    uom_id = fields.Many2one(
+        comodel_name="uom.uom", string="Purchase UoM", readonly=True
+    )
+
+    uom_measure_type = fields.Selection(related="uom_id.measure_type")
 
     product_uom_package_qty = fields.Float(
         string="Package Quantity",
@@ -77,10 +87,23 @@ class JointBuyingPurchaseOrderLine(models.Model):
         required=True,
     )
 
-    qty = fields.Float(
-        string="Quantity",
+    product_uom_id = fields.Many2one(
+        comodel_name="uom.uom", string="UoM (of product)", readonly=True
+    )
+
+    product_uom_po_id = fields.Many2one(
+        comodel_name="uom.uom", string="Supplier UoM (of product)", readonly=True
+    )
+
+    product_qty = fields.Float(
+        string="Quantity (in Main UoM)",
         digits=dp.get_precision("Product Unit of Measure"),
-        required=True,
+        compute="_compute_product_qty",
+        store=True,
+    )
+
+    uom_different_description = fields.Char(
+        string="Equivalent", compute="_compute_product_qty", store=True
     )
 
     product_weight = fields.Float(
@@ -97,52 +120,64 @@ class JointBuyingPurchaseOrderLine(models.Model):
         readonly=True,
     )
 
+    price_description = fields.Char(
+        string="Pricing", compute="_compute_price_description", store=True
+    )
+
     amount_untaxed = fields.Float(
-        string="Amount Untaxed",
-        compute="_compute_amount",
+        string="Total Untaxed Amount",
+        compute="_compute_amount_untaxed",
         store=True,
         digits=dp.get_precision("Product Price"),
     )
 
     total_weight = fields.Float(
-        string="Total Weight", compute="_compute_total_weight", store=True
+        string="Total Brut Weight", compute="_compute_total_weight", store=True
     )
 
-    is_my_purchase = fields.Boolean(
-        string="Is My Purchase",
-        compute="_compute_is_my_purchase",
-        search="_search_is_my_purchase",
-    )
+    is_new = fields.Boolean(related="product_id.joint_buying_is_new")
 
     # Compute Section
-    @api.depends("qty", "product_weight")
+    @api.depends("product_uom_id", "product_qty", "product_weight", "uom_measure_type")
     def _compute_total_weight(self):
-        for line in self:
-            line.total_weight = line.qty * line.product_weight
+        for line in self.filtered(lambda x: x.uom_measure_type == "unit"):
+            line.total_weight = line.product_qty * line.product_weight
+        for line in self.filtered(lambda x: x.uom_measure_type == "weight"):
+            line.total_weight = line.product_qty
 
-    @api.depends("qty", "price_unit")
-    def _compute_amount(self):
-        for line in self:
-            line.amount_untaxed = line.qty * line.price_unit
-
-    def _compute_is_my_purchase(self):
-        current_customer_partner = self.env.user.company_id.joint_buying_partner_id
-        for line in self:
-            line.is_my_purchase = line.customer_id == current_customer_partner
-
-    def _search_is_my_purchase(self, operator, value):
-        current_customer_partner = self.env.user.company_id.joint_buying_partner_id
-        if (operator == "=" and value) or (operator == "!=" and not value):
-            search_operator = "in"
-        else:
-            search_operator = "not in"
-        return [
-            (
-                "id",
-                search_operator,
-                self.search([("customer_id", "=", current_customer_partner.id)]).ids,
+    @api.depends("uom_id", "product_uom_id.factor", "qty")
+    def _compute_product_qty(self):
+        for line in self.filtered(lambda x: x.uom_id == x.product_uom_id):
+            line.product_qty = line.qty
+            line.uom_different_description = False
+        for line in self.filtered(lambda x: x.uom_id != x.product_uom_id):
+            product_qty = line.uom_id._compute_quantity(
+                line.qty, line.product_uom_id, rounding_method="HALF-UP"
             )
-        ]
+            line.product_qty = product_qty
+            if product_qty:
+                line.uom_different_description = _(
+                    "or {} x {}".format(product_qty, line.product_uom_id.name)
+                )
+            else:
+                line.uom_different_description = False
+
+    @api.depends("price_unit", "product_uom_po_id")
+    def _compute_price_description(self):
+        for line in self:
+            line.price_description = "{}€ / {}".format(
+                line.price_unit, line.product_uom_po_id.name
+            )
+
+    @api.depends("uom_id", "product_uom_po_id.factor", "qty", "price_unit")
+    def _compute_amount_untaxed(self):
+        for line in self.filtered(lambda x: x.uom_id == x.product_uom_po_id):
+            line.amount_untaxed = line.qty * line.price_unit
+        for line in self.filtered(lambda x: x.uom_id != x.product_uom_po_id):
+            product_uom_po_qty = line.uom_id._compute_quantity(
+                line.qty, line.product_uom_po_id, rounding_method="HALF-UP"
+            )
+            line.amount_untaxed = product_uom_po_qty * line.price_unit
 
     @api.onchange("qty")
     def onchange_qty(self):

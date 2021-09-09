@@ -11,9 +11,13 @@ class JointBuyingTour(models.Model):
     _name = "joint.buying.tour"
     _inherit = ["mail.thread", "mail.activity.mixin"]
     _description = "Joint buying tour"
-    _order = "date_tour, name"
+    _order = "start_date, name"
 
     name = fields.Char(required=True)
+
+    calendar_description = fields.Char(
+        compute="_compute_calendar_description", store=True
+    )
 
     distance = fields.Float(
         compute="_compute_distance",
@@ -25,7 +29,9 @@ class JointBuyingTour(models.Model):
         comodel_name="joint.buying.carrier", string="Carrier", required=True
     )
 
-    date_tour = fields.Datetime(required=True, track_visibility=True)
+    start_date = fields.Datetime(required=True, track_visibility=True)
+
+    end_date = fields.Datetime(required=True, track_visibility=True)
 
     starting_point_id = fields.Many2one(
         comodel_name="res.partner",
@@ -41,8 +47,6 @@ class JointBuyingTour(models.Model):
         context=_JOINT_BUYING_PARTNER_CONTEXT,
     )
 
-    complete_name = fields.Char(compute="_compute_complete_name", store=True)
-
     line_ids = fields.One2many(
         comodel_name="joint.buying.tour.line",
         inverse_name="tour_id",
@@ -51,17 +55,25 @@ class JointBuyingTour(models.Model):
         auto_join=True,
     )
 
-    line_qty = fields.Char(
-        string="Step Quantity", compute="_compute_line_qty", store=True
+    stop_qty = fields.Integer(
+        string="Stop Quantity", compute="_compute_stop_qty", store=True
     )
 
     is_loop = fields.Boolean(string="Is a Loop", compute="_compute_is_loop", store=True)
 
     # Compute Section
-    @api.depends("name", "date_tour")
-    def _compute_complete_name(self):
+    @api.depends("line_ids")
+    def _compute_stop_qty(self):
         for tour in self:
-            tour.complete_name = "{} - {}".format(tour.date_tour, tour.name)
+            tour.stop_qty = len(tour.line_ids) - 1
+
+    @api.depends("carrier_id.name", "stop_qty")
+    def _compute_calendar_description(self):
+        for tour in self:
+            tour.calendar_description = "(%s - %d Stop)" % (
+                tour.carrier_id.name,
+                tour.stop_qty,
+            )
 
     @api.depends("starting_point_id", "arrival_point_id")
     def _compute_is_loop(self):
@@ -72,11 +84,6 @@ class JointBuyingTour(models.Model):
     def _compute_distance(self):
         for tour in self:
             tour.distance = sum(tour.mapped("line_ids.distance"))
-
-    @api.depends("line_ids")
-    def _compute_line_qty(self):
-        for tour in self:
-            tour.line_qty = len(tour.line_ids)
 
     @api.depends(
         "line_ids.starting_point_id", "line_ids.sequence", "line_ids.arrival_point_id"
@@ -101,9 +108,6 @@ class JointBuyingTour(models.Model):
     def change_tour_lines(self, wizard_lines):
         self.ensure_one()
         TourLine = self.env["joint.buying.tour.line"]
-
-        # TODO, raise an event, to cancel all previous moves associated to
-        # orders
 
         self.line_ids.unlink()
 
