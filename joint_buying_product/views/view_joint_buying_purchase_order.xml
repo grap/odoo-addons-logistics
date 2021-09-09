@@ -33,6 +33,7 @@ License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl.html).
                 <field name="deposit_date"/>
                 <field name="amount_untaxed" sum="Total Amount Untaxed"/>
                 <field name="purchase_state"/>
+                <field name="remaining_day_state"/>
                 <field name="state"/>
             </tree>
         </field>
