@@ -27,6 +27,14 @@ class ResPartner(models.Model):
         string="Minimum Amount For Unit Order"
     )
 
+    joint_buying_minimum_weight = fields.Float(
+        string="Minimum Weight For Grouped Order"
+    )
+
+    joint_buying_minimum_unit_weight = fields.Float(
+        string="Minimum Weight For Unit Order"
+    )
+
     joint_buying_frequency = fields.Integer(string="Days between orders")
 
     joint_buying_next_start_date = fields.Date(string="Next Order Start Date")
