@@ -2,10 +2,10 @@
 # @author: Sylvain LE GAL (https://twitter.com/legalsylvain)
 # License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl.html).
 
-from datetime import datetime, time, timedelta
+from datetime import datetime, timedelta
 
 from odoo import _, api, fields, models
-from odoo.exceptions import ValidationError
+from odoo.osv import expression
 
 from odoo.addons import decimal_precision as dp
 from odoo.addons.joint_buying_base.models.res_partner import (
@@ -15,7 +15,7 @@ from odoo.addons.joint_buying_base.models.res_partner import (
 
 class JointBuyingPurchaseOrderGrouped(models.Model):
     _name = "joint.buying.purchase.order.grouped"
-    _description = "Joint Buying Grouped Purchase Order"
+    _description = "Joint Buying Grouped Order"
     _inherit = ["mail.thread", "mail.activity.mixin"]
 
     _STATE_SELECTION = [
@@ -38,7 +38,11 @@ class JointBuyingPurchaseOrderGrouped(models.Model):
     )
 
     state = fields.Selection(
-        selection=_STATE_SELECTION, string="State", required=True, readonly=True
+        index=True,
+        selection=_STATE_SELECTION,
+        string="State",
+        readonly=True,
+        track_visibility=True,
     )
 
     pivot_company_id = fields.Many2one(
@@ -49,16 +53,16 @@ class JointBuyingPurchaseOrderGrouped(models.Model):
         comodel_name="res.company", string="Deposit Company", required=True
     )
 
-    start_date = fields.Date(string="Start Date", required=True)
+    start_date = fields.Date(index=True, string="Start Date", required=True)
 
-    end_date = fields.Datetime(string="End Date", required=True)
+    end_date = fields.Datetime(index=True, string="End Date", required=True)
 
     remaining_day_state = fields.Selection(
         selection=[("near", "Near"), ("imminent", "Imminent")],
         compute="_compute_remaining_day_state",
     )
 
-    deposit_date = fields.Date(string="Deposit Date", required=True)
+    deposit_date = fields.Date(index=True, string="Deposit Date", required=True)
 
     order_ids = fields.One2many(
         "joint.buying.purchase.order", inverse_name="grouped_order_id", readonly=True
@@ -179,16 +183,18 @@ class JointBuyingPurchaseOrderGrouped(models.Model):
             )
 
     # Overload Section
+    @api.model
     def create(self, vals):
-        if datetime.combine(vals["start_date"], time(0, 0)) > datetime.now():
-            vals.update({"state": "futur"})
-        elif vals["end_date"] > datetime.now():
-            vals.update({"state": "in_progress"})
-        else:
-            raise ValidationError(
-                _("You can not create a closed Grouped Purchase order")
-            )
-        return super().create(vals)
+        grouped_order = super().create(vals)
+        grouped_order.update_state_value()
+        return grouped_order
+
+    @api.multi
+    def write(self, vals):
+        res = super().write(vals)
+        if not self.env.context.get("update_state_value"):
+            self.update_state_value()
+        return res
 
     @api.multi
     @api.returns("mail.message", lambda value: value.id)
@@ -200,10 +206,29 @@ class JointBuyingPurchaseOrderGrouped(models.Model):
             self.with_context(mail_post_autofollow=True),
         ).message_post(**kwargs)
 
-    # Custom Section
+    # # Custom Section
     @api.model
     def cron_check_state(self):
-        pass
+        self.update_state_value(check_all=True)
+
+    @api.multi
+    def update_state_value(self, check_all=False):
+        now = datetime.now()
+        right_settings = {
+            "futur": [("start_date", ">", now)],
+            "in_progress": [("start_date", "<=", now), ("end_date", ">", now)],
+            "closed": [("end_date", "<=", now), ("deposit_date", ">", now)],
+            "deposited": [("deposit_date", "<", now)],
+        }
+        for correct_state, domain in right_settings.items():
+            if not check_all:
+                expression.AND([domain, [("id", "in", self.ids)]])
+            grouped_orders = self.search(domain)
+            if grouped_orders:
+                grouped_orders.with_context(update_state_value=True).write(
+                    {"state": correct_state}
+                )
+                # TODO, raise things like sending pivot mail
 
     @api.model
     def _prepare_order_grouped_vals(
@@ -255,7 +280,7 @@ class JointBuyingPurchaseOrderGrouped(models.Model):
         ctx = dict(self.env.context) or {}
         ctx.update(
             {
-                "model_description": _("Grouped Purchase Order"),
+                "model_description": _("Grouped Order"),
                 "default_model": "joint.buying.purchase.order.grouped",
                 "default_res_id": self.ids[0],
                 "default_use_template": True,
@@ -291,7 +316,7 @@ class JointBuyingPurchaseOrderGrouped(models.Model):
         ctx = dict(self.env.context) or {}
         ctx.update(
             {
-                "model_description": _("Grouped Purchase Order"),
+                "model_description": _("Grouped Order"),
                 "default_model": "joint.buying.purchase.order.grouped",
                 "default_res_id": self.ids[0],
                 "default_use_template": True,
@@ -314,7 +339,7 @@ class JointBuyingPurchaseOrderGrouped(models.Model):
 
     def see_current_order(self):
         result = self.env.ref(
-            "joint_buying_product.action_joint_buying_purchase_order_my_purchase_orders"
+            "joint_buying_product.action_joint_buying_purchase_order_my"
         ).read()[0]
         form_view = self.env.ref(
             "joint_buying_product.view_joint_buying_purchase_order_form"
@@ -332,17 +357,26 @@ class JointBuyingPurchaseOrderGrouped(models.Model):
 
     def create_current_order(self):
         self.ensure_one()
+        # Create order
         Order = self.env["joint.buying.purchase.order"]
         current_customer_partner = self.env.user.company_id.joint_buying_partner_id
 
         vals = Order._prepare_order_vals(self.supplier_id, current_customer_partner)
         vals.update({"grouped_order_id": self.id})
         Order.create(vals)
-        return self.see_current_order()
 
-    def get_mail_url(self):
-        self.ensure_one()
-        # res = self.env["ir.config_parameter"].sudo().get_param("web.base.url")
-        # action = self.env(
-        #     "joint_buying_product.action_joint_buying_purchase_order_grouped"
-        # )
+        # Subscribe the current company to the supplier if not set
+        current_company_ids = self.supplier_id.joint_buying_subscribed_company_ids.ids
+        if self.env.user.company_id.id not in current_company_ids:
+            self.supplier_id.joint_buying_subscribed_company_ids = (
+                current_company_ids + [self.env.user.company_id.id]
+            )
+            # Display a message for the user
+            self.env.user.notify_info(
+                message=_(
+                    "The company '%s' has been subscribed to the supplier '%s'."
+                    % (self.env.user.company_id.complete_name, self.supplier_id.name)
+                )
+            )
+
+        return self.see_current_order()

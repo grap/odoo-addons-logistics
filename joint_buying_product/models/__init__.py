@@ -6,3 +6,4 @@ from . import joint_buying_purchase_order_grouped
 from . import joint_buying_purchase_order_grouped_line
 from . import joint_buying_purchase_order
 from . import joint_buying_purchase_order_line
+from . import res_config_settings

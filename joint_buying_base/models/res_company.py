@@ -20,7 +20,9 @@ class ResCompany(models.Model):
     )
 
     joint_buying_auto_subscribe = fields.Boolean(
-        string="Automatic Supplier Subscription", default=True
+        string="Automatic Supplier Subscription",
+        help="Check this box if you want to subscribe automatically"
+        " to new suppliers.",
     )
 
     joint_buying_partner_id = fields.Many2one(

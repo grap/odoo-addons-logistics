@@ -11,7 +11,7 @@ class JointBuyingTour(models.Model):
     _name = "joint.buying.tour"
     _inherit = ["mail.thread", "mail.activity.mixin"]
     _description = "Joint buying tour"
-    _order = "date_tour, name"
+    _order = "start_date, name"
 
     name = fields.Char(required=True)
 
@@ -25,7 +25,9 @@ class JointBuyingTour(models.Model):
         comodel_name="joint.buying.carrier", string="Carrier", required=True
     )
 
-    date_tour = fields.Datetime(required=True, track_visibility=True)
+    start_date = fields.Datetime(required=True, track_visibility=True)
+
+    end_date = fields.Datetime(required=True, track_visibility=True)
 
     starting_point_id = fields.Many2one(
         comodel_name="res.partner",
@@ -51,17 +53,17 @@ class JointBuyingTour(models.Model):
         auto_join=True,
     )
 
-    line_qty = fields.Char(
+    line_qty = fields.Integer(
         string="Step Quantity", compute="_compute_line_qty", store=True
     )
 
     is_loop = fields.Boolean(string="Is a Loop", compute="_compute_is_loop", store=True)
 
     # Compute Section
-    @api.depends("name", "date_tour")
+    @api.depends("name", "start_date")
     def _compute_complete_name(self):
         for tour in self:
-            tour.complete_name = "{} - {}".format(tour.date_tour, tour.name)
+            tour.complete_name = "{} - {}".format(tour.start_date, tour.name)
 
     @api.depends("starting_point_id", "arrival_point_id")
     def _compute_is_loop(self):
@@ -101,9 +103,6 @@ class JointBuyingTour(models.Model):
     def change_tour_lines(self, wizard_lines):
         self.ensure_one()
         TourLine = self.env["joint.buying.tour.line"]
-
-        # TODO, raise an event, to cancel all previous moves associated to
-        # orders
 
         self.line_ids.unlink()
 

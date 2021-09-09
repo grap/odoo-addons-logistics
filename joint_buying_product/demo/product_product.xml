@@ -49,6 +49,18 @@
         <field name="uom_package_qty">12</field>
     </record>
 
+    <record id="product_devidal_unavailable_product" model="product.product"
+        context="{'joint_buying': True}">
+        <field name="name">Unavailable Product (450gr) (Global)</field>
+        <field name="uom_id" ref="uom.product_uom_unit"/>
+        <field name="uom_po_id" ref="uom.product_uom_unit"/>
+        <field name="joint_buying_partner_id" ref="joint_buying_base.supplier_salaison_devidal"/>
+        <field name="weight">0.450</field>
+        <field name="price">10</field>
+        <field name="uom_package_qty">6</field>
+        <field name="purchase_ok" eval="False"/>
+    </record>
+
     <!-- Local Products ELD -->
     <record id="product_ELD_orangettes" model="product.product">
         <field name="default_code">ELD-ORANGETTE</field>

@@ -81,5 +81,5 @@ class ResPartner(models.Model):
     def _get_joint_buying_products(self):
         self.ensure_one()
         return self.with_context(joint_buying=1).joint_buying_product_ids.filtered(
-            lambda x: x.sale_ok and x.active
+            lambda x: x.purchase_ok and x.active
         )

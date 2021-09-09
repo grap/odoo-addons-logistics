@@ -39,6 +39,18 @@ License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl.html).
         </field>
     </record>
 
+    <record id="view_joint_buying_purchase_order_calendar" model="ir.ui.view">
+        <field name="model">joint.buying.purchase.order</field>
+        <field name="arch" type="xml">
+            <calendar date_start="start_date" date_stop="end_date" color="supplier_id">
+                <field name="name"/>
+                <field name="amount_untaxed"/>
+                <field name="supplier_id"/>
+                <field name="state" invisible="1"/>
+            </calendar>
+        </field>
+    </record>
+
     <record id="view_joint_buying_purchase_order_form" model="ir.ui.view">
         <field name="model">joint.buying.purchase.order</field>
         <field name="arch" type="xml">
@@ -73,7 +85,7 @@ License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl.html).
                         </group>
                         <group>
                             <field name="start_date"/>
-                            <field name="end_date" options="{'bg_color': 'orange: remaining_day_state == &quot;near&quot;; red: remaining_day_state == &quot;imminent&quot;'}"/>
+                            <field name="end_date"/>
                             <field name="remaining_day_state" invisible="1"/>
                             <field name="deposit_date"/>
                             <field name="minimum_unit_amount" attrs="{'invisible': [('minimum_unit_amount', '=', 0)]}"/>
@@ -113,7 +125,7 @@ License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl.html).
         <field name="type">ir.actions.act_window</field>
         <field name="res_model">joint.buying.purchase.order</field>
         <field name="view_type">form</field>
-        <field name="view_mode">tree,form</field>
+        <field name="view_mode">tree,calendar,form</field>
         <field name="domain">[('is_my_purchase', '=', True)]</field>
         <field name="context">{
             'search_default_to_enter_by_customer': 1,

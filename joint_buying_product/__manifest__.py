@@ -3,12 +3,12 @@
 # License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl.html).
 {
     "name": "Joint Buying - Products",
-    "version": "12.0.1.0.7",
+    "version": "12.0.1.1.0",
     "category": "GRAP - Logistics",
     "author": "GRAP",
     "website": "http://www.grap.coop",
     "license": "AGPL-3",
-    "depends": ["product", "joint_buying_base", "product_uom_package"],
+    "depends": ["product", "joint_buying_base", "product_uom_package", "web_notify"],
     "pre_init_hook": "pre_init_product_db",
     "data": [
         "security/ir.model.access.csv",

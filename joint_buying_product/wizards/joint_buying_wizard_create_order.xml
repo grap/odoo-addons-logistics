@@ -30,8 +30,8 @@ License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl.html).
                     </tree>
                 </field>
                 <footer>
-                    <button name="create_orders_grouped"
-                            string="Create order"
+                    <button name="create_order_grouped"
+                            string="Create Order"
                             type="object"
                             class="oe_highlight"/>
                     or

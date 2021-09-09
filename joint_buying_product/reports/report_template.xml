@@ -15,7 +15,7 @@
             <div class="page">
                 <div class="oe_structure"/>
                 <h2>
-                    <span>Grouped Purchase Order # </span>
+                    <span>Grouped Order # </span>
                     <span t-field="doc.name"/>
                 </h2>
 

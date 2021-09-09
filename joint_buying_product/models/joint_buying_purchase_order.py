@@ -37,7 +37,7 @@ class JointBuyingPurchaseOrder(models.Model):
 
     grouped_order_id = fields.Many2one(
         comodel_name="joint.buying.purchase.order.grouped",
-        string="Grouped Purchase Order",
+        string="Grouped Order",
         required=True,
         readonly=True,
         index=True,

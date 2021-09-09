@@ -40,7 +40,7 @@ License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl.html).
     <record id="view_joint_buying_purchase_order_grouped_calendar" model="ir.ui.view">
         <field name="model">joint.buying.purchase.order.grouped</field>
         <field name="arch" type="xml">
-            <calendar date_start="start_date" date_stop="end_date" color="state">
+            <calendar date_start="start_date" date_stop="end_date" color="supplier_id">
                 <field name="name"/>
                 <field name="amount_untaxed"/>
                 <field name="supplier_id"/>
@@ -103,7 +103,6 @@ License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl.html).
                         <group>
                             <field name="start_date"/>
                             <field name="end_date"/>
-                            <field name="end_date" options="{'bg_color': 'orange: remaining_day_state == &quot;near&quot;; red: remaining_day_state == &quot;imminent&quot;'}"/>
                             <field name="remaining_day_state" invisible="1"/>
                             <field name="deposit_date"/>
                             <field name="minimum_amount"/>

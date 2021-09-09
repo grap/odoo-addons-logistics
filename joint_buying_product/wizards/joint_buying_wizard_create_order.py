@@ -107,10 +107,10 @@ class JointBuyingWizardCreateOrder(models.TransientModel):
         return line_vals
 
     @api.multi
-    def create_orders_grouped(self):
+    def create_order_grouped(self):
         self.ensure_one()
         OrderGrouped = self.env["joint.buying.purchase.order.grouped"]
-        group_order = OrderGrouped.create(
+        order_grouped = OrderGrouped.create(
             OrderGrouped._prepare_order_grouped_vals(
                 self.supplier_id,
                 customers=self.mapped("line_ids.customer_id"),
@@ -129,7 +129,7 @@ class JointBuyingWizardCreateOrder(models.TransientModel):
         )
 
         action = self.env.ref(
-            "joint_buying_product.action_joint_buying_purchase_order_grouped"
+            "joint_buying_product.action_joint_buying_purchase_order_grouped_all"
         ).read()[0]
-        action.update({"res_id": group_order.id, "views": [(form_view.id, "form")]})
+        action.update({"res_id": order_grouped.id, "views": [(form_view.id, "form")]})
         return action

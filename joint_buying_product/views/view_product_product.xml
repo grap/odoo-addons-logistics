@@ -25,7 +25,7 @@ License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl.html).
                 <field name="is_joint_buying" invisible="1"/>
                 <field name="default_code"/>
                 <field name="name"/>
-                <field name="lst_price"/>
+                <field name="lst_price" string="Pricing"/>
                 <field name="type" invisible="1"/>
                 <field name="uom_id" string="UoM"/>
                 <field name="uom_po_id" groups="uom.group_uom" string="Invoice Supplier UoM"/>
@@ -94,7 +94,7 @@ License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl.html).
                                     <field name="barcode"/>
                                     <field name="uom_id"/>
                                     <field name="uom_po_id"/>
-                                    <field name="lst_price"/>
+                                    <field name="lst_price" string="Pricing"/>
                                     <field name="uom_package_qty"/>
                                 </group>
                                 <group name="group_logistic" string="Logistics">

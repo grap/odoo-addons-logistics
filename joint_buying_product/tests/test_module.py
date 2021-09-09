@@ -2,6 +2,9 @@
 # @author: Sylvain LE GAL (https://twitter.com/legalsylvain)
 # License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl.html).
 
+from datetime import timedelta
+
+from odoo import fields
 from odoo.exceptions import ValidationError
 from odoo.tests.common import TransactionCase, at_install, post_install
 
@@ -14,19 +17,31 @@ class TestModule(TransactionCase):
         self.ProductProduct = self.env["product.product"].with_context(
             mail_create_nosubscribe=True
         )
+
         self.JointBuyingProductProduct = self.env["product.product"].with_context(
             mail_create_nosubscribe=True, joint_buying=True
         )
+
+        self.JointBuyingResPartner = self.env["res.partner"].with_context(
+            joint_buying=True
+        )
+
+        self.JointBuyingWizardCreateOrder = self.env["joint.buying.wizard.create.order"]
+        self.OrderGrouped = self.env["joint.buying.purchase.order.grouped"]
+        self.Order = self.env["joint.buying.purchase.order"]
+
         self.company_ELD = self.env.ref("joint_buying_base.company_ELD")
+        self.company_CHE = self.env.ref("joint_buying_base.company_CHE")
+        self.company_3PP = self.env.ref("joint_buying_base.company_3PP")
         self.partner_supplier_fumet_dombes = self.env.ref(
             "joint_buying_base.supplier_fumet_dombes"
         )
-        self.partner_supplier_salaison_devidal = self.env.ref(
-            "joint_buying_base.supplier_salaison_devidal"
+        self.salaison_devidal = self.JointBuyingResPartner.browse(
+            self.env.ref("joint_buying_base.supplier_salaison_devidal").id
         )
         self.category_all = self.env.ref("product.product_category_all")
 
-    def test_search_and_propagate(self):
+    def test_01_search_and_propagate(self):
         len_local_before_local_creation = len(self.ProductProduct.search([]))
         len_joint_buying_before_local_creation = len(
             self.JointBuyingProductProduct.search([])
@@ -73,7 +88,7 @@ class TestModule(TransactionCase):
             " of joint buying products",
         )
 
-    def test_joint_buying_product_creation(self):
+    def test_02_joint_buying_product_creation(self):
         vals = {
             "name": "Some Product",
             "categ_id": self.category_all.id,
@@ -98,4 +113,41 @@ class TestModule(TransactionCase):
 
         # Change partner of a joint buying product should fail
         with self.assertRaises(ValidationError):
-            product.joint_buying_partner_id = self.partner_supplier_salaison_devidal.id
+            product.joint_buying_partner_id = self.salaison_devidal.id
+
+    def test_03_wizard_creation_order_grouped(self):
+        # configure subscription
+        self.salaison_devidal.joint_buying_subscribed_company_ids = [
+            self.company_ELD.id,
+            self.company_3PP.id,
+            self.company_CHE.id,
+        ]
+
+        # Use Wizard to create grouped order
+        end_date = fields.datetime.now() + timedelta(days=7)
+        deposit_date = fields.datetime.now() + timedelta(days=14)
+
+        wizard = self.JointBuyingWizardCreateOrder.with_context(
+            active_id=self.salaison_devidal.id
+        ).create({"end_date": end_date, "deposit_date": deposit_date})
+
+        res = wizard.create_order_grouped()
+        order_grouped = self.OrderGrouped.browse(res["res_id"])
+        self.assertEqual(order_grouped.order_qty, 3)
+
+        # Create an order for the main_company
+        res = order_grouped.create_current_order()
+        self.assertEqual(order_grouped.order_qty, 4)
+        order = self.Order.browse(res["res_id"])
+
+        # Create an order for the current company should automatically subscribe
+        # to the supplier
+        self.assertEqual(
+            len(self.salaison_devidal.joint_buying_subscribed_company_ids), 4
+        )
+
+        # Order should contain only purchasable product
+        purchasable_products = self.salaison_devidal.joint_buying_product_ids.filtered(
+            lambda x: x.purchase_ok
+        )
+        self.assertEqual(order.line_qty, len(purchasable_products))

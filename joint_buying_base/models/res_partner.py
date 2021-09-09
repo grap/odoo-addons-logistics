@@ -24,6 +24,7 @@ class ResPartner(models.Model):
         relation="res_company_res_partner_subscribed_rel",
         comodel_name="res.company",
         name="Companies with Subscription to the supplier",
+        default=lambda x: x._default_joint_buying_subscribed_company_ids(),
     )
 
     joint_buying_is_subscribed = fields.Boolean(
@@ -110,6 +111,14 @@ class ResPartner(models.Model):
                     " the creation of a company."
                 )
             )
+
+    # Default Section
+    def _default_joint_buying_subscribed_company_ids(self):
+        if self.env.context.get("joint_buying"):
+            companies = self.env["res.company"].search(
+                [("joint_buying_auto_subscribe", "=", True)]
+            )
+            return companies.ids
 
     # Compute Section
     def _compute_joint_buying_is_subscribed(self):

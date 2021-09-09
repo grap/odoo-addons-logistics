@@ -6,8 +6,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Odoo Server 12.0\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2021-08-12 20:47+0000\n"
-"PO-Revision-Date: 2021-08-12 20:47+0000\n"
+"POT-Creation-Date: 2021-09-09 13:04+0000\n"
+"PO-Revision-Date: 2021-09-09 13:04+0000\n"
 "Last-Translator: <>\n"
 "Language-Team: \n"
 "MIME-Version: 1.0\n"
@@ -17,8 +17,8 @@ msgstr ""
 
 #. module: joint_buying_product
 #: model:mail.template,report_name:joint_buying_product.email_template_purchase_order_grouped_for_supplier
-msgid "${(object.name)} - ${(object.supplier_id.name).replace('/', '_')} - Grouped Purchase Order ${(object.deposit_date)}"
-msgstr "${(object.name)} - ${(object.supplier_id.name).replace('/', '_')} - Commande groupée ${(object.deposit_date)}"
+msgid "${(object.name)} - ${(object.supplier_id.name).replace('/', '_')} - Grouped Order ${(object.deposit_date)}"
+msgstr ""
 
 #. module: joint_buying_product
 #: model:uom.uom,name:joint_buying_product.uom_0_300_kg
@@ -36,7 +36,7 @@ msgid "<div style=\"margin: 0px; padding: 0px;\">\n"
 "                <p style=\"margin: 0px; padding: 0px; font-size: 13px;\">\n"
 "                    Dear ${object.supplier_id.name}\n"
 "                    <br/><br/>\n"
-"                    Here is in attachment a Grouped Purchase Order <strong>${object.name}</strong>\n"
+"                    Here is in attachment a Grouped Order <strong>${object.name}</strong>\n"
 "                    <br/>\n"
 "                    <ul>\n"
 "                        <li>Total Amount Untaxed : <strong>${round(object.amount_untaxed, 2)} €</strong></li>\n"
@@ -50,24 +50,7 @@ msgid "<div style=\"margin: 0px; padding: 0px;\">\n"
 "                </p>\n"
 "            </div>\n"
 "        "
-msgstr "<div style=\"margin: 0px; padding: 0px;\">\n"
-"                <p style=\"margin: 0px; padding: 0px; font-size: 13px;\">\n"
-"                    Cher ${object.supplier_id.name}\n"
-"                    <br/><br/>\n"
-"                    Vous trouverez en pièce jointe la commande groupée <strong>${object.name}</strong>\n"
-"                    <br/>\n"
-"                    <ul>\n"
-"                        <li>Montant Total HT : <strong>${round(object.amount_untaxed, 2)} €</strong></li>\n"
-"                        <li>Lieu de dépôt : <strong>${object.deposit_company_id.name} </strong>(${object.deposit_company_id.street or ''} ${object.deposit_company_id.street2 or ''}, ${object.deposit_company_id.zip or ''} ${object.deposit_company_id.city or ''})</li>\n"
-"                        <li>Date maximum de dépôt : <strong>${object.deposit_date}</strong></li>\n"
-"                    </ul>\n"
-"                    <br/>\n"
-"                    Si vous voyez dans ce document des informations incorrectes (produit non vendu en rupture de stock, prix incorrecte, etc...) veuillez contacter au plus tôt votre activité pivot <strong>${object.pivot_company_id.name}</strong>.\n"
-"                    <br/><br/>\n"
-"                    Bonne journée.\n"
-"                </p>\n"
-"            </div>\n"
-"        "
+msgstr ""
 
 #. module: joint_buying_product
 #: model:mail.template,body_html:joint_buying_product.email_template_purchase_order_grouped_for_pivot_company
@@ -75,18 +58,11 @@ msgid "<div style=\"margin: 0px; padding: 0px;\">\n"
 "                <p style=\"margin: 0px; padding: 0px; font-size: 13px;\">\n"
 "                    Hello ${object.pivot_company_id.name}\n"
 "                    <br/><br/>\n"
-"                    The Grouped Purchase Order <strong>${object.name}</strong> for the supplier ${object.supplier_id.name} has just ended. Please check the ordered products and send the order to the supplier, by clicking on the link below.\n"
+"                    The Grouped Order <strong>${object.name}</strong> for the supplier ${object.supplier_id.name} has just ended. Please check the ordered products and send the order to the supplier, by clicking on the link below.\n"
 "                </p>\n"
 "            </div>\n"
 "        "
-msgstr "<div style=\"margin: 0px; padding: 0px;\">\n"
-"                <p style=\"margin: 0px; padding: 0px; font-size: 13px;\">\n"
-"                    Hello ${object.pivot_company_id.name}\n"
-"                    <br/><br/>\n"
-"                    La commande groupée <strong>${object.name}</strong> pour le fournisseur  ${object.supplier_id.name} vient de se terminer. Veuillez vérifier les quantités .\n"
-"                </p>\n"
-"            </div>\n"
-"        "
+msgstr ""
 
 #. module: joint_buying_product
 #: model_terms:ir.ui.view,arch_db:joint_buying_product.view_joint_buying_purchase_order_grouped_form
@@ -105,8 +81,8 @@ msgstr "<span>Détails</span>"
 
 #. module: joint_buying_product
 #: model_terms:ir.ui.view,arch_db:joint_buying_product.report_joint_buying_purchase_order_grouped_document
-msgid "<span>Grouped Purchase Order # </span>"
-msgstr "<span>Commande groupé # </span>"
+msgid "<span>Grouped Order # </span>"
+msgstr ""
 
 #. module: joint_buying_product
 #: model_terms:ir.ui.view,arch_db:joint_buying_product.report_joint_buying_purchase_order_grouped_document
@@ -137,9 +113,16 @@ msgid "Activity State"
 msgstr "Status de l'Activité"
 
 #. module: joint_buying_product
-#: model:ir.ui.menu,name:joint_buying_product.menu_all_orders
+#: model:ir.actions.act_window,name:joint_buying_product.action_joint_buying_purchase_order_grouped_all
+#: model:ir.ui.menu,name:joint_buying_product.menu_joint_buying_purchase_order_grouped
+msgid "All Grouped Orders"
+msgstr ""
+
+#. module: joint_buying_product
+#: model:ir.actions.act_window,name:joint_buying_product.action_joint_buying_purchase_order_all
+#: model:ir.ui.menu,name:joint_buying_product.menu_joint_buying_purchase_order_all
 msgid "All Orders"
-msgstr "Toutes les ventes"
+msgstr "Toutes les commandes"
 
 #. module: joint_buying_product
 #: model:ir.model.fields,field_description:joint_buying_product.field_joint_buying_purchase_order__amount_untaxed
@@ -186,11 +169,11 @@ msgid "Code"
 msgstr ""
 
 #. module: joint_buying_product
-#: code:addons/joint_buying_product/models/joint_buying_purchase_order_grouped.py:254
-#: code:addons/joint_buying_product/models/joint_buying_purchase_order_grouped.py:288
+#: code:addons/joint_buying_product/models/joint_buying_purchase_order_grouped.py:268
+#: code:addons/joint_buying_product/models/joint_buying_purchase_order_grouped.py:302
 #, python-format
 msgid "Compose Email"
-msgstr "Rédiger un courriel"
+msgstr ""
 
 #. module: joint_buying_product
 #: model_terms:ir.ui.view,arch_db:joint_buying_product.view_joint_buying_purchase_order_form
@@ -211,13 +194,9 @@ msgstr ""
 #: model:ir.actions.act_window,name:joint_buying_product.action_partner_2_wizard_create_order
 #: model_terms:ir.ui.view,arch_db:joint_buying_product.view_joint_buying_purchase_order_grouped_form
 #: model_terms:ir.ui.view,arch_db:joint_buying_product.view_joint_buying_purchase_order_grouped_tree
-msgid "Create Order"
-msgstr "Créer un achat"
-
-#. module: joint_buying_product
 #: model_terms:ir.ui.view,arch_db:joint_buying_product.view_joint_buying_wizard_create_order_form
-msgid "Create order"
-msgstr "Créer un achat"
+msgid "Create Order"
+msgstr "Créer une commande"
 
 #. module: joint_buying_product
 #: model:ir.model.fields,field_description:joint_buying_product.field_joint_buying_purchase_order__create_uid
@@ -353,29 +332,33 @@ msgid "Gingembrette Sachet 200gr"
 msgstr ""
 
 #. module: joint_buying_product
-#: model:ir.actions.act_window,name:joint_buying_product.action_joint_buying_purchase_order_grouped
-#: model:ir.ui.menu,name:joint_buying_product.menu_joint_buying_purchase_order_grouped
-msgid "Grouped Orders"
-msgstr "Achats groupés"
-
-#. module: joint_buying_product
-#: code:addons/joint_buying_product/models/joint_buying_purchase_order_grouped.py:242
-#: code:addons/joint_buying_product/models/joint_buying_purchase_order_grouped.py:278
+#: code:addons/joint_buying_product/models/joint_buying_purchase_order_grouped.py:256
+#: code:addons/joint_buying_product/models/joint_buying_purchase_order_grouped.py:292
 #: model:ir.actions.report,name:joint_buying_product.action_report_joint_buying_purchase_order_grouped
 #: model:ir.model.fields,field_description:joint_buying_product.field_joint_buying_purchase_order__grouped_order_id
 #, python-format
-msgid "Grouped Purchase Order"
+msgid "Grouped Order"
 msgstr "Commande groupée"
 
 #. module: joint_buying_product
 #: model:mail.template,subject:joint_buying_product.email_template_purchase_order_grouped_for_supplier
-msgid "Grouped Purchase Order (Ref ${object.name})"
+msgid "Grouped Order (Ref ${object.name})"
 msgstr "Commande groupée (Réf ${object.name})"
 
 #. module: joint_buying_product
 #: model:mail.template,subject:joint_buying_product.email_template_purchase_order_grouped_for_pivot_company
-msgid "Grouped Purchase Order (Ref ${object.name}) has just ended"
-msgstr "La commande groupée (Réf ${object.name}) vient de se terminer"
+msgid "Grouped Order (Ref ${object.name}) has just ended"
+msgstr "Commande groupée (Réf ${object.name}) vient de se clôturer"
+
+#. module: joint_buying_product
+#: model_terms:ir.ui.view,arch_db:joint_buying_product.view_res_partner
+msgid "Grouped Order (kg)"
+msgstr "Commande groupée (kg)"
+
+#. module: joint_buying_product
+#: model_terms:ir.ui.view,arch_db:joint_buying_product.view_res_partner
+msgid "Grouped Order (€)"
+msgstr "Commande groupée (€)"
 
 #. module: joint_buying_product
 #: model:ir.model.fields,field_description:joint_buying_product.field_joint_buying_purchase_order__id
@@ -404,6 +387,11 @@ msgstr "Si coché, de nouveaux messages demandent votre attention."
 #: model:ir.model.fields,help:joint_buying_product.field_joint_buying_purchase_order_grouped__message_has_error
 msgid "If checked, some messages have a delivery error."
 msgstr "Si actif, certains messages ont une erreur de livraison."
+
+#. module: joint_buying_product
+#: selection:joint.buying.purchase.order.grouped,remaining_day_state:0
+msgid "Imminent"
+msgstr "Imminent"
 
 #. module: joint_buying_product
 #: selection:joint.buying.purchase.order.grouped,state:0
@@ -450,7 +438,7 @@ msgstr "Partenaire global pour les achats groupés"
 
 #. module: joint_buying_product
 #: model:ir.model,name:joint_buying_product.model_joint_buying_purchase_order_grouped
-msgid "Joint Buying Grouped Purchase Order"
+msgid "Joint Buying Grouped Order"
 msgstr "Commande groupée"
 
 #. module: joint_buying_product
@@ -497,8 +485,8 @@ msgstr "Ligne d'assistant de création de commande groupée"
 #: model:ir.actions.server,name:joint_buying_product.cron_grouped_purchase_order_check_state_ir_actions_server
 #: model:ir.cron,cron_name:joint_buying_product.cron_grouped_purchase_order_check_state
 #: model:ir.cron,name:joint_buying_product.cron_grouped_purchase_order_check_state
-msgid "Joint Buying: Check Grouped Purchase Order state"
-msgstr "Achat groupé : vérifier l'état des commandes groupées"
+msgid "Joint Buying: Check Grouped Order state"
+msgstr "Commande groupée : Vérifier l'état des commandes groupées"
 
 #. module: joint_buying_product
 #: model:ir.model.fields,field_description:joint_buying_product.field_joint_buying_purchase_order____last_update
@@ -577,20 +565,21 @@ msgstr ""
 #. module: joint_buying_product
 #: model:ir.model.fields,field_description:joint_buying_product.field_joint_buying_purchase_order_grouped__minimum_amount
 #: model:ir.model.fields,field_description:joint_buying_product.field_joint_buying_wizard_create_order__minimum_amount
+#: model_terms:ir.ui.view,arch_db:joint_buying_product.view_res_partner
 msgid "Minimum Amount"
-msgstr "Montant minimum"
+msgstr "Franco"
 
 #. module: joint_buying_product
 #: model:ir.model.fields,field_description:joint_buying_product.field_res_partner__joint_buying_minimum_amount
 #: model:ir.model.fields,field_description:joint_buying_product.field_res_users__joint_buying_minimum_amount
 msgid "Minimum Amount For Grouped Order"
-msgstr "Montant minimum pour la commande groupé"
+msgstr "Montant minimum pour une commande groupée"
 
 #. module: joint_buying_product
 #: model:ir.model.fields,field_description:joint_buying_product.field_res_partner__joint_buying_minimum_unit_amount
 #: model:ir.model.fields,field_description:joint_buying_product.field_res_users__joint_buying_minimum_unit_amount
 msgid "Minimum Amount For Unit Order"
-msgstr "Montant minimum pour un achat"
+msgstr "Montant minimum pour une commande unitaire"
 
 #. module: joint_buying_product
 #: selection:joint.buying.purchase.order,purchase_ok:0
@@ -604,26 +593,38 @@ msgid "Minimum Unit Amount"
 msgstr "Montant minimum unitaire"
 
 #. module: joint_buying_product
+#: model:ir.model.fields,field_description:joint_buying_product.field_res_partner__joint_buying_minimum_weight
+#: model:ir.model.fields,field_description:joint_buying_product.field_res_users__joint_buying_minimum_weight
+msgid "Minimum Weight For Grouped Order"
+msgstr "Poid minimum pour une commande groupée"
+
+#. module: joint_buying_product
+#: model:ir.model.fields,field_description:joint_buying_product.field_res_partner__joint_buying_minimum_unit_weight
+#: model:ir.model.fields,field_description:joint_buying_product.field_res_users__joint_buying_minimum_unit_weight
+msgid "Minimum Weight For Unit Order"
+msgstr "Poid minimum pour une commande unitaire"
+
+#. module: joint_buying_product
 #: model:ir.model.fields,field_description:joint_buying_product.field_joint_buying_purchase_order__minimum_unit_amount
 msgid "Minimum amount"
 msgstr "Montant minimum"
 
 #. module: joint_buying_product
-#: model:ir.actions.act_window,name:joint_buying_product.action_joint_buying_purchase_order_line_my_purchase_lines
+#: model:ir.actions.act_window,name:joint_buying_product.action_joint_buying_purchase_order_line_my
 #: model:ir.ui.menu,name:joint_buying_product.menu_joint_buying_purchase_order_my_purchase_lines
-msgid "My Purchase Lines"
-msgstr "Mes lignes de commandes"
+msgid "My Order Lines"
+msgstr "Les lignes de commandes"
 
 #. module: joint_buying_product
-#: model:ir.actions.act_window,name:joint_buying_product.action_joint_buying_purchase_order_my_purchase_orders
-#: model:ir.ui.menu,name:joint_buying_product.menu_joint_buying_purchase_order_my_purchase_orders
-msgid "My Purchase Orders"
+#: model:ir.actions.act_window,name:joint_buying_product.action_joint_buying_purchase_order_my
+#: model:ir.ui.menu,name:joint_buying_product.menu_joint_buying_purchase_order_my
+msgid "My Orders"
 msgstr "Mes commandes"
 
 #. module: joint_buying_product
-#: model:ir.ui.menu,name:joint_buying_product.menu_my_purchase
-msgid "My Purchases"
-msgstr "Mes achats"
+#: selection:joint.buying.purchase.order.grouped,remaining_day_state:0
+msgid "Near"
+msgstr "Proche"
 
 #. module: joint_buying_product
 #: model:ir.model.fields,field_description:joint_buying_product.field_joint_buying_purchase_order__activity_date_deadline
@@ -648,6 +649,11 @@ msgstr "Type d'Activités à Venir"
 #: model:ir.model.fields,field_description:joint_buying_product.field_res_users__joint_buying_next_deposit_date
 msgid "Next Deposit Date"
 msgstr "Prochaine date de dépôt"
+
+#. module: joint_buying_product
+#: model_terms:ir.ui.view,arch_db:joint_buying_product.view_res_partner
+msgid "Next Order"
+msgstr "Prochaine commande"
 
 #. module: joint_buying_product
 #: model:ir.model.fields,field_description:joint_buying_product.field_res_partner__joint_buying_next_end_date
@@ -731,7 +737,7 @@ msgstr "Commande"
 #. module: joint_buying_product
 #: model_terms:ir.ui.view,arch_db:joint_buying_product.view_res_partner
 msgid "Order End Date"
-msgstr "Date de fin d'acaht"
+msgstr "Date de fin d'achat"
 
 #. module: joint_buying_product
 #: model_terms:ir.ui.view,arch_db:joint_buying_product.view_res_partner
@@ -744,10 +750,8 @@ msgid "Order line"
 msgstr "Ligne de commande"
 
 #. module: joint_buying_product
-#: model:ir.actions.act_window,name:joint_buying_product.action_joint_buying_purchase_order_all_orders
 #: model:ir.actions.act_window,name:joint_buying_product.action_order_grouped_2_order
-#: model:ir.ui.menu,name:joint_buying_product.menu_joint_buying_purchase_order_all_orders
-#: model:ir.ui.menu,name:joint_buying_product.menu_orders
+#: model:ir.ui.menu,name:joint_buying_product.menu_order
 #: model_terms:ir.ui.view,arch_db:joint_buying_product.view_joint_buying_purchase_order_grouped_form
 msgid "Orders"
 msgstr "Commandes"
@@ -786,6 +790,13 @@ msgid "Price Unit"
 msgstr "Prix unitaire"
 
 #. module: joint_buying_product
+#: model_terms:ir.ui.view,arch_db:joint_buying_product.view_product_product_form_joint_buying
+#: model_terms:ir.ui.view,arch_db:joint_buying_product.view_product_product_tree_joint_buying
+#: model_terms:ir.ui.view,arch_db:joint_buying_product.view_res_partner
+msgid "Pricing"
+msgstr "Tarif"
+
+#. module: joint_buying_product
 #: model:ir.model,name:joint_buying_product.model_product_product
 #: model:ir.model.fields,field_description:joint_buying_product.field_joint_buying_purchase_order_grouped_line__product_id
 #: model:ir.model.fields,field_description:joint_buying_product.field_joint_buying_purchase_order_line__product_id
@@ -807,6 +818,7 @@ msgstr "UdM Poids / Pièce"
 #: model:ir.actions.act_window,name:joint_buying_product.action_product_product
 #: model:ir.actions.act_window,name:joint_buying_product.action_res_partner_2_product_product
 #: model:ir.ui.menu,name:joint_buying_product.menu_product_product
+#: model_terms:ir.ui.view,arch_db:joint_buying_product.view_res_partner
 msgid "Products"
 msgstr "Articles"
 
@@ -837,9 +849,10 @@ msgid "Quantity"
 msgstr "Quantité"
 
 #. module: joint_buying_product
-#: model_terms:ir.ui.view,arch_db:joint_buying_product.view_res_partner
-msgid "Recurring Orders"
-msgstr "Commande récurrentes"
+#: model:ir.model.fields,field_description:joint_buying_product.field_joint_buying_purchase_order__remaining_day_state
+#: model:ir.model.fields,field_description:joint_buying_product.field_joint_buying_purchase_order_grouped__remaining_day_state
+msgid "Remaining Day State"
+msgstr ""
 
 #. module: joint_buying_product
 #: model_terms:ir.ui.view,arch_db:joint_buying_product.view_joint_buying_purchase_order_grouped_form
@@ -1005,6 +1018,16 @@ msgid "Total Weight"
 msgstr "Poid total"
 
 #. module: joint_buying_product
+#: model_terms:ir.ui.view,arch_db:joint_buying_product.view_res_partner
+msgid "Unit Order (kg)"
+msgstr "Commande unitaire (kg)"
+
+#. module: joint_buying_product
+#: model_terms:ir.ui.view,arch_db:joint_buying_product.view_res_partner
+msgid "Unit Order (€)"
+msgstr "Commande unitaire (€)"
+
+#. module: joint_buying_product
 #: model:ir.model.fields,field_description:joint_buying_product.field_joint_buying_purchase_order_line__price_unit
 #: model_terms:ir.ui.view,arch_db:joint_buying_product.report_joint_buying_purchase_order_grouped_document
 msgid "Unit Price"
@@ -1067,13 +1090,13 @@ msgid "You can not change the value of the Joint buying partner."
 msgstr "Vous ne pouvez pas changer la valeur de partenaire de commande groupée"
 
 #. module: joint_buying_product
-#: code:addons/joint_buying_product/models/joint_buying_purchase_order.py:203
+#: code:addons/joint_buying_product/models/joint_buying_purchase_order.py:206
 #, python-format
 msgid "You can not confirm an order with null amount."
 msgstr "Vous ne pouvez pas confirmer une commande avec un montant nul."
 
 #. module: joint_buying_product
-#: code:addons/joint_buying_product/models/joint_buying_purchase_order.py:199
+#: code:addons/joint_buying_product/models/joint_buying_purchase_order.py:202
 #, python-format
 msgid "You can not confirm an order without any lines."
 msgstr "Vous ne pouvez pas confirmer une commande sans lignes."
@@ -1085,10 +1108,10 @@ msgid "You can not create a Joint buying Product for this supplier. Please ask t
 msgstr "Vous ne pouvez pas créer un article pour ce fournisseur. Veuillez lui demander de le faire en cliquaunt sur le bouton 'proposer à la vente' sur sa fiche article"
 
 #. module: joint_buying_product
-#: code:addons/joint_buying_product/models/joint_buying_purchase_order_grouped.py:173
+#: code:addons/joint_buying_product/models/joint_buying_purchase_order_grouped.py:188
 #, python-format
-msgid "You can not create a closed Grouped Purchase order"
-msgstr "Vous ne pouvez pas créer une commenade groupée clôturée"
+msgid "You can not create a closed Grouped Order"
+msgstr "Vous ne pouvez pas créer une commande groupée clôturée"
 
 #. module: joint_buying_product
 #: sql_constraint:joint.buying.purchase.order.line:0
@@ -1101,7 +1124,7 @@ msgid "You have not reached the minimum amount."
 msgstr "Vous n'avez pas atteint le montant minimum."
 
 #. module: joint_buying_product
-#: code:addons/joint_buying_product/models/res_partner.py:54
+#: code:addons/joint_buying_product/models/res_partner.py:62
 #, python-format
 msgid "You should define Start, End and deposit Date for recurring orders."
 msgstr "Vous devez définir des dates de début, de fin et de dépôt, pour les commandes récurrentes."
@@ -1140,19 +1163,19 @@ msgid "or"
 msgstr "ou"
 
 #. module: joint_buying_product
-#: code:addons/joint_buying_product/models/res_partner.py:64
+#: code:addons/joint_buying_product/models/res_partner.py:72
 #, python-format
 msgid "the end date must be less than the deposit date"
 msgstr "La date de fin doit être inférieur à la date de dépôt"
 
 #. module: joint_buying_product
-#: code:addons/joint_buying_product/models/res_partner.py:60
+#: code:addons/joint_buying_product/models/res_partner.py:68
 #, python-format
 msgid "the start date must be less than the end date"
 msgstr "La date de début doit être inférieur à la date de fin"
 
 #. module: joint_buying_product
-#: code:addons/joint_buying_product/models/joint_buying_purchase_order.py:207
+#: code:addons/joint_buying_product/models/joint_buying_purchase_order.py:210
 #, python-format
 msgid "you cannot confirm an order for which you have not reached the minimum purchase amount."
 msgstr "Vous ne pouvez pas confirmer uen commande si vous n'avez pas atteint le montant minimum"

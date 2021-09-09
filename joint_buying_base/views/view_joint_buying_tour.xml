@@ -20,9 +20,19 @@ License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl.html).
         <field name="arch" type="xml">
             <search>
                 <field name="name"/>
-                <field name="date_tour"/>
+                <field name="start_date"/>
                 <field name="carrier_id"/>
             </search>
+        </field>
+    </record>
+
+    <record id="view_joint_buying_tour_calendar" model="ir.ui.view">
+        <field name="model">joint.buying.tour</field>
+        <field name="arch" type="xml">
+            <calendar date_start="start_date" date_stop="end_date" color="carrier_id">
+                <field name="carrier_id"/>
+                <field name="line_qty"/>
+            </calendar>
         </field>
     </record>
 
@@ -30,7 +40,8 @@ License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl.html).
         <field name="model">joint.buying.tour</field>
         <field name="arch" type="xml">
             <tree>
-                <field name="date_tour"/>
+                <field name="start_date"/>
+                <field name="end_date"/>
                 <field name="name"/>
                 <field name="carrier_id"/>
                 <field name="starting_point_id" context="{'joint_buying': 1}"/>
@@ -59,7 +70,8 @@ License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl.html).
                     </div>
                     <group>
                         <group>
-                            <field name="date_tour"/>
+                            <field name="start_date"/>
+                            <field name="end_date"/>
                             <field name="carrier_id"/>
                             <field name="starting_point_id" context="{'joint_buying': 1}"/>
                             <field name="arrival_point_id" context="{'joint_buying': 1}" attrs="{'invisible': [('is_loop', '=', True)]}"/>
@@ -95,7 +107,7 @@ License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl.html).
         <field name="type">ir.actions.act_window</field>
         <field name="res_model">joint.buying.tour</field>
         <field name="view_type">form</field>
-        <field name="view_mode">tree,form</field>
+        <field name="view_mode">calendar,tree,form</field>
     </record>
 
     <menuitem id="menu_joint_buying_tour_all"
