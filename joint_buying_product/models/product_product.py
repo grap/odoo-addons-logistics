@@ -2,6 +2,8 @@
 # @author: Sylvain LE GAL (https://twitter.com/legalsylvain)
 # License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl.html).
 
+from datetime import timedelta
+
 from odoo import _, api, fields, models
 from odoo.exceptions import ValidationError
 
@@ -57,6 +59,18 @@ class ProductProduct(models.Model):
         context=_JOINT_BUYING_PRODUCT_CONTEXT,
     )
 
+    joint_buying_is_new = fields.Boolean(
+        string="Is New",
+        help="Check this box if the product is new."
+        " This box will be automatically unchecked by cron task"
+        " after a given number of days.",
+        default=lambda x: x._default_joint_is_new(),
+    )
+
+    # Default Section
+    def _default_joint_is_new(self):
+        return self.env.context.get("joint_buying", False)
+
     # Constrains Sections
     @api.constrains(
         "is_joint_buying", "joint_buying_partner_id", "display_joint_buying_propagation"
@@ -97,6 +111,24 @@ class ProductProduct(models.Model):
         return super().write(vals)
 
     # custom Section
+    @api.model
+    def joint_byuing_cron_check_new(self):
+        """This cron function will unflag the field 'joint_buying_is_new'
+        for product that are not new anymore"""
+        new_product_day = int(
+            self.env["ir.config_parameter"]
+            .sudo()
+            .get_param("joint_buying_product.new_product_day")
+        )
+        threshold_old_date = fields.datetime.now() + timedelta(days=-new_product_day)
+        products = self.with_context(joint_buying=True).search(
+            [
+                ("create_date", "<", threshold_old_date),
+                ("joint_buying_is_new", "=", True),
+            ]
+        )
+        products.write({"joint_buying_is_new": False})
+
     def create_joint_buying_product(self):
         products = self.filtered(
             lambda x: (

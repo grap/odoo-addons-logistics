@@ -78,8 +78,9 @@
                             <field name="uom_package_id" string="UoM Weight / Unit"/>
                             <field name="uom_package_qty"/>
                             <field name="lst_price" required="True" string="Pricing"/>
-                            <field name="purchase_ok" widget="boolean_toggle"/>
                             <field name="weight"/>
+                            <field name="purchase_ok" widget="boolean_toggle" string="Avail. ?"/>
+                            <field name="joint_buying_is_new" widget="boolean_toggle" string="New ?"/>
                         </tree>
                     </field>
                 </group>

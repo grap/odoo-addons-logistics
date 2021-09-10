@@ -1,18 +1,31 @@
 <?xml version="1.0" encoding="utf-8"?>
 
-<odoo>
-    <data noupdate="1">
-        <record id="cron_grouped_purchase_order_check_state" model="ir.cron">
-            <field name="name">Joint Buying: Check Grouped Order state</field>
-            <field name="model_id" ref="model_joint_buying_purchase_order_grouped"/>
-            <field name="state">code</field>
-            <field name="code">model.cron_check_state()</field>
-            <field name="user_id" ref="base.user_root" />
-            <field name="interval_number">5</field>
-            <field name="interval_type">minutes</field>
-            <field name="numbercall">-1</field>
-            <field name="doall" eval="False"/>
-            <field name="active" eval="True"/>
-        </record>
-    </data>
-</odoo>
+<odoo><data noupdate="1">
+
+    <record id="cron_grouped_purchase_order_check_state" model="ir.cron">
+        <field name="name">Joint Buying: Check Grouped Order state</field>
+        <field name="model_id" ref="model_joint_buying_purchase_order_grouped"/>
+        <field name="state">code</field>
+        <field name="code">model.cron_check_state()</field>
+        <field name="user_id" ref="base.user_root" />
+        <field name="interval_number">5</field>
+        <field name="interval_type">minutes</field>
+        <field name="numbercall">-1</field>
+        <field name="doall" eval="False"/>
+        <field name="active" eval="True"/>
+    </record>
+
+    <record id="cron_product_product_check_new" model="ir.cron">
+        <field name="name">Joint Buying: Uncheck Old products</field>
+        <field name="model_id" ref="model_product_product"/>
+        <field name="state">code</field>
+        <field name="code">model.joint_byuing_cron_check_new()</field>
+        <field name="user_id" ref="base.user_root" />
+        <field name="interval_number">1</field>
+        <field name="interval_type">days</field>
+        <field name="numbercall">-1</field>
+        <field name="doall" eval="False"/>
+        <field name="active" eval="True"/>
+    </record>
+
+</data></odoo>

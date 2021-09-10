@@ -14,6 +14,7 @@
         "security/ir.model.access.csv",
         "views/menu.xml",
         "wizards/joint_buying_wizard_create_order.xml",
+        "views/view_res_config_settings.xml",
         "views/view_product_template.xml",
         "views/view_product_product.xml",
         "views/view_product_supplier_info.xml",

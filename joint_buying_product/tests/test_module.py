@@ -50,6 +50,9 @@ class TestModule(TransactionCase):
                 "joint_buying_product.end_date_imminent_day"
             )
         )
+        self.new_product_day = int(
+            self.IrConfigParameter.get_param("joint_buying_product.new_product_day")
+        )
 
     def test_01_search_and_propagate(self):
         len_local_before_local_creation = len(self.ProductProduct.search([]))
@@ -209,3 +212,32 @@ class TestModule(TransactionCase):
         time.sleep(1.1)
         self.OrderGrouped.cron_check_state()
         self.assertEqual(order.state, "closed", "Cron doesn't work.")
+
+    def test_04_product_new(self):
+        # Check that new created product are marked as new by default
+        product = self.JointBuyingProductProduct.create(
+            {
+                "name": "Some Product",
+                "categ_id": self.category_all.id,
+                "joint_buying_partner_id": self.partner_supplier_fumet_dombes.id,
+                "company_id": False,
+            }
+        )
+        self.assertTrue(
+            product.joint_buying_is_new,
+            "New Joint buying product should be marked as new",
+        )
+
+        # We hard change product create_date to make it old
+        create_date = fields.datetime.now() + timedelta(
+            days=-(self.new_product_day + 1)
+        )
+        sql = "UPDATE product_product SET create_date=%s WHERE id=%s;"
+        self.env.cr.execute(sql, (create_date, product.id))
+
+        # Check that cron is working to mark product old
+        product.joint_byuing_cron_check_new()
+        self.assertFalse(
+            product.joint_buying_is_new,
+            "Old Joint buying product should not be marked as new",
+        )

@@ -12,4 +12,9 @@
         <field name="value">1</field>
     </record>
 
+    <record id="new_product_day" model="ir.config_parameter" forcecreate="0">
+        <field name="key">joint_buying_product.new_product_day</field>
+        <field name="value">60</field>
+    </record>
+
 </odoo>

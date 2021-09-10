@@ -10,10 +10,21 @@ class ResConfigSettings(models.TransientModel):
 
     end_date_near_day = fields.Integer(
         string="Number of Day 'Near'",
-        help="number of days below which the end of the order is near",
+        required=True,
+        config_parameter="joint_buying_product.end_date_near_day",
+        help="Number of days below which the end of the order is near.",
     )
 
     end_date_imminent_day = fields.Integer(
         string="Number of Day 'Imminent'",
-        help="number of days below which the end of the order is imminent",
+        required=True,
+        config_parameter="joint_buying_product.end_date_imminent_day",
+        help="Number of days below which the end of the order is imminent.",
+    )
+
+    new_product_day = fields.Integer(
+        string="Number of Day 'Product new'",
+        required=True,
+        config_parameter="joint_buying_product.new_product_day",
+        help="Number of days after which a product will no longer be marked as new.",
     )
