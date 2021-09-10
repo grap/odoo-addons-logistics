@@ -2,6 +2,7 @@
 # @author: Sylvain LE GAL (https://twitter.com/legalsylvain)
 # License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl.html).
 
+import time
 from datetime import timedelta
 
 from odoo import fields
@@ -41,12 +42,13 @@ class TestModule(TransactionCase):
             self.env.ref("joint_buying_base.supplier_salaison_devidal").id
         )
         self.category_all = self.env.ref("product.product_category_all")
-
-        self.near_setting = self.IrConfigParameter.get_param(
-            "joint_buying_product.end_date_near_day"
+        self.end_date_near_day = int(
+            self.IrConfigParameter.get_param("joint_buying_product.end_date_near_day")
         )
-        self.imminent_setting = self.IrConfigParameter.get_param(
-            "joint_buying_product.end_date_imminent_day"
+        self.end_date_imminent_day = int(
+            self.IrConfigParameter.get_param(
+                "joint_buying_product.end_date_imminent_day"
+            )
         )
 
     def test_01_search_and_propagate(self):
@@ -167,9 +169,43 @@ class TestModule(TransactionCase):
         )
         self.assertEqual(order.line_qty, len(purchasable_products))
 
-        # Check state "futur"
+        # Check state "futur" (+1d / +7d / +14d)
         self.assertEqual(order.state, "futur")
 
-        # Check state "in_progress"
+        # Check state "in_progress" (-1d / +7d / +14d)
         order_grouped.start_date = fields.datetime.now() + timedelta(days=-1)
         self.assertEqual(order.state, "in_progress")
+
+        # Check state "in_progress_near" (-1d / +3d-- / +14d)
+        order_grouped.end_date = fields.datetime.now() + timedelta(
+            days=self.end_date_near_day, seconds=-1
+        )
+        self.assertEqual(order.state, "in_progress_near")
+
+        # Check state "in_progress_imminent" (-1d / +1d-- / +14d)
+        order_grouped.end_date = fields.datetime.now() + timedelta(
+            days=self.end_date_imminent_day, seconds=-1
+        )
+        self.assertEqual(order.state, "in_progress_imminent")
+
+        order_grouped.start_date = fields.datetime.now() + timedelta(days=-8)
+        order_grouped.end_date = fields.datetime.now() + timedelta(days=-5)
+        self.assertEqual(order.state, "closed")
+
+        # Check state "deposited" (-8d / -5d / -2d)
+        order_grouped.deposit_date = fields.datetime.now() + timedelta(days=-2)
+
+        # Rest to emminent (-8d / +1s / +15d)
+        order_grouped.write(
+            {
+                "start_date": fields.datetime.now() + timedelta(days=-8),
+                "end_date": fields.datetime.now() + timedelta(seconds=1),
+                "deposit_date": fields.datetime.now() + timedelta(days=+15),
+            }
+        )
+        self.assertEqual(order.state, "in_progress_imminent")
+
+        # Check Cron (-8d / -0.1s / +15d)
+        time.sleep(1.1)
+        self.OrderGrouped.cron_check_state()
+        self.assertEqual(order.state, "closed", "Cron doesn't work.")

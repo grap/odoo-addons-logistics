@@ -21,6 +21,8 @@ class JointBuyingPurchaseOrderGrouped(models.Model):
     _STATE_SELECTION = [
         ("futur", "Futur"),
         ("in_progress", "In Progress"),
+        ("in_progress_near", "In Progress (Near Closing Date)"),
+        ("in_progress_imminent", "In Progress (Imminent Closing Date)"),
         ("closed", "Closed"),
         ("deposited", "Deposited Products"),
     ]
@@ -56,11 +58,6 @@ class JointBuyingPurchaseOrderGrouped(models.Model):
     start_date = fields.Datetime(index=True, string="Start Date", required=True)
 
     end_date = fields.Datetime(index=True, string="End Date", required=True)
-
-    remaining_day_state = fields.Selection(
-        selection=[("near", "Near"), ("imminent", "Imminent")],
-        compute="_compute_remaining_day_state",
-    )
 
     deposit_date = fields.Datetime(index=True, string="Deposit Date", required=True)
 
@@ -108,17 +105,6 @@ class JointBuyingPurchaseOrderGrouped(models.Model):
         )
 
     # Compute Section
-    @api.depends("end_date")
-    def _compute_remaining_day_state(self):
-        for grouped_order in self:
-            delta = grouped_order.end_date - fields.Datetime.now()
-            if delta >= timedelta(1) and delta < timedelta(3):
-                grouped_order.remaining_day_state = "near"
-            elif delta >= timedelta(0) and delta < timedelta(1):
-                grouped_order.remaining_day_state = "imminent"
-            else:
-                grouped_order.remaining_day_state = False
-
     @api.depends("order_ids")
     def _compute_order_qty(self):
         for grouped_order in self:
@@ -213,10 +199,33 @@ class JointBuyingPurchaseOrderGrouped(models.Model):
 
     @api.multi
     def update_state_value(self, check_all=False):
+        end_date_near_day = int(
+            self.env["ir.config_parameter"]
+            .sudo()
+            .get_param("joint_buying_product.end_date_near_day")
+        )
+        end_date_imminent_day = int(
+            self.env["ir.config_parameter"]
+            .sudo()
+            .get_param("joint_buying_product.end_date_imminent_day")
+        )
+
         now = datetime.now()
         right_settings = {
             "futur": [("start_date", ">", now)],
-            "in_progress": [("start_date", "<=", now), ("end_date", ">", now)],
+            "in_progress": [
+                ("start_date", "<=", now),
+                ("end_date", ">", now + timedelta(days=end_date_near_day)),
+            ],
+            "in_progress_near": [
+                ("start_date", "<=", now),
+                ("end_date", "<=", now + timedelta(days=end_date_near_day)),
+                ("end_date", ">", now + timedelta(days=end_date_imminent_day)),
+            ],
+            "in_progress_imminent": [
+                ("start_date", "<=", now),
+                ("end_date", "<=", now + timedelta(days=end_date_imminent_day)),
+            ],
             "closed": [("end_date", "<=", now), ("deposit_date", ">", now)],
             "deposited": [("deposit_date", "<", now)],
         }

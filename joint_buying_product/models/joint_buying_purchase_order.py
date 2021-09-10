@@ -52,10 +52,6 @@ class JointBuyingPurchaseOrder(models.Model):
         related="grouped_order_id.end_date", string="End Date", store=True
     )
 
-    remaining_day_state = fields.Selection(
-        related="grouped_order_id.remaining_day_state"
-    )
-
     deposit_date = fields.Datetime(
         related="grouped_order_id.deposit_date", string="Deposit Date", store=True
     )

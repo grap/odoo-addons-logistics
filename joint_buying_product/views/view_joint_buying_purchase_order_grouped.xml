@@ -24,8 +24,7 @@ License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl.html).
                 <field name="name"/>
                 <field name="supplier_id"/>
                 <field name="start_date"/>
-                <field name="end_date" options="{'bg_color': 'orange: remaining_day_state == &quot;near&quot;; red: remaining_day_state == &quot;imminent&quot;'}"/>
-                <field name="remaining_day_state" invisible="1"/>
+                <field name="end_date" options="{'bg_color': 'orange: state == &quot;in_progress_near&quot;; red: state == &quot;in_progress_imminent&quot;'}"/>
                 <field name="deposit_date"/>
                 <field name="order_qty"/>
                 <field name="amount_untaxed" sum="Total Amount Untaxed"/>
@@ -103,7 +102,6 @@ License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl.html).
                         <group>
                             <field name="start_date"/>
                             <field name="end_date"/>
-                            <field name="remaining_day_state" invisible="1"/>
                             <field name="deposit_date"/>
                             <field name="minimum_amount"/>
                             <field name="minimum_unit_amount"/>

@@ -389,11 +389,6 @@ msgid "If checked, some messages have a delivery error."
 msgstr "Si actif, certains messages ont une erreur de livraison."
 
 #. module: joint_buying_product
-#: selection:joint.buying.purchase.order.grouped,remaining_day_state:0
-msgid "Imminent"
-msgstr "Imminent"
-
-#. module: joint_buying_product
 #: selection:joint.buying.purchase.order.grouped,state:0
 msgid "In Progress"
 msgstr "En cours"
@@ -622,11 +617,6 @@ msgid "My Orders"
 msgstr "Mes commandes"
 
 #. module: joint_buying_product
-#: selection:joint.buying.purchase.order.grouped,remaining_day_state:0
-msgid "Near"
-msgstr "Proche"
-
-#. module: joint_buying_product
 #: model:ir.model.fields,field_description:joint_buying_product.field_joint_buying_purchase_order__activity_date_deadline
 #: model:ir.model.fields,field_description:joint_buying_product.field_joint_buying_purchase_order_grouped__activity_date_deadline
 msgid "Next Activity Deadline"
@@ -847,12 +837,6 @@ msgstr "Qté"
 #: model_terms:ir.ui.view,arch_db:joint_buying_product.report_joint_buying_purchase_order_grouped_document
 msgid "Quantity"
 msgstr "Quantité"
-
-#. module: joint_buying_product
-#: model:ir.model.fields,field_description:joint_buying_product.field_joint_buying_purchase_order__remaining_day_state
-#: model:ir.model.fields,field_description:joint_buying_product.field_joint_buying_purchase_order_grouped__remaining_day_state
-msgid "Remaining Day State"
-msgstr ""
 
 #. module: joint_buying_product
 #: model_terms:ir.ui.view,arch_db:joint_buying_product.view_joint_buying_purchase_order_grouped_form
