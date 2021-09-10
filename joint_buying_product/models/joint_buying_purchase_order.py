@@ -44,7 +44,7 @@ class JointBuyingPurchaseOrder(models.Model):
         ondelete="cascade",
     )
 
-    start_date = fields.Date(
+    start_date = fields.Datetime(
         related="grouped_order_id.start_date", string="Start Date", store=True
     )
 
@@ -56,7 +56,7 @@ class JointBuyingPurchaseOrder(models.Model):
         related="grouped_order_id.remaining_day_state"
     )
 
-    deposit_date = fields.Date(
+    deposit_date = fields.Datetime(
         related="grouped_order_id.deposit_date", string="Deposit Date", store=True
     )
 

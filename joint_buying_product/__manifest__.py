@@ -24,6 +24,7 @@
         "reports/report_template.xml",
         "reports/report.xml",
         "data/ir_cron.xml",
+        "data/ir_config_parameter.xml",
         "data/product_category.xml",
         "data/ir_sequence.xml",
         "data/mail_template.xml",

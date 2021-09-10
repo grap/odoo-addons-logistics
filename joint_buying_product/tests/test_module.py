@@ -17,6 +17,7 @@ class TestModule(TransactionCase):
         self.ProductProduct = self.env["product.product"].with_context(
             mail_create_nosubscribe=True
         )
+        self.IrConfigParameter = self.env["ir.config_parameter"].sudo()
 
         self.JointBuyingProductProduct = self.env["product.product"].with_context(
             mail_create_nosubscribe=True, joint_buying=True
@@ -40,6 +41,13 @@ class TestModule(TransactionCase):
             self.env.ref("joint_buying_base.supplier_salaison_devidal").id
         )
         self.category_all = self.env.ref("product.product_category_all")
+
+        self.near_setting = self.IrConfigParameter.get_param(
+            "joint_buying_product.end_date_near_day"
+        )
+        self.imminent_setting = self.IrConfigParameter.get_param(
+            "joint_buying_product.end_date_imminent_day"
+        )
 
     def test_01_search_and_propagate(self):
         len_local_before_local_creation = len(self.ProductProduct.search([]))
@@ -115,7 +123,7 @@ class TestModule(TransactionCase):
         with self.assertRaises(ValidationError):
             product.joint_buying_partner_id = self.salaison_devidal.id
 
-    def test_03_wizard_creation_order_grouped(self):
+    def test_03_order_grouped_full_workflow(self):
         # configure subscription
         self.salaison_devidal.joint_buying_subscribed_company_ids = [
             self.company_ELD.id,
@@ -124,12 +132,19 @@ class TestModule(TransactionCase):
         ]
 
         # Use Wizard to create grouped order
+        start_date = fields.datetime.now() + timedelta(days=1)
         end_date = fields.datetime.now() + timedelta(days=7)
         deposit_date = fields.datetime.now() + timedelta(days=14)
 
         wizard = self.JointBuyingWizardCreateOrder.with_context(
             active_id=self.salaison_devidal.id
-        ).create({"end_date": end_date, "deposit_date": deposit_date})
+        ).create(
+            {
+                "start_date": start_date,
+                "end_date": end_date,
+                "deposit_date": deposit_date,
+            }
+        )
 
         res = wizard.create_order_grouped()
         order_grouped = self.OrderGrouped.browse(res["res_id"])
@@ -151,3 +166,10 @@ class TestModule(TransactionCase):
             lambda x: x.purchase_ok
         )
         self.assertEqual(order.line_qty, len(purchasable_products))
+
+        # Check state "futur"
+        self.assertEqual(order.state, "futur")
+
+        # Check state "in_progress"
+        order_grouped.start_date = fields.datetime.now() + timedelta(days=-1)
+        self.assertEqual(order.state, "in_progress")

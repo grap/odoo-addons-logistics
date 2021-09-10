@@ -53,7 +53,7 @@ class JointBuyingPurchaseOrderGrouped(models.Model):
         comodel_name="res.company", string="Deposit Company", required=True
     )
 
-    start_date = fields.Date(index=True, string="Start Date", required=True)
+    start_date = fields.Datetime(index=True, string="Start Date", required=True)
 
     end_date = fields.Datetime(index=True, string="End Date", required=True)
 
@@ -62,7 +62,7 @@ class JointBuyingPurchaseOrderGrouped(models.Model):
         compute="_compute_remaining_day_state",
     )
 
-    deposit_date = fields.Date(index=True, string="Deposit Date", required=True)
+    deposit_date = fields.Datetime(index=True, string="Deposit Date", required=True)
 
     order_ids = fields.One2many(
         "joint.buying.purchase.order", inverse_name="grouped_order_id", readonly=True
