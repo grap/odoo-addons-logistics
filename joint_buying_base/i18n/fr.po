@@ -342,7 +342,7 @@ msgstr "Si actif, certains messages ont une erreur de livraison."
 #: model:ir.model.fields,field_description:joint_buying_base.field_joint_buying_carrier__message_is_follower
 #: model:ir.model.fields,field_description:joint_buying_base.field_joint_buying_tour__message_is_follower
 msgid "Is Follower"
-msgstr "Est un abonné"
+msgstr "Est un·e abonné·e"
 
 #. module: joint_buying_base
 #: model:ir.model.fields,field_description:joint_buying_base.field_res_partner__is_joint_buying_stage
@@ -405,7 +405,7 @@ msgstr "Mixin Commande Groupée"
 #. module: joint_buying_base
 #: model:ir.model.fields,field_description:joint_buying_base.field_res_company__joint_buying_partner_id
 msgid "Joint Buying Partner"
-msgstr "Partneraire Commandes Groupées"
+msgstr "Partenaire Commandes Groupées"
 
 #. module: joint_buying_base
 #: model:ir.model.fields,field_description:joint_buying_base.field_res_company__joint_buying_subscribed_partner_ids
@@ -673,7 +673,7 @@ msgstr "Rue..."
 #: model:ir.model.fields,field_description:joint_buying_base.field_res_partner__joint_buying_is_subscribed
 #: model:ir.model.fields,field_description:joint_buying_base.field_res_users__joint_buying_is_subscribed
 msgid "Subscribed"
-msgstr "Abonné"
+msgstr "Abonné·e"
 
 #. module: joint_buying_base
 #: model:ir.model.fields,field_description:joint_buying_base.field_res_partner__joint_buying_subscribed_company_ids
