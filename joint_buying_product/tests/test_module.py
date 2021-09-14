@@ -196,8 +196,9 @@ class TestModule(TransactionCase):
         self.assertEqual(
             order.state,
             "closed",
-            "start_date : %s ; end_date : %s ; deposit_date : %s ;"
+            "now : %s ; start_date : %s ; end_date : %s ; deposit_date : %s ;"
             % (
+                fields.datetime.now(),
                 order_grouped.start_date,
                 order_grouped.end_date,
                 order_grouped.deposit_date,
