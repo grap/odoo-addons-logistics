@@ -194,17 +194,7 @@ class TestModule(TransactionCase):
         # Check state "closed" (-8d / -5d / +14d)
         order_grouped.start_date = fields.datetime.now() + timedelta(days=-8)
         order_grouped.end_date = fields.datetime.now() + timedelta(days=-5)
-        self.assertEqual(
-            order.state,
-            "closed",
-            "now : %s ; start_date : %s ; end_date : %s ; deposit_date : %s ;"
-            % (
-                fields.datetime.now(),
-                order_grouped.start_date,
-                order_grouped.end_date,
-                order_grouped.deposit_date,
-            ),
-        )
+        self.assertEqual(order.state, "closed")
 
         # Check state "deposited" (-8d / -5d / -2d)
         order_grouped.deposit_date = fields.datetime.now() + timedelta(days=-2)

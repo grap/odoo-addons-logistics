@@ -2,7 +2,6 @@
 # @author: Sylvain LE GAL (https://twitter.com/legalsylvain)
 # License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl.html).
 
-import logging
 from datetime import datetime, timedelta
 
 from odoo import _, api, fields, models
@@ -12,8 +11,6 @@ from odoo.addons import decimal_precision as dp
 from odoo.addons.joint_buying_base.models.res_partner import (
     _JOINT_BUYING_PARTNER_CONTEXT,
 )
-
-_logger = logging.getLogger(__name__)
 
 
 class JointBuyingPurchaseOrderGrouped(models.Model):
@@ -202,7 +199,6 @@ class JointBuyingPurchaseOrderGrouped(models.Model):
 
     @api.multi
     def update_state_value(self, check_all=False):
-        _logger.info("update_state_value")
         end_date_near_day = int(
             self.env["ir.config_parameter"]
             .sudo()
@@ -213,10 +209,6 @@ class JointBuyingPurchaseOrderGrouped(models.Model):
             .sudo()
             .get_param("joint_buying_product.end_date_imminent_day")
         )
-
-        _logger.info("SETTINGS : ")
-        _logger.info("end_date_near_day: %s" % end_date_near_day)
-        _logger.info("end_date_imminent_day: %s" % end_date_imminent_day)
         now = datetime.now()
         right_settings = {
             "futur": [("start_date", ">", now)],
@@ -242,10 +234,6 @@ class JointBuyingPurchaseOrderGrouped(models.Model):
                 expression.AND([domain, [("id", "in", self.ids)]])
             grouped_orders = self.search(domain)
             if grouped_orders:
-                _logger.info(grouped_orders.mapped("start_date"))
-                _logger.info(grouped_orders.mapped("end_date"))
-                _logger.info(grouped_orders.mapped("deposit_date"))
-                _logger.info(correct_state)
                 grouped_orders.with_context(update_state_value=True).write(
                     {"state": correct_state}
                 )
