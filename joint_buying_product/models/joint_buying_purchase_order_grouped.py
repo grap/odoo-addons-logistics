@@ -232,6 +232,7 @@ class JointBuyingPurchaseOrderGrouped(models.Model):
             "in_progress_imminent": [
                 ("start_date", "<=", now),
                 ("end_date", "<=", now + timedelta(days=end_date_imminent_day)),
+                ("end_date", ">", now),
             ],
             "closed": [("end_date", "<=", now), ("deposit_date", ">", now)],
             "deposited": [("deposit_date", "<", now)],
