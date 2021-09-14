@@ -191,6 +191,7 @@ class TestModule(TransactionCase):
         )
         self.assertEqual(order.state, "in_progress_imminent")
 
+        # Check state "closed" (-8d / -5d / +14d)
         order_grouped.start_date = fields.datetime.now() + timedelta(days=-8)
         order_grouped.end_date = fields.datetime.now() + timedelta(days=-5)
         self.assertEqual(
