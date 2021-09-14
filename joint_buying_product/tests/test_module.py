@@ -7,11 +7,11 @@ from datetime import timedelta
 
 from odoo import fields
 from odoo.exceptions import ValidationError
-from odoo.tests.common import TransactionCase, at_install, post_install
+from odoo.tests import tagged
+from odoo.tests.common import TransactionCase
 
 
-@at_install(False)
-@post_install(True)
+@tagged("post_install", "-at_install")
 class TestModule(TransactionCase):
     def setUp(self):
         super().setUp()
