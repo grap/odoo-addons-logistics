@@ -37,11 +37,11 @@ class ResPartner(models.Model):
 
     joint_buying_frequency = fields.Integer(string="Days between orders")
 
-    joint_buying_next_start_date = fields.Date(string="Next Order Start Date")
+    joint_buying_next_start_date = fields.Datetime(string="Next Order Start Date")
 
     joint_buying_next_end_date = fields.Datetime(string="Next Order End Date")
 
-    joint_buying_next_deposit_date = fields.Date(string="Next Deposit Date")
+    joint_buying_next_deposit_date = fields.Datetime(string="Next Deposit Date")
 
     # constrains Section
     @api.constrains(

@@ -17,7 +17,7 @@ class JointBuyingWizardCreateOrder(models.TransientModel):
         default=lambda x: x._default_partner_id(),
     )
 
-    start_date = fields.Date(
+    start_date = fields.Datetime(
         string="Start Date", required=True, default=lambda x: x._default_start_date()
     )
 
@@ -25,7 +25,7 @@ class JointBuyingWizardCreateOrder(models.TransientModel):
         string="End Date", required=True, default=lambda x: x._default_end_date()
     )
 
-    deposit_date = fields.Date(
+    deposit_date = fields.Datetime(
         string="Deposit Date",
         required=True,
         default=lambda x: x._default_deposit_date(),
