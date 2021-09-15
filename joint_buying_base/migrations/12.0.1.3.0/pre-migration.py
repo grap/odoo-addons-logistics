@@ -48,3 +48,12 @@ def migrate(env, version):
             AND is_joint_buying_stage is false;
             """,
         )
+
+        # set to false, due to change of the default value
+        openupgrade.logged_query(
+            env.cr,
+            """
+            UPDATE res_company
+            SET joint_buying_auto_subscribe = false;
+            """,
+        )

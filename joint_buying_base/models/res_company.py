@@ -21,6 +21,7 @@ class ResCompany(models.Model):
 
     joint_buying_auto_subscribe = fields.Boolean(
         string="Automatic Supplier Subscription",
+        default=False,
         help="Check this box if you want to subscribe automatically"
         " to new suppliers.",
     )
