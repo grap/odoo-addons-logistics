@@ -50,10 +50,12 @@ class ResPartner(models.Model):
         help="Activity that has a commercial relationship with this supplier",
     )
 
-    joint_buying_deposit_company_id = fields.Many2one(
-        comodel_name="res.company",
-        string="Deposit Company",
-        help="Activity that will serve as a deposit for this supplier",
+    joint_buying_deposit_partner_id = fields.Many2one(
+        comodel_name="res.partner",
+        string="Deposit Place",
+        help="Place that will serve as a deposit for this supplier",
+        domain="[('is_joint_buying_stage', '=', True)]",
+        context=_JOINT_BUYING_PARTNER_CONTEXT,
     )
 
     is_joint_buying_stage = fields.Boolean(
@@ -63,6 +65,14 @@ class ResPartner(models.Model):
     )
 
     joint_buying_description = fields.Html(string="Complete Description")
+
+    # Onchange section
+    @api.onchange("joint_buying_pivot_company_id")
+    def onchange_joint_buying_pivot_company_id(self):
+        if self.joint_buying_pivot_company_id:
+            self.joint_buying_subscribed_company_ids |= (
+                self.joint_buying_pivot_company_id
+            )
 
     # Constraint Section
     @api.constrains("joint_buying_global_partner_id", "company_id")

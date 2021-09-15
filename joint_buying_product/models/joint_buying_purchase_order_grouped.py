@@ -51,8 +51,8 @@ class JointBuyingPurchaseOrderGrouped(models.Model):
         comodel_name="res.company", string="Pivot Company", required=True
     )
 
-    deposit_company_id = fields.Many2one(
-        comodel_name="res.company", string="Deposit Company", required=True
+    deposit_partner_id = fields.Many2one(
+        comodel_name="res.partner", string="Deposit Partner", required=True
     )
 
     start_date = fields.Datetime(index=True, string="Start Date", required=True)
@@ -74,6 +74,10 @@ class JointBuyingPurchaseOrderGrouped(models.Model):
     minimum_amount = fields.Float(string="Minimum Amount")
 
     minimum_unit_amount = fields.Float(string="Minimum Unit Amount")
+
+    minimum_weight = fields.Float(string="Minimum Weight")
+
+    minimum_unit_weight = fields.Float(string="Minimum Unit Weight")
 
     amount_untaxed = fields.Float(
         string="Amount Subtotal",
@@ -247,16 +251,18 @@ class JointBuyingPurchaseOrderGrouped(models.Model):
         start_date=False,
         end_date=False,
         deposit_date=False,
-        deposit_company=False,
         pivot_company=False,
+        deposit_partner=False,
         minimum_amount=False,
         minimum_unit_amount=False,
+        minimum_weight=False,
+        minimum_unit_weight=False,
     ):
         Order = self.env["joint.buying.purchase.order"]
         vals = {
             "supplier_id": supplier.id,
-            "deposit_company_id": deposit_company.id
-            or supplier.joint_buying_deposit_company_id.id,
+            "deposit_partner_id": deposit_partner.id
+            or supplier.joint_buying_deposit_partner_id.id,
             "pivot_company_id": pivot_company.id
             or supplier.joint_buying_pivot_company_id.id,
             "start_date": start_date or supplier.joint_buying_next_start_date,
@@ -264,6 +270,8 @@ class JointBuyingPurchaseOrderGrouped(models.Model):
             "deposit_date": deposit_date or supplier.joint_buying_next_deposit_date,
             "minimum_amount": minimum_amount,
             "minimum_unit_amount": minimum_unit_amount,
+            "minimum_weight": minimum_weight,
+            "minimum_unit_weight": minimum_unit_weight,
             "order_ids": [],
         }
         if not customers:

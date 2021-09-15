@@ -4,6 +4,10 @@
 
 from odoo import api, fields, models
 
+from odoo.addons.joint_buying_base.models.res_partner import (
+    _JOINT_BUYING_PARTNER_CONTEXT,
+)
+
 
 class JointBuyingWizardCreateOrder(models.TransientModel):
     _name = "joint.buying.wizard.create.order"
@@ -14,7 +18,9 @@ class JointBuyingWizardCreateOrder(models.TransientModel):
         string="Supplier",
         comodel_name="res.partner",
         domain="[('is_joint_buying', '=', True), ('supplier', '=', True)]",
+        context=_JOINT_BUYING_PARTNER_CONTEXT,
         default=lambda x: x._default_partner_id(),
+        ondelete="cascade",
     )
 
     start_date = fields.Datetime(
@@ -38,11 +44,13 @@ class JointBuyingWizardCreateOrder(models.TransientModel):
         default=lambda x: x._default_pivot_company_id(),
     )
 
-    deposit_company_id = fields.Many2one(
-        comodel_name="res.company",
-        string="Deposit Company",
+    deposit_partner_id = fields.Many2one(
+        comodel_name="res.partner",
+        string="Deposit Place",
         required=True,
-        default=lambda x: x._default_deposit_company_id(),
+        domain="[('is_joint_buying_stage', '=', True)]",
+        context=_JOINT_BUYING_PARTNER_CONTEXT,
+        default=lambda x: x._default_deposit_partner_id(),
     )
 
     minimum_amount = fields.Float(
@@ -51,6 +59,14 @@ class JointBuyingWizardCreateOrder(models.TransientModel):
 
     minimum_unit_amount = fields.Float(
         string="Minimum Unit Amount", default=lambda x: x._default_minimum_unit_amount()
+    )
+
+    minimum_weight = fields.Float(
+        string="Minimum Weight", default=lambda x: x._default_minimum_weight()
+    )
+
+    minimum_unit_weight = fields.Float(
+        string="Minimum Unit Weight", default=lambda x: x._default_minimum_unit_weight()
     )
 
     line_ids = fields.One2many(
@@ -68,7 +84,7 @@ class JointBuyingWizardCreateOrder(models.TransientModel):
         return (
             partner.joint_buying_frequency
             and partner.joint_buying_next_start_date
-            or fields.datetime.now().date()
+            or fields.datetime.now()
         )
 
     def _default_end_date(self):
@@ -85,9 +101,9 @@ class JointBuyingWizardCreateOrder(models.TransientModel):
         partner = self.env["res.partner"].browse(self.env.context.get("active_id"))
         return partner.joint_buying_pivot_company_id
 
-    def _default_deposit_company_id(self):
+    def _default_deposit_partner_id(self):
         partner = self.env["res.partner"].browse(self.env.context.get("active_id"))
-        return partner.joint_buying_deposit_company_id
+        return partner.joint_buying_deposit_partner_id
 
     def _default_minimum_amount(self):
         partner = self.env["res.partner"].browse(self.env.context.get("active_id"))
@@ -96,6 +112,14 @@ class JointBuyingWizardCreateOrder(models.TransientModel):
     def _default_minimum_unit_amount(self):
         partner = self.env["res.partner"].browse(self.env.context.get("active_id"))
         return partner.joint_buying_minimum_unit_amount
+
+    def _default_minimum_weight(self):
+        partner = self.env["res.partner"].browse(self.env.context.get("active_id"))
+        return partner.joint_buying_minimum_weight
+
+    def _default_minimum_unit_weight(self):
+        partner = self.env["res.partner"].browse(self.env.context.get("active_id"))
+        return partner.joint_buying_minimum_unit_weight
 
     def _default_line_ids(self):
         partner = self.env["res.partner"].browse(self.env.context.get("active_id"))
@@ -117,8 +141,8 @@ class JointBuyingWizardCreateOrder(models.TransientModel):
                 start_date=self.start_date,
                 end_date=self.end_date,
                 deposit_date=self.deposit_date,
-                deposit_company=self.deposit_company_id,
                 pivot_company=self.pivot_company_id,
+                deposit_partner=self.deposit_partner_id,
                 minimum_amount=self.minimum_amount,
                 minimum_unit_amount=self.minimum_unit_amount,
             )

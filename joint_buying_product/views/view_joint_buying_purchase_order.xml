@@ -72,6 +72,10 @@ License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl.html).
                             <field name="name"/>
                         </h1>
                     </div>
+                    <p class="alert alert-warning" role="alert"
+                            attrs="{'invisible': [('supplier_comment', '=', False)]}">
+                        <field name="supplier_comment"/>
+                    </p>
                     <group>
                         <group>
                             <field name="grouped_order_id"/>
@@ -80,13 +84,24 @@ License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl.html).
                             <field name="total_weight"/>
                             <field name="line_qty" invisible="1"/>
                             <field name="purchase_ok" invisible="1"/>
-                            <field name="amount_untaxed" invisible="1"/>
                         </group>
                         <group>
                             <field name="start_date"/>
                             <field name="end_date"/>
                             <field name="deposit_date"/>
-                            <field name="minimum_unit_amount" attrs="{'invisible': [('minimum_unit_amount', '=', 0)]}"/>
+                            <field name="amount_untaxed"/>
+                        </group>
+                        <group string="Minimum Amount" colspan="4" col="4"  attrs="{'invisible': [('minimum_unit_amount', '=', 0), ('minimum_unit_weight', '=', 0)]}">
+                            <label for="minimum_unit_amount" string="Unit Order"/>
+                            <div class="o_row">
+                                <field name="minimum_unit_amount"/>
+                                <span>€</span>
+                            </div>
+                            <label for="minimum_unit_weight" string="Unit Order"/>
+                            <div class="o_row">
+                                <field name="minimum_unit_weight"/>
+                                <span>kg</span>
+                            </div>
                         </group>
                     </group>
                     <notebook colspan="4">
@@ -99,11 +114,10 @@ License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl.html).
                                     <field name="product_uom_package_qty" force_save="True"
                                         attrs="{'invisible': [('product_uom_package_qty', '=', 0.0)]}"/>
                                     <field name="price_unit" force_save="True"/>
-                                    <field name="amount_untaxed" sum="Total Amount Untaxed"/>
+                                    <field name="amount_untaxed"/>
                                     <field name="product_weight" force_save="True" invisible="1"/>
                                 </tree>
                             </field>
-                             <!--  -->
                             <p class="alert alert-danger" role="alert"
                                 attrs="{'invisible': [('purchase_ok', '!=', 'no_minimum_amount')]}">You have not reached the minimum amount.</p>
                         </page>

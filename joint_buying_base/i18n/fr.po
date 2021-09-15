@@ -66,8 +66,8 @@ msgid "Activity that has a commercial relationship with this supplier"
 msgstr "Société qui entretient un lien commercial avec ce fournisseur"
 
 #. module: joint_buying_base
-#: model:ir.model.fields,help:joint_buying_base.field_res_partner__joint_buying_deposit_company_id
-#: model:ir.model.fields,help:joint_buying_base.field_res_users__joint_buying_deposit_company_id
+#: model:ir.model.fields,help:joint_buying_base.field_res_partner__joint_buying_deposit_partner_id
+#: model:ir.model.fields,help:joint_buying_base.field_res_users__joint_buying_deposit_partner_id
 msgid "Activity that will serve as a deposit for this supplier"
 msgstr "Société qui servira de dépôt pour ce fournisseur"
 
@@ -230,8 +230,8 @@ msgid "Delicatessen"
 msgstr "Charcuterie"
 
 #. module: joint_buying_base
-#: model:ir.model.fields,field_description:joint_buying_base.field_res_partner__joint_buying_deposit_company_id
-#: model:ir.model.fields,field_description:joint_buying_base.field_res_users__joint_buying_deposit_company_id
+#: model:ir.model.fields,field_description:joint_buying_base.field_res_partner__joint_buying_deposit_partner_id
+#: model:ir.model.fields,field_description:joint_buying_base.field_res_users__joint_buying_deposit_partner_id
 msgid "Deposit Company"
 msgstr "Société dépôt"
 

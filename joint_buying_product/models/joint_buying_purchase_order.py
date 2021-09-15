@@ -66,6 +66,8 @@ class JointBuyingPurchaseOrder(models.Model):
         context=_JOINT_BUYING_PARTNER_CONTEXT,
     )
 
+    supplier_comment = fields.Text(related="supplier_id.comment")
+
     customer_id = fields.Many2one(
         comodel_name="res.partner",
         string="Customer",
@@ -86,6 +88,12 @@ class JointBuyingPurchaseOrder(models.Model):
     minimum_unit_amount = fields.Float(
         string="Minimum amount",
         related="grouped_order_id.minimum_unit_amount",
+        store=True,
+    )
+
+    minimum_unit_weight = fields.Float(
+        string="Minimum Unit Weight",
+        related="grouped_order_id.minimum_unit_weight",
         store=True,
     )
 

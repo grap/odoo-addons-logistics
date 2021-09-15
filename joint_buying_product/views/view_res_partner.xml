@@ -45,7 +45,7 @@
                 <attribute name="attrs">{'required': [('joint_buying_frequency', '!=', 0)]}</attribute>
             </field>
 
-            <field name="joint_buying_deposit_company_id" position="attributes">
+            <field name="joint_buying_deposit_partner_id" position="attributes">
                 <attribute name="attrs">{'required': [('joint_buying_frequency', '!=', 0)]}</attribute>
             </field>
 
@@ -62,10 +62,26 @@
                 </group>
 
                 <group string="Minimum Amount" colspan="4" col="4">
-                    <field name="joint_buying_minimum_amount" string="Grouped Order (€)"/>
-                    <field name="joint_buying_minimum_unit_amount" string="Unit Order (€)"/>
-                    <field name="joint_buying_minimum_weight" string="Grouped Order (kg)"/>
-                    <field name="joint_buying_minimum_unit_weight" string="Unit Order (kg)"/>
+                    <label for="joint_buying_minimum_amount" string="Grouped Order"/>
+                    <div class="o_row">
+                        <field name="joint_buying_minimum_amount"/>
+                        <span>€</span>
+                    </div>
+                    <label for="joint_buying_minimum_unit_amount" string="Unit Order"/>
+                    <div class="o_row">
+                        <field name="joint_buying_minimum_unit_amount"/>
+                        <span>€</span>
+                    </div>
+                    <label for="joint_buying_minimum_weight" string="Grouped Order"/>
+                    <div class="o_row">
+                        <field name="joint_buying_minimum_weight"/>
+                        <span>kg</span>
+                    </div>
+                    <label for="joint_buying_minimum_unit_weight" string="Unit Order"/>
+                    <div class="o_row">
+                        <field name="joint_buying_minimum_unit_weight"/>
+                        <span>kg</span>
+                    </div>
                 </group>
 
                 <group string="Products" colspan="4">
@@ -76,9 +92,10 @@
                             <field name="uom_id" string="UoM"/>
                             <field name="uom_po_id" string="Invoice Supplier UoM"/>
                             <field name="uom_package_id" string="UoM Weight / Unit"/>
-                            <field name="uom_package_qty"/>
+                            <field name="uom_package_qty"  attrs="{'required': [('uom_package_id', '!=', False)]}"/>
                             <field name="lst_price" required="True" string="Pricing"/>
-                            <field name="weight"/>
+                            <field name="weight" attrs="{'invisible': [('uom_measure_type', '=', 'weight')]}"/>
+                            <field name="uom_measure_type"/>
                             <field name="purchase_ok" widget="boolean_toggle" string="Avail. ?"/>
                             <field name="joint_buying_is_new" widget="boolean_toggle" string="New ?"/>
                         </tree>

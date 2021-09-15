@@ -98,7 +98,7 @@ License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl.html).
                                 </group>
                                 <group name="vendor_setting" string="Settings" colspan="4" col="4">
                                     <field name="joint_buying_pivot_company_id"/>
-                                    <field name="joint_buying_deposit_company_id"/>
+                                    <field name="joint_buying_deposit_partner_id"/>
                                 </group>
                                 <group string="Logistic Information" colspan="4">
                                     <field name="comment" nolabel="1"/>
@@ -144,7 +144,7 @@ License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl.html).
                 <field name="category_id" widget="many2many_tags" options="{'color_field': 'color'}"/>
                 <field name="city"/>
                 <field name="zip"/>
-                <field name="joint_buying_deposit_company_id" attrs="{'invisible': [('supplier', '=', False)]}"/>
+                <field name="joint_buying_deposit_partner_id" attrs="{'invisible': [('supplier', '=', False)]}"/>
                 <field name="joint_buying_pivot_company_id" attrs="{'invisible': [('supplier', '=', False)]}"/>
                 <field name="customer" invisible="context.get('only_supplier', True)"/>
                 <field name="supplier" invisible="context.get('only_supplier', True)"/>

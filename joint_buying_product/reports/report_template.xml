@@ -26,7 +26,7 @@
                     </div>
                     <div class="col-auto mw-100 mb-2">
                         <strong>Deposit Place:</strong>
-                        <p class="m-0" t-field="doc.deposit_company_id.name"/>
+                        <p class="m-0" t-field="doc.deposit_partner_id.name"/>
                     </div>
                 </div>
 

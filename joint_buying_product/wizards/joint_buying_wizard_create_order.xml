@@ -13,14 +13,34 @@ License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl.html).
                     <group>
                         <field name="supplier_id" readonly="1"/>
                         <field name="pivot_company_id"/>
-                        <field name="deposit_company_id"/>
+                        <field name="deposit_partner_id"/>
                     </group>
                     <group>
                         <field name="start_date"/>
                         <field name="end_date"/>
                         <field name="deposit_date"/>
-                        <field name="minimum_amount"/>
-                        <field name="minimum_unit_amount"/>
+                    </group>
+                    <group string="Minimum Amount" colspan="4" col="4">
+                        <label for="minimum_amount" string="Grouped Order"/>
+                        <div class="o_row">
+                            <field name="minimum_amount"/>
+                            <span>€</span>
+                        </div>
+                        <label for="minimum_unit_amount" string="Unit Order"/>
+                        <div class="o_row">
+                            <field name="minimum_unit_amount"/>
+                            <span>€</span>
+                        </div>
+                        <label for="minimum_weight" string="Grouped Order"/>
+                        <div class="o_row">
+                            <field name="minimum_weight"/>
+                            <span>kg</span>
+                        </div>
+                        <label for="minimum_unit_weight" string="Unit Order"/>
+                        <div class="o_row">
+                            <field name="minimum_unit_weight"/>
+                            <span>kg</span>
+                        </div>
                     </group>
                 </group>
                 <separator string="List of Customers"/>
