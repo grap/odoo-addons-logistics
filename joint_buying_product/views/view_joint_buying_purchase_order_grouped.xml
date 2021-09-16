@@ -13,6 +13,8 @@ License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl.html).
                 <field name="name"/>
                 <field name="supplier_id"/>
                 <field name="state"/>
+                <filter name="in_progress" string="In Progress"
+                    domain="[('state', 'in', ['in_progress', 'in_progress_near', 'in_progress_imminent'])]"/>
             </search>
         </field>
     </record>
@@ -28,10 +30,11 @@ License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl.html).
                 <field name="deposit_date"/>
                 <field name="order_qty"/>
                 <field name="amount_untaxed" sum="Total Amount Untaxed"/>
+                <field name="pivot_company_id" invisible="context.get('invisible_pivot_company_id', False)"/>
                 <field name="state"/>
                 <field name="current_order_id" invisible="1"/>
                 <button name="see_current_order" string="See My Order" type="object" attrs="{'invisible': [('current_order_id', '=', False)]}"/>
-                <button name="create_current_order" string="Create Order" type="object" attrs="{'invisible': ['|', ('current_order_id', '!=', False), ('state', '!=', 'in_progress')]}"/>
+                <button name="create_current_order" string="Create Order" type="object" attrs="{'invisible': ['|', ('current_order_id', '!=', False), ('state', 'not in', ['in_progress', 'in_progress_near', 'in_progress_imminent'])]}"/>
             </tree>
         </field>
     </record>
@@ -71,7 +74,7 @@ License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl.html).
                     <button name="action_send_email_for_supplier" string="Resend  to Supplier by Email" type="object" attrs="{'invisible': [('is_mail_sent', '=', False)]}"/>
                     <button name="action_send_email_for_pivot" string="Send to Pivot company by Email" type="object" />
                     <button name="see_current_order" string="See My Order" type="object" attrs="{'invisible': [('current_order_id', '=', False)]}"/>
-                    <button name="create_current_order" string="Create Order" type="object" attrs="{'invisible': ['|', ('current_order_id', '!=', False), ('state', '!=', 'in_progress')]}"/>
+                    <button name="create_current_order" string="Create Order" type="object" attrs="{'invisible': ['|', ('current_order_id', '!=', False), ('state', 'not in', ['in_progress', 'in_progress_near', 'in_progress_imminent'])]}"/>
                     <field name="state" widget="statusbar"/>
                 </header>
                 <sheet>
@@ -168,6 +171,26 @@ License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl.html).
         parent="joint_buying_product.menu_order"
         action="action_joint_buying_purchase_order_grouped_all"
         sequence="50"
+    />
+
+    <record id="action_joint_buying_purchase_order_grouped_my" model="ir.actions.act_window">
+        <field name="name">My Grouped Orders</field>
+        <field name="type">ir.actions.act_window</field>
+        <field name="res_model">joint.buying.purchase.order.grouped</field>
+        <field name="view_type">form</field>
+        <field name="view_mode">tree,calendar,form</field>
+        <field name="domain">[('is_mine', '=', True)]</field>
+        <field name="context">{
+            'search_default_in_progress': 1,
+            'invisible_pivot_company_id': 1,
+        }</field>
+    </record>
+
+    <menuitem id="menu_joint_buying_purchase_order_grouped_my"
+        name="My Grouped Orders"
+        parent="joint_buying_base.menu_pivot"
+        action="action_joint_buying_purchase_order_grouped_my"
+        sequence="10"
     />
 
 </odoo>

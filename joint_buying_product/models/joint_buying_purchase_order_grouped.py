@@ -102,6 +102,8 @@ class JointBuyingPurchaseOrderGrouped(models.Model):
         comodel_name="joint.buying.purchase.order", compute="_compute_current_order_id"
     )
 
+    is_mine = fields.Boolean(compute="_compute_is_mine", search="_search_is_mine")
+
     # Default Section
     def _default_name(self):
         return self.env["ir.sequence"].next_by_code(
@@ -127,6 +129,25 @@ class JointBuyingPurchaseOrderGrouped(models.Model):
             grouped_order.total_weight = sum(
                 grouped_order.mapped("order_ids.total_weight")
             )
+
+    def _compute_is_mine(self):
+        current_company = self.env.user.company_id
+        for grouped_order in self:
+            grouped_order.is_mine = grouped_order.pivot_company_id == current_company
+
+    def _search_is_mine(self, operator, value):
+        current_company = self.env.user.company_id
+        if (operator == "=" and value) or (operator == "!=" and not value):
+            search_operator = "in"
+        else:
+            search_operator = "not in"
+        return [
+            (
+                "id",
+                search_operator,
+                self.search([("pivot_company_id", "=", current_company.id)]).ids,
+            )
+        ]
 
     # On the Fly Compute Section
     def _compute_summary_line_ids(self):
@@ -169,7 +190,7 @@ class JointBuyingPurchaseOrderGrouped(models.Model):
     def _compute_current_order_id(self):
         for grouped_order in self:
             grouped_order.current_order_id = grouped_order.order_ids.filtered(
-                lambda x: x.is_my_purchase
+                lambda x: x.is_mine
             )
 
     # Overload Section

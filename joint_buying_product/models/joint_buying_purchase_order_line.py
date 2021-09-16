@@ -108,12 +108,6 @@ class JointBuyingPurchaseOrderLine(models.Model):
         string="Total Weight", compute="_compute_total_weight", store=True
     )
 
-    is_my_purchase = fields.Boolean(
-        string="Is My Purchase",
-        compute="_compute_is_my_purchase",
-        search="_search_is_my_purchase",
-    )
-
     # Compute Section
     @api.depends("qty", "product_weight")
     def _compute_total_weight(self):
@@ -124,25 +118,6 @@ class JointBuyingPurchaseOrderLine(models.Model):
     def _compute_amount(self):
         for line in self:
             line.amount_untaxed = line.qty * line.price_unit
-
-    def _compute_is_my_purchase(self):
-        current_customer_partner = self.env.user.company_id.joint_buying_partner_id
-        for line in self:
-            line.is_my_purchase = line.customer_id == current_customer_partner
-
-    def _search_is_my_purchase(self, operator, value):
-        current_customer_partner = self.env.user.company_id.joint_buying_partner_id
-        if (operator == "=" and value) or (operator == "!=" and not value):
-            search_operator = "in"
-        else:
-            search_operator = "not in"
-        return [
-            (
-                "id",
-                search_operator,
-                self.search([("customer_id", "=", current_customer_partner.id)]).ids,
-            )
-        ]
 
     @api.onchange("qty")
     def onchange_qty(self):

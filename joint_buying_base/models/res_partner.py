@@ -58,6 +58,7 @@ class ResPartner(models.Model):
         context=_JOINT_BUYING_PARTNER_CONTEXT,
     )
 
+    # TODO, rename into joint_buying_is_stage
     is_joint_buying_stage = fields.Boolean(
         string="Is Stage",
         default=False,
@@ -65,6 +66,10 @@ class ResPartner(models.Model):
     )
 
     joint_buying_description = fields.Html(string="Complete Description")
+
+    joint_buying_is_mine = fields.Boolean(
+        compute="_compute_joint_buying_is_mine", search="_search_joint_buying_is_mine"
+    )
 
     # Onchange section
     @api.onchange("joint_buying_pivot_company_id")
@@ -131,12 +136,37 @@ class ResPartner(models.Model):
             return companies.ids
 
     # Compute Section
+    def _compute_joint_buying_is_mine(self):
+        current_company = self.env.user.company_id
+        for partner in self:
+            partner.joint_buying_is_mine = (
+                partner.joint_buying_pivot_company_id == current_company
+            )
+
     def _compute_joint_buying_is_subscribed(self):
         for partner in self.filtered(lambda x: x.is_joint_buying):
             partner.joint_buying_is_subscribed = (
                 partner in self.env.user.company_id.joint_buying_subscribed_partner_ids
             )
 
+    # Search Section
+    def _search_joint_buying_is_mine(self, operator, value):
+        current_company = self.env.user.company_id
+        if (operator == "=" and value) or (operator == "!=" and not value):
+            search_operator = "in"
+        else:
+            search_operator = "not in"
+        return [
+            (
+                "id",
+                search_operator,
+                self.search(
+                    [("joint_buying_pivot_company_id", "=", current_company.id)]
+                ).ids,
+            )
+        ]
+
+    # Inverse Section
     def _inverse_joint_buying_is_subscribed(self):
         partners = self.filtered(lambda x: x.joint_buying_is_subscribed)
         if partners:

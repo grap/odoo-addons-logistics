@@ -123,11 +123,7 @@ class JointBuyingPurchaseOrder(models.Model):
         digits=dp.get_precision("Stock Weight"),
     )
 
-    is_my_purchase = fields.Boolean(
-        string="Is My Purchase",
-        compute="_compute_is_my_purchase",
-        search="_search_is_my_purchase",
-    )
+    is_mine = fields.Boolean(compute="_compute_is_mine", search="_search_is_mine")
 
     @api.depends("amount_untaxed", "minimum_unit_amount", "line_ids")
     def _compute_purchase_ok(self):
@@ -149,12 +145,12 @@ class JointBuyingPurchaseOrder(models.Model):
                 order.customer_id.joint_buying_company_id.code,
             )
 
-    def _compute_is_my_purchase(self):
+    def _compute_is_mine(self):
         current_customer_partner = self.env.user.company_id.joint_buying_partner_id
         for order in self:
-            order.is_my_purchase = order.customer_id == current_customer_partner
+            order.is_mine = order.customer_id == current_customer_partner
 
-    def _search_is_my_purchase(self, operator, value):
+    def _search_is_mine(self, operator, value):
         current_customer_partner = self.env.user.company_id.joint_buying_partner_id
         if (operator == "=" and value) or (operator == "!=" and not value):
             search_operator = "in"

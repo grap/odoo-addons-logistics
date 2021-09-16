@@ -18,7 +18,6 @@ License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl.html).
         </field>
     </record>
 
-
     <record id="view_res_partner_form_joint_buying" model="ir.ui.view">
         <field name="model">res.partner</field>
         <field name="priority" eval="20"/>
@@ -173,10 +172,39 @@ License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl.html).
 
     <menuitem id="menu_res_partner_supplier"
         name="Suppliers"
-        parent="joint_buying_base.menu_contact_base"
+        parent="menu_root"
         action="action_res_partner_supplier"
         sequence="5"
-        groups="group_joint_buying_user"
+    />
+
+
+    <record id="action_res_partner_supplier_my" model="ir.actions.act_window">
+        <field name="name">Suppliers</field>
+        <field name="type">ir.actions.act_window</field>
+        <field name="res_model">res.partner</field>
+        <field name="view_id" ref="view_res_partner_tree"/>
+        <field name="view_mode">tree,form</field>
+        <field name="domain">[
+            ('joint_buying_is_mine', '=', True),
+            ('supplier', '=', True),
+        ]</field>
+        <field name="context">
+            {
+                "joint_buying": 1,
+                "only_supplier": 1,
+                "default_customer": 0,
+                "default_supplier": 1,
+                "default_is_company": 1,
+                "form_view_ref": "joint_buying_base.view_res_partner_form_joint_buying",
+            }
+        </field>
+    </record>
+
+    <menuitem id="menu_res_partner_supplier_my"
+        name="My Suppliers"
+        parent="menu_pivot"
+        action="action_res_partner_supplier_my"
+        sequence="5"
     />
 
     <record id="action_res_partner_all" model="ir.actions.act_window">
@@ -199,7 +227,7 @@ License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl.html).
 
     <menuitem id="menu_res_partner_all"
         name="All Contacts"
-        parent="joint_buying_base.menu_contact_base"
+        parent="menu_configuration"
         action="action_res_partner_all"
         sequence="10"
         groups="group_joint_buying_manager"
