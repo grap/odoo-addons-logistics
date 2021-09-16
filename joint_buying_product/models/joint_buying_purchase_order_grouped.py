@@ -5,6 +5,7 @@
 from datetime import datetime, timedelta
 
 from odoo import _, api, fields, models
+from odoo.exceptions import ValidationError
 from odoo.osv import expression
 
 from odoo.addons import decimal_precision as dp
@@ -103,6 +104,20 @@ class JointBuyingPurchaseOrderGrouped(models.Model):
     )
 
     is_mine = fields.Boolean(compute="_compute_is_mine", search="_search_is_mine")
+
+    # Constraint Section
+    @api.constrains("start_date", "end_date", "deposit_date")
+    def _check_dates(self):
+        if self.filtered(
+            lambda x: x.start_date >= x.end_date or x.end_date >= x.deposit_date
+        ):
+            raise ValidationError(
+                _(
+                    "Incorrect setting:\n\n"
+                    " * start date should be less than end date\n"
+                    " * end date should be less that deposit date"
+                )
+            )
 
     # Default Section
     def _default_name(self):
