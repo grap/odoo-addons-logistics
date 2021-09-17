@@ -179,7 +179,7 @@ class TestModule(TransactionCase):
         # ## Check lines
 
         # Case 1) Simple case (uom_id = uom_po_id ; uom_package_id = False)
-        # We want to buy 12 Rillette0
+        # We want to buy 12 Rillette
         # Price : 8€ / Unit
         # Weight : 0.5 kg / the unit
         line = self.OrderLine.search(
@@ -193,7 +193,7 @@ class TestModule(TransactionCase):
             ]
         )
 
-        line.qty = 15.0
+        line.qty = 12.0
         self.assertEqual(line.amount_untaxed, 12 * 8)
         self.assertEqual(line.total_weight, 12 * 0.5)
 
