@@ -87,7 +87,7 @@
                 <group string="Products" colspan="4">
                     <field name="joint_buying_product_ids" nolabel="1">
                         <tree editable="bottom" decoration-muted="purchase_ok == False">
-                            <field name="default_code"/>
+                            <field name="default_code" string="Sup. Code"/>
                             <field name="name"/>
                             <field name="uom_id" string="UoM"/>
                             <field name="uom_po_id" string="Invoice Supplier UoM"/>

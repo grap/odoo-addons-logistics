@@ -64,11 +64,10 @@
     <record id="product_morell_orange" model="product.product"
         context="{'joint_buying': True}">
         <field name="name">Orange (Global)</field>
-        <field name="uom_id" ref="uom.product_uom_unit"/>
-        <field name="uom_po_id" ref="uom.product_uom_unit"/>
+        <field name="uom_id" ref="uom.product_uom_kgm"/>
+        <field name="uom_po_id" ref="uom.product_uom_kgm"/>
         <field name="joint_buying_partner_id" ref="joint_buying_base.supplier_oscar_morell"/>
-        <field name="weight">0.5</field>
-        <field name="price">8</field>
+        <field name="price">2</field>
         <field name="uom_package_qty">12</field>
     </record>
 

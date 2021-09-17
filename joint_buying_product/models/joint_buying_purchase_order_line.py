@@ -68,7 +68,17 @@ class JointBuyingPurchaseOrderLine(models.Model):
         readonly=True,
     )
 
-    uom_id = fields.Many2one(comodel_name="uom.uom", string="UoM", readonly=True)
+    qty = fields.Float(
+        string="Purchase Quantity",
+        digits=dp.get_precision("Product Unit of Measure"),
+        required=True,
+    )
+
+    uom_id = fields.Many2one(
+        comodel_name="uom.uom", string="Purchase UoM", readonly=True
+    )
+
+    uom_measure_type = fields.Selection(related="uom_id.measure_type")
 
     product_uom_package_qty = fields.Float(
         string="Package Quantity",
@@ -77,10 +87,14 @@ class JointBuyingPurchaseOrderLine(models.Model):
         required=True,
     )
 
-    qty = fields.Float(
-        string="Quantity",
+    product_uom_id = fields.Many2one(
+        comodel_name="uom.uom", string="UoM (of product)", readonly=True
+    )
+
+    product_qty = fields.Float(
+        string="Quantity (in Main UoM)",
         digits=dp.get_precision("Product Unit of Measure"),
-        required=True,
+        compute="_compute_product_qty",
     )
 
     product_weight = fields.Float(
@@ -111,10 +125,12 @@ class JointBuyingPurchaseOrderLine(models.Model):
     is_new = fields.Boolean(related="product_id.joint_buying_is_new")
 
     # Compute Section
-    @api.depends("qty", "product_weight")
+    @api.depends("product_uom_id", "product_qty", "product_weight", "uom_measure_type")
     def _compute_total_weight(self):
-        for line in self:
-            line.total_weight = line.qty * line.product_weight
+        for line in self.filtered(lambda x: x.uom_measure_type == "unit"):
+            line.total_weight = line.product_qty * line.product_weight
+        for line in self.filtered(lambda x: x.uom_measure_type == "weight"):
+            line.total_weight = line.product_qty
 
     @api.depends("qty", "price_unit")
     def _compute_amount(self):

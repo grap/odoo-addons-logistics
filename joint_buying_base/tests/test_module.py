@@ -174,7 +174,7 @@ class TestModule(TransactionCase):
     def test_09_set_tour_via_wizard(self):
         tour = self._create_tour()
         self.assertEqual(tour.distance, 0)
-        self.assertEqual(tour.line_qty, 0)
+        self.assertEqual(len(tour.line_ids), 0)
 
     # Custom Functions
     def _create_supplier(self, user=False, extra_vals=False):
