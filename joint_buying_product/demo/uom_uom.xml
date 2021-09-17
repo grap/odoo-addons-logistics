@@ -22,7 +22,7 @@
         <field name="name">Oil Liter 0.950 kg</field>
         <field name="category_id" ref="uom.product_uom_categ_kgm"/>
         <field name="uom_type">smaller</field>
-        <field name="factor">0.950</field>
+        <field name="factor">1.052631579</field>
         <field name="rounding">0.001</field>
     </record>
 

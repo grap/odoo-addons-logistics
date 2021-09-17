@@ -91,6 +91,10 @@ class JointBuyingPurchaseOrderLine(models.Model):
         comodel_name="uom.uom", string="UoM (of product)", readonly=True
     )
 
+    product_uom_po_id = fields.Many2one(
+        comodel_name="uom.uom", string="Supplier UoM (of product)", readonly=True
+    )
+
     product_qty = fields.Float(
         string="Quantity (in Main UoM)",
         digits=dp.get_precision("Product Unit of Measure"),
@@ -116,9 +120,13 @@ class JointBuyingPurchaseOrderLine(models.Model):
         readonly=True,
     )
 
+    price_description = fields.Char(
+        string="Pricing", compute="_compute_price_description", store=True
+    )
+
     amount_untaxed = fields.Float(
         string="Total Untaxed Amount",
-        compute="_compute_amount",
+        compute="_compute_amount_untaxed",
         store=True,
         digits=dp.get_precision("Product Price"),
     )
@@ -137,21 +145,32 @@ class JointBuyingPurchaseOrderLine(models.Model):
         for line in self.filtered(lambda x: x.uom_measure_type == "weight"):
             line.total_weight = line.product_qty
 
-    @api.depends("uom_id", "product_uom_id", "qty")
+    @api.depends("uom_id", "product_uom_id.factor", "qty")
     def _compute_product_qty(self):
         for line in self.filtered(lambda x: x.uom_id == x.product_uom_id):
             line.product_qty = line.qty
             line.uom_different_description = False
         for line in self.filtered(lambda x: x.uom_id != x.product_uom_id):
-            # Hum, FIXME !
-            product_qty = 999
+            product_qty = line.uom_id._compute_quantity(
+                line.qty, line.product_uom_id, rounding_method="HALF-UP"
+            )
             line.product_qty = product_qty
-            line.uom_different_description = _(
-                "or {} x {}".format(product_qty, line.uom_id.name)
+            if product_qty:
+                line.uom_different_description = _(
+                    "or {} x {}".format(product_qty, line.product_uom_id.name)
+                )
+            else:
+                line.uom_different_description = False
+
+    @api.depends("price_unit", "product_uom_po_id")
+    def _compute_price_description(self):
+        for line in self:
+            line.price_description = "{}€ / {}".format(
+                line.price_unit, line.product_uom_po_id.name
             )
 
     @api.depends("qty", "price_unit")
-    def _compute_amount(self):
+    def _compute_amount_untaxed(self):
         for line in self:
             line.amount_untaxed = line.qty * line.price_unit
 

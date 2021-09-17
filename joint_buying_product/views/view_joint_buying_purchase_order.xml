@@ -125,12 +125,16 @@ License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl.html).
                                     <field name="uom_id" force_save="True"/>
                                     <field name="product_uom_package_qty" force_save="True"
                                         attrs="{'invisible': [('product_uom_package_qty', '=', 0.0)]}"/>
-                                    <field name="price_unit" force_save="True"/>
-                                    <field name="uom_different_description" force_save="True"/>
-                                    <field name="is_new" force_save="True" invisible="1"/>
-                                    <field name="product_weight" force_save="True" invisible="1"/>
-                                    <field name="total_weight"/>
+                                    <field name="price_unit" force_save="True" invisible="1"/>
+                                    <field name="price_description" force_save="True"/>
                                     <field name="amount_untaxed"/>
+                                    <field name="total_weight"/>
+                                    <field name="product_qty" force_save="True" invisible="1"/>
+                                    <field name="product_uom_id" force_save="True" invisible="1"/>
+                                    <field name="uom_different_description" force_save="True"/>
+                                    <field name="product_weight" force_save="True" invisible="1"/>
+
+                                    <field name="is_new" force_save="True" invisible="1"/>
                                 </tree>
                             </field>
                         </page>

@@ -206,6 +206,7 @@ class JointBuyingPurchaseOrder(models.Model):
                 "uom_id": product.uom_package_id.id or product.uom_po_id.id,
                 "qty": 0.0,
                 "product_uom_id": product.uom_id.id,
+                "product_uom_po_id": product.uom_po_id.id,
                 "product_qty": 0.0,
                 "product_uom_package_qty": product.uom_package_qty,
                 "product_weight": product.weight,
