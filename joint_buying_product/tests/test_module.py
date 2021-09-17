@@ -31,6 +31,7 @@ class TestModule(TransactionCase):
         self.JointBuyingWizardCreateOrder = self.env["joint.buying.wizard.create.order"]
         self.OrderGrouped = self.env["joint.buying.purchase.order.grouped"]
         self.Order = self.env["joint.buying.purchase.order"]
+        self.OrderLine = self.env["joint.buying.purchase.order.line"]
 
         self.company_ELD = self.env.ref("joint_buying_base.company_ELD")
         self.company_CHE = self.env.ref("joint_buying_base.company_CHE")
@@ -131,9 +132,7 @@ class TestModule(TransactionCase):
     def test_03_order_grouped_full_workflow(self):
         # configure subscription
         self.salaison_devidal.joint_buying_subscribed_company_ids = [
-            self.company_ELD.id,
-            self.company_3PP.id,
-            self.company_CHE.id,
+            (6, 0, [self.company_ELD.id, self.company_3PP.id, self.company_CHE.id])
         ]
 
         # Use Wizard to create grouped order
@@ -166,12 +165,72 @@ class TestModule(TransactionCase):
             len(self.salaison_devidal.joint_buying_subscribed_company_ids), 4
         )
 
+        # ## Check Product
         # Order should contain only purchasable product
         purchasable_products = self.salaison_devidal.joint_buying_product_ids.filtered(
             lambda x: x.purchase_ok
         )
         self.assertEqual(order.line_qty, len(purchasable_products))
 
+        # ## Check lines
+
+        # Case 1) Simple case (uom_id = uom_po_id ; uom_package_id = False)
+        # We want to buy 12 Rillette0
+        # Price : 8€ / Unit
+        # Weight : 0.5 kg / the unit
+        line = self.OrderLine.search(
+            [
+                ("order_id", "=", order.id),
+                (
+                    "product_id",
+                    "=",
+                    self.env.ref("joint_buying_product.product_devidal_rillette").id,
+                ),
+            ]
+        )
+
+        line.qty = 15.0
+        self.assertEqual(line.amount_untaxed, 12 * 8)
+        self.assertEqual(line.total_weight, 12 * 0.5)
+
+        # Case 2) Checking when the uom_id is the product.uom_po_id
+        # We want to buy 3 Olive Oil bag of 5L
+        # Price : 8€ / Liter
+        # Weight : 1L of oil weight 0.950 kg
+        line = self.OrderLine.search(
+            [
+                ("order_id", "=", order.id),
+                (
+                    "product_id",
+                    "=",
+                    self.env.ref("joint_buying_product.product_devidal_huile_olive").id,
+                ),
+            ]
+        )
+
+        line.qty = 15.0
+        self.assertEqual(line.amount_untaxed, 3 * 5 * 8)
+        self.assertEqual(line.total_weight, 3 * 5 * 0.95)
+
+        # Case 3) Checking when the Purchase unit is the product.uom_package_id
+        # We want to buy 5 Caillette of 0.300 kg / piece
+        # Price is 13.00€ / kg
+        line = self.OrderLine.search(
+            [
+                ("order_id", "=", order.id),
+                (
+                    "product_id",
+                    "=",
+                    self.env.ref("joint_buying_product.product_devidal_caillette").id,
+                ),
+            ]
+        )
+
+        line.qty = 5.0
+        self.assertEqual(line.amount_untaxed, 5 * 0.3 * 13.0)
+        self.assertEqual(line.total_weight, 5 * 0.3)
+
+        # ## Check state
         # Check state "futur" (+1d / +7d / +14d)
         self.assertEqual(order.state, "futur")
 

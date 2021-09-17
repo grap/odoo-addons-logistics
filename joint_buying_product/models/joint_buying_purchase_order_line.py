@@ -169,10 +169,15 @@ class JointBuyingPurchaseOrderLine(models.Model):
                 line.price_unit, line.product_uom_po_id.name
             )
 
-    @api.depends("qty", "price_unit")
+    @api.depends("uom_id", "product_uom_po_id.factor", "qty", "price_unit")
     def _compute_amount_untaxed(self):
-        for line in self:
+        for line in self.filtered(lambda x: x.uom_id == x.product_uom_po_id):
             line.amount_untaxed = line.qty * line.price_unit
+        for line in self.filtered(lambda x: x.uom_id != x.product_uom_po_id):
+            product_uom_po_qty = line.uom_id._compute_quantity(
+                line.qty, line.product_uom_po_id, rounding_method="HALF-UP"
+            )
+            line.amount_untaxed = product_uom_po_qty * line.price_unit
 
     @api.onchange("qty")
     def onchange_qty(self):

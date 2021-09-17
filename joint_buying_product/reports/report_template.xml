@@ -37,7 +37,7 @@
                             <th class="text-left">Product</th>
                             <th class="text-right">Quantity</th>
                             <th class="text-right">UoM</th>
-                            <th class="text-left">Unit Price</th>
+                            <th class="text-right">Unit Price</th>
                             <th class="text-right">Subtotal</th>
                         </tr>
                     </thead>
@@ -48,7 +48,7 @@
                                 <td class="text-left"><span t-field="line.product_id"/></td>
                                 <td class="text-right"><span t-field="line.qty"/></td>
                                 <td class="text-right"><span t-field="line.uom_id"/></td>
-                                <td class="text-left"><span t-field="line.price_unit"/> €</td>
+                                <td class="text-right"><span t-field="line.price_unit"/> €</td>
                                 <td class="text-right"><span t-field="line.amount_untaxed"/> €</td>
                             </tr>
                         </t>
@@ -57,7 +57,7 @@
                         <tr>
                             <td class="text-right" colspan="4"/>
                             <th class="text-right">Total</th>
-                            <td class="text-right"><span t-field="doc.amount_untaxed"/></td>
+                            <td class="text-right"><span t-field="doc.amount_untaxed"/> €</td>
                         </tr>
                     </tfoot>
                 </table>
@@ -74,24 +74,27 @@
                             <th class="text-left">Product</th>
                             <th class="text-right">Quantity</th>
                             <th class="text-right">UoM</th>
-                            <th class="text-left">Unit Price</th>
+                            <th class="text-right">Equivalent</th>
                             <th class="text-right">Subtotal</th>
                         </tr>
                     </thead>
                     <tbody>
-                        <t t-foreach="doc.order_ids" t-as="order">
+                        <t t-foreach="doc.order_ids.filtered(lambda x: x.amount_untaxed)" t-as="order">
                             <tr class="bg-200 font-weight-bold o_line_section">
-                                <th class="text-right" colspan="1"><span t-field="order.customer_id.joint_buying_company_id.code" /></th>
-                                <th class="text-center" colspan="4"><span t-field="order.customer_id.joint_buying_company_id" /></th>
-                                <th class="text-right" colspan="1"><span t-field="order.amount_untaxed"/></th>
+                                <th class="text-left" colspan="5">
+                                    <span t-field="order.customer_id.joint_buying_company_id.code" /> -
+                                    <span t-field="order.customer_id.joint_buying_company_id.sudo().partner_id.contact_address" />
+                                    <br />(<span t-field="order.customer_id.email" /> <span t-field="order.customer_id.phone"/>)
+                                </th>
+                                <th class="text-right" colspan="1"><span t-field="order.amount_untaxed"/> €</th>
                             </tr>
                             <t t-foreach="order.line_ids" t-as="line">
                                 <tr t-if="line.qty">
-                                    <td class="text-right"><span t-field="line.product_id.default_code"/></td>
+                                    <td class="text-left"><span t-field="line.product_id.default_code"/></td>
                                     <td class="text-left"><span t-field="line.product_id"/></td>
                                     <td class="text-right"><span t-field="line.qty"/></td>
                                     <td class="text-right"><span t-field="line.uom_id"/></td>
-                                    <td class="text-left"><span t-field="line.price_unit"/> €</td>
+                                    <td class="text-right" style="font-style:italic;color: #555"><span t-field="line.uom_different_description"/></td>
                                     <td class="text-right"><span t-field="line.amount_untaxed"/> €</td>
                                 </tr>
                             </t>

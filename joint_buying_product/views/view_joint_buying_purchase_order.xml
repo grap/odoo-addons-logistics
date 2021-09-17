@@ -116,6 +116,7 @@ License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl.html).
                             </div>
                         </group>
                     </group>
+
                     <notebook colspan="4">
                         <page name="lines" string="Order line">
                             <field name="line_ids" attrs="{'readonly': ['|', ('purchase_state', '=', 'done'), ('state', 'not in', ['in_progress', 'in_progress_near', 'in_progress_imminent'])]}">
@@ -131,7 +132,9 @@ License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl.html).
                                     <field name="total_weight"/>
                                     <field name="product_qty" force_save="True" invisible="1"/>
                                     <field name="product_uom_id" force_save="True" invisible="1"/>
-                                    <field name="uom_different_description" force_save="True"/>
+                                    <field name="product_uom_po_id" force_save="True" invisible="1"/>
+                                    <field name="uom_measure_type" force_save="True" invisible="1"/>
+                                    <field name="uom_different_description" force_save="True" attrs="{'invisible': [('uom_measure_type', '!=', 'unit')]}"/>
                                     <field name="product_weight" force_save="True" invisible="1"/>
 
                                     <field name="is_new" force_save="True" invisible="1"/>
