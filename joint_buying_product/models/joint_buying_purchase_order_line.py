@@ -2,7 +2,7 @@
 # @author: Sylvain LE GAL (https://twitter.com/legalsylvain)
 # License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl.html).
 
-from odoo import api, fields, models
+from odoo import _, api, fields, models
 
 from odoo.addons import decimal_precision as dp
 from odoo.addons.joint_buying_base.models.res_partner import (
@@ -95,6 +95,11 @@ class JointBuyingPurchaseOrderLine(models.Model):
         string="Quantity (in Main UoM)",
         digits=dp.get_precision("Product Unit of Measure"),
         compute="_compute_product_qty",
+        store=True,
+    )
+
+    uom_different_description = fields.Char(
+        string="Equivalent", compute="_compute_product_qty", store=True
     )
 
     product_weight = fields.Float(
@@ -131,6 +136,19 @@ class JointBuyingPurchaseOrderLine(models.Model):
             line.total_weight = line.product_qty * line.product_weight
         for line in self.filtered(lambda x: x.uom_measure_type == "weight"):
             line.total_weight = line.product_qty
+
+    @api.depends("uom_id", "product_uom_id", "qty")
+    def _compute_product_qty(self):
+        for line in self.filtered(lambda x: x.uom_id == x.product_uom_id):
+            line.product_qty = line.qty
+            line.uom_different_description = False
+        for line in self.filtered(lambda x: x.uom_id != x.product_uom_id):
+            # Hum, FIXME !
+            product_qty = 999
+            line.product_qty = product_qty
+            line.uom_different_description = _(
+                "or {} x {}".format(product_qty, line.uom_id.name)
+            )
 
     @api.depends("qty", "price_unit")
     def _compute_amount(self):

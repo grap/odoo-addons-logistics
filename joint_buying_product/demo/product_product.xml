@@ -24,8 +24,19 @@
         <field name="name">Caillette sous vide (~300gr) (Global)</field>
         <field name="uom_id" ref="uom.product_uom_kgm"/>
         <field name="uom_po_id" ref="uom.product_uom_kgm"/>
+        <field name="uom_package_id" ref="joint_buying_product.uom_0_300_kg"/>
         <field name="joint_buying_partner_id" ref="joint_buying_base.supplier_salaison_devidal"/>
         <field name="price">13</field>
+    </record>
+
+    <record id="product_devidal_saindoux" model="product.product"
+        context="{'joint_buying': True}">
+        <field name="name">Saindoux vrac (Global)</field>
+        <field name="uom_id" ref="uom.product_uom_kgm"/>
+        <field name="uom_po_id" ref="uom.uom_0_950_oil_liter_kg"/>
+        <field name="uom_package_qty">6</field>
+        <field name="joint_buying_partner_id" ref="joint_buying_base.supplier_salaison_devidal"/>
+        <field name="price">8</field>
     </record>
 
     <record id="product_devidal_saucisson" model="product.product"
@@ -33,6 +44,7 @@
         <field name="name">Saucisson (~350gr) (Global)</field>
         <field name="uom_id" ref="uom.product_uom_kgm"/>
         <field name="uom_po_id" ref="uom.product_uom_kgm"/>
+        <field name="uom_package_id" ref="joint_buying_product.uom_0_350_kg"/>
         <field name="joint_buying_partner_id" ref="joint_buying_base.supplier_salaison_devidal"/>
         <field name="price">19</field>
         <field name="uom_package_qty">1</field>

@@ -18,4 +18,12 @@
         <field name="rounding">0.001</field>
     </record>
 
+    <record id="uom_0_950_oil_liter_kg" model="uom.uom">
+        <field name="name">Oil Liter 0.950 kg</field>
+        <field name="category_id" ref="uom.product_uom_categ_kgm"/>
+        <field name="uom_type">smaller</field>
+        <field name="factor">0.950</field>
+        <field name="rounding">0.001</field>
+    </record>
+
 </odoo>
