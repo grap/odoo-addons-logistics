@@ -55,6 +55,10 @@ class TestModule(TransactionCase):
             self.IrConfigParameter.get_param("joint_buying_product.new_product_day")
         )
 
+        self.grouped_order_report = self.env.ref(
+            "joint_buying_product.action_report_joint_buying_purchase_order_grouped"
+        )
+
     def test_01_search_and_propagate(self):
         len_local_before_local_creation = len(self.ProductProduct.search([]))
         len_joint_buying_before_local_creation = len(
@@ -272,6 +276,9 @@ class TestModule(TransactionCase):
         time.sleep(1.1)
         self.OrderGrouped.cron_check_state()
         self.assertEqual(order.state, "closed", "Cron doesn't work.")
+
+        # Generate report to make sure the syntax is correct
+        self.grouped_order_report.render_qweb_html(order_grouped.ids)
 
     def test_04_product_new(self):
         # Check that new created product are marked as new by default
