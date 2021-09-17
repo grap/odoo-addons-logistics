@@ -8,23 +8,31 @@ from odoo import fields, models
 class ResConfigSettings(models.TransientModel):
     _inherit = "res.config.settings"
 
-    end_date_near_day = fields.Integer(
+    joint_buying_end_date_near_day = fields.Integer(
         string="Number of Day 'Near'",
         required=True,
         config_parameter="joint_buying_product.end_date_near_day",
         help="Number of days below which the end of the order is near.",
     )
 
-    end_date_imminent_day = fields.Integer(
+    joint_buying_end_date_imminent_day = fields.Integer(
         string="Number of Day 'Imminent'",
         required=True,
         config_parameter="joint_buying_product.end_date_imminent_day",
         help="Number of days below which the end of the order is imminent.",
     )
 
-    new_product_day = fields.Integer(
+    joint_buying_new_product_day = fields.Integer(
         string="Number of Day 'Product new'",
         required=True,
         config_parameter="joint_buying_product.new_product_day",
         help="Number of days after which a product will no longer be marked as new.",
+    )
+
+    joint_buying_supplier_document_url = fields.Char(
+        string="Supplier Document URL",
+        required=True,
+        config_parameter="joint_buying_product.supplier_document_url",
+        help="URL of the online document that will be added to the email"
+        " send to the supplier.",
     )

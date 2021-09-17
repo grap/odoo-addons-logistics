@@ -2,19 +2,24 @@
 
 <odoo noupdate="1">
 
-    <record id="config_end_date_near_day" model="ir.config_parameter" forcecreate="0">
+    <record id="config_end_date_near_day" model="ir.config_parameter">
         <field name="key">joint_buying_product.end_date_near_day</field>
         <field name="value">3</field>
     </record>
 
-    <record id="config_end_date_imminent_day" model="ir.config_parameter" forcecreate="0">
+    <record id="config_end_date_imminent_day" model="ir.config_parameter">
         <field name="key">joint_buying_product.end_date_imminent_day</field>
         <field name="value">1</field>
     </record>
 
-    <record id="new_product_day" model="ir.config_parameter" forcecreate="0">
+    <record id="new_product_day" model="ir.config_parameter">
         <field name="key">joint_buying_product.new_product_day</field>
         <field name="value">60</field>
+    </record>
+
+    <record id="supplier_url_document" model="ir.config_parameter">
+        <field name="key">joint_buying_product.supplier_url_document</field>
+        <field name="value">http://framabook.org/docs/NRC/Numerique_ReprendreLeControle_CC-By.pdf</field>
     </record>
 
 </odoo>

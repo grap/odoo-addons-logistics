@@ -17,6 +17,12 @@ class ResPartner(models.Model):
     _inherit = ["res.partner", "joint.buying.mixin", "joint.buying.check.access.mixin"]
     _name = "res.partner"
 
+    _COMMISSION_STATE = [
+        ("signed", "Signed"),
+        ("rejected", "Rejected"),
+        ("not_applicable", "Not Applicable"),
+    ]
+
     _check_write_access_company_field_id = "joint_buying_pivot_company_id"
 
     joint_buying_subscribed_company_ids = fields.Many2many(
@@ -70,6 +76,12 @@ class ResPartner(models.Model):
     joint_buying_is_mine = fields.Boolean(
         compute="_compute_joint_buying_is_mine", search="_search_joint_buying_is_mine"
     )
+
+    joint_buying_commission_state = fields.Selection(
+        selection=_COMMISSION_STATE, string="Commission Agreement"
+    )
+
+    joint_buying_commission_rate = fields.Float(string="Commission Rate")
 
     # Onchange section
     @api.onchange("joint_buying_pivot_company_id")

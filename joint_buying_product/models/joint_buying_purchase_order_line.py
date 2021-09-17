@@ -98,15 +98,17 @@ class JointBuyingPurchaseOrderLine(models.Model):
     )
 
     amount_untaxed = fields.Float(
-        string="Amount Untaxed",
+        string="Total Untaxed Amount",
         compute="_compute_amount",
         store=True,
         digits=dp.get_precision("Product Price"),
     )
 
     total_weight = fields.Float(
-        string="Total Weight", compute="_compute_total_weight", store=True
+        string="Total Brut Weight", compute="_compute_total_weight", store=True
     )
+
+    is_new = fields.Boolean(related="product_id.joint_buying_is_new")
 
     # Compute Section
     @api.depends("qty", "product_weight")

@@ -98,6 +98,8 @@ License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl.html).
                                 <group name="vendor_setting" string="Settings" colspan="4" col="4">
                                     <field name="joint_buying_pivot_company_id"/>
                                     <field name="joint_buying_deposit_partner_id"/>
+                                    <field name="joint_buying_commission_state"/>
+                                    <field name="joint_buying_commission_rate"/>
                                 </group>
                                 <group string="Logistic Information" colspan="4">
                                     <field name="comment" nolabel="1"/>
@@ -143,10 +145,26 @@ License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl.html).
                 <field name="category_id" widget="many2many_tags" options="{'color_field': 'color'}"/>
                 <field name="city"/>
                 <field name="zip"/>
-                <field name="joint_buying_deposit_partner_id" attrs="{'invisible': [('supplier', '=', False)]}"/>
                 <field name="joint_buying_pivot_company_id" attrs="{'invisible': [('supplier', '=', False)]}"/>
+                <field name="joint_buying_deposit_partner_id" attrs="{'invisible': [('supplier', '=', False)]}"/>
                 <field name="customer" invisible="context.get('only_supplier', True)"/>
                 <field name="supplier" invisible="context.get('only_supplier', True)"/>
+            </tree>
+        </field>
+    </record>
+
+    <record id="view_res_partner_tree_editable" model="ir.ui.view">
+        <field name="model">res.partner</field>
+        <field name="arch" type="xml">
+            <tree editable="bottom">
+                <field name="name" readonly="1"/>
+                <field name="category_id" widget="many2many_tags" options="{'color_field': 'color'}"/>
+                <field name="city"/>
+                <field name="zip"/>
+                <field name="joint_buying_pivot_company_id"/>
+                <field name="joint_buying_deposit_partner_id"/>
+                <field name="joint_buying_commission_state"/>
+                <field name="joint_buying_commission_rate"/>
             </tree>
         </field>
     </record>
@@ -175,6 +193,32 @@ License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl.html).
         parent="menu_root"
         action="action_res_partner_supplier"
         sequence="5"
+    />
+
+    <record id="action_res_partner_supplier_editable" model="ir.actions.act_window">
+        <field name="name">Suppliers (Editable View)</field>
+        <field name="type">ir.actions.act_window</field>
+        <field name="res_model">res.partner</field>
+        <field name="view_id" ref="view_res_partner_tree_editable"/>
+        <field name="view_mode">tree,form</field>
+        <field name="domain">[('supplier', '=', 1)]</field>
+        <field name="context">
+            {
+                "joint_buying": 1,
+                "only_supplier": 1,
+                "default_customer": 0,
+                "default_supplier": 1,
+                "default_is_company": 1,
+                "form_view_ref": "joint_buying_base.view_res_partner_form_joint_buying",
+            }
+        </field>
+    </record>
+
+    <menuitem id="menu_res_partner_supplier_editable"
+        name="Suppliers (Editable View)"
+        parent="menu_configuration"
+        action="action_res_partner_supplier_editable"
+        sequence="11"
     />
 
 

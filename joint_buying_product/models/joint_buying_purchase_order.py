@@ -21,7 +21,8 @@ class JointBuyingPurchaseOrder(models.Model):
     _PURCHASE_OK_SELECTION = [
         ("no_line", "No Lines"),
         ("no_minimum_amount", "Minimum Amount Not reached"),
-        ("no_qty", "No Quantity"),
+        ("no_minimum_weight", "Minimum Weight Not reached"),
+        ("null_amount", "Null Amount"),
         ("ok", "OK"),
     ]
 
@@ -110,7 +111,7 @@ class JointBuyingPurchaseOrder(models.Model):
     )
 
     amount_untaxed = fields.Float(
-        string="Amount Subtotal",
+        string="Total Untaxed Amount",
         compute="_compute_amount",
         store=True,
         digits=dp.get_precision("Product Price"),
@@ -125,15 +126,30 @@ class JointBuyingPurchaseOrder(models.Model):
 
     is_mine = fields.Boolean(compute="_compute_is_mine", search="_search_is_mine")
 
-    @api.depends("amount_untaxed", "minimum_unit_amount", "line_ids")
+    # Compute Section
+    @api.depends(
+        "amount_untaxed",
+        "minimum_unit_amount",
+        "minimum_unit_weight",
+        "total_weight",
+        "line_qty",
+    )
     def _compute_purchase_ok(self):
         for order in self:
             if not order.line_qty:
                 order.purchase_ok = "no_line"
-            elif order.minimum_unit_amount > order.amount_untaxed:
-                order.purchase_ok = "no_minimum_amount"
             elif order.amount_untaxed == 0.0:
-                order.purchase_ok = "no_qty"
+                order.purchase_ok = "null_amount"
+            elif (
+                order.minimum_unit_amount
+                and order.minimum_unit_amount > order.amount_untaxed
+            ):
+                order.purchase_ok = "no_minimum_amount"
+            elif (
+                order.minimum_unit_weight
+                and order.minimum_unit_weight > order.total_weight
+            ):
+                order.purchase_ok = "no_minimum_weight"
             else:
                 order.purchase_ok = "ok"
 
@@ -197,19 +213,26 @@ class JointBuyingPurchaseOrder(models.Model):
 
     def action_confirm_purchase(self):
         for order in self.filtered(lambda x: x.purchase_state == "draft"):
-            if not order.line_qty:
+            if order.purchase_ok == "no_line":
                 raise ValidationError(
                     _("You can not confirm an order without any lines.")
                 )
-            elif not order.amount_untaxed:
+            elif order.purchase_ok == "null_amount":
                 raise ValidationError(
                     _("You can not confirm an order with null amount.")
                 )
-            elif order.minimum_unit_amount > order.amount_untaxed:
+            elif order.purchase_ok == "no_minimum_amount":
                 raise ValidationError(
                     _(
                         "you cannot confirm an order for which you have"
                         " not reached the minimum purchase amount."
+                    )
+                )
+            elif order.purchase_ok == "no_minimum_weight":
+                raise ValidationError(
+                    _(
+                        "you cannot confirm an order for which you have"
+                        " not reached the minimum weight."
                     )
                 )
             order.purchase_state = "done"

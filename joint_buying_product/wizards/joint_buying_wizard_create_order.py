@@ -145,6 +145,8 @@ class JointBuyingWizardCreateOrder(models.TransientModel):
                 deposit_partner=self.deposit_partner_id,
                 minimum_amount=self.minimum_amount,
                 minimum_unit_amount=self.minimum_unit_amount,
+                minimum_weight=self.minimum_weight,
+                minimum_unit_weight=self.minimum_unit_weight,
             )
         )
 

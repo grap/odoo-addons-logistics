@@ -28,6 +28,14 @@ class JointBuyingPurchaseOrderGrouped(models.Model):
         ("deposited", "Deposited Products"),
     ]
 
+    _PURCHASE_OK_SELECTION = [
+        ("no_order", "No Orders"),
+        ("no_minimum_amount", "Minimum Amount Not reached"),
+        ("no_minimum_weight", "Minimum Weight Not reached"),
+        ("null_amount", "Null Amount"),
+        ("ok", "OK"),
+    ]
+
     name = fields.Char(
         string="Number", required=True, copy=False, default=lambda x: x._default_name()
     )
@@ -40,12 +48,18 @@ class JointBuyingPurchaseOrderGrouped(models.Model):
         context=_JOINT_BUYING_PARTNER_CONTEXT,
     )
 
+    supplier_comment = fields.Text(related="supplier_id.comment")
+
     state = fields.Selection(
         index=True,
         selection=_STATE_SELECTION,
         string="State",
         readonly=True,
         track_visibility=True,
+    )
+
+    purchase_ok = fields.Selection(
+        selection=_PURCHASE_OK_SELECTION, compute="_compute_purchase_ok", store=True
     )
 
     pivot_company_id = fields.Many2one(
@@ -81,14 +95,14 @@ class JointBuyingPurchaseOrderGrouped(models.Model):
     minimum_unit_weight = fields.Float(string="Minimum Unit Weight")
 
     amount_untaxed = fields.Float(
-        string="Amount Subtotal",
+        string="Total Untaxed Amount",
         compute="_compute_amount",
         store=True,
         digits=dp.get_precision("Product Price"),
     )
 
     total_weight = fields.Float(
-        string="Total Weight",
+        string="Total Brut Weight",
         compute="_compute_total_weight",
         store=True,
         digits=dp.get_precision("Stock Weight"),
@@ -126,6 +140,32 @@ class JointBuyingPurchaseOrderGrouped(models.Model):
         )
 
     # Compute Section
+    @api.depends(
+        "amount_untaxed",
+        "minimum_amount",
+        "minimum_weight",
+        "total_weight",
+        "order_qty",
+    )
+    def _compute_purchase_ok(self):
+        for grouped_order in self:
+            if not grouped_order.order_qty:
+                grouped_order.purchase_ok = "no_order"
+            elif grouped_order.amount_untaxed == 0.0:
+                grouped_order.purchase_ok = "null_amount"
+            elif (
+                grouped_order.minimum_unit_amount
+                and grouped_order.minimum_amount > grouped_order.amount_untaxed
+            ):
+                grouped_order.purchase_ok = "no_minimum_amount"
+            elif (
+                grouped_order.minimum_unit_weight
+                and grouped_order.minimum_weight > grouped_order.total_weight
+            ):
+                grouped_order.purchase_ok = "no_minimum_weight"
+            else:
+                grouped_order.purchase_ok = "ok"
+
     @api.depends("order_ids")
     def _compute_order_qty(self):
         for grouped_order in self:
