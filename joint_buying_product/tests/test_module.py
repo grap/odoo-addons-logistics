@@ -42,6 +42,9 @@ class TestModule(TransactionCase):
         self.salaison_devidal = self.JointBuyingResPartner.browse(
             self.env.ref("joint_buying_base.supplier_salaison_devidal").id
         )
+        self.supplier_oscar_morell = self.JointBuyingResPartner.browse(
+            self.env.ref("joint_buying_base.supplier_oscar_morell").id
+        )
         self.category_all = self.env.ref("product.product_category_all")
         self.end_date_near_day = int(
             self.IrConfigParameter.get_param("joint_buying_product.end_date_near_day")
@@ -308,3 +311,42 @@ class TestModule(TransactionCase):
             product.joint_buying_is_new,
             "Old Joint buying product should not be marked as new",
         )
+
+    def test_05_joint_buying_purchase_order_grouped_check_date(self):
+        now = fields.datetime.now()
+        self.OrderGrouped.cron_create_purchase_order_grouped()
+        order_grouped = self.OrderGrouped.search(
+            [("supplier_id", "=", self.supplier_oscar_morell.id)]
+        )
+
+        self.assertEqual(
+            len(order_grouped),
+            0,
+            "Creation of Grouped Order should not be launched for manual supplier",
+        )
+
+        # We create an automatic purchase_order_grouped with Morell Supplier
+        self.supplier_oscar_morell.write(
+            {
+                "joint_buying_subscribed_company_ids": [
+                    (6, 0, [self.company_3PP.id, self.company_CHE.id])
+                ],
+                "joint_buying_frequency": 14,
+                "joint_buying_next_start_date": now + timedelta(days=-15),
+                "joint_buying_next_end_date": now + timedelta(days=-8),
+                "joint_buying_next_deposit_date": now + timedelta(days=+1),
+            }
+        )
+
+        self.OrderGrouped.cron_create_purchase_order_grouped()
+        order_grouped = self.OrderGrouped.search(
+            [("supplier_id", "=", self.supplier_oscar_morell.id)]
+        )
+
+        self.assertEqual(
+            len(order_grouped), 1, "Creation of Grouped Order by cron failed"
+        )
+
+        self.assertEqual(order_grouped.start_date, now + timedelta(days=-1))
+        self.assertEqual(order_grouped.end_date, now + timedelta(days=6))
+        self.assertEqual(order_grouped.deposit_date, now + timedelta(days=15))

@@ -15,6 +15,19 @@
         <field name="active" eval="True"/>
     </record>
 
+    <record id="cron_create_purchase_order_grouped" model="ir.cron">
+        <field name="name">Joint Buying: Created Grouped Order</field>
+        <field name="model_id" ref="model_joint_buying_purchase_order_grouped"/>
+        <field name="state">code</field>
+        <field name="code">model.cron_create_purchase_order_grouped()</field>
+        <field name="user_id" ref="base.user_root" />
+        <field name="interval_number">10</field>
+        <field name="interval_type">minutes</field>
+        <field name="numbercall">-1</field>
+        <field name="doall" eval="False"/>
+        <field name="active" eval="True"/>
+    </record>
+
     <record id="cron_product_product_check_new" model="ir.cron">
         <field name="name">Joint Buying: Uncheck Old products</field>
         <field name="model_id" ref="model_product_product"/>

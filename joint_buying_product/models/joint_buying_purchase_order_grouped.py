@@ -277,6 +277,37 @@ class JointBuyingPurchaseOrderGrouped(models.Model):
     def cron_check_state(self):
         self.update_state_value(check_all=True)
 
+    @api.model
+    def cron_create_purchase_order_grouped(self):
+        now = fields.datetime.now()
+        partners = (
+            self.env["res.partner"]
+            .with_context(joint_buying=True)
+            .search(
+                [
+                    ("joint_buying_frequency", "!=", 0),
+                    ("joint_buying_next_start_date", "<", now),
+                ]
+            )
+        )
+        for partner in partners:
+            vals = {}
+            for field in [
+                "joint_buying_next_start_date",
+                "joint_buying_next_end_date",
+                "joint_buying_next_deposit_date",
+            ]:
+                vals[field] = getattr(partner, field) + timedelta(
+                    days=partner.joint_buying_frequency
+                )
+            partner.write(vals)
+            wizard = (
+                self.env["joint.buying.wizard.create.order"]
+                .with_context(active_id=partner.id)
+                .create({})
+            )
+            wizard.create_order_grouped()
+
     @api.multi
     def update_state_value(self, check_all=False):
         end_date_near_day = int(
