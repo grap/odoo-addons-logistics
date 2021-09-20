@@ -48,7 +48,7 @@ class ProductProduct(models.Model):
         string="Display Joint Buying Propagation button",
         help="Technical field to know if the button to create or see"
         " the joint buying products is visible",
-        related="company_id.is_joint_buying_customer",
+        related="company_id.is_joint_buying_supplier",
         store=True,
     )
 
@@ -145,6 +145,9 @@ class ProductProduct(models.Model):
         self.ensure_one()
         vals = {
             "name": self.name,
+            "uom_id": self.uom_id.id,
+            "uom_po_id": self.uom_id.id,
+            "default_code": self.default_code,
             "weight": self.weight,
             "barcode": self.barcode,
             "categ_id": self.env.ref("joint_buying_product.product_category").id,
