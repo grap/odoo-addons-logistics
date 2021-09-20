@@ -182,6 +182,7 @@ License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl.html).
         parent="joint_buying_product.menu_order"
         action="action_joint_buying_purchase_order_grouped_all"
         sequence="50"
+        groups="joint_buying_base.group_joint_buying_user"
     />
 
     <record id="action_joint_buying_purchase_order_grouped_my" model="ir.actions.act_window">

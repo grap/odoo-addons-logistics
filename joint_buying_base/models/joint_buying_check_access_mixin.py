@@ -19,7 +19,7 @@ class JointBuyingCheckAccessMixin(models.AbstractModel):
             "joint_buying_base.group_joint_buying_manager"
         ) and not self.env.context.get("no_check_joint_buying", False):
             if (
-                res.is_joint_buying
+                ("is_joint_buying" not in self._fields or res.is_joint_buying)
                 and res.mapped(self._check_write_access_company_field_id)
                 != self.env.user.company_id
             ):
@@ -36,7 +36,10 @@ class JointBuyingCheckAccessMixin(models.AbstractModel):
         if not self.env.user.has_group(
             "joint_buying_base.group_joint_buying_manager"
         ) and not self.env.context.get("no_check_joint_buying", False):
-            items = self.filtered(lambda x: x.is_joint_buying)
+            if "is_joint_buying" in self._fields:
+                items = self.filtered(lambda x: x.is_joint_buying)
+            else:
+                items = self
             for item in items:
                 if (
                     item.mapped(self._check_write_access_company_field_id)
@@ -55,7 +58,10 @@ class JointBuyingCheckAccessMixin(models.AbstractModel):
         if not self.env.user.has_group(
             "joint_buying_base.group_joint_buying_manager"
         ) and not self.env.context.get("no_check_joint_buying", False):
-            items = self.filtered(lambda x: x.is_joint_buying)
+            if "is_joint_buying" in self._fields:
+                items = self.filtered(lambda x: x.is_joint_buying)
+            else:
+                items = self
             for item in items:
                 if (
                     item.mapped(self._check_write_access_company_field_id)

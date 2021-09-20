@@ -165,7 +165,7 @@ msgstr "Status de l'Activité"
 #: model:ir.actions.act_window,name:joint_buying_product.action_joint_buying_purchase_order_grouped_all
 #: model:ir.ui.menu,name:joint_buying_product.menu_joint_buying_purchase_order_grouped
 msgid "All Grouped Orders"
-msgstr ""
+msgstr "Toutes les commandes groupées"
 
 #. module: joint_buying_product
 #: model:ir.actions.act_window,name:joint_buying_product.action_joint_buying_purchase_order_all

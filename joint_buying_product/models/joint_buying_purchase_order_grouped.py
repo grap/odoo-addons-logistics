@@ -16,8 +16,11 @@ from odoo.addons.joint_buying_base.models.res_partner import (
 
 class JointBuyingPurchaseOrderGrouped(models.Model):
     _name = "joint.buying.purchase.order.grouped"
+    _inherit = ["joint.buying.check.access.mixin"]
     _description = "Joint Buying Grouped Order"
     _inherit = ["mail.thread", "mail.activity.mixin"]
+
+    _check_write_access_company_field_id = "pivot_company_id"
 
     _STATE_SELECTION = [
         ("futur", "Futur"),
@@ -344,8 +347,9 @@ class JointBuyingPurchaseOrderGrouped(models.Model):
             "deposited": [("deposit_date", "<", now)],
         }
         for correct_state, domain in right_settings.items():
+            domain = expression.AND([domain, [("state", "!=", correct_state)]])
             if not check_all:
-                expression.AND([domain, [("id", "in", self.ids)]])
+                domain = expression.AND([domain, [("id", "in", self.ids)]])
             grouped_orders = self.search(domain)
             for grouped_order in grouped_orders:
                 previous_state = grouped_order.state or ""
@@ -364,24 +368,25 @@ class JointBuyingPurchaseOrderGrouped(models.Model):
     @api.multi
     def send_mail_to_pivot_company(self):
         self.ensure_one()
-        for grouped_order in self:
+        # Send opening mail. (if set on the pivot company)
+        if (
+            self.state.startswith("in_progress")
+            and self.pivot_company_id.joint_buying_send_pivot_email_in_progress
+        ):
+            template = self.env.ref(
+                "joint_buying_product.email_template_pivot_company_in_progress"
+            )
+            template.send_mail(self.id, force_send=True)
 
-            # Send opening mail. (if set on the pivot company)
-            if (
-                grouped_order.state.startswith("in_progress")
-                and grouped_order.pivot_company_id
-            ):
-                template = self.env.ref(
-                    "joint_buying_product.email_template_pivot_company_in_progress"
-                )
-                template.send_mail(grouped_order.id, force_send=True)
-
-            # Send closing mail. (if set on the pivot company)
-            if grouped_order.state == "closed" and grouped_order.pivot_company_id:
-                template = self.env.ref(
-                    "joint_buying_product.email_template_pivot_company_closed"
-                )
-                template.send_mail(grouped_order.id, force_send=True)
+        # Send closing mail. (if set on the pivot company)
+        if (
+            self.state == "closed"
+            and self.pivot_company_id.joint_buying_send_pivot_email_closed
+        ):
+            template = self.env.ref(
+                "joint_buying_product.email_template_pivot_company_closed"
+            )
+            template.send_mail(self.id, force_send=True)
 
     @api.model
     def _prepare_order_grouped_vals(

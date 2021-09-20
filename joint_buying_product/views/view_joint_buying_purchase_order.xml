@@ -185,6 +185,7 @@ License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl.html).
         parent="joint_buying_product.menu_order"
         action="action_joint_buying_purchase_order_all"
         sequence="55"
+        groups="joint_buying_base.group_joint_buying_manager"
     />
 
 </odoo>
