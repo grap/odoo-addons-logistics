@@ -5,13 +5,15 @@
 from odoo import fields, models
 
 
-class ResCompany(models.Model):
-    _inherit = "res.company"
+class ResUsers(models.Model):
+    _inherit = "res.users"
 
     joint_buying_send_pivot_email_in_progress = fields.Boolean(
-        "Send email when opening Grouped Order", default=False
+        string="Send email when opening Grouped Order",
+        related="company_id.joint_buying_send_pivot_email_in_progress",
     )
 
     joint_buying_send_pivot_email_closed = fields.Boolean(
-        "Send email when closing Grouped Order", default=True
+        string="Send email when closing Grouped Order",
+        related="company_id.joint_buying_send_pivot_email_closed",
     )

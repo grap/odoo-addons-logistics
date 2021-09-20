@@ -36,3 +36,15 @@ class ResConfigSettings(models.TransientModel):
         help="URL of the online document that will be added to the email"
         " send to the supplier.",
     )
+
+    joint_buying_send_pivot_email_in_progress = fields.Boolean(
+        string="Send email when opening Grouped Order",
+        related="company_id.joint_buying_send_pivot_email_in_progress",
+        readonly=False,
+    )
+
+    joint_buying_send_pivot_email_closed = fields.Boolean(
+        string="Send email when closing Grouped Order",
+        related="company_id.joint_buying_send_pivot_email_closed",
+        readonly=False,
+    )
