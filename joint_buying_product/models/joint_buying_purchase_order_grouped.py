@@ -348,7 +348,17 @@ class JointBuyingPurchaseOrderGrouped(models.Model):
                 grouped_orders.with_context(update_state_value=True).write(
                     {"state": correct_state}
                 )
-                # TODO, raise things like sending pivot mail
+                if correct_state in ["closed"]:
+                    grouped_orders.send_mail_to_pivot_company()
+
+    @api.multi
+    def send_mail_to_pivot_company(self):
+        for grouped_order in self:
+            if grouped_order.state == "closed" and grouped_order.pivot_company_id:
+                template = self.env.ref(
+                    "joint_buying_product.email_template_pivot_company_closed"
+                )
+                template.send_mail(grouped_order.id, force_send=True)
 
     @api.model
     def _prepare_order_grouped_vals(
@@ -431,8 +441,7 @@ class JointBuyingPurchaseOrderGrouped(models.Model):
         self.ensure_one()
         IrModelData = self.env["ir.model.data"]
         template_id = IrModelData.get_object_reference(
-            "joint_buying_product",
-            "email_template_purchase_order_grouped_for_pivot_company",
+            "joint_buying_product", "email_template_pivot_company_closed"
         )[1]
         compose_form_id = IrModelData.get_object_reference(
             "mail", "email_compose_message_wizard_form"
