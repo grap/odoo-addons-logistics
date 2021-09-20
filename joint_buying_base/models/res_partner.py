@@ -78,10 +78,10 @@ class ResPartner(models.Model):
     )
 
     joint_buying_commission_state = fields.Selection(
-        selection=_COMMISSION_STATE, string="Commission Agreement"
+        selection=_COMMISSION_STATE, string="Joint Guying Commission Agreement"
     )
 
-    joint_buying_commission_rate = fields.Float(string="Commission Rate")
+    joint_buying_commission_rate = fields.Float(string="Joint Buying Commission Rate")
 
     # Onchange section
     @api.onchange("joint_buying_pivot_company_id")

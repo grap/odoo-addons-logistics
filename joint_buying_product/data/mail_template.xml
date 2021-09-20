@@ -32,8 +32,46 @@
         <field name="auto_delete" eval="True"/>
     </record>
 
+    <!-- =============================================================================== -->
+    <!-- Mail sent when the grouped order has just started -->
+    <!-- =============================================================================== -->
+    <record id="email_template_pivot_company_in_progress" model="mail.template">
+        <field name="name">Joint Buying Purchase Order: Say to Pivot Company that grouped order started</field>
+        <field name="model_id" ref="joint_buying_product.model_joint_buying_purchase_order_grouped"/>
+        <field name="subject">Grouped Order (Ref ${object.name}) has just started</field>
+        <field name="partner_to">${object.pivot_company_id.partner_id.id}</field>
+        <field name="body_html" type="html">
+            <div style="margin: 0px; padding: 0px;">
+                <p style="margin: 0px; padding: 0px; font-size: 13px;">
+                    Hello ${object.pivot_company_id.name}
+                    <br/><br/>
+                    The Grouped Order <strong>${object.name}</strong> for the supplier ${object.supplier_id.name} has just started.<br/>
+                    <ul>
+                        <li>Closing Date : <strong>${object.end_date}</strong></li>
+                    </ul>
+
+                    % for order in object.order_ids:
+                    The subscribed activities are the following:
+                    <ul>
+                        <li>{order.customer_id.joint_buying_company_id.code} - ${order.customer_id.name}</li>
+                    </ul>
+                    <br/><br/>
+                    Have a nice day.
+
+                </p>
+            </div>
+        </field>
+        <field name="report_template" ref="action_report_joint_buying_purchase_order_grouped"/>
+        <field name="lang">${object.pivot_company_id.partner_id.lang}</field>
+        <field name="user_signature" eval="False"/>
+        <field name="auto_delete" eval="True"/>
+    </record>
+
+    <!-- =============================================================================== -->
+    <!-- Mail sent when the grouped order has just ended-->
+    <!-- =============================================================================== -->
     <record id="email_template_pivot_company_closed" model="mail.template">
-        <field name="name">Joint Buying Purchase Order: Send Grouped Order to Pivot Company</field>
+        <field name="name">Joint Buying Purchase Order: Say to Pivot Company that grouped order ended</field>
         <field name="model_id" ref="joint_buying_product.model_joint_buying_purchase_order_grouped"/>
         <field name="subject">Grouped Order (Ref ${object.name}) has just ended</field>
         <field name="partner_to">${object.pivot_company_id.partner_id.id}</field>
@@ -42,7 +80,20 @@
                 <p style="margin: 0px; padding: 0px; font-size: 13px;">
                     Hello ${object.pivot_company_id.name}
                     <br/><br/>
-                    The Grouped Order <strong>${object.name}</strong> for the supplier ${object.supplier_id.name} has just ended. Please check the ordered products and send the order to the supplier, by clicking on the link below.
+                    The Grouped Order <strong>${object.name}</strong> for the supplier ${object.supplier_id.name} has just ended.
+                    <ul>
+                        <li>Total Amount Untaxed : <strong>${round(object.amount_untaxed, 2)} €</strong></li>
+                        <li>Total Brut Weight : <strong>${round(object.total_weight, 2)} kg</strong></li>
+                    </ul>
+
+                    Please,
+                    <ul>
+                        <li>Check the content of the orders</li>
+                        <li>Check that there are no errors or omissions</li>
+                        <li>Send the order to the supplier</li>
+                    </ul>
+                    <br/><br/>
+                    Have a nice day.
                 </p>
             </div>
         </field>

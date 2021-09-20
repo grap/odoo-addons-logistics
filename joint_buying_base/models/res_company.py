@@ -41,7 +41,10 @@ class ResCompany(models.Model):
     )
 
     is_joint_buying_supplier = fields.Boolean(
-        related="joint_buying_partner_id.supplier", string="Is a Vendor", readonly=False
+        related="joint_buying_partner_id.supplier",
+        string="Is a Vendor",
+        readonly=False,
+        store=True,
     )
 
     def _prepare_joint_buying_partner_vals(self):

@@ -291,6 +291,15 @@ class JointBuyingPurchaseOrderGrouped(models.Model):
             )
         )
         for partner in partners:
+            # Create Grouped order
+            wizard = (
+                self.env["joint.buying.wizard.create.order"]
+                .with_context(active_id=partner.id)
+                .create({})
+            )
+            wizard.create_order_grouped()
+
+            # Add frequency to all dates
             vals = {}
             for field in [
                 "joint_buying_next_start_date",
@@ -301,12 +310,6 @@ class JointBuyingPurchaseOrderGrouped(models.Model):
                     days=partner.joint_buying_frequency
                 )
             partner.write(vals)
-            wizard = (
-                self.env["joint.buying.wizard.create.order"]
-                .with_context(active_id=partner.id)
-                .create({})
-            )
-            wizard.create_order_grouped()
 
     @api.multi
     def update_state_value(self, check_all=False):
@@ -344,19 +347,39 @@ class JointBuyingPurchaseOrderGrouped(models.Model):
             if not check_all:
                 expression.AND([domain, [("id", "in", self.ids)]])
             grouped_orders = self.search(domain)
-            if grouped_orders:
-                grouped_orders.with_context(update_state_value=True).write(
+            for grouped_order in grouped_orders:
+                previous_state = grouped_order.state or ""
+                grouped_order.with_context(update_state_value=True).write(
                     {"state": correct_state}
                 )
-                if correct_state in ["closed"]:
-                    grouped_orders.send_mail_to_pivot_company()
+                # we send mail, when the grouped order is closed
+                if correct_state == "closed":
+                    grouped_order.send_mail_to_pivot_company()
+                # we send mail, when the grouped order is openened. (and was not before)
+                if correct_state.startswith(
+                    "in_progress"
+                ) and not previous_state.startswith("in_progress"):
+                    grouped_order.send_mail_to_pivot_company()
 
     @api.multi
     def send_mail_to_pivot_company(self):
+        self.ensure_one()
         for grouped_order in self:
+
+            # Send opening mail. (if set on the pivot company)
+            if (
+                grouped_order.state.startswith("in_progress")
+                and grouped_order.pivot_company_id
+            ):
+                template = self.env.ref(
+                    "joint_buying_product.email_template_pivot_company_in_progress"
+                )
+                template.send_mail(grouped_order.id, force_send=True)
+
+            # Send closing mail. (if set on the pivot company)
             if grouped_order.state == "closed" and grouped_order.pivot_company_id:
                 template = self.env.ref(
-                    "joint_buying_product.email_template_pivot_company_closed"
+                    "joint_buying_product.joint_buying_send_pivot_email_closing"
                 )
                 template.send_mail(grouped_order.id, force_send=True)
 
@@ -437,7 +460,13 @@ class JointBuyingPurchaseOrderGrouped(models.Model):
             "context": ctx,
         }
 
-    def action_send_email_for_pivot(self):
+    def action_send_email_for_pivot_in_progress(self):
+        self._action_send_email_for_pivot("email_template_pivot_company_in_progress")
+
+    def action_send_email_for_pivot_closed(self):
+        self._action_send_email_for_pivot("email_template_pivot_company_closed")
+
+    def _action_send_email_for_pivot(self, email_template):
         self.ensure_one()
         IrModelData = self.env["ir.model.data"]
         template_id = IrModelData.get_object_reference(
