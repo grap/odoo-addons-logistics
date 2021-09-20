@@ -379,7 +379,7 @@ class JointBuyingPurchaseOrderGrouped(models.Model):
             # Send closing mail. (if set on the pivot company)
             if grouped_order.state == "closed" and grouped_order.pivot_company_id:
                 template = self.env.ref(
-                    "joint_buying_product.joint_buying_send_pivot_email_closing"
+                    "joint_buying_product.joint_buying_send_pivot_email_closed"
                 )
                 template.send_mail(grouped_order.id, force_send=True)
 
