@@ -60,7 +60,7 @@
                         % endfor
                     </ul>
                     <br/>
-                    You can see your grouped order by clicking on<a href="${object.get_url()}">this link.</a>
+                    You can see your grouped order by clicking on <a href="${object.get_url()}">this link.</a>
                     <br/>
                     Have a nice day.
                 </p>
@@ -97,7 +97,7 @@
                         <li>Send the order to the supplier</li>
                     </ul>
                     <br/>
-                    You can see your grouped order by clicking on<a href="${object.get_url()}">this link.</a>
+                    You can see your grouped order by clicking on <a href="${object.get_url()}">this link.</a>
                     <br/>
                     Have a nice day.
                 </p>
