@@ -314,6 +314,7 @@ class TestModule(TransactionCase):
 
     def test_05_joint_buying_purchase_order_grouped_check_date(self):
         now = fields.datetime.now()
+
         self.OrderGrouped.cron_create_purchase_order_grouped()
         order_grouped = self.OrderGrouped.search(
             [("supplier_id", "=", self.supplier_oscar_morell.id)]
@@ -332,21 +333,35 @@ class TestModule(TransactionCase):
                     (6, 0, [self.company_3PP.id, self.company_CHE.id])
                 ],
                 "joint_buying_frequency": 14,
-                "joint_buying_next_start_date": now + timedelta(days=-15),
-                "joint_buying_next_end_date": now + timedelta(days=-8),
-                "joint_buying_next_deposit_date": now + timedelta(days=+1),
+                "joint_buying_next_start_date": now + timedelta(days=-1),
+                "joint_buying_next_end_date": now + timedelta(days=+8),
+                "joint_buying_next_deposit_date": now + timedelta(days=+12),
             }
         )
 
         self.OrderGrouped.cron_create_purchase_order_grouped()
+
+        # Check that the automatic purchase order has been correctly created
         order_grouped = self.OrderGrouped.search(
             [("supplier_id", "=", self.supplier_oscar_morell.id)]
         )
-
         self.assertEqual(
             len(order_grouped), 1, "Creation of Grouped Order by cron failed"
         )
-
         self.assertEqual(order_grouped.start_date, now + timedelta(days=-1))
-        self.assertEqual(order_grouped.end_date, now + timedelta(days=6))
-        self.assertEqual(order_grouped.deposit_date, now + timedelta(days=15))
+        self.assertEqual(order_grouped.end_date, now + timedelta(days=+8))
+        self.assertEqual(order_grouped.deposit_date, now + timedelta(days=+12))
+
+        # Check that supplier dateds has been correctly incremented
+        self.assertEqual(
+            self.supplier_oscar_morell.joint_buying_next_start_date,
+            now + timedelta(days=+13),
+        )
+        self.assertEqual(
+            self.supplier_oscar_morell.joint_buying_next_end_date,
+            now + timedelta(days=+22),
+        )
+        self.assertEqual(
+            self.supplier_oscar_morell.joint_buying_next_deposit_date,
+            now + timedelta(days=+26),
+        )
