@@ -9,7 +9,7 @@ class ResCompany(models.Model):
     _inherit = "res.company"
 
     joint_buying_send_pivot_email_in_progress = fields.Boolean(
-        "Send email when opening Grouped Order", default=False
+        string="Send email when opening Grouped Order", default=False
     )
 
     joint_buying_send_pivot_email_closed = fields.Boolean(

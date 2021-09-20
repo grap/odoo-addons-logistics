@@ -461,16 +461,18 @@ class JointBuyingPurchaseOrderGrouped(models.Model):
         }
 
     def action_send_email_for_pivot_in_progress(self):
-        self._action_send_email_for_pivot("email_template_pivot_company_in_progress")
+        return self._action_send_email_for_pivot(
+            "email_template_pivot_company_in_progress"
+        )
 
     def action_send_email_for_pivot_closed(self):
-        self._action_send_email_for_pivot("email_template_pivot_company_closed")
+        return self._action_send_email_for_pivot("email_template_pivot_company_closed")
 
     def _action_send_email_for_pivot(self, email_template):
         self.ensure_one()
         IrModelData = self.env["ir.model.data"]
         template_id = IrModelData.get_object_reference(
-            "joint_buying_product", "email_template_pivot_company_closed"
+            "joint_buying_product", email_template
         )[1]
         compose_form_id = IrModelData.get_object_reference(
             "mail", "email_compose_message_wizard_form"
@@ -542,3 +544,25 @@ class JointBuyingPurchaseOrderGrouped(models.Model):
             )
 
         return self.see_current_order()
+
+    @api.multi
+    def get_url(self):
+        self.ensure_one()
+        base_url = self.env["ir.config_parameter"].sudo().get_param("web.base.url")
+        action_id = self.env.ref(
+            "joint_buying_product.action_joint_buying_purchase_order_grouped_my"
+        ).id
+        menu_id = self.env.ref("joint_buying_base.menu_root").id
+        return (
+            "{base_url}/web?"
+            "#id={grouped_order_id}"
+            "&action={action_id}"
+            "&model=joint.buying.purchase.order.grouped"
+            "&view_type=form"
+            "&menu_id={menu_id}".format(
+                base_url=base_url,
+                grouped_order_id=self.id,
+                action_id=action_id,
+                menu_id=menu_id,
+            )
+        )

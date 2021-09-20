@@ -25,6 +25,7 @@
         "views/view_product_product.xml",
         "views/view_product_supplier_info.xml",
         "views/view_res_partner.xml",
+        "views/view_res_users.xml",
         "views/view_joint_buying_purchase_order_grouped.xml",
         "views/view_joint_buying_purchase_order.xml",
         "reports/report_template.xml",

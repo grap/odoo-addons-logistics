@@ -1,6 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <odoo>
 
+    <!-- =============================================================================== -->
+    <!-- Mail sent to the supplier, manually by the pivot company -->
+    <!-- =============================================================================== -->
     <record id="email_template_purchase_order_grouped_for_supplier" model="mail.template">
         <field name="name">Joint Buying Purchase Order: Send Grouped Order to Supplier</field>
         <field name="model_id" ref="joint_buying_product.model_joint_buying_purchase_order_grouped"/>
@@ -21,6 +24,7 @@
                     <br/>
                     If you see in this document, incorrect informations (product not for sale or out of stock, incorrect price, etc. ...) please contact your pivot activity <strong>${object.pivot_company_id.name}</strong> as soon as possible.
                     <br/><br/>
+                    You can download the packing instructions by clicking on <a href="${object.env['ir.config_parameter'].sudo().get_param('joint_buying_product.supplier_url_document')}">this link.</a>
                     Have a nice day.
                 </p>
             </div>
@@ -28,12 +32,12 @@
         <field name="report_template" ref="action_report_joint_buying_purchase_order_grouped"/>
         <field name="report_name">${(object.name)} - ${(object.supplier_id.name).replace('/', '_')} - Grouped Order ${(object.deposit_date)}</field>
         <field name="lang">${object.supplier_id.lang}</field>
-        <field name="user_signature" eval="False"/>
+        <field name="user_signature" eval="True"/>
         <field name="auto_delete" eval="True"/>
     </record>
 
     <!-- =============================================================================== -->
-    <!-- Mail sent when the grouped order has just started -->
+    <!-- Mail sent to the pivot company when the grouped order has just started -->
     <!-- =============================================================================== -->
     <record id="email_template_pivot_company_in_progress" model="mail.template">
         <field name="name">Joint Buying Purchase Order: Say to Pivot Company that grouped order started</field>
@@ -49,26 +53,26 @@
                     <ul>
                         <li>Closing Date : <strong>${object.end_date}</strong></li>
                     </ul>
-
-                    % for order in object.order_ids:
                     The subscribed activities are the following:
                     <ul>
-                        <li>{order.customer_id.joint_buying_company_id.code} - ${order.customer_id.name}</li>
+                        % for order in object.order_ids:
+                        <li>${order.customer_id.joint_buying_company_id.code} - ${order.customer_id.name}</li>
+                        % endfor
                     </ul>
-                    <br/><br/>
+                    <br/>
+                    You can see your grouped order by clicking on<a href="${object.get_url()}">this link.</a>
+                    <br/>
                     Have a nice day.
-
                 </p>
             </div>
         </field>
-        <field name="report_template" ref="action_report_joint_buying_purchase_order_grouped"/>
         <field name="lang">${object.pivot_company_id.partner_id.lang}</field>
         <field name="user_signature" eval="False"/>
         <field name="auto_delete" eval="True"/>
     </record>
 
     <!-- =============================================================================== -->
-    <!-- Mail sent when the grouped order has just ended-->
+    <!-- Mail sent to the pivot company when the grouped order has just ended-->
     <!-- =============================================================================== -->
     <record id="email_template_pivot_company_closed" model="mail.template">
         <field name="name">Joint Buying Purchase Order: Say to Pivot Company that grouped order ended</field>
@@ -92,12 +96,13 @@
                         <li>Check that there are no errors or omissions</li>
                         <li>Send the order to the supplier</li>
                     </ul>
-                    <br/><br/>
+                    <br/>
+                    You can see your grouped order by clicking on<a href="${object.get_url()}">this link.</a>
+                    <br/>
                     Have a nice day.
                 </p>
             </div>
         </field>
-        <field name="report_template" ref="action_report_joint_buying_purchase_order_grouped"/>
         <field name="lang">${object.pivot_company_id.partner_id.lang}</field>
         <field name="user_signature" eval="False"/>
         <field name="auto_delete" eval="True"/>
