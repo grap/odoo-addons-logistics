@@ -494,7 +494,7 @@ msgstr "Commandes Groupées"
 #. module: joint_buying_base
 #: model:ir.model.fields,field_description:joint_buying_base.field_res_partner__joint_buying_commission_state
 #: model:ir.model.fields,field_description:joint_buying_base.field_res_users__joint_buying_commission_state
-msgid "Joint Guying Commission Agreement"
+msgid "Joint Buying Commission Agreement"
 msgstr "Accord de commission pour les commandes groupées"
 
 #. module: joint_buying_base

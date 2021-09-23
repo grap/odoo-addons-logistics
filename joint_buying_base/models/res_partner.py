@@ -78,7 +78,7 @@ class ResPartner(models.Model):
     )
 
     joint_buying_commission_state = fields.Selection(
-        selection=_COMMISSION_STATE, string="Joint Guying Commission Agreement"
+        selection=_COMMISSION_STATE, string="Joint Buying Commission Agreement"
     )
 
     joint_buying_commission_rate = fields.Float(string="Joint Buying Commission Rate")
