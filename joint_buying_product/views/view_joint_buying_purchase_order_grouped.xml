@@ -72,11 +72,11 @@ License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl.html).
                 <header>
                     <button name="action_send_email_for_supplier" string="Send to Supplier by Email" type="object" class="oe_highlight" attrs="{'invisible': [('is_mail_sent', '=', True)]}"/>
                     <button name="action_send_email_for_supplier" string="Resend  to Supplier by Email" type="object" attrs="{'invisible': [('is_mail_sent', '=', False)]}"/>
-                    <button name="action_send_email_for_pivot_in_progress" string="Send Test email to Pivot company (Order In Progress)" type="object" groups="base.group_erp_manager" />
-                    <button name="action_send_email_for_pivot_closed" string="Send Test email to Pivot company (Order Closed)" type="object" groups="base.group_erp_manager" />
+                    <button name="action_send_email_for_pivot_in_progress" string="Send Test email (In Progress)" type="object" groups="base.group_erp_manager" />
+                    <button name="action_send_email_for_pivot_closed" string="Send Test email (Closed)" type="object" groups="base.group_erp_manager" />
                     <button name="see_current_order" string="See My Order" type="object" attrs="{'invisible': [('current_order_id', '=', False)]}"/>
                     <button name="create_current_order" string="Create Order" type="object" attrs="{'invisible': ['|', ('current_order_id', '!=', False), ('state', 'not in', ['in_progress', 'in_progress_near', 'in_progress_imminent'])]}"/>
-                    <field name="state" widget="statusbar"/>
+                    <field name="state" widget="statusbar" statusbar_visible="futur,in_progress,closed,deposited"/>
                 </header>
                 <sheet>
                     <div class="oe_button_box" name="button_box">
@@ -143,13 +143,13 @@ License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl.html).
                     <notebook colspan="4">
                         <page name="page_orders" string="Orders">
                             <field name="order_ids">
-                                <tree decoration-info="purchase_state == 'draft'">
+                                <tree decoration-info="purchase_state == 'draft'" decoration-danger="purchase_ok != 'ok' and amount_untaxed !=0">
                                     <field name="name"/>
                                     <field name="customer_id"/>
                                     <field name="total_weight" sum="Total Weight"/>
                                     <field name="amount_untaxed" sum="Total Amount Untaxed"/>
                                     <field name="purchase_state"/>
-                                    <field name="purchase_ok" attrs="{'invisible': [('purchase_ok', '=', 'ok')]}"/>
+                                    <field name="purchase_ok"/>
                                 </tree>
                             </field>
                         </page>

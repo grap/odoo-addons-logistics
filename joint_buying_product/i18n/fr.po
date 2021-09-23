@@ -1038,8 +1038,8 @@ msgstr "Articles"
 #. module: joint_buying_product
 #: model:ir.model.fields,field_description:joint_buying_product.field_joint_buying_purchase_order__purchase_ok
 #: model:ir.model.fields,field_description:joint_buying_product.field_joint_buying_purchase_order_grouped__purchase_ok
-msgid "Purchase Ok"
-msgstr "Peut être acheté"
+msgid "Purchase OK ?"
+msgstr "Achat OK ?"
 
 #. module: joint_buying_product
 #: model:ir.model.fields,field_description:joint_buying_product.field_joint_buying_purchase_order_line__order_id
@@ -1124,13 +1124,13 @@ msgstr "Voir ma commande"
 
 #. module: joint_buying_product
 #: model_terms:ir.ui.view,arch_db:joint_buying_product.view_joint_buying_purchase_order_grouped_form
-msgid "Send Test email to Pivot company (Order Closed)"
-msgstr "Envoyer un mail de test à l'activité pivot (Commande clôturée)"
+msgid "Send Test email (Closed)"
+msgstr "Envoyer un mail de test (Fermée)"
 
 #. module: joint_buying_product
 #: model_terms:ir.ui.view,arch_db:joint_buying_product.view_joint_buying_purchase_order_grouped_form
-msgid "Send Test email to Pivot company (Order In Progress)"
-msgstr "Envoyer un mail de test à l'activité pivot (Commande en cours)"
+msgid "Send Test email (In Progress)"
+msgstr "Envoyer un mail de test (En cours)"
 
 #. module: joint_buying_product
 #: model:ir.model.fields,field_description:joint_buying_product.field_res_company__joint_buying_send_pivot_email_closed

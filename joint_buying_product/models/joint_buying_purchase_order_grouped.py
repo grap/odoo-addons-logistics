@@ -347,7 +347,9 @@ class JointBuyingPurchaseOrderGrouped(models.Model):
             "deposited": [("deposit_date", "<", now)],
         }
         for correct_state, domain in right_settings.items():
-            domain = expression.AND([domain, [("state", "!=", correct_state)]])
+            domain = expression.AND(
+                [domain, ["|", ("state", "!=", correct_state), ("state", "=", False)]]
+            )
             if not check_all:
                 domain = expression.AND([domain, [("id", "in", self.ids)]])
             grouped_orders = self.search(domain)

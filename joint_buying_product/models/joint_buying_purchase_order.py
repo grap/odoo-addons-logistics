@@ -99,7 +99,10 @@ class JointBuyingPurchaseOrder(models.Model):
     )
 
     purchase_ok = fields.Selection(
-        selection=_PURCHASE_OK_SELECTION, compute="_compute_purchase_ok", store=True
+        string="Purchase OK ?",
+        selection=_PURCHASE_OK_SELECTION,
+        compute="_compute_purchase_ok",
+        store=True,
     )
 
     line_ids = fields.One2many(
