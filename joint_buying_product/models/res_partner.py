@@ -53,6 +53,8 @@ class ResPartner(models.Model):
     def _check_joint_buying_correct_date(self):
         if not self.joint_buying_frequency:
             return
+        if self.joint_buying_frequency % 7:
+            raise ValidationError(_("Frequency should be a multiple of 7."))
         if (
             not self.joint_buying_next_start_date
             or not self.joint_buying_next_end_date

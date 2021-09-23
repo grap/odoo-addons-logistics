@@ -36,6 +36,9 @@ class TestModule(TransactionCase):
         self.company_ELD = self.env.ref("joint_buying_base.company_ELD")
         self.company_CHE = self.env.ref("joint_buying_base.company_CHE")
         self.company_3PP = self.env.ref("joint_buying_base.company_3PP")
+
+        self.pricelist_ELD = self.env.ref("joint_buying_product.pricelist_10_percent")
+
         self.partner_supplier_fumet_dombes = self.env.ref(
             "joint_buying_base.supplier_fumet_dombes"
         )
@@ -74,6 +77,7 @@ class TestModule(TransactionCase):
                 "name": "Some Chocolate",
                 "company_id": self.company_ELD.id,
                 "categ_id": self.category_all.id,
+                "lst_price": 10.0,
             }
         )
 
@@ -97,7 +101,9 @@ class TestModule(TransactionCase):
         )
 
         # Test the possibility to offer the local product to the joint buying catalog
-        new_local_product.create_joint_buying_product()
+        # Without pricelist
+        new_local_product.company_id.joint_buying_pricelist_id = False
+        new_global_product = new_local_product.create_joint_buying_product()
 
         len_joint_buying_after_joint_buying_creation = len(
             self.JointBuyingProductProduct.search([])
@@ -107,6 +113,24 @@ class TestModule(TransactionCase):
             len_joint_buying_after_joint_buying_creation,
             "Set a local product as Joint buying should increase the number"
             " of joint buying products",
+        )
+
+        # Check created global product
+        self.assertNotEqual(new_global_product.id, new_local_product.id)
+
+        self.assertEqual(
+            new_global_product.default_code, new_local_product.default_code
+        )
+
+        self.assertEqual(new_global_product.lst_price, new_local_product.lst_price)
+
+        # Test the pricelist mechanism
+        new_local_product_2 = new_local_product.copy()
+        new_local_product_2.company_id.joint_buying_pricelist_id = self.pricelist_ELD
+        new_global_product_2 = new_local_product_2.create_joint_buying_product()
+
+        self.assertEqual(
+            new_global_product_2.lst_price, new_local_product_2.lst_price * 90 / 100
         )
 
     def test_02_joint_buying_product_creation(self):

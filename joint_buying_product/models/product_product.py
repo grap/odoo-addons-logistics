@@ -57,6 +57,7 @@ class ProductProduct(models.Model):
         comodel_name="product.product",
         readonly=True,
         context=_JOINT_BUYING_PRODUCT_CONTEXT,
+        copy=False,
     )
 
     joint_buying_is_new = fields.Boolean(
@@ -140,9 +141,15 @@ class ProductProduct(models.Model):
             product.joint_buying_product_id = self.with_context(
                 joint_buying=True, joint_buying_local_to_global=True
             ).create(vals)
+        return products.mapped("joint_buying_product_id")
 
     def _prepare_joint_buying_product(self):
         self.ensure_one()
+        pricelist = self.company_id.joint_buying_pricelist_id
+        if not pricelist:
+            lst_price = self.lst_price
+        else:
+            lst_price = pricelist.get_product_price(self, 1, False)
         vals = {
             "name": self.name,
             "uom_id": self.uom_id.id,
@@ -152,5 +159,6 @@ class ProductProduct(models.Model):
             "barcode": self.barcode,
             "categ_id": self.env.ref("joint_buying_product.product_category").id,
             "joint_buying_partner_id": self.company_id.joint_buying_partner_id.id,
+            "lst_price": lst_price,
         }
         return vals

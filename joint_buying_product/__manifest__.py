@@ -37,6 +37,7 @@
         "data/mail_template.xml",
     ],
     "demo": [
+        "demo/product_pricelist.xml",
         "demo/res_groups.xml",
         "demo/uom_uom.xml",
         "demo/product_product.xml",
