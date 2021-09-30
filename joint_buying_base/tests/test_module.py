@@ -151,12 +151,16 @@ class TestModule(TransactionCase):
             extra_vals={"joint_buying_pivot_company_id": self.company_CHE.id}
         ).id
 
-        # write a supplier. (pivot company = current company) should fail
+        # write a supplier. (pivot company != current company) should fail
         partner = self.ResPartner.sudo(user=self.user_3PP).browse(partner_id)
         with self.assertRaises(AccessError):
             partner.write({"name": "Altered name"})
 
-        # unlink a supplier. (pivot company = current company) should fail
+        # write a supplier (pivot company != current company)
+        # for specific allowed fields should success
+        partner.joint_buying_is_subscribed = True
+
+        # unlink a supplier. (pivot company != current company) should fail
         with self.assertRaises(AccessError):
             partner.unlink()
 
