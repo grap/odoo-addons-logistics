@@ -11,9 +11,9 @@ Available addons
 ----------------
 addon | version | maintainers | summary
 --- | --- | --- | ---
-[joint_buying_base](joint_buying_base/) | 12.0.1.1.10 |  | Joint Buying - Base
-[joint_buying_product](joint_buying_product/) | 12.0.1.0.7 |  | Joint Buying - Products
-[joint_buying_product_food](joint_buying_product_food/) | 12.0.1.0.3 |  | Joint Buying - Products Food
+[joint_buying_base](joint_buying_base/) | 12.0.1.4.0 |  | Joint Buying - Base
+[joint_buying_product](joint_buying_product/) | 12.0.1.1.0 |  | Joint Buying - Products
+[joint_buying_product_food](joint_buying_product_food/) | 12.0.1.1.0 |  | Joint Buying - Products Food
 
 [//]: # (end addons)
 
