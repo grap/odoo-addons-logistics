@@ -20,7 +20,10 @@ class ResCompany(models.Model):
     )
 
     joint_buying_auto_subscribe = fields.Boolean(
-        string="Automatic Supplier Subscription", default=True
+        string="Automatic Supplier Subscription",
+        default=False,
+        help="Check this box if you want to subscribe automatically"
+        " to new suppliers.",
     )
 
     joint_buying_partner_id = fields.Many2one(
@@ -38,7 +41,10 @@ class ResCompany(models.Model):
     )
 
     is_joint_buying_supplier = fields.Boolean(
-        related="joint_buying_partner_id.supplier", string="Is a Vendor", readonly=False
+        related="joint_buying_partner_id.supplier",
+        string="Is a Vendor",
+        readonly=False,
+        store=True,
     )
 
     def _prepare_joint_buying_partner_vals(self):

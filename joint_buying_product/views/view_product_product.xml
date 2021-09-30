@@ -23,9 +23,9 @@ License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl.html).
         <field name="arch" type="xml">
             <tree>
                 <field name="is_joint_buying" invisible="1"/>
-                <field name="barcode"/>
+                <field name="default_code" string="Sup. Code"/>
                 <field name="name"/>
-                <field name="lst_price"/>
+                <field name="lst_price" string="Pricing"/>
                 <field name="type" invisible="1"/>
                 <field name="uom_id" string="UoM"/>
                 <field name="uom_po_id" groups="uom.group_uom" string="Invoice Supplier UoM"/>
@@ -90,11 +90,13 @@ License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl.html).
                             <group>
                                 <group name="group_general" string="General">
                                     <field name="joint_buying_partner_id" required="1"/>
-                                    <field name="default_code"/>
+                                    <field name="default_code" string="Sup. Code"/>
+                                    <field name="barcode"/>
                                     <field name="uom_id"/>
                                     <field name="uom_po_id"/>
-                                    <field name="lst_price"/>
+                                    <field name="lst_price" string="Pricing"/>
                                     <field name="uom_package_qty"/>
+                                    <field name="joint_buying_is_new" widget="boolean_toggle"/>
                                 </group>
                                 <group name="group_logistic" string="Logistics">
                                     <field name="weight"/>
@@ -149,9 +151,9 @@ License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl.html).
 
     <menuitem id="menu_product_product"
         name="Products"
-        parent="joint_buying_base.menu_configuration"
+        parent="joint_buying_base.menu_root"
         action="action_product_product"
-        sequence="10"
+        sequence="20"
     />
 
 </odoo>

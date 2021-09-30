@@ -16,7 +16,7 @@ License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl.html).
                 <field name="purchase_state"/>
                 <field name="state"/>
                 <filter name="to_enter_by_customer" string="To Enter"
-                    domain="[('state', '=', 'in_progress'), ('purchase_state', '=', 'draft')]"/>
+                    domain="[('state', 'in', ['in_progress', 'in_progress_near', 'in_progress_imminent']), ('purchase_state', '=', 'draft')]"/>
             </search>
         </field>
     </record>
@@ -29,12 +29,24 @@ License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl.html).
                 <field name="supplier_id"/>
                 <field name="customer_id" invisible="context.get('invisible_customer_id', False)"/>
                 <field name="start_date"/>
-                <field name="end_date"/>
+                <field name="end_date" options="{'bg_color': 'orange: state == &quot;in_progress_near&quot;; red: state == &quot;in_progress_imminent&quot;'}"/>
                 <field name="deposit_date"/>
                 <field name="amount_untaxed" sum="Total Amount Untaxed"/>
-                <field name="purchase_state"/>
+                <field name="purchase_state" invisible="1"/>
                 <field name="state"/>
             </tree>
+        </field>
+    </record>
+
+    <record id="view_joint_buying_purchase_order_calendar" model="ir.ui.view">
+        <field name="model">joint.buying.purchase.order</field>
+        <field name="arch" type="xml">
+            <calendar date_start="start_date" date_stop="end_date" color="supplier_id">
+                <field name="name"/>
+                <field name="amount_untaxed"/>
+                <field name="supplier_id"/>
+                <field name="state" invisible="1"/>
+            </calendar>
         </field>
     </record>
 
@@ -44,11 +56,11 @@ License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl.html).
             <form>
                 <header>
                     <button name="action_confirm_purchase" type="object" string="Confirm order" class="oe_highlight"
-                        attrs="{'invisible': ['|', '|', ('purchase_state', '!=', 'draft'), ('state', '!=', 'in_progress'), ('purchase_ok', '!=', 'ok')]}"/>
+                        attrs="{'invisible': ['|', '|', ('purchase_state', '!=', 'draft'), ('state', 'not in', ['in_progress', 'in_progress_near', 'in_progress_imminent']), ('purchase_ok', '!=', 'ok')]}"/>
                     <button name="action_confirm_purchase" type="object" string="Confirm order"
-                        attrs="{'invisible': ['|', '|', ('purchase_state', '!=', 'draft'), ('state', '!=', 'in_progress'), ('purchase_ok', '=', 'ok')]}"/>
+                        attrs="{'invisible': ['|', '|', ('purchase_state', '!=', 'draft'), ('state', 'not in', ['in_progress', 'in_progress_near', 'in_progress_imminent']), ('purchase_ok', '=', 'ok')]}"/>
                     <button name="action_draft_purchase" type="object" string="Reset to Draft"
-                        attrs="{'invisible': ['|', ('purchase_state', '!=', 'done'), ('state', '!=', 'in_progress')]}"/>
+                        attrs="{'invisible': ['|', ('purchase_state', '!=', 'done'), ('state', 'not in', ['in_progress', 'in_progress_near', 'in_progress_imminent'])]}"/>
                     <field name="purchase_state" widget="statusbar"/>
                     <field name="state" widget="statusbar"/>
                 </header>
@@ -60,40 +72,74 @@ License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl.html).
                             <field name="name"/>
                         </h1>
                     </div>
+                    <p class="alert alert-danger" role="alert"
+                        attrs="{'invisible': [('purchase_ok', '!=', 'no_minimum_amount')]}">You have not reached the minimum amount.</p>
+                    <p class="alert alert-danger" role="alert"
+                        attrs="{'invisible': [('purchase_ok', '!=', 'no_minimum_weight')]}">You have not reached the minimum Weight.</p>
+                    <p class="alert alert-warning" role="alert"
+                            attrs="{'invisible': [('supplier_comment', '=', False)]}">
+                        <field name="supplier_comment"/>
+                    </p>
                     <group>
                         <group>
                             <field name="grouped_order_id"/>
                             <field name="supplier_id"/>
                             <field name="customer_id"/>
-                            <field name="total_weight"/>
+                            <label for="amount_untaxed"/>
+                            <div class="o_row">
+                                <field name="amount_untaxed"/>
+                                <span>€</span>
+                            </div>
                             <field name="line_qty" invisible="1"/>
                             <field name="purchase_ok" invisible="1"/>
-                            <field name="amount_untaxed" invisible="1"/>
                         </group>
                         <group>
                             <field name="start_date"/>
                             <field name="end_date"/>
                             <field name="deposit_date"/>
-                            <field name="minimum_unit_amount" attrs="{'invisible': [('minimum_unit_amount', '=', 0)]}"/>
+                            <label for="total_weight"/>
+                            <div class="o_row">
+                                <field name="total_weight"/>
+                                <span>kg</span>
+                            </div>
+                        </group>
+                        <group string="Minimum Amount" colspan="4" col="4"  attrs="{'invisible': [('minimum_unit_amount', '=', 0), ('minimum_unit_weight', '=', 0)]}">
+                            <label for="minimum_unit_amount" string="Unit Order"/>
+                            <div class="o_row">
+                                <field name="minimum_unit_amount"/>
+                                <span>€</span>
+                            </div>
+                            <label for="minimum_unit_weight" string="Unit Order"/>
+                            <div class="o_row">
+                                <field name="minimum_unit_weight"/>
+                                <span>kg</span>
+                            </div>
                         </group>
                     </group>
+
                     <notebook colspan="4">
                         <page name="lines" string="Order line">
-                            <field name="line_ids" attrs="{'readonly': ['|', ('purchase_state', '=', 'done'), ('state', '!=', 'in_progress')]}">
-                                <tree editable="botttom" decoration-info="qty == 0">
+                            <field name="line_ids" attrs="{'readonly': ['|', ('purchase_state', '=', 'done'), ('state', 'not in', ['in_progress', 'in_progress_near', 'in_progress_imminent'])]}">
+                                <tree editable="botttom" decoration-info="qty == 0" decoration-bf="is_new == True">
                                     <field name="product_id" force_save="True"/>
                                     <field name="qty" force_save="True"/>
                                     <field name="uom_id" force_save="True"/>
                                     <field name="product_uom_package_qty" force_save="True"
                                         attrs="{'invisible': [('product_uom_package_qty', '=', 0.0)]}"/>
-                                    <field name="price_unit" force_save="True"/>
-                                    <field name="amount_untaxed" sum="Total Amount Untaxed"/>
+                                    <field name="price_unit" force_save="True" invisible="1"/>
+                                    <field name="price_description" force_save="True"/>
+                                    <field name="amount_untaxed"/>
+                                    <field name="total_weight"/>
+                                    <field name="product_qty" force_save="True" invisible="1"/>
+                                    <field name="product_uom_id" force_save="True" invisible="1"/>
+                                    <field name="product_uom_po_id" force_save="True" invisible="1"/>
+                                    <field name="uom_measure_type" force_save="True" invisible="1"/>
+                                    <field name="uom_different_description" force_save="True" attrs="{'invisible': [('uom_measure_type', '!=', 'unit')]}"/>
                                     <field name="product_weight" force_save="True" invisible="1"/>
+
+                                    <field name="is_new" force_save="True" invisible="1"/>
                                 </tree>
                             </field>
-                             <!--  -->
-                            <p class="alert alert-danger" role="alert"
-                                attrs="{'invisible': [('purchase_ok', '!=', 'no_minimum_amount')]}">You have not reached the minimum amount.</p>
                         </page>
                     </notebook>
                 </sheet>
@@ -106,42 +152,40 @@ License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl.html).
         </field>
     </record>
 
-    <record id="action_joint_buying_purchase_order_all_orders" model="ir.actions.act_window">
-        <field name="name">Orders</field>
+    <record id="action_joint_buying_purchase_order_my" model="ir.actions.act_window">
+        <field name="name">My Orders</field>
         <field name="type">ir.actions.act_window</field>
         <field name="res_model">joint.buying.purchase.order</field>
         <field name="view_type">form</field>
-        <field name="view_mode">tree,form</field>
-    </record>
-
-    <menuitem id="menu_joint_buying_purchase_order_all_orders"
-        name="Orders"
-        parent="joint_buying_product.menu_all_orders"
-        action="action_joint_buying_purchase_order_all_orders"
-        groups="joint_buying_base.group_joint_buying_manager"
-        sequence="12"
-    />
-
-    <record id="action_joint_buying_purchase_order_my_purchase_orders" model="ir.actions.act_window">
-        <field name="name">My Purchase Orders</field>
-        <field name="type">ir.actions.act_window</field>
-        <field name="res_model">joint.buying.purchase.order</field>
-        <field name="view_type">form</field>
-        <field name="view_mode">tree,form</field>
-        <field name="domain">[('is_my_purchase', '=', True)]</field>
+        <field name="view_mode">tree,calendar,form</field>
+        <field name="domain">[('is_mine', '=', True)]</field>
         <field name="context">{
             'search_default_to_enter_by_customer': 1,
             'invisible_customer_id': 1,
         }</field>
     </record>
 
-    <menuitem id="menu_joint_buying_purchase_order_my_purchase_orders"
-        name="My Purchase Orders"
-        parent="joint_buying_product.menu_my_purchase"
-        action="action_joint_buying_purchase_order_my_purchase_orders"
-        groups="joint_buying_base.group_joint_buying_manager"
-        sequence="12"
+    <menuitem id="menu_joint_buying_purchase_order_my"
+        name="My Orders"
+        parent="joint_buying_product.menu_order"
+        action="action_joint_buying_purchase_order_my"
+        sequence="1"
     />
 
+    <record id="action_joint_buying_purchase_order_all" model="ir.actions.act_window">
+        <field name="name">All Orders</field>
+        <field name="type">ir.actions.act_window</field>
+        <field name="res_model">joint.buying.purchase.order</field>
+        <field name="view_type">form</field>
+        <field name="view_mode">tree,form</field>
+    </record>
+
+    <menuitem id="menu_joint_buying_purchase_order_all"
+        name="All Orders"
+        parent="joint_buying_product.menu_order"
+        action="action_joint_buying_purchase_order_all"
+        sequence="55"
+        groups="joint_buying_base.group_joint_buying_manager"
+    />
 
 </odoo>

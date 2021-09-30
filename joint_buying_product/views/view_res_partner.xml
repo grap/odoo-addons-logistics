@@ -16,6 +16,13 @@
         <field name="inherit_id" ref="joint_buying_base.view_res_partner_form_joint_buying"/>
         <field name="groups_id" eval="[(4, ref('joint_buying_base.group_joint_buying_user'))]"/>
         <field name="arch" type="xml">
+
+            <xpath expr="//header" position="inside">
+                <button type="action" class="oe_stat_button" string="Generate Joint Buying Purchase"
+                        name="%(joint_buying_product.action_partner_2_wizard_create_order)d"
+                        attrs="{'invisible': [('supplier', '=', False)]}" />
+            </xpath>
+
             <div name="button_box" position="inside">
                 <button type="action" class="oe_stat_button" icon="fa-list"
                         name="%(joint_buying_product.action_res_partner_2_product_product)d"
@@ -28,49 +35,74 @@
                     </div>
                 </button>
             </div>
-            <field name="joint_buying_deposit_company_id" position="after">
-                <field name="joint_buying_minimum_amount" attrs="{'invisible': [('supplier', '=', False)]}"/>
-                <field name="joint_buying_minimum_unit_amount" attrs="{'invisible': [('supplier', '=', False)]}"/>
-                <field name="joint_buying_frequency" attrs="{'invisible': [('supplier', '=', False)]}"/>
-            </field>
-            <field name="joint_buying_deposit_company_id" position="attributes">
-                <attribute name="attrs">{'invisible': [('supplier', '=', False)], 'required': [('joint_buying_frequency', '!=', 0)]}</attribute>
-            </field>
-            <field name="joint_buying_pivot_company_id" position="attributes">
-                <attribute name="attrs">{'invisible': [('supplier', '=', False)], 'required': [('joint_buying_frequency', '!=', 0)]}</attribute>
+
+            <field name="joint_buying_subscribed_company_ids" position="attributes">
+                <attribute name="attrs">{'required': [('joint_buying_frequency', '!=', 0)]}</attribute>
             </field>
 
-            <group name="vendor" position="after">
-                <group string="Recurring Orders" attrs="{'invisible': ['|', ('supplier', '=', False), ('joint_buying_frequency', '=', 0)]}">
+
+            <field name="joint_buying_pivot_company_id" position="attributes">
+                <attribute name="attrs">{'required': [('joint_buying_frequency', '!=', 0)]}</attribute>
+            </field>
+
+            <field name="joint_buying_deposit_partner_id" position="attributes">
+                <attribute name="attrs">{'required': [('joint_buying_frequency', '!=', 0)]}</attribute>
+            </field>
+
+            <group name="vendor_setting" position="after">
+
+                <group string="Next Order" colspan="4" col="4">
+                    <field name="joint_buying_frequency"/>
                     <field name="joint_buying_next_start_date" string="Order Start Date"
-                        attrs="{'required': [('joint_buying_frequency', '!=', 0)]}"/>
+                        attrs="{'required': [('joint_buying_frequency', '!=', 0)], 'invisible': [('joint_buying_frequency', '=', 0)]}"/>
                     <field name="joint_buying_next_end_date" string="Order End Date"
-                        attrs="{'required': [('joint_buying_frequency', '!=', 0)]}"/>
+                        attrs="{'required': [('joint_buying_frequency', '!=', 0)], 'invisible': [('joint_buying_frequency', '=', 0)]}"/>
                     <field name="joint_buying_next_deposit_date" string="Deposit Date"
-                        attrs="{'required': [('joint_buying_frequency', '!=', 0)]}"/>
+                        attrs="{'required': [('joint_buying_frequency', '!=', 0)], 'invisible': [('joint_buying_frequency', '=', 0)]}"/>
                 </group>
-            </group>
-            <xpath expr="//header" position="inside">
-                <button type="action" class="oe_stat_button" string="Generate Joint Buying Purchase"
-                        name="%(joint_buying_product.action_partner_2_wizard_create_order)d"
-                        attrs="{'invisible': [('supplier', '=', False)]}" />
-            </xpath>
-            <group name="group_joint_buying" position="after">
-                <group>
+
+                <group string="Minimum Amount" colspan="4" col="4">
+                    <label for="joint_buying_minimum_amount" string="Grouped Order"/>
+                    <div class="o_row">
+                        <field name="joint_buying_minimum_amount"/>
+                        <span>€</span>
+                    </div>
+                    <label for="joint_buying_minimum_unit_amount" string="Unit Order"/>
+                    <div class="o_row">
+                        <field name="joint_buying_minimum_unit_amount"/>
+                        <span>€</span>
+                    </div>
+                    <label for="joint_buying_minimum_weight" string="Grouped Order"/>
+                    <div class="o_row">
+                        <field name="joint_buying_minimum_weight"/>
+                        <span>kg</span>
+                    </div>
+                    <label for="joint_buying_minimum_unit_weight" string="Unit Order"/>
+                    <div class="o_row">
+                        <field name="joint_buying_minimum_unit_weight"/>
+                        <span>kg</span>
+                    </div>
+                </group>
+
+                <group string="Products" colspan="4">
                     <field name="joint_buying_product_ids" nolabel="1">
                         <tree editable="bottom" decoration-muted="purchase_ok == False">
+                            <field name="default_code" string="Sup. Code"/>
                             <field name="name"/>
                             <field name="uom_id" string="UoM"/>
                             <field name="uom_po_id" string="Invoice Supplier UoM"/>
-                            <field name="uom_package_id" groups="uom.group_uom" string="UoM Weight / Unit"/>
-                            <field name="uom_package_qty"/>
-                            <field name="lst_price" required="True"/>
-                            <field name="purchase_ok" widget="boolean_toggle"/>
-                            <field name="weight"/>
+                            <field name="uom_package_id" string="UoM Weight / Unit"/>
+                            <field name="uom_package_qty"  attrs="{'required': [('uom_package_id', '!=', False)]}"/>
+                            <field name="lst_price" required="True" string="Pricing"/>
+                            <field name="weight" attrs="{'invisible': [('uom_measure_type', '=', 'weight')]}"/>
+                            <field name="uom_measure_type" invisible="1"/>
+                            <field name="purchase_ok" widget="boolean_toggle" string="Avail. ?"/>
+                            <field name="joint_buying_is_new" widget="boolean_toggle" string="New ?"/>
                         </tree>
                     </field>
                 </group>
             </group>
+
         </field>
     </record>
 

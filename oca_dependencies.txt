@@ -3,6 +3,4 @@ web
 grap-odoo-business      https://github.com/grap/grap-odoo-business.git          12.0
 grap-odoo-incubator     https://github.com/grap/grap-odoo-incubator.git         12.0
 
-
-
-a_product_food          https://github.com/legalsylvain/grap-odoo-business.git  12.0-REF-joint_buying_product
+product-attribute   https://github.com/legalsylvain/product-attribute.git   12.0-ADD-product_uom_measure_type
