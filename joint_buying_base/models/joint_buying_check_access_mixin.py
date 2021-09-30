@@ -12,6 +12,8 @@ class JointBuyingCheckAccessMixin(models.AbstractModel):
 
     _check_write_access_company_field_id = False
 
+    _check_write_access_fields_no_check = []
+
     @api.model
     def create(self, vals):
         res = super().create(vals)
@@ -33,9 +35,16 @@ class JointBuyingCheckAccessMixin(models.AbstractModel):
 
     @api.multi
     def write(self, vals):
-        if not self.env.user.has_group(
-            "joint_buying_base.group_joint_buying_manager"
-        ) and not self.env.context.get("no_check_joint_buying", False):
+        to_check_fields = [
+            x
+            for x in list(vals.keys())
+            if x not in self._check_write_access_fields_no_check
+        ]
+        if (
+            not self.env.user.has_group("joint_buying_base.group_joint_buying_manager")
+            and not self.env.context.get("no_check_joint_buying", False)
+            and to_check_fields
+        ):
             if "is_joint_buying" in self._fields:
                 items = self.filtered(lambda x: x.is_joint_buying)
             else:
