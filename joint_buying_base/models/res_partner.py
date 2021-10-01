@@ -25,6 +25,8 @@ class ResPartner(models.Model):
 
     _check_write_access_company_field_id = "joint_buying_pivot_company_id"
 
+    _check_write_access_fields_no_check = ["joint_buying_is_subscribed"]
+
     joint_buying_subscribed_company_ids = fields.Many2many(
         string="Subscribed Companies",
         relation="res_company_res_partner_subscribed_rel",
