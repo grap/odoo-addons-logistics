@@ -7,7 +7,7 @@ License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl.html).
 <odoo>
 
 
-    <record id="view_res_partner_form" model="ir.ui.view">
+    <record id="view_res_partner_form_classic" model="ir.ui.view">
         <field name="model">res.partner</field>
         <field name="inherit_id" ref="base.view_partner_form"/>
         <field name="arch" type="xml">
@@ -18,7 +18,7 @@ License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl.html).
         </field>
     </record>
 
-    <record id="view_res_partner_form_joint_buying" model="ir.ui.view">
+    <record id="view_res_partner_form" model="ir.ui.view">
         <field name="model">res.partner</field>
         <field name="priority" eval="20"/>
         <field name="arch" type="xml">
@@ -98,8 +98,10 @@ License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl.html).
                                 <group name="vendor_setting" string="Settings" colspan="4" col="4">
                                     <field name="joint_buying_pivot_company_id"/>
                                     <field name="joint_buying_deposit_partner_id"/>
-                                    <field name="joint_buying_commission_state"/>
-                                    <field name="joint_buying_commission_rate"/>
+                                </group>
+                                <group name="vendor_commission" string="Commission" colspan="4" col="4" groups="joint_buying_base.group_joint_buying_manager">
+                                    <field name="joint_buying_commission_state" string="Commission Agreement"/>
+                                    <field name="joint_buying_commission_rate" string="Commission Rate"/>
                                 </group>
                                 <group string="Logistic Information" colspan="4">
                                     <field name="comment" nolabel="1"/>
@@ -134,7 +136,6 @@ License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl.html).
             </form>
         </field>
     </record>
-
 
     <record id="view_res_partner_tree" model="ir.ui.view">
         <field name="model">res.partner</field>
@@ -173,7 +174,6 @@ License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl.html).
         <field name="name">Suppliers</field>
         <field name="type">ir.actions.act_window</field>
         <field name="res_model">res.partner</field>
-        <field name="view_id" ref="view_res_partner_tree"/>
         <field name="view_mode">tree,form</field>
         <field name="domain">[('supplier', '=', 1)]</field>
         <field name="context">
@@ -183,7 +183,8 @@ License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl.html).
                 "default_customer": 0,
                 "default_supplier": 1,
                 "default_is_company": 1,
-                "form_view_ref": "joint_buying_base.view_res_partner_form_joint_buying",
+                "form_view_ref": "joint_buying_base.view_res_partner_form",
+                "tree_view_ref": "joint_buying_base.view_res_partner_tree",
             }
         </field>
     </record>
@@ -200,7 +201,7 @@ License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl.html).
         <field name="type">ir.actions.act_window</field>
         <field name="res_model">res.partner</field>
         <field name="view_id" ref="view_res_partner_tree_editable"/>
-        <field name="view_mode">tree,form</field>
+        <field name="view_mode">tree</field>
         <field name="domain">[('supplier', '=', 1)]</field>
         <field name="context">
             {
@@ -209,7 +210,6 @@ License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl.html).
                 "default_customer": 0,
                 "default_supplier": 1,
                 "default_is_company": 1,
-                "form_view_ref": "joint_buying_base.view_res_partner_form_joint_buying",
             }
         </field>
     </record>
@@ -239,7 +239,7 @@ License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl.html).
                 "default_customer": 0,
                 "default_supplier": 1,
                 "default_is_company": 1,
-                "form_view_ref": "joint_buying_base.view_res_partner_form_joint_buying",
+                "form_view_ref": "joint_buying_base.view_res_partner_form",
             }
         </field>
     </record>
@@ -264,7 +264,7 @@ License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl.html).
                 "default_customer": 0,
                 "default_supplier": 1,
                 "default_is_company": 1,
-                "form_view_ref": "joint_buying_base.view_res_partner_form_joint_buying",
+                "form_view_ref": "joint_buying_base.view_res_partner_form",
             }
         </field>
     </record>
