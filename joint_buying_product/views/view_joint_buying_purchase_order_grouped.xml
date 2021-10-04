@@ -22,22 +22,53 @@ License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl.html).
     <record id="view_joint_buying_purchase_order_grouped_tree" model="ir.ui.view">
         <field name="model">joint.buying.purchase.order.grouped</field>
         <field name="arch" type="xml">
-            <tree>
+            <tree decoration-info="state == 'futur'" decoration-muted="state == 'deposited'" decoration-success="state == 'closed'"
+                create="false">
                 <field name="name"/>
                 <field name="supplier_id"/>
                 <field name="start_date"/>
                 <field name="end_date" options="{'bg_color': 'orange: state == &quot;in_progress_near&quot;; red: state == &quot;in_progress_imminent&quot;'}"/>
                 <field name="deposit_date"/>
-                <field name="order_qty"/>
+                <field name="entry_rate_description" string="Entry (%)"/>
                 <field name="amount_untaxed" sum="Total Amount Untaxed"/>
-                <field name="pivot_company_id" invisible="context.get('invisible_pivot_company_id', False)"/>
-                <field name="state"/>
+                <field name="pivot_company_id"/>
+                <field name="state" invisible="1"/>
                 <field name="current_order_id" invisible="1"/>
-                <button name="see_current_order" string="See My Order" type="object" attrs="{'invisible': [('current_order_id', '=', False)]}"/>
-                <button name="create_current_order" string="Create Order" type="object" attrs="{'invisible': ['|', ('current_order_id', '!=', False), ('state', 'not in', ['in_progress', 'in_progress_near', 'in_progress_imminent'])]}"/>
+                <button name="see_current_order" type="object"
+                    string="See" help="See My Order"
+                    attrs="{'invisible': [('current_order_id', '=', False)]}"/>
+                <button name="create_current_order" type="object"
+                     string="Create" help="Create New Order and subscribe to the Supplier"
+                     attrs="{'invisible': ['|', ('current_order_id', '!=', False), ('state', 'not in', ['in_progress', 'in_progress_near', 'in_progress_imminent'])]}"/>
             </tree>
         </field>
     </record>
+
+    <record id="view_joint_buying_purchase_order_grouped_tree_pending" model="ir.ui.view">
+        <field name="model">joint.buying.purchase.order.grouped</field>
+        <field name="inherit_id" ref="view_joint_buying_purchase_order_grouped_tree"/>
+        <field name="mode">primary</field>
+        <field name="arch" type="xml">
+            <xpath expr="//tree" position="attributes">
+                <attribute name="default_order">end_date</attribute>
+            </xpath>
+            <field name="start_date" position="attributes">
+                <attribute name="invisible">1</attribute>
+            </field>
+        </field>
+    </record>
+
+    <record id="view_joint_buying_purchase_order_grouped_tree_my" model="ir.ui.view">
+        <field name="model">joint.buying.purchase.order.grouped</field>
+        <field name="inherit_id" ref="view_joint_buying_purchase_order_grouped_tree"/>
+        <field name="mode">primary</field>
+        <field name="arch" type="xml">
+            <field name="pivot_company_id" position="attributes">
+                <attribute name="invisible">1</attribute>
+            </field>
+        </field>
+    </record>
+
 
     <record id="view_joint_buying_purchase_order_grouped_calendar" model="ir.ui.view">
         <field name="model">joint.buying.purchase.order.grouped</field>
@@ -76,6 +107,7 @@ License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl.html).
                     <button name="action_send_email_for_pivot_closed" string="Send Test email (Closed)" type="object" groups="base.group_erp_manager" />
                     <button name="see_current_order" string="See My Order" type="object" attrs="{'invisible': [('current_order_id', '=', False)]}"/>
                     <button name="create_current_order" string="Create Order" type="object" attrs="{'invisible': ['|', ('current_order_id', '!=', False), ('state', 'not in', ['in_progress', 'in_progress_near', 'in_progress_imminent'])]}"/>
+                    <button name="update_product_list" string="Update Product List" type="object" attrs="{'invisible': ['|', ('is_mine', '=', False), ('state', 'not in', ['in_progress', 'in_progress_near', 'in_progress_imminent'])]}"/>
                     <field name="state" widget="statusbar" statusbar_visible="futur,in_progress,closed,deposited"/>
                 </header>
                 <sheet>
@@ -111,6 +143,7 @@ License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl.html).
                             <field name="deposit_partner_id"/>
                             <field name="current_order_id" invisible="1"/>
                             <field name="purchase_ok" invisible="1"/>
+                            <field name="is_mine" invisible="1"/>
                         </group>
                         <group>
                             <field name="start_date"/>
@@ -169,6 +202,26 @@ License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl.html).
         </field>
     </record>
 
+    <record id="action_joint_buying_purchase_order_grouped_pending" model="ir.actions.act_window">
+        <field name="name">Pending Grouped Orders</field>
+        <field name="type">ir.actions.act_window</field>
+        <field name="res_model">joint.buying.purchase.order.grouped</field>
+        <field name="view_type">form</field>
+        <field name="view_mode">tree,form,calendar</field>
+        <field name="domain">[('state', 'in', ('in_progress', 'in_progress_near', 'in_progress_imminent'))]</field>
+        <field name="context">{
+                "tree_view_ref": "joint_buying_product.view_joint_buying_purchase_order_grouped_tree_pending",
+        }</field>
+    </record>
+
+    <menuitem id="menu_joint_buying_purchase_order_grouped_pending"
+        name="Pending Grouped Orders"
+        parent="joint_buying_product.menu_order"
+        action="action_joint_buying_purchase_order_grouped_pending"
+        sequence="40"
+        groups="joint_buying_base.group_joint_buying_user"
+    />
+
     <record id="action_joint_buying_purchase_order_grouped_all" model="ir.actions.act_window">
         <field name="name">All Grouped Orders</field>
         <field name="type">ir.actions.act_window</field>
@@ -194,7 +247,6 @@ License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl.html).
         <field name="domain">[('is_mine', '=', True)]</field>
         <field name="context">{
             'search_default_in_progress': 1,
-            'invisible_pivot_company_id': 1,
         }</field>
     </record>
 
@@ -204,5 +256,18 @@ License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl.html).
         action="action_joint_buying_purchase_order_grouped_my"
         sequence="10"
     />
+
+    <record id="action_res_partner_2_joint_buying_purchase_order_grouped" model="ir.actions.act_window">
+        <field name="name">Grouped Orders</field>
+        <field name="type">ir.actions.act_window</field>
+        <field name="res_model">joint.buying.purchase.order.grouped</field>
+        <field name="view_type">form</field>
+        <field name="view_mode">tree,form</field>
+        <field name="context">
+            {
+                "search_default_supplier_id": active_id,
+            }
+        </field>
+    </record>
 
 </odoo>

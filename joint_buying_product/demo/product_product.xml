@@ -94,6 +94,37 @@
         <field name="uom_package_qty">12</field>
     </record>
 
+    <record id="product_ronzon_patatoe_agila" model="product.product"
+        context="{'joint_buying': True}">
+        <field name="name">Potatoes Agila (Bag of 10kg) (Global)</field>
+        <field name="uom_id" ref="uom.product_uom_kgm"/>
+        <field name="uom_po_id" ref="uom.product_uom_kgm"/>
+        <field name="joint_buying_partner_id" ref="joint_buying_base.supplier_benoit_ronzon"/>
+        <field name="price">1.5</field>
+        <field name="uom_package_qty">10</field>
+    </record>
+
+    <record id="product_ronzon_patatoe_charlotte" model="product.product"
+        context="{'joint_buying': True}">
+        <field name="name">Potatoes Charlotte (Bag of 10kg) (Global)</field>
+        <field name="uom_id" ref="uom.product_uom_kgm"/>
+        <field name="uom_po_id" ref="uom.product_uom_kgm"/>
+        <field name="joint_buying_partner_id" ref="joint_buying_base.supplier_benoit_ronzon"/>
+        <field name="price">1.5</field>
+        <field name="uom_package_qty">10</field>
+    </record>
+
+    <record id="product_ronzon_patatoe_cephora" model="product.product"
+        context="{'joint_buying': True}">
+        <field name="name">Potatoes Cephora (Bag of 10kg) (Global)</field>
+        <field name="uom_id" ref="uom.product_uom_kgm"/>
+        <field name="uom_po_id" ref="uom.product_uom_kgm"/>
+        <field name="joint_buying_partner_id" ref="joint_buying_base.supplier_benoit_ronzon"/>
+        <field name="price">1.5</field>
+        <field name="uom_package_qty">10</field>
+        <field name="purchase_ok" eval="False"/>
+    </record>
+
     <!-- Local Products ELD -->
     <record id="product_ELD_orangettes" model="product.product">
         <field name="default_code">ELD-ORANGETTE</field>

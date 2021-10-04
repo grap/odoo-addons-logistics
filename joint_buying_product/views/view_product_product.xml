@@ -17,7 +17,7 @@ License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl.html).
         </field>
     </record>
 
-    <record id="view_product_product_tree_joint_buying" model="ir.ui.view">
+    <record id="view_product_product_tree" model="ir.ui.view">
         <field name="model">product.product</field>
         <field name="priority" eval="20"/>
         <field name="arch" type="xml">
@@ -37,7 +37,7 @@ License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl.html).
         </field>
     </record>
 
-    <record id="view_product_product" model="ir.ui.view">
+    <record id="view_product_product_form_classic" model="ir.ui.view">
         <field name="model">product.product</field>
         <field name="inherit_id" ref="product.product_normal_form_view"/>
         <field name="groups_id" eval="[(4, ref('joint_buying_base.group_joint_buying_user'))]"/>
@@ -57,7 +57,7 @@ License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl.html).
         </field>
     </record>
 
-    <record id="view_product_product_form_joint_buying" model="ir.ui.view">
+    <record id="view_product_product_form" model="ir.ui.view">
         <field name="model">product.product</field>
         <field name="priority" eval="100"/>
         <field name="arch" type="xml">
@@ -126,8 +126,8 @@ License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl.html).
         <field name="context">
             {
                 "joint_buying": 1,
-                "form_view_ref": "joint_buying_product.view_product_product_form_joint_buying",
-                "tree_view_ref": "joint_buying_product.view_product_product_tree_joint_buying",
+                "form_view_ref": "joint_buying_product.view_product_product_form",
+                "tree_view_ref": "joint_buying_product.view_product_product_tree",
                 "search_default_joint_buying_partner_id": active_id,
                 "default_joint_buying_partner_id": active_id,
             }
@@ -143,8 +143,8 @@ License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl.html).
         <field name="context">
             {
                 "joint_buying": 1,
-                "form_view_ref": "joint_buying_product.view_product_product_form_joint_buying",
-                "tree_view_ref": "joint_buying_product.view_product_product_tree_joint_buying",
+                "form_view_ref": "joint_buying_product.view_product_product_form",
+                "tree_view_ref": "joint_buying_product.view_product_product_tree",
             }
         </field>
     </record>

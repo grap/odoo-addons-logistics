@@ -10,6 +10,11 @@ License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl.html).
         <field name="arch" type="xml">
             <form>
                 <group>
+                    <group attrs="{'invisible': [('overlap_message', '=', False)]}" colspan="4">
+                        <div class="alert alert-warning" role="alert">
+                            <field name="overlap_message" nolabel="1" class="oe_inline"/>
+                        </div>
+                    </group>
                     <group>
                         <field name="supplier_id" readonly="1"/>
                         <field name="pivot_company_id"/>

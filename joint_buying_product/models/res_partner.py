@@ -19,6 +19,14 @@ class ResPartner(models.Model):
         compute="_compute_joint_buying_product_qty"
     )
 
+    joint_buying_grouped_order_ids = fields.One2many(
+        "joint.buying.purchase.order.grouped", inverse_name="supplier_id"
+    )
+
+    joint_buying_grouped_order_qty = fields.Integer(
+        compute="_compute_joint_buying_grouped_order_qty"
+    )
+
     joint_buying_minimum_amount = fields.Float(
         string="Minimum Amount For Grouped Order"
     )
@@ -78,6 +86,13 @@ class ResPartner(models.Model):
     def _compute_joint_buying_product_qty(self):
         for partner in self:
             partner.joint_buying_product_qty = len(partner.joint_buying_product_ids)
+
+    @api.depends("joint_buying_grouped_order_ids")
+    def _compute_joint_buying_grouped_order_qty(self):
+        for partner in self:
+            partner.joint_buying_grouped_order_qty = len(
+                partner.joint_buying_grouped_order_ids
+            )
 
     # Custom Section
     def _get_joint_buying_products(self):
