@@ -24,7 +24,7 @@ License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl.html).
     <record id="view_joint_buying_purchase_order_tree" model="ir.ui.view">
         <field name="model">joint.buying.purchase.order</field>
         <field name="arch" type="xml">
-            <tree decoration-info="purchase_state == 'draft'">
+            <tree decoration-info="purchase_state == 'draft'" create="false">
                 <field name="name"/>
                 <field name="supplier_id"/>
                 <field name="customer_id" invisible="context.get('invisible_customer_id', False)"/>

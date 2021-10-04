@@ -201,22 +201,11 @@ class JointBuyingPurchaseOrder(models.Model):
     # Custom Section
     @api.model
     def _prepare_order_vals(self, supplier, customer):
+        OrderLine = self.env["joint.buying.purchase.order.line"]
+
         res = {"customer_id": customer.id, "line_ids": []}
         for product in supplier._get_joint_buying_products():
-            vals = {
-                "product_id": product.id,
-                "uom_measure_type": product.uom_measure_type,
-                "uom_id": product.uom_package_id.id or product.uom_po_id.id,
-                "qty": 0.0,
-                "product_uom_id": product.uom_id.id,
-                "product_uom_po_id": product.uom_po_id.id,
-                "product_qty": 0.0,
-                "product_uom_package_qty": product.uom_package_qty,
-                "product_weight": product.weight,
-                "price_unit": product.lst_price,
-                "amount_untaxed": 0.0,
-                "total_weight": 0.0,
-            }
+            vals = OrderLine._prepare_line_vals(product)
             res["line_ids"].append((0, 0, vals))
         return res
 

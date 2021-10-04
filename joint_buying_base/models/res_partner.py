@@ -9,7 +9,7 @@ from odoo.addons.base.models.res_partner import ADDRESS_FIELDS
 
 _JOINT_BUYING_PARTNER_CONTEXT = {
     "joint_buying": 1,
-    "form_view_ref": "joint_buying_base.view_res_partner_form_joint_buying",
+    "form_view_ref": "joint_buying_base.view_res_partner_form",
 }
 
 

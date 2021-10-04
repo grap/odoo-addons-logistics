@@ -16,9 +16,9 @@ from odoo.addons.joint_buying_base.models.res_partner import (
 
 class JointBuyingPurchaseOrderGrouped(models.Model):
     _name = "joint.buying.purchase.order.grouped"
-    _inherit = ["joint.buying.check.access.mixin"]
     _description = "Joint Buying Grouped Order"
-    _inherit = ["mail.thread", "mail.activity.mixin"]
+    _inherit = ["joint.buying.check.access.mixin", "mail.thread", "mail.activity.mixin"]
+    _order = "end_date desc, supplier_id"
 
     _check_write_access_company_field_id = "pivot_company_id"
 
@@ -70,7 +70,11 @@ class JointBuyingPurchaseOrderGrouped(models.Model):
     )
 
     deposit_partner_id = fields.Many2one(
-        comodel_name="res.partner", string="Deposit Partner", required=True
+        comodel_name="res.partner",
+        string="Deposit Partner",
+        required=True,
+        domain="[('is_joint_buying_stage', '=', True)]",
+        context=_JOINT_BUYING_PARTNER_CONTEXT,
     )
 
     start_date = fields.Datetime(index=True, string="Start Date", required=True)
@@ -85,6 +89,10 @@ class JointBuyingPurchaseOrderGrouped(models.Model):
 
     order_qty = fields.Integer(
         string="Orders Quantity", compute="_compute_order_qty", store=True
+    )
+
+    entry_rate_description = fields.Char(
+        string="Entry Rate", compute="_compute_entry_rate_description", store=True
     )
 
     is_mail_sent = fields.Boolean(string="Mail Sent", default=False)
@@ -173,6 +181,20 @@ class JointBuyingPurchaseOrderGrouped(models.Model):
     def _compute_order_qty(self):
         for grouped_order in self:
             grouped_order.order_qty = len(grouped_order.order_ids)
+
+    @api.depends("order_ids.purchase_ok", "order_qty")
+    def _compute_entry_rate_description(self):
+        for grouped_order in self:
+            grouped_order.entry_rate_description = "%d / %d" % (
+                len(
+                    [
+                        x
+                        for x in grouped_order.order_ids.mapped("purchase_ok")
+                        if x != "null_amount"
+                    ]
+                ),
+                grouped_order.order_qty,
+            )
 
     @api.depends("order_ids.amount_untaxed")
     def _compute_amount(self):
@@ -390,6 +412,33 @@ class JointBuyingPurchaseOrderGrouped(models.Model):
             )
             template.send_mail(self.id, force_send=True)
 
+    @api.multi
+    def update_product_list(self):
+        OrderLine = self.env["joint.buying.purchase.order.line"]
+
+        for grouped_order in self:
+            products = grouped_order.supplier_id._get_joint_buying_products()
+            lines_vals = [OrderLine._prepare_line_vals(x) for x in products]
+
+            # product_ids = [x["product_id"] for x in lines_vals]
+            for order in grouped_order.order_ids:
+                # First remove product that should not be sold
+                # to_remove_lines = order.line_ids.filtered(
+                #     lambda x: x.product_id.id not in product_ids
+                # )
+                # to_remove_lines.unlink()
+
+                for line_vals in lines_vals:
+                    line = order.line_ids.filtered(
+                        lambda x: x.product_id.id == line_vals["product_id"]
+                    )
+                    if line:
+                        # Update the line
+                        pass
+                    else:
+                        # create a new line
+                        pass
+
     @api.model
     def _prepare_order_grouped_vals(
         self,
@@ -539,7 +588,9 @@ class JointBuyingPurchaseOrderGrouped(models.Model):
         # Subscribe the current company to the supplier if not set
         current_company_ids = self.supplier_id.joint_buying_subscribed_company_ids.ids
         if self.env.user.company_id.id not in current_company_ids:
-            self.supplier_id.joint_buying_subscribed_company_ids = (
+            self.supplier_id.with_context(
+                no_check_joint_buying=True
+            ).joint_buying_subscribed_company_ids = (
                 current_company_ids + [self.env.user.company_id.id]
             )
             # Display a message for the user

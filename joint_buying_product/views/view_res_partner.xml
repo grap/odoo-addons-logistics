@@ -11,27 +11,55 @@
         <field name="target">new</field>
     </record>
 
-    <record id="view_res_partner" model="ir.ui.view">
+    <record id="view_res_partner_tree" model="ir.ui.view">
         <field name="model">res.partner</field>
-        <field name="inherit_id" ref="joint_buying_base.view_res_partner_form_joint_buying"/>
+        <field name="inherit_id" ref="joint_buying_base.view_res_partner_tree"/>
+        <field name="arch" type="xml">
+            <field name="category_id" position="after">
+                <field name="joint_buying_frequency" string="Freq."
+                    attrs="{'invisible': [('joint_buying_frequency', '=', 0)]}"/>
+            </field>
+            <xpath expr="//tree" position="attributes">
+                <attribute name="decoration-success">joint_buying_frequency != 0</attribute>
+            </xpath>
+        </field>
+    </record>
+
+    <record id="view_res_partner_form" model="ir.ui.view">
+        <field name="model">res.partner</field>
+        <field name="inherit_id" ref="joint_buying_base.view_res_partner_form"/>
         <field name="groups_id" eval="[(4, ref('joint_buying_base.group_joint_buying_user'))]"/>
         <field name="arch" type="xml">
 
             <xpath expr="//header" position="inside">
-                <button type="action" class="oe_stat_button" string="Generate Joint Buying Purchase"
+                <button type="action" string="Generate Joint Buying Purchase"
                         name="%(joint_buying_product.action_partner_2_wizard_create_order)d"
-                        attrs="{'invisible': [('supplier', '=', False)]}" />
+                        attrs="{'invisible': ['|', ('supplier', '=', False), ('joint_buying_frequency', '=', 0)]}"
+                        confirm="A frequency is defined for this supplier. So, Odoo will automatically create joint buying purchase when Start date is reached. Are you sure you want to create manually a new joint buying order ?"/>
+                <button type="action" class="oe_highlight" string="Generate Joint Buying Purchase"
+                        name="%(joint_buying_product.action_partner_2_wizard_create_order)d"
+                        attrs="{'invisible': ['|', ('supplier', '=', False), ('joint_buying_frequency', '!=', 0)]}" />
             </xpath>
 
             <div name="button_box" position="inside">
                 <button type="action" class="oe_stat_button" icon="fa-list"
                         name="%(joint_buying_product.action_res_partner_2_product_product)d"
-                        attrs="{'invisible': [('supplier', '=', False)]}">
+                        attrs="{'invisible': ['|', ('supplier', '=', False), ('joint_buying_product_qty', '=', 0)]}">
                     <div class="o_form_field o_stat_info">
                         <span class="o_stat_value">
                             <field name="joint_buying_product_qty" widget="integer"/>
                         </span>
                         <span class="o_stat_text">Products</span>
+                    </div>
+                </button>
+                <button type="action" class="oe_stat_button" icon="fa-pencil-square-o"
+                        name="%(joint_buying_product.action_res_partner_2_joint_buying_purchase_order_grouped)d"
+                        attrs="{'invisible': ['|', ('supplier', '=', False), ('joint_buying_grouped_order_qty', '=', 0)]}">
+                    <div class="o_form_field o_stat_info">
+                        <span class="o_stat_value">
+                            <field name="joint_buying_grouped_order_qty" widget="integer"/>
+                        </span>
+                        <span class="o_stat_text">Grouped Orders</span>
                     </div>
                 </button>
             </div>
@@ -50,7 +78,6 @@
             </field>
 
             <group name="vendor_setting" position="after">
-
                 <group string="Next Order" colspan="4" col="4">
                     <field name="joint_buying_frequency"/>
                     <field name="joint_buying_next_start_date" string="Order Start Date"
