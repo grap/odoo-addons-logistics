@@ -42,6 +42,9 @@ class TestModule(TransactionCase):
         self.partner_supplier_fumet_dombes = self.env.ref(
             "joint_buying_base.supplier_fumet_dombes"
         )
+        self.partner_supplier_benoit_ronzon = self.env.ref(
+            "joint_buying_base.supplier_benoit_ronzon"
+        )
         self.salaison_devidal = self.JointBuyingResPartner.browse(
             self.env.ref("joint_buying_base.supplier_salaison_devidal").id
         )
@@ -389,3 +392,75 @@ class TestModule(TransactionCase):
             self.supplier_oscar_morell.joint_buying_next_deposit_date,
             now + timedelta(days=+26),
         )
+
+    def test_06_joint_buying_grouped_order_update_product_list(self):
+        def _get_grouped_order():
+            return self.partner_supplier_benoit_ronzon.joint_buying_grouped_order_ids[0]
+
+        def _get_order():
+            return _get_grouped_order().order_ids[0]
+
+        self.product_ronzon_patatoe_charlotte = self.env.ref(
+            "joint_buying_product.product_ronzon_patatoe_charlotte"
+        )
+        self.product_ronzon_patatoe_cephora = self.env.ref(
+            "joint_buying_product.product_ronzon_patatoe_cephora"
+        )
+        self.product_ronzon_patatoe_agila = self.env.ref(
+            "joint_buying_product.product_ronzon_patatoe_agila"
+        )
+
+        if not self.partner_supplier_benoit_ronzon.joint_buying_grouped_order_ids:
+            self.OrderGrouped.cron_create_purchase_order_grouped()
+        grouped_order = _get_grouped_order()
+
+        # Check 0 : we check that the order is correctly set
+
+        # We check if the product product_ronzon_patatoe_charlotte is sold
+        filtered_lines = _get_order().line_ids.filtered(
+            lambda x: x.product_id.id == self.product_ronzon_patatoe_charlotte.id
+        )
+        self.assertEqual(len(filtered_lines), 1)
+
+        # We check if the product product_ronzon_patatoe_cephora is not sold
+        filtered_lines = _get_order().line_ids.filtered(
+            lambda x: x.product_id.id == self.product_ronzon_patatoe_cephora.id
+        )
+        self.assertEqual(len(filtered_lines), 0)
+
+        # We check if the product product_ronzon_patatoe_cephora is not sold
+        filtered_lines = _get_order().line_ids.filtered(
+            lambda x: x.product_id.id == self.product_ronzon_patatoe_agila.id
+        )
+        self.assertEqual(filtered_lines.price_unit, 1.50)
+
+        initial_count = len(_get_order().line_ids)
+        self.assertEqual(initial_count, 2)
+
+        # CHECK 1 : product purchase_ok True -> False
+        self.product_ronzon_patatoe_charlotte.purchase_ok = False
+        grouped_order.update_product_list()
+        filtered_lines = _get_order().line_ids.filtered(
+            lambda x: x.product_id.id == self.product_ronzon_patatoe_charlotte.id
+        )
+        self.assertEqual(len(filtered_lines), 0)
+        self.assertEqual(len(_get_order().line_ids), initial_count - 1)
+
+        # CHECK 2 : product purchase_ok False -> True
+        self.product_ronzon_patatoe_cephora.purchase_ok = True
+        grouped_order.update_product_list()
+        filtered_lines = _get_order().line_ids.filtered(
+            lambda x: x.product_id.id == self.product_ronzon_patatoe_cephora.id
+        )
+        self.assertEqual(len(filtered_lines), 1)
+        self.assertEqual(len(_get_order().line_ids), initial_count)
+
+        # CHECK 3 : Change price 1.5 -> 1.99
+        self.product_ronzon_patatoe_agila.lst_price = 1.99
+        grouped_order.update_product_list()
+        filtered_lines = _get_order().line_ids.filtered(
+            lambda x: x.product_id.id == self.product_ronzon_patatoe_agila.id
+        )
+        self.assertEqual(len(filtered_lines), 1)
+        self.assertEqual(filtered_lines.price_unit, 1.99)
+        self.assertEqual(len(_get_order().line_ids), initial_count)
