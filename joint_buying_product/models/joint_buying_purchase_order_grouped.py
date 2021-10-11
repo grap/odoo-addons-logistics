@@ -420,13 +420,13 @@ class JointBuyingPurchaseOrderGrouped(models.Model):
             products = grouped_order.supplier_id._get_joint_buying_products()
             lines_vals = [OrderLine._prepare_line_vals(x) for x in products]
 
-            # product_ids = [x["product_id"] for x in lines_vals]
+            product_ids = [x["product_id"] for x in lines_vals]
             for order in grouped_order.order_ids:
                 # First remove product that should not be sold
-                # to_remove_lines = order.line_ids.filtered(
-                #     lambda x: x.product_id.id not in product_ids
-                # )
-                # to_remove_lines.unlink()
+                to_remove_lines = order.line_ids.filtered(
+                    lambda x: x.product_id.id not in product_ids
+                )
+                to_remove_lines.unlink()
 
                 for line_vals in lines_vals:
                     line = order.line_ids.filtered(
@@ -434,10 +434,24 @@ class JointBuyingPurchaseOrderGrouped(models.Model):
                     )
                     if line:
                         # Update the line
-                        pass
+                        current_vals = {
+                            k: v
+                            for k, v in line_vals.items()
+                            if k
+                            not in [
+                                "qty",
+                                "product_qty",
+                                "amount_untaxed",
+                                "total_weight",
+                            ]
+                        }
+                        # TODO, for the time being, it is rewriting all the values
+                        # maybe we could check if the value changed
+                        # before calling the write
+                        line.write(current_vals)
                     else:
                         # create a new line
-                        pass
+                        order.write({"line_ids": [(0, 0, line_vals)]})
 
     @api.model
     def _prepare_order_grouped_vals(

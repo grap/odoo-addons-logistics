@@ -208,17 +208,18 @@ class JointBuyingPurchaseOrderLine(models.Model):
 
     @api.model
     def _prepare_line_vals(self, product):
-        return {
+        res = {
             "product_id": product.id,
             "uom_measure_type": product.uom_measure_type,
             "uom_id": product.uom_package_id.id or product.uom_po_id.id,
-            "qty": 0.0,
             "product_uom_id": product.uom_id.id,
             "product_uom_po_id": product.uom_po_id.id,
-            "product_qty": 0.0,
             "product_uom_package_qty": product.uom_package_qty,
             "product_weight": product.weight,
             "price_unit": product.lst_price,
+            "qty": 0.0,
+            "product_qty": 0.0,
             "amount_untaxed": 0.0,
             "total_weight": 0.0,
         }
+        return res

@@ -158,10 +158,11 @@ License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl.html).
         <field name="res_model">joint.buying.purchase.order</field>
         <field name="view_type">form</field>
         <field name="view_mode">tree,calendar,form</field>
-        <field name="domain">[('is_mine', '=', True)]</field>
+        <field name="domain">[("is_mine", "=", True)]</field>
         <field name="context">{
-            'search_default_to_enter_by_customer': 1,
-            'invisible_customer_id': 1,
+            "joint_buying": 1,
+            "search_default_to_enter_by_customer": 1,
+            "invisible_customer_id": 1,
         }</field>
     </record>
 
@@ -178,6 +179,9 @@ License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl.html).
         <field name="res_model">joint.buying.purchase.order</field>
         <field name="view_type">form</field>
         <field name="view_mode">tree,form</field>
+        <field name="context">{
+            "joint_buying": 1,
+        }</field>
     </record>
 
     <menuitem id="menu_joint_buying_purchase_order_all"
