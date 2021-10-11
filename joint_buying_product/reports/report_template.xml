@@ -33,7 +33,6 @@
                 <table class="table table-sm o_main_table">
                     <thead>
                         <tr>
-                            <th class="text-right">Code</th>
                             <th class="text-left">Product</th>
                             <th class="text-right">Quantity</th>
                             <th class="text-right">UoM</th>
@@ -44,7 +43,6 @@
                     <tbody>
                         <t t-foreach="doc.summary_line_ids" t-as="line">
                             <tr>
-                                <td class="text-right"><span t-field="line.product_id.default_code"/></td>
                                 <td class="text-left"><span t-field="line.product_id"/></td>
                                 <td class="text-right"><span t-field="line.qty"/></td>
                                 <td class="text-right"><span t-field="line.uom_id"/></td>
@@ -55,7 +53,7 @@
                     </tbody>
                     <tfoot>
                         <tr>
-                            <td class="text-right" colspan="4"/>
+                            <td class="text-right" colspan="3"/>
                             <th class="text-right">Total</th>
                             <td class="text-right"><span t-field="doc.amount_untaxed"/> €</td>
                         </tr>
@@ -70,7 +68,6 @@
                 <table class="table table-sm o_main_table">
                     <thead>
                         <tr>
-                            <th class="text-right">Code</th>
                             <th class="text-left">Product</th>
                             <th class="text-right">Quantity</th>
                             <th class="text-right">UoM</th>
@@ -81,16 +78,15 @@
                     <tbody>
                         <t t-foreach="doc.order_ids.filtered(lambda x: x.amount_untaxed)" t-as="order">
                             <tr class="bg-200 font-weight-bold o_line_section">
-                                <th class="text-left" colspan="5">
+                                <th class="text-left" colspan="4">
                                     <span t-field="order.customer_id.joint_buying_company_id.code" /> -
                                     <span t-field="order.customer_id.joint_buying_company_id.sudo().partner_id.contact_address" />
                                     <br />(<span t-field="order.customer_id.email" /> <span t-field="order.customer_id.phone"/>)
                                 </th>
-                                <th class="text-right" colspan="1"><span t-field="order.amount_untaxed"/> €</th>
+                                <th class="text-right"><span t-field="order.amount_untaxed"/> €</th>
                             </tr>
                             <t t-foreach="order.line_ids" t-as="line">
                                 <tr t-if="line.qty">
-                                    <td class="text-left"><span t-field="line.product_id.default_code"/></td>
                                     <td class="text-left"><span t-field="line.product_id"/></td>
                                     <td class="text-right"><span t-field="line.qty"/></td>
                                     <td class="text-right"><span t-field="line.uom_id"/></td>
