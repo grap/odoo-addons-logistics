@@ -63,6 +63,27 @@
         ]"/>
     </record>
 
+    <record id="supplier_benoit_ronzon" model="res.partner">
+        <field name="name">Benoit Ronzon</field>
+        <field name="street">Les Places</field>
+        <field name="city">St Clément les Places</field>
+        <field name="zip">69930</field>
+        <field name="email">benoit.ronzon@gmail.com</field>
+        <field name="country_id" ref="base.es"/>
+        <field name="is_joint_buying" eval="True"/>
+        <field name="customer" eval="False"/>
+        <field name="supplier" eval="True"/>
+        <field name="company_id" eval="False"/>
+        <field name="joint_buying_pivot_company_id" ref="joint_buying_base.company_LSE"/>
+        <field name="joint_buying_subscribed_company_ids" eval="[
+            (4, ref('joint_buying_base.company_LSE')),
+        ]"/>
+        <field name="joint_buying_deposit_partner_id"  model="res.partner" eval="obj().env.ref('joint_buying_base.company_LSE').joint_buying_partner_id.id"/>
+        <field name="category_id" eval="[
+            (4, ref('joint_buying_base.partner_category_vegetable')),
+        ]"/>
+    </record>
+
     <record id="place_romagnieu" model="res.partner">
         <field name="name">Romagnieu</field>
         <field name="street">Impasse du Martarey</field>

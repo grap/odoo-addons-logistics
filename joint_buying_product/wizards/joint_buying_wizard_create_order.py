@@ -2,7 +2,7 @@
 # @author: Sylvain LE GAL (https://twitter.com/legalsylvain)
 # License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl.html).
 
-from odoo import api, fields, models
+from odoo import _, api, fields, models
 
 from odoo.addons.joint_buying_base.models.res_partner import (
     _JOINT_BUYING_PARTNER_CONTEXT,
@@ -76,6 +76,8 @@ class JointBuyingWizardCreateOrder(models.TransientModel):
         inverse_name="wizard_id",
     )
 
+    overlap_message = fields.Html(compute="_compute_overlap_message")
+
     def _default_partner_id(self):
         return self.env.context.get("active_id")
 
@@ -129,6 +131,33 @@ class JointBuyingWizardCreateOrder(models.TransientModel):
         ):
             line_vals.append((0, 0, {"customer_id": partner.id}))
         return line_vals
+
+    @api.depends("start_date", "end_date")
+    def _compute_overlap_message(self):
+        self.ensure_one()
+        overload_grouped_orders = self.env[
+            "joint.buying.purchase.order.grouped"
+        ].search(
+            [
+                ("supplier_id", "=", self.supplier_id.id),
+                ("start_date", "<", self.end_date),
+                ("end_date", ">", self.start_date),
+            ]
+        )
+        if overload_grouped_orders:
+            self.overlap_message = _(
+                "There are already one or more group orders open for this period."
+                " Are you sure you want to open another one ?<br/><br/> - %s"
+                % (
+                    "<br/> - ".join(
+                        [
+                            _("%s (Start : %s ; End : %s)")
+                            % (x.name, x.start_date, x.end_date)
+                            for x in overload_grouped_orders
+                        ]
+                    )
+                )
+            )
 
     @api.multi
     def create_order_grouped(self):
