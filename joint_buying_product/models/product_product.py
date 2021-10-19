@@ -60,6 +60,12 @@ class ProductProduct(models.Model):
         copy=False,
     )
 
+    joint_buying_category_id = fields.Many2one(
+        string="Joint Buying Category",
+        comodel_name="joint.buying.category",
+        domain="[('supplier_id', '=', parent.id)]",
+    )
+
     joint_buying_is_new = fields.Boolean(
         string="Is New",
         help="Check this box if the product is new."

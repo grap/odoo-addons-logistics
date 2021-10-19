@@ -116,15 +116,28 @@
                         <tree editable="bottom" decoration-muted="purchase_ok == False">
                             <field name="default_code" string="Sup. Code"/>
                             <field name="name"/>
-                            <field name="uom_id" string="UoM"/>
-                            <field name="uom_po_id" string="Invoice Supplier UoM"/>
-                            <field name="uom_package_id" string="UoM Weight / Unit"/>
+                            <field name="uom_id" string="UoM" options="{'no_open': True}"/>
+                            <field name="uom_po_id" string="Invoice Supplier UoM" options="{'no_open': True}"/>
+                            <field name="uom_package_id" string="UoM Weight / Unit" options="{'no_open': True}"/>
                             <field name="uom_package_qty"  attrs="{'required': [('uom_package_id', '!=', False)]}"/>
                             <field name="lst_price" required="True" string="Pricing"/>
                             <field name="weight" attrs="{'invisible': [('uom_measure_type', '=', 'weight')]}"/>
                             <field name="uom_measure_type" invisible="1"/>
                             <field name="purchase_ok" widget="boolean_toggle" string="Avail. ?"/>
                             <field name="joint_buying_is_new" widget="boolean_toggle" string="New ?"/>
+                            <field name="joint_buying_category_id" string="Cat." options="{'no_create': True, 'no_open': True}"/>
+                        </tree>
+                    </field>
+                </group>
+
+<!--                             <field name="joint_buying_partner_id" string="par."/>
+ -->
+
+                <group string="Order Categories" colspan="4">
+                    <field name="joint_buying_category_ids" nolabel="1">
+                        <tree editable="bottom">
+                            <field name="name"/>
+                            <field name="product_qty"/>
                         </tree>
                     </field>
                 </group>

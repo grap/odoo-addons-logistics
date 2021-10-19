@@ -91,6 +91,10 @@ class JointBuyingPurchaseOrderGrouped(models.Model):
         string="Orders Quantity", compute="_compute_order_qty", store=True
     )
 
+    joint_buying_category_ids = fields.Many2many(
+        string="Joint Buying Categories", comodel_name="joint.buying.category"
+    )
+
     entry_rate_description = fields.Char(
         string="Entry Rate", compute="_compute_entry_rate_description", store=True
     )
@@ -467,6 +471,7 @@ class JointBuyingPurchaseOrderGrouped(models.Model):
         minimum_unit_amount=False,
         minimum_weight=False,
         minimum_unit_weight=False,
+        categories=False,
     ):
         Order = self.env["joint.buying.purchase.order"]
         vals = {
@@ -483,6 +488,7 @@ class JointBuyingPurchaseOrderGrouped(models.Model):
             "minimum_weight": minimum_weight,
             "minimum_unit_weight": minimum_unit_weight,
             "order_ids": [],
+            "category_ids": categories.ids,
         }
         if not customers:
             customers = supplier.mapped(
@@ -490,7 +496,7 @@ class JointBuyingPurchaseOrderGrouped(models.Model):
             )
         for customer in customers:
             vals["order_ids"].append(
-                (0, 0, Order._prepare_order_vals(supplier, customer))
+                (0, 0, Order._prepare_order_vals(supplier, customer, categories))
             )
         return vals
 
