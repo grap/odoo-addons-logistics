@@ -91,7 +91,7 @@ class JointBuyingPurchaseOrderGrouped(models.Model):
         string="Orders Quantity", compute="_compute_order_qty", store=True
     )
 
-    joint_buying_category_ids = fields.Many2many(
+    category_ids = fields.Many2many(
         string="Joint Buying Categories", comodel_name="joint.buying.category"
     )
 
@@ -327,7 +327,7 @@ class JointBuyingPurchaseOrderGrouped(models.Model):
             wizard = (
                 self.env["joint.buying.wizard.create.order"]
                 .with_context(active_id=partner.id)
-                .create({"joint_buying_category_ids": categories.ids})
+                .create({"category_ids": categories.ids})
             )
             wizard.create_order_grouped()
 
@@ -604,7 +604,9 @@ class JointBuyingPurchaseOrderGrouped(models.Model):
         Order = self.env["joint.buying.purchase.order"]
         current_customer_partner = self.env.user.company_id.joint_buying_partner_id
 
-        vals = Order._prepare_order_vals(self.supplier_id, current_customer_partner)
+        vals = Order._prepare_order_vals(
+            self.supplier_id, current_customer_partner, categories=self.category_ids
+        )
         vals.update({"grouped_order_id": self.id})
         Order.create(vals)
 

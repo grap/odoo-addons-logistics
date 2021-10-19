@@ -19,10 +19,10 @@ class JointBuyingCategory(models.Model):
     name = fields.Char(string="Name", required=True)
 
     used_in_recurring_grouped_orders = fields.Boolean(
-        string="Used in automatic Ordesr",
+        string="Used in Recurring Orders",
         default=False,
         help="Check this box if you want that recurring orders created"
-        " automatically include the products that belong to that category",
+        " automatically include the products that belong to that category.",
     )
 
     supplier_id = fields.Many2one(
