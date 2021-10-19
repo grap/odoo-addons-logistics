@@ -78,8 +78,20 @@ class JointBuyingWizardCreateOrder(models.TransientModel):
 
     overlap_message = fields.Html(compute="_compute_overlap_message")
 
+    use_joint_buying_category = fields.Boolean(
+        default=lambda x: x._default_use_joint_buying_category()
+    )
+
+    joint_buying_category_ids = fields.Many2many(
+        string="Joint Buying Categories", comodel_name="joint.buying.category"
+    )
+
     def _default_partner_id(self):
         return self.env.context.get("active_id")
+
+    def _default_use_joint_buying_category(self):
+        partner = self.env["res.partner"].browse(self.env.context.get("active_id"))
+        return len(partner.joint_buying_category_ids)
 
     def _default_start_date(self):
         partner = self.env["res.partner"].browse(self.env.context.get("active_id"))
@@ -176,6 +188,7 @@ class JointBuyingWizardCreateOrder(models.TransientModel):
                 minimum_unit_amount=self.minimum_unit_amount,
                 minimum_weight=self.minimum_weight,
                 minimum_unit_weight=self.minimum_unit_weight,
+                categories=self.joint_buying_category_ids,
             )
         )
 

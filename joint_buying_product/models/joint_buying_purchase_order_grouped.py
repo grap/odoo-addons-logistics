@@ -321,10 +321,13 @@ class JointBuyingPurchaseOrderGrouped(models.Model):
         )
         for partner in partners:
             # Create Grouped order
+            categories = partner.joint_buying_category_ids.filtered(
+                lambda x: x.used_in_recurring_grouped_orders
+            )
             wizard = (
                 self.env["joint.buying.wizard.create.order"]
                 .with_context(active_id=partner.id)
-                .create({})
+                .create({"joint_buying_category_ids": categories.ids})
             )
             wizard.create_order_grouped()
 

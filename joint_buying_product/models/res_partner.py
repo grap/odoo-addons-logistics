@@ -57,6 +57,10 @@ class ResPartner(models.Model):
         inverse_name="supplier_id",
     )
 
+    joint_buying_use_category = fields.Boolean(
+        string="Use Order Categories", default=False
+    )
+
     # constrains Section
     @api.constrains(
         "joint_buying_frequency",
