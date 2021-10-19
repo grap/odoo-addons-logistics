@@ -82,7 +82,7 @@ class JointBuyingWizardCreateOrder(models.TransientModel):
         default=lambda x: x._default_use_joint_buying_category()
     )
 
-    joint_buying_category_ids = fields.Many2many(
+    category_ids = fields.Many2many(
         string="Joint Buying Categories", comodel_name="joint.buying.category"
     )
 
@@ -188,7 +188,7 @@ class JointBuyingWizardCreateOrder(models.TransientModel):
                 minimum_unit_amount=self.minimum_unit_amount,
                 minimum_weight=self.minimum_weight,
                 minimum_unit_weight=self.minimum_unit_weight,
-                categories=self.joint_buying_category_ids,
+                categories=self.category_ids,
             )
         )
 

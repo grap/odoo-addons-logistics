@@ -424,7 +424,9 @@ class JointBuyingPurchaseOrderGrouped(models.Model):
         OrderLine = self.env["joint.buying.purchase.order.line"]
 
         for grouped_order in self:
-            products = grouped_order.supplier_id._get_joint_buying_products()
+            products = grouped_order.supplier_id._get_joint_buying_products(
+                categories=grouped_order.category_ids
+            )
             lines_vals = [OrderLine._prepare_line_vals(x) for x in products]
 
             product_ids = [x["product_id"] for x in lines_vals]

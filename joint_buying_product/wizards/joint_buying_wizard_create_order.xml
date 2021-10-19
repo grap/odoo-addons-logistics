@@ -30,7 +30,7 @@ License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl.html).
                     </group>
                     <group string="Order Categories"
                         attrs="{'invisible': [('use_joint_buying_category', '=', False)]}">
-                        <field name="joint_buying_category_ids" nolabel="1" widget="many2many_tags"/>
+                        <field name="category_ids" nolabel="1" widget="many2many_tags"/>
                     </group>
                     <group string="Minimum Amount" colspan="4" col="4">
                         <label for="minimum_amount" string="Grouped Order"/>
