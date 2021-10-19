@@ -91,6 +91,10 @@ class JointBuyingPurchaseOrderGrouped(models.Model):
         string="Orders Quantity", compute="_compute_order_qty", store=True
     )
 
+    category_ids = fields.Many2many(
+        string="Order Categories", comodel_name="joint.buying.category"
+    )
+
     entry_rate_description = fields.Char(
         string="Entry Rate", compute="_compute_entry_rate_description", store=True
     )
@@ -297,7 +301,7 @@ class JointBuyingPurchaseOrderGrouped(models.Model):
             self.with_context(mail_post_autofollow=True),
         ).message_post(**kwargs)
 
-    # # Custom Section
+    # Custom Section
     @api.model
     def cron_check_state(self):
         self.update_state_value(check_all=True)
@@ -305,36 +309,32 @@ class JointBuyingPurchaseOrderGrouped(models.Model):
     @api.model
     def cron_create_purchase_order_grouped(self):
         now = fields.datetime.now()
-        partners = (
-            self.env["res.partner"]
-            .with_context(joint_buying=True)
-            .search(
-                [
-                    ("joint_buying_frequency", "!=", 0),
-                    ("joint_buying_next_start_date", "<", now),
-                ]
-            )
+        frequencies = self.env["joint.buying.frequency"].search(
+            [("frequency", "!=", 0), ("next_start_date", "<", now)]
         )
-        for partner in partners:
+        for frequency in frequencies:
             # Create Grouped order
             wizard = (
                 self.env["joint.buying.wizard.create.order"]
-                .with_context(active_id=partner.id)
-                .create({})
+                .with_context(active_id=frequency.partner_id.id)
+                .create(
+                    {
+                        "category_ids": [(6, 0, frequency.category_ids.ids)],
+                        "start_date": frequency.next_start_date,
+                        "end_date": frequency.next_end_date,
+                        "deposit_date": frequency.next_deposit_date,
+                        "deposit_partner_id": frequency.deposit_partner_id.id,
+                    }
+                )
             )
             wizard.create_order_grouped()
 
             # Add frequency to all dates
             vals = {}
-            for field in [
-                "joint_buying_next_start_date",
-                "joint_buying_next_end_date",
-                "joint_buying_next_deposit_date",
-            ]:
-                vals[field] = getattr(partner, field) + timedelta(
-                    days=partner.joint_buying_frequency
-                )
-            partner.write(vals)
+            delta = timedelta(days=frequency.frequency)
+            for field in ["next_start_date", "next_end_date", "next_deposit_date"]:
+                vals[field] = getattr(frequency, field) + delta
+            frequency.write(vals)
 
     @api.multi
     def update_state_value(self, check_all=False):
@@ -417,7 +417,9 @@ class JointBuyingPurchaseOrderGrouped(models.Model):
         OrderLine = self.env["joint.buying.purchase.order.line"]
 
         for grouped_order in self:
-            products = grouped_order.supplier_id._get_joint_buying_products()
+            products = grouped_order.supplier_id._get_joint_buying_products(
+                categories=grouped_order.category_ids
+            )
             lines_vals = [OrderLine._prepare_line_vals(x) for x in products]
 
             product_ids = [x["product_id"] for x in lines_vals]
@@ -457,32 +459,32 @@ class JointBuyingPurchaseOrderGrouped(models.Model):
     def _prepare_order_grouped_vals(
         self,
         supplier,
-        customers=False,
-        start_date=False,
-        end_date=False,
-        deposit_date=False,
-        pivot_company=False,
-        deposit_partner=False,
-        minimum_amount=False,
-        minimum_unit_amount=False,
-        minimum_weight=False,
-        minimum_unit_weight=False,
+        customers,
+        start_date,
+        end_date,
+        deposit_date,
+        pivot_company,
+        deposit_partner,
+        minimum_amount,
+        minimum_unit_amount,
+        minimum_weight,
+        minimum_unit_weight,
+        categories,
     ):
         Order = self.env["joint.buying.purchase.order"]
         vals = {
             "supplier_id": supplier.id,
-            "deposit_partner_id": deposit_partner.id
-            or supplier.joint_buying_deposit_partner_id.id,
-            "pivot_company_id": pivot_company.id
-            or supplier.joint_buying_pivot_company_id.id,
-            "start_date": start_date or supplier.joint_buying_next_start_date,
-            "end_date": end_date or supplier.joint_buying_next_end_date,
-            "deposit_date": deposit_date or supplier.joint_buying_next_deposit_date,
+            "deposit_partner_id": deposit_partner.id,
+            "pivot_company_id": pivot_company.id,
+            "start_date": start_date,
+            "end_date": end_date,
+            "deposit_date": deposit_date,
             "minimum_amount": minimum_amount,
             "minimum_unit_amount": minimum_unit_amount,
             "minimum_weight": minimum_weight,
             "minimum_unit_weight": minimum_unit_weight,
             "order_ids": [],
+            "category_ids": [(6, 0, categories.ids)],
         }
         if not customers:
             customers = supplier.mapped(
@@ -490,7 +492,7 @@ class JointBuyingPurchaseOrderGrouped(models.Model):
             )
         for customer in customers:
             vals["order_ids"].append(
-                (0, 0, Order._prepare_order_vals(supplier, customer))
+                (0, 0, Order._prepare_order_vals(supplier, customer, categories))
             )
         return vals
 
@@ -595,7 +597,9 @@ class JointBuyingPurchaseOrderGrouped(models.Model):
         Order = self.env["joint.buying.purchase.order"]
         current_customer_partner = self.env.user.company_id.joint_buying_partner_id
 
-        vals = Order._prepare_order_vals(self.supplier_id, current_customer_partner)
+        vals = Order._prepare_order_vals(
+            self.supplier_id, current_customer_partner, categories=self.category_ids
+        )
         vals.update({"grouped_order_id": self.id})
         Order.create(vals)
 

@@ -60,6 +60,12 @@ class ProductProduct(models.Model):
         copy=False,
     )
 
+    joint_buying_category_id = fields.Many2one(
+        string="Joint Buying Category",
+        comodel_name="joint.buying.category",
+        domain="[('supplier_id', '=', parent.id)]",
+    )
+
     joint_buying_is_new = fields.Boolean(
         string="Is New",
         help="Check this box if the product is new."
@@ -145,11 +151,6 @@ class ProductProduct(models.Model):
 
     def _prepare_joint_buying_product(self):
         self.ensure_one()
-        pricelist = self.company_id.joint_buying_pricelist_id
-        if not pricelist:
-            lst_price = self.lst_price
-        else:
-            lst_price = pricelist.get_product_price(self, 1, False)
         vals = {
             "name": self.name,
             "uom_id": self.uom_id.id,
@@ -159,6 +160,6 @@ class ProductProduct(models.Model):
             "barcode": self.barcode,
             "categ_id": self.env.ref("joint_buying_product.product_category").id,
             "joint_buying_partner_id": self.company_id.joint_buying_partner_id.id,
-            "lst_price": lst_price,
+            "lst_price": 0.0,
         }
         return vals

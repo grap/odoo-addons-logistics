@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<odoo>
+
+    <record id="frequency_supplier_benoit_ronzon" model="joint.buying.frequency">
+        <field name="partner_id" ref="joint_buying_base.supplier_benoit_ronzon"/>
+        <field name="deposit_partner_id"  model="res.partner" eval="obj().env.ref('joint_buying_base.company_LSE').joint_buying_partner_id.id"/>
+        <field name="frequency">7</field>
+        <field name="next_start_date" eval="(DateTime.today() + relativedelta(days=-2)).strftime('%Y-%m-%d %H:%M')"/>
+        <field name="next_end_date" eval="(DateTime.today() + relativedelta(days=3)).strftime('%Y-%m-%d %H:%M')"/>
+        <field name="next_deposit_date" eval="(DateTime.today() + relativedelta(days=9)).strftime('%Y-%m-%d %H:%M')"/>
+    </record>
+
+    <record id="frequency_fruit_PZI" model="joint.buying.frequency">
+        <field name="partner_id" model="res.partner" eval="obj().env.ref('joint_buying_base.company_PZI').joint_buying_partner_id.id"/>
+        <field name="frequency">7</field>
+        <field name="next_start_date" eval="(DateTime.today() + relativedelta(days=+3)).strftime('%Y-%m-%d %H:%M')"/>
+        <field name="next_end_date" eval="(DateTime.today() + relativedelta(days=+6)).strftime('%Y-%m-%d %H:%M')"/>
+        <field name="next_deposit_date" eval="(DateTime.today() + relativedelta(days=+9)).strftime('%Y-%m-%d %H:%M')"/>
+        <field name="deposit_partner_id" ref="joint_buying_base.place_romagnieu"/>
+        <field name="category_ids" eval="[
+            (4, ref('joint_buying_product.category_fruits_vegetables_PZI')),
+        ]"/>
+    </record>
+
+    <record id="frequency_oil_PZI" model="joint.buying.frequency">
+        <field name="partner_id" model="res.partner" eval="obj().env.ref('joint_buying_base.company_PZI').joint_buying_partner_id.id"/>
+        <field name="frequency">182</field>
+        <field name="next_start_date" eval="(DateTime.today() + relativedelta(days=+5)).strftime('%Y-%m-%d %H:%M')"/>
+        <field name="next_end_date" eval="(DateTime.today() + relativedelta(days=+8)).strftime('%Y-%m-%d %H:%M')"/>
+        <field name="next_deposit_date" eval="(DateTime.today() + relativedelta(days=+20)).strftime('%Y-%m-%d %H:%M')"/>
+        <field name="deposit_partner_id" ref="joint_buying_base.place_romagnieu"/>
+        <field name="category_ids" eval="[
+            (4, ref('joint_buying_product.category_oil_PZI')),
+        ]"/>
+    </record>
+
+</odoo>
