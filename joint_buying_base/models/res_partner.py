@@ -58,14 +58,6 @@ class ResPartner(models.Model):
         help="Activity that has a commercial relationship with this supplier",
     )
 
-    joint_buying_deposit_partner_id = fields.Many2one(
-        comodel_name="res.partner",
-        string="Deposit Place",
-        help="Place that will serve as a deposit for this supplier",
-        domain="[('is_joint_buying_stage', '=', True)]",
-        context=_JOINT_BUYING_PARTNER_CONTEXT,
-    )
-
     # TODO, rename into joint_buying_is_stage
     is_joint_buying_stage = fields.Boolean(
         string="Is Stage",
@@ -245,7 +237,3 @@ class ResPartner(models.Model):
             "vat",
         ]
         return res
-
-    @api.multi
-    def demo_geolocalize(self):
-        return
