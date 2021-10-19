@@ -138,7 +138,7 @@
     </function>
 
     <function model="res.company" name="write">
-        <value eval="[ref('joint_buying_base.company_ELD')]"/>
+        <value eval="[ref('joint_buying_base.company_ELD'), ref('joint_buying_base.company_PZI')]"/>
         <value eval="{
             'is_joint_buying_supplier': True,
         }"/>

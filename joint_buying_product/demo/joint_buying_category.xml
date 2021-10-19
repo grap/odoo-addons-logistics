@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<odoo>
+
+    <record id="category_fruits_vegetables_PZI" model="joint.buying.category">
+        <field name="name">Fruits and vegetables</field>
+        <field name="used_in_recurring_grouped_orders" eval="True"/>
+        <field name="supplier_id" model="res.partner" eval="obj().env.ref('joint_buying_base.company_PZI').joint_buying_partner_id.id"/>
+    </record>
+
+    <record id="category_parmigiano_PZI" model="joint.buying.category">
+        <field name="name">parmigiano</field>
+        <field name="supplier_id" model="res.partner" eval="obj().env.ref('joint_buying_base.company_PZI').joint_buying_partner_id.id"/>
+    </record>
+
+    <record id="category_oil_PZI" model="joint.buying.category">
+        <field name="name">Oil</field>
+        <field name="supplier_id" model="res.partner" eval="obj().env.ref('joint_buying_base.company_PZI').joint_buying_partner_id.id"/>
+    </record>
+
+</odoo>
