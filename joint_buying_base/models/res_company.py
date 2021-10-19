@@ -92,7 +92,3 @@ class ResCompany(models.Model):
                     write_joint_buying_partner=True
                 ).write(partner_vals)
         return res
-
-    @api.multi
-    def demo_geolocalize(self):
-        self.mapped("joint_buying_partner_id").demo_geolocalize()

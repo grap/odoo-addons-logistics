@@ -26,6 +26,7 @@ License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl.html).
                 create="false">
                 <field name="name"/>
                 <field name="supplier_id"/>
+                <field name="category_ids" widget="many2many_tags" string="Cat."/>
                 <field name="start_date"/>
                 <field name="end_date" options="{'bg_color': 'orange: state == &quot;in_progress_near&quot;; red: state == &quot;in_progress_imminent&quot;'}"/>
                 <field name="deposit_date"/>
@@ -140,6 +141,7 @@ License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl.html).
                             <field name="supplier_id"/>
                             <field name="pivot_company_id"/>
                             <field name="deposit_partner_id"/>
+                            <field name="category_ids" widget="many2many_tags" attrs="{'invisible': [('category_ids', '=', False)]}"/>
                             <field name="current_order_id" invisible="1"/>
                             <field name="purchase_ok" invisible="1"/>
                             <field name="is_mine" invisible="1"/>

@@ -34,8 +34,10 @@ class TestModule(TransactionCase):
         self.OrderLine = self.env["joint.buying.purchase.order.line"]
 
         self.company_ELD = self.env.ref("joint_buying_base.company_ELD")
+        self.company_CDA = self.env.ref("joint_buying_base.company_CDA")
         self.company_CHE = self.env.ref("joint_buying_base.company_CHE")
         self.company_3PP = self.env.ref("joint_buying_base.company_3PP")
+        self.company_LSE = self.env.ref("joint_buying_base.company_LSE")
 
         self.pricelist_ELD = self.env.ref("joint_buying_product.pricelist_10_percent")
 
@@ -51,6 +53,9 @@ class TestModule(TransactionCase):
         self.supplier_oscar_morell = self.JointBuyingResPartner.browse(
             self.env.ref("joint_buying_base.supplier_oscar_morell").id
         )
+        self.partner_supplier_PZI = self.env.ref(
+            "joint_buying_base.company_PZI"
+        ).joint_buying_partner_id
         self.category_all = self.env.ref("product.product_category_all")
         self.end_date_near_day = int(
             self.IrConfigParameter.get_param("joint_buying_product.end_date_near_day")
@@ -105,7 +110,6 @@ class TestModule(TransactionCase):
 
         # Test the possibility to offer the local product to the joint buying catalog
         # Without pricelist
-        new_local_product.company_id.joint_buying_pricelist_id = False
         new_global_product = new_local_product.create_joint_buying_product()
 
         len_joint_buying_after_joint_buying_creation = len(
@@ -125,15 +129,10 @@ class TestModule(TransactionCase):
             new_global_product.default_code, new_local_product.default_code
         )
 
-        self.assertEqual(new_global_product.lst_price, new_local_product.lst_price)
-
-        # Test the pricelist mechanism
-        new_local_product_2 = new_local_product.copy()
-        new_local_product_2.company_id.joint_buying_pricelist_id = self.pricelist_ELD
-        new_global_product_2 = new_local_product_2.create_joint_buying_product()
-
         self.assertEqual(
-            new_global_product_2.lst_price, new_local_product_2.lst_price * 90 / 100
+            new_global_product.lst_price,
+            0.0,
+            "Global Product should allways have 0 as price.",
         )
 
     def test_02_joint_buying_product_creation(self):
@@ -181,6 +180,7 @@ class TestModule(TransactionCase):
                 "start_date": start_date,
                 "end_date": end_date,
                 "deposit_date": deposit_date,
+                "deposit_partner_id": self.company_CDA.joint_buying_partner_id.id,
             }
         )
 
@@ -354,15 +354,19 @@ class TestModule(TransactionCase):
         )
 
         # We create an automatic purchase_order_grouped with Morell Supplier
+        frequency_vals = {
+            "frequency": 14,
+            "deposit_partner_id": self.company_LSE.joint_buying_partner_id.id,
+            "next_start_date": now + timedelta(days=-1),
+            "next_end_date": now + timedelta(days=+8),
+            "next_deposit_date": now + timedelta(days=+12),
+        }
         self.supplier_oscar_morell.write(
             {
                 "joint_buying_subscribed_company_ids": [
                     (6, 0, [self.company_3PP.id, self.company_CHE.id])
                 ],
-                "joint_buying_frequency": 14,
-                "joint_buying_next_start_date": now + timedelta(days=-1),
-                "joint_buying_next_end_date": now + timedelta(days=+8),
-                "joint_buying_next_deposit_date": now + timedelta(days=+12),
+                "joint_buying_frequency_ids": [(0, 0, frequency_vals)],
             }
         )
 
@@ -381,15 +385,15 @@ class TestModule(TransactionCase):
 
         # Check that supplier dateds has been correctly incremented
         self.assertEqual(
-            self.supplier_oscar_morell.joint_buying_next_start_date,
+            self.supplier_oscar_morell.joint_buying_frequency_ids[0].next_start_date,
             now + timedelta(days=+13),
         )
         self.assertEqual(
-            self.supplier_oscar_morell.joint_buying_next_end_date,
+            self.supplier_oscar_morell.joint_buying_frequency_ids[0].next_end_date,
             now + timedelta(days=+22),
         )
         self.assertEqual(
-            self.supplier_oscar_morell.joint_buying_next_deposit_date,
+            self.supplier_oscar_morell.joint_buying_frequency_ids[0].next_deposit_date,
             now + timedelta(days=+26),
         )
 
@@ -464,3 +468,53 @@ class TestModule(TransactionCase):
         self.assertEqual(len(filtered_lines), 1)
         self.assertEqual(filtered_lines.price_unit, 1.99)
         self.assertEqual(len(_get_order().line_ids), initial_count)
+
+    def test_07_joint_buying_grouped_order_with_categories(self):
+        now = fields.datetime.now()
+
+        # no regression
+        self.OrderGrouped.cron_create_purchase_order_grouped()
+        orders_grouped = self.OrderGrouped.search(
+            [("supplier_id", "=", self.partner_supplier_PZI.id)]
+        )
+
+        self.assertEqual(
+            len(orders_grouped),
+            0,
+            "Creation of Grouped Order should not be launched"
+            " if start date is not reached",
+        )
+
+        # Launch Oil Order
+        self.env.ref(
+            "joint_buying_product.frequency_oil_PZI"
+        ).next_start_date = now + timedelta(days=-1)
+        self.OrderGrouped.cron_create_purchase_order_grouped()
+        oil_orders_grouped = self.OrderGrouped.search(
+            [("supplier_id", "=", self.partner_supplier_PZI.id)]
+        )
+        self.assertEqual(
+            len(oil_orders_grouped),
+            1,
+            "Creation of Grouped Order should be launched if start date is reached",
+        )
+
+        self.assertEqual(
+            oil_orders_grouped.mapped("category_ids").ids,
+            [self.env.ref("joint_buying_product.category_oil_PZI").id],
+        )
+
+        oil_orders_grouped.create_current_order()
+
+        correct_products = self.partner_supplier_PZI.with_context(
+            joint_buying=True
+        ).joint_buying_product_ids.filtered(
+            lambda x: x.joint_buying_category_id.id
+            in [self.env.ref("joint_buying_product.category_oil_PZI").id, False]
+        )
+        self.assertEqual(
+            sorted(oil_orders_grouped.mapped("order_ids.line_ids.product_id").ids),
+            sorted(correct_products.ids),
+            "Create order for a category should select product for this category"
+            " or product allways available.",
+        )

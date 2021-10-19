@@ -15,7 +15,3 @@ class ResCompany(models.Model):
     joint_buying_send_pivot_email_closed = fields.Boolean(
         "Send email when closing Grouped Order", default=True
     )
-
-    joint_buying_pricelist_id = fields.Many2one(
-        string="Pricelist Used for Joint Buying", comodel_name="product.pricelist"
-    )

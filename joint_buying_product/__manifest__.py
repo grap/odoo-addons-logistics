@@ -3,7 +3,7 @@
 # License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl.html).
 {
     "name": "Joint Buying - Products",
-    "version": "12.0.1.1.2",
+    "version": "12.0.2.0.0",
     "category": "GRAP - Logistics",
     "author": "GRAP",
     "website": "https://github.com/grap/odoo-addons-logistics",
@@ -37,11 +37,13 @@
         "data/mail_template.xml",
     ],
     "demo": [
+        "demo/joint_buying_category.xml",
         "demo/product_pricelist.xml",
         "demo/res_groups.xml",
         "demo/uom_uom.xml",
         "demo/product_product.xml",
         "demo/res_partner.xml",
+        "demo/joint_buying_frequency.xml",
     ],
     "installable": True,
     "auto_install": True,

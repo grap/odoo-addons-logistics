@@ -98,8 +98,7 @@ License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl.html).
                                     <field name="joint_buying_subscribed_company_ids" widget="many2many_tags" nolabel="1"/>
                                 </group>
                                 <group name="vendor_setting" string="Settings" colspan="4" col="4">
-                                    <field name="joint_buying_pivot_company_id"/>
-                                    <field name="joint_buying_deposit_partner_id"/>
+                                    <field name="joint_buying_pivot_company_id" attrs="{'required': [('supplier', '=', True)]}"/>
                                 </group>
                                 <group name="vendor_commission" string="Commission" colspan="4" col="4" groups="joint_buying_base.group_joint_buying_manager">
                                     <field name="joint_buying_commission_state" string="Commission Agreement"/>
@@ -149,7 +148,6 @@ License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl.html).
                 <field name="city"/>
                 <field name="zip"/>
                 <field name="joint_buying_pivot_company_id" attrs="{'invisible': [('supplier', '=', False)]}"/>
-                <field name="joint_buying_deposit_partner_id" attrs="{'invisible': [('supplier', '=', False)]}"/>
                 <field name="customer" invisible="context.get('only_supplier', True)"/>
                 <field name="supplier" invisible="context.get('only_supplier', True)"/>
             </tree>
@@ -165,7 +163,6 @@ License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl.html).
                 <field name="city"/>
                 <field name="zip"/>
                 <field name="joint_buying_pivot_company_id"/>
-                <field name="joint_buying_deposit_partner_id"/>
                 <field name="joint_buying_commission_state"/>
                 <field name="joint_buying_commission_rate"/>
             </tree>
