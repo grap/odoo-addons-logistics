@@ -149,5 +149,56 @@
         />
     </function>
 
+    <!-- Local Products PZI -->
+    <record id="product_PZI_orange_navelina" model="product.product">
+        <field name="default_code">PZI-OR-NAV</field>
+        <field name="company_id" ref="joint_buying_base.company_PZI"/>
+        <field name="name">Orange Navelina</field>
+        <field name="price">1.5</field>
+        <field name="uom_id" ref="uom.product_uom_kgm"/>
+        <field name="uom_po_id" ref="uom.product_uom_kgm"/>
+    </record>
+
+    <record id="product_PZI_orange_moro" model="product.product">
+        <field name="default_code">PZI-OR-MOR</field>
+        <field name="company_id" ref="joint_buying_base.company_PZI"/>
+        <field name="name">Orange Moro (bloody)</field>
+        <field name="price">1.6</field>
+        <field name="uom_id" ref="uom.product_uom_kgm"/>
+        <field name="uom_po_id" ref="uom.product_uom_kgm"/>
+    </record>
+
+    <record id="product_PZI_oil" model="product.product">
+        <field name="default_code">PZI-OIL</field>
+        <field name="company_id" ref="joint_buying_base.company_PZI"/>
+        <field name="name">Olive Oil</field>
+        <field name="price">10</field>
+    </record>
+
+    <function model="product.product" name="create_joint_buying_product">
+        <value eval="[
+            ref('joint_buying_product.product_PZI_orange_navelina'),
+            ref('joint_buying_product.product_PZI_orange_moro'),
+            ref('joint_buying_product.product_PZI_oil'),
+        ]"
+        />
+    </function>
+
+    <function model="product.product" name="write">
+        <value model="product.product" eval="[
+            obj().browse(ref('joint_buying_product.product_PZI_orange_navelina')).joint_buying_product_id.id,
+            obj().browse(ref('joint_buying_product.product_PZI_orange_moro')).joint_buying_product_id.id,
+        ]"
+        />
+        <value eval="{'joint_buying_category_id': ref('joint_buying_product.category_fruits_vegetables_PZI')}"/>
+    </function>
+
+    <function model="product.product" name="write">
+        <value model="product.product" eval="[
+            obj().browse(ref('joint_buying_product.product_PZI_oil')).joint_buying_product_id.id,
+        ]"
+        />
+        <value eval="{'joint_buying_category_id': ref('joint_buying_product.category_oil_PZI')}"/>
+    </function>
 
 </odoo>

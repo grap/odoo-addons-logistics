@@ -92,6 +92,7 @@
         <field name="code">PZI</field>
         <field name="name">[PZI - small Zests from Italy and elsewhere]</field>
         <field name="street">7 bis rue du Pré Paillard</field>
+        <field name="email">no-spam@petitszestes.fr</field>
         <field name="street2">PAE les Glaisins</field>
         <field name="city">Annecy-Le-Vieux</field>
         <field name="zip">74940</field>
