@@ -604,9 +604,9 @@ class JointBuyingPurchaseOrderGrouped(models.Model):
         if self.env.user.company_id.id not in current_company_ids:
             self.supplier_id.with_context(
                 no_check_joint_buying=True
-            ).joint_buying_subscribed_company_ids = (
-                current_company_ids + [self.env.user.company_id.id]
-            )
+            ).joint_buying_subscribed_company_ids = current_company_ids + [
+                self.env.user.company_id.id
+            ]
             # Display a message for the user
             self.env.user.notify_info(
                 message=_(
