@@ -21,10 +21,10 @@ class JointBuyingCheckAccessMixin(models.AbstractModel):
             "joint_buying_base.group_joint_buying_manager"
         ) and not self.env.context.get("no_check_joint_buying", False):
             if (
-                ("is_joint_buying" not in self._fields or res.is_joint_buying)
-                and res.mapped(self._check_write_access_company_field_id)
-                != self.env.user.company_id
-            ):
+                "is_joint_buying" not in self._fields or res.is_joint_buying
+            ) and res.mapped(
+                self._check_write_access_company_field_id
+            ) != self.env.user.company_id:
                 raise AccessError(
                     _(
                         "You can not create this item because"

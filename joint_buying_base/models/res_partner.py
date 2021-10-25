@@ -248,7 +248,4 @@ class ResPartner(models.Model):
 
     @api.multi
     def demo_geolocalize(self):
-        partners = self.filtered(
-            lambda x: x.street and x.city and not x.partner_latitude
-        )
-        partners.geo_localize()
+        return

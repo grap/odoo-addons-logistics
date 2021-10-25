@@ -6,7 +6,7 @@
     "version": "12.0.1.4.2",
     "category": "GRAP - Logistics",
     "author": "GRAP,La Jardinière,Hashbang",
-    "website": "https://github.com/grap/odoo-addons-logistics/",
+    "website": "https://github.com/grap/odoo-addons-logistics",
     "license": "AGPL-3",
     "depends": [
         "base",
