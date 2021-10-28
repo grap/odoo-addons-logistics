@@ -44,23 +44,22 @@ class JointBuyingWizardCreateOrder(models.TransientModel):
         required=True,
         domain="[('is_joint_buying_stage', '=', True)]",
         context=_JOINT_BUYING_PARTNER_CONTEXT,
-        default=lambda x: x._default_deposit_partner_id(),
     )
 
     minimum_amount = fields.Float(
-        string="Minimum Amount", default=lambda x: x._default_minimum_amount()
+        string="Minimum Amount",
     )
 
     minimum_unit_amount = fields.Float(
-        string="Minimum Unit Amount", default=lambda x: x._default_minimum_unit_amount()
+        string="Minimum Unit Amount",
     )
 
     minimum_weight = fields.Float(
-        string="Minimum Weight", default=lambda x: x._default_minimum_weight()
+        string="Minimum Weight",
     )
 
     minimum_unit_weight = fields.Float(
-        string="Minimum Unit Weight", default=lambda x: x._default_minimum_unit_weight()
+        string="Minimum Unit Weight",
     )
 
     line_ids = fields.One2many(
@@ -94,32 +93,6 @@ class JointBuyingWizardCreateOrder(models.TransientModel):
     def _default_pivot_company_id(self):
         partner = self.env["res.partner"].browse(self.env.context.get("active_id"))
         return partner.joint_buying_pivot_company_id
-
-    def _default_deposit_partner_id(self):
-        partner = self.env["res.partner"].browse(self.env.context.get("active_id"))
-        deposit_partner_ids = partner.mapped(
-            "joint_buying_frequency_ids.deposit_partner_id"
-        )
-        if len(deposit_partner_ids) == 1:
-            return deposit_partner_ids[0]
-        else:
-            return False
-
-    def _default_minimum_amount(self):
-        partner = self.env["res.partner"].browse(self.env.context.get("active_id"))
-        return partner.joint_buying_minimum_amount
-
-    def _default_minimum_unit_amount(self):
-        partner = self.env["res.partner"].browse(self.env.context.get("active_id"))
-        return partner.joint_buying_minimum_unit_amount
-
-    def _default_minimum_weight(self):
-        partner = self.env["res.partner"].browse(self.env.context.get("active_id"))
-        return partner.joint_buying_minimum_weight
-
-    def _default_minimum_unit_weight(self):
-        partner = self.env["res.partner"].browse(self.env.context.get("active_id"))
-        return partner.joint_buying_minimum_unit_weight
 
     def _default_line_ids(self):
         partner = self.env["res.partner"].browse(self.env.context.get("active_id"))

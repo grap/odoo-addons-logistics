@@ -10,6 +10,10 @@ _column_renames = {
         ("joint_buying_next_start_date", None),
         ("joint_buying_next_end_date", None),
         ("joint_buying_next_deposit_date", None),
+        ("joint_buying_minimum_amount", None),
+        ("joint_buying_minimum_weight", None),
+        ("joint_buying_minimum_unit_amount", None),
+        ("joint_buying_minimum_unit_weight", None),
     ]
 }
 
