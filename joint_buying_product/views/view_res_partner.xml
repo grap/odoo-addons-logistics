@@ -68,7 +68,16 @@
             </group>
 
             <group name="vendor_setting" position="after">
-                <group string="Next Order" colspan="4" col="4">
+                <group string="Order Categories" colspan="4" attrs="{'invisible': [('joint_buying_use_category', '=', False)]}">
+                    <field name="joint_buying_category_ids" nolabel="1">
+                        <tree editable="bottom">
+                            <field name="name"/>
+                            <field name="product_qty"/>
+                        </tree>
+                    </field>
+                </group>
+
+                <group string="Next Orders" colspan="4" col="4">
                     <field name="joint_buying_frequency_ids" nolabel="1">
                         <tree editable="bottom">
                             <field name="frequency"/>
@@ -76,6 +85,10 @@
                             <field name="next_end_date" string="End Date"/>
                             <field name="next_deposit_date" string="Deposit Date"/>
                             <field name="deposit_partner_id"/>
+                            <field name="minimum_amount" string="Min. Am. GO (€)"/>
+                            <field name="minimum_weight" string="Min. Am. GO (kg)"/>
+                            <field name="minimum_unit_amount" string="Min. Am. UO (€)"/>
+                            <field name="minimum_unit_weight" string="Min. Am. UO (kg)"/>
                             <field name="category_ids"
                                 string="Cat."
                                 options="{'no_create': True, 'no_open': True}"
@@ -85,29 +98,6 @@
                             }"/>
                         </tree>
                     </field>
-                </group>
-
-                <group string="Minimum Amount" colspan="4" col="4">
-                    <label for="joint_buying_minimum_amount" string="Grouped Order"/>
-                    <div class="o_row">
-                        <field name="joint_buying_minimum_amount"/>
-                        <span>€</span>
-                    </div>
-                    <label for="joint_buying_minimum_unit_amount" string="Unit Order"/>
-                    <div class="o_row">
-                        <field name="joint_buying_minimum_unit_amount"/>
-                        <span>€</span>
-                    </div>
-                    <label for="joint_buying_minimum_weight" string="Grouped Order"/>
-                    <div class="o_row">
-                        <field name="joint_buying_minimum_weight"/>
-                        <span>kg</span>
-                    </div>
-                    <label for="joint_buying_minimum_unit_weight" string="Unit Order"/>
-                    <div class="o_row">
-                        <field name="joint_buying_minimum_unit_weight"/>
-                        <span>kg</span>
-                    </div>
                 </group>
 
                 <group string="Products" colspan="4">
@@ -132,14 +122,6 @@
                     </field>
                 </group>
 
-                <group string="Order Categories" colspan="4" attrs="{'invisible': [('joint_buying_use_category', '=', False)]}">
-                    <field name="joint_buying_category_ids" nolabel="1">
-                        <tree editable="bottom">
-                            <field name="name"/>
-                            <field name="product_qty"/>
-                        </tree>
-                    </field>
-                </group>
             </group>
 
         </field>

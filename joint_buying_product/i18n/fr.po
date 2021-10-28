@@ -6,8 +6,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Odoo Server 12.0\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2021-10-26 11:46+0000\n"
-"PO-Revision-Date: 2021-10-26 11:46+0000\n"
+"POT-Creation-Date: 2021-10-28 14:03+0000\n"
+"PO-Revision-Date: 2021-10-28 14:03+0000\n"
 "Last-Translator: <>\n"
 "Language-Team: \n"
 "MIME-Version: 1.0\n"
@@ -194,7 +194,6 @@ msgstr "<span>Commande groupée # </span>"
 #: model_terms:ir.ui.view,arch_db:joint_buying_product.view_joint_buying_purchase_order_form
 #: model_terms:ir.ui.view,arch_db:joint_buying_product.view_joint_buying_purchase_order_grouped_form
 #: model_terms:ir.ui.view,arch_db:joint_buying_product.view_joint_buying_wizard_create_order_form
-#: model_terms:ir.ui.view,arch_db:joint_buying_product.view_res_partner_form
 msgid "<span>kg</span>"
 msgstr ""
 
@@ -503,7 +502,7 @@ msgid "Frequency (Days)"
 msgstr "Fréquence (Jour)"
 
 #. module: joint_buying_product
-#: code:addons/joint_buying_product/models/joint_buying_frequency.py:56
+#: code:addons/joint_buying_product/models/joint_buying_frequency.py:72
 #, python-format
 msgid "Frequency should be a multiple of 7."
 msgstr "La fréquence doit être un multiple de 7."
@@ -541,7 +540,6 @@ msgstr ""
 #: model:ir.model.fields,field_description:joint_buying_product.field_joint_buying_purchase_order__grouped_order_id
 #: model_terms:ir.ui.view,arch_db:joint_buying_product.view_joint_buying_purchase_order_grouped_form
 #: model_terms:ir.ui.view,arch_db:joint_buying_product.view_joint_buying_wizard_create_order_form
-#: model_terms:ir.ui.view,arch_db:joint_buying_product.view_res_partner_form
 #, python-format
 msgid "Grouped Order"
 msgstr "Commande groupée"
@@ -862,26 +860,43 @@ msgid "Messages"
 msgstr ""
 
 #. module: joint_buying_product
+#: model_terms:ir.ui.view,arch_db:joint_buying_product.view_res_partner_form
+msgid "Min. Am. GO (kg)"
+msgstr "Fr. C.G. (kg)"
+
+#. module: joint_buying_product
+#: model_terms:ir.ui.view,arch_db:joint_buying_product.view_res_partner_form
+msgid "Min. Am. GO (€)"
+msgstr "Fr. C.G. (€)"
+
+#. module: joint_buying_product
+#: model_terms:ir.ui.view,arch_db:joint_buying_product.view_res_partner_form
+msgid "Min. Am. UO (kg)"
+msgstr "Fr. C.U. (kg)"
+
+#. module: joint_buying_product
+#: model_terms:ir.ui.view,arch_db:joint_buying_product.view_res_partner_form
+msgid "Min. Am. UO (€)"
+msgstr "Fr. C.U. (€)"
+
+#. module: joint_buying_product
 #: model:ir.model.fields,field_description:joint_buying_product.field_joint_buying_purchase_order_grouped__minimum_amount
 #: model:ir.model.fields,field_description:joint_buying_product.field_joint_buying_wizard_create_order__minimum_amount
 #: model_terms:ir.ui.view,arch_db:joint_buying_product.view_joint_buying_purchase_order_form
 #: model_terms:ir.ui.view,arch_db:joint_buying_product.view_joint_buying_purchase_order_grouped_form
 #: model_terms:ir.ui.view,arch_db:joint_buying_product.view_joint_buying_wizard_create_order_form
-#: model_terms:ir.ui.view,arch_db:joint_buying_product.view_res_partner_form
 msgid "Minimum Amount"
 msgstr "Franco"
 
 #. module: joint_buying_product
-#: model:ir.model.fields,field_description:joint_buying_product.field_res_partner__joint_buying_minimum_amount
-#: model:ir.model.fields,field_description:joint_buying_product.field_res_users__joint_buying_minimum_amount
+#: model:ir.model.fields,field_description:joint_buying_product.field_joint_buying_frequency__minimum_amount
 msgid "Minimum Amount For Grouped Order"
-msgstr "Montant minimum pour une commande groupée"
+msgstr "Montant pour une commande groupée"
 
 #. module: joint_buying_product
-#: model:ir.model.fields,field_description:joint_buying_product.field_res_partner__joint_buying_minimum_unit_amount
-#: model:ir.model.fields,field_description:joint_buying_product.field_res_users__joint_buying_minimum_unit_amount
+#: model:ir.model.fields,field_description:joint_buying_product.field_joint_buying_frequency__minimum_unit_amount
 msgid "Minimum Amount For Unit Order"
-msgstr "Montant minimum pour une commande unitaire"
+msgstr "Montant pour une commande unitaire"
 
 #. module: joint_buying_product
 #: selection:joint.buying.purchase.order,purchase_ok:0
@@ -909,14 +924,12 @@ msgid "Minimum Weight"
 msgstr "Poids minimum"
 
 #. module: joint_buying_product
-#: model:ir.model.fields,field_description:joint_buying_product.field_res_partner__joint_buying_minimum_weight
-#: model:ir.model.fields,field_description:joint_buying_product.field_res_users__joint_buying_minimum_weight
+#: model:ir.model.fields,field_description:joint_buying_product.field_joint_buying_frequency__minimum_weight
 msgid "Minimum Weight For Grouped Order"
 msgstr "Poid minimum pour une commande groupée"
 
 #. module: joint_buying_product
-#: model:ir.model.fields,field_description:joint_buying_product.field_res_partner__joint_buying_minimum_unit_weight
-#: model:ir.model.fields,field_description:joint_buying_product.field_res_users__joint_buying_minimum_unit_weight
+#: model:ir.model.fields,field_description:joint_buying_product.field_joint_buying_frequency__minimum_unit_weight
 msgid "Minimum Weight For Unit Order"
 msgstr "Poid minimum pour une commande unitaire"
 
@@ -1000,12 +1013,6 @@ msgstr "Pas de lignes"
 #: selection:joint.buying.purchase.order.grouped,purchase_ok:0
 msgid "No Orders"
 msgstr "Pas de commandes"
-
-#. module: joint_buying_product
-#: code:addons/joint_buying_product/wizards/joint_buying_wizard_create_order.py:185
-#, python-format
-msgid "No product has been selected. Please check that the products are available for purchase and that order categories are correctly set. (if defined)"
-msgstr "Aucun produit n'a été sélectionné. Veuillez vérifier que les articles sont disponibles à la vente, et que les catégories de produits sont correctements paramétrées."
 
 #. module: joint_buying_product
 #: model:ir.model.fields,field_description:joint_buying_product.field_joint_buying_purchase_order__supplier_comment
@@ -1510,19 +1517,19 @@ msgid "The company '%s' has been subscribed to the supplier '%s'."
 msgstr "La société '%s' a été abonnée au fournisseur '%s'."
 
 #. module: joint_buying_product
-#: code:addons/joint_buying_product/models/joint_buying_frequency.py:68
+#: code:addons/joint_buying_product/models/joint_buying_frequency.py:76
 #, python-format
 msgid "The end date must be less than the deposit date."
 msgstr "La date de fin doit être inférieure à la date de dépôt."
 
 #. module: joint_buying_product
-#: code:addons/joint_buying_product/models/joint_buying_frequency.py:66
+#: code:addons/joint_buying_product/models/joint_buying_frequency.py:74
 #, python-format
 msgid "The start date must be less than the end date."
 msgstr "La date de début doit être inférieure à la date de fin."
 
 #. module: joint_buying_product
-#: code:addons/joint_buying_product/wizards/joint_buying_wizard_create_order.py:173
+#: code:addons/joint_buying_product/wizards/joint_buying_wizard_create_order.py:145
 #, python-format
 msgid "There are already one or more group orders open for this period. Are you sure you want to open another one ?<br/><br/> - %s"
 msgstr "Il y a déjà une ou plusieurs commandes groupées ouverte sur ces périodes. Etes vous sûr de vouloir ouvrir une autre commande groupée ?<br/><br/> - %s"
@@ -1602,7 +1609,6 @@ msgstr "Article indisponible (450gr) (Global)"
 #: model_terms:ir.ui.view,arch_db:joint_buying_product.view_joint_buying_purchase_order_form
 #: model_terms:ir.ui.view,arch_db:joint_buying_product.view_joint_buying_purchase_order_grouped_form
 #: model_terms:ir.ui.view,arch_db:joint_buying_product.view_joint_buying_wizard_create_order_form
-#: model_terms:ir.ui.view,arch_db:joint_buying_product.view_res_partner_form
 msgid "Unit Order"
 msgstr "Commande unitaire"
 
@@ -1685,7 +1691,7 @@ msgstr "Utiliser les catégories"
 #: model:ir.model.fields,field_description:joint_buying_product.field_res_partner__joint_buying_use_category
 #: model:ir.model.fields,field_description:joint_buying_product.field_res_users__joint_buying_use_category
 msgid "Use Order Categories"
-msgstr "Utiliser les catégories"
+msgstr "Utiliser les catégories de commandes"
 
 #. module: joint_buying_product
 #: model:ir.model,name:joint_buying_product.model_res_users

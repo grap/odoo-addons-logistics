@@ -24,22 +24,6 @@ class ResPartner(models.Model):
         compute="_compute_joint_buying_grouped_order_qty"
     )
 
-    joint_buying_minimum_amount = fields.Float(
-        string="Minimum Amount For Grouped Order"
-    )
-
-    joint_buying_minimum_unit_amount = fields.Float(
-        string="Minimum Amount For Unit Order"
-    )
-
-    joint_buying_minimum_weight = fields.Float(
-        string="Minimum Weight For Grouped Order"
-    )
-
-    joint_buying_minimum_unit_weight = fields.Float(
-        string="Minimum Weight For Unit Order"
-    )
-
     joint_buying_frequency_ids = fields.One2many(
         string="Joint Buying Order Frequencies",
         comodel_name="joint.buying.frequency",

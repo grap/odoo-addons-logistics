@@ -41,6 +41,14 @@ class JointBuyingFrequency(models.Model):
         context=_JOINT_BUYING_PARTNER_CONTEXT,
     )
 
+    minimum_amount = fields.Float(string="Minimum Amount For Grouped Order")
+
+    minimum_weight = fields.Float(string="Minimum Weight For Grouped Order")
+
+    minimum_unit_amount = fields.Float(string="Minimum Amount For Unit Order")
+
+    minimum_unit_weight = fields.Float(string="Minimum Weight For Unit Order")
+
     category_ids = fields.Many2many(
         string="Categories",
         comodel_name="joint.buying.category",
