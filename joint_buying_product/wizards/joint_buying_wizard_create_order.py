@@ -80,7 +80,9 @@ class JointBuyingWizardCreateOrder(models.TransientModel):
     )
 
     category_ids = fields.Many2many(
-        string="Joint Buying Categories", comodel_name="joint.buying.category"
+        string="Joint Buying Categories",
+        comodel_name="joint.buying.category",
+        domain="[('supplier_id', '=', supplier_id)]",
     )
 
     # Default Section
