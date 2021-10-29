@@ -237,3 +237,14 @@ class JointBuyingPurchaseOrder(models.Model):
     def action_draft_purchase(self):
         for order in self.filtered(lambda x: x.purchase_state == "done"):
             order.purchase_state = "draft"
+
+    def button_see_order(self):
+        self.ensure_one()
+        form = self.env.ref(
+            "joint_buying_product.view_joint_buying_purchase_order_form"
+        )
+        action = self.env.ref(
+            "joint_buying_product.action_joint_buying_purchase_order_all"
+        ).read()[0]
+        action.update({"res_id": self.id, "views": [(form.id, "form")]})
+        return action
