@@ -62,7 +62,7 @@ License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl.html).
                     <button name="action_draft_purchase" type="object" string="Reset to Draft"
                         attrs="{'invisible': ['|', ('purchase_state', '!=', 'done'), ('state', 'not in', ['in_progress', 'in_progress_near', 'in_progress_imminent'])]}"/>
                     <field name="purchase_state" widget="statusbar"/>
-                    <field name="state" widget="statusbar"/>
+                    <field name="state" widget="statusbar" statusbar_visible="futur,in_progress,closed,deposited"/>
                 </header>
                 <sheet>
                     <div class="oe_button_box" name="button_box">
