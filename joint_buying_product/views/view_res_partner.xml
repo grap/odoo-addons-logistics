@@ -110,7 +110,7 @@
                             <field name="uom_package_id" string="UoM Weight / Unit" options="{'no_open': True}"/>
                             <field name="uom_package_qty"  attrs="{'required': [('uom_package_id', '!=', False)]}"/>
                             <field name="lst_price" required="True" string="Pricing"/>
-                            <field name="weight" attrs="{'invisible': [('uom_measure_type', '=', 'weight')]}"/>
+                            <field name="weight" attrs="{'invisible': [('uom_measure_type', '=', 'weight')], 'required': [('uom_measure_type', '!=', 'weight')], }"/>
                             <field name="uom_measure_type" invisible="1"/>
                             <field name="purchase_ok" widget="boolean_toggle" string="Avail. ?"/>
                             <field name="joint_buying_is_new" widget="boolean_toggle" string="New ?"/>
