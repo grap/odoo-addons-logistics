@@ -30,6 +30,10 @@ class ResPartner(models.Model):
         inverse_name="partner_id",
     )
 
+    joint_buying_frequency_qty = fields.Integer(
+        compute="_compute_joint_buying_frequency_qty"
+    )
+
     joint_buying_frequency_description = fields.Char(
         string="Joint Buying Order Frequencies Description",
         compute="_compute_joint_buying_frequency_description",
@@ -57,6 +61,11 @@ class ResPartner(models.Model):
     def _compute_joint_buying_product_qty(self):
         for partner in self:
             partner.joint_buying_product_qty = len(partner.joint_buying_product_ids)
+
+    @api.depends("joint_buying_frequency_ids")
+    def _compute_joint_buying_frequency_qty(self):
+        for partner in self:
+            partner.joint_buying_frequency_qty = len(partner.joint_buying_frequency_ids)
 
     @api.depends("joint_buying_grouped_order_ids")
     def _compute_joint_buying_grouped_order_qty(self):
