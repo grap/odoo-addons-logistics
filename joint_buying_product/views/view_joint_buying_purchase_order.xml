@@ -62,7 +62,7 @@ License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl.html).
                     <button name="action_draft_purchase" type="object" string="Reset to Draft"
                         attrs="{'invisible': ['|', ('purchase_state', '!=', 'done'), ('state', 'not in', ['in_progress', 'in_progress_near', 'in_progress_imminent'])]}"/>
                     <field name="purchase_state" widget="statusbar"/>
-                    <field name="state" widget="statusbar"/>
+                    <field name="state" widget="statusbar" statusbar_visible="futur,in_progress,closed,deposited"/>
                 </header>
                 <sheet>
                     <div class="oe_button_box" name="button_box">
@@ -120,7 +120,7 @@ License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl.html).
                     <notebook colspan="4">
                         <page name="lines" string="Order line">
                             <field name="line_ids" attrs="{'readonly': ['|', ('purchase_state', '=', 'done'), ('state', 'not in', ['in_progress', 'in_progress_near', 'in_progress_imminent'])]}">
-                                <tree editable="botttom" decoration-info="qty == 0" decoration-bf="is_new == True">
+                                <tree editable="botttom" delete="false" create="false" decoration-info="qty == 0" decoration-bf="is_new == True">
                                     <field name="product_id" force_save="True"/>
                                     <field name="qty" force_save="True"/>
                                     <field name="uom_id" force_save="True"/>
@@ -134,7 +134,7 @@ License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl.html).
                                     <field name="product_uom_id" force_save="True" invisible="1"/>
                                     <field name="product_uom_po_id" force_save="True" invisible="1"/>
                                     <field name="uom_measure_type" force_save="True" invisible="1"/>
-                                    <field name="uom_different_description" force_save="True" attrs="{'invisible': [('uom_measure_type', '!=', 'unit')]}"/>
+                                    <field name="uom_different_description" force_save="True"/>
                                     <field name="product_weight" force_save="True" invisible="1"/>
 
                                     <field name="is_new" force_save="True" invisible="1"/>

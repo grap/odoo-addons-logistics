@@ -4,17 +4,10 @@
 
     <function model="res.partner" name="write">
         <value model="res.company" eval="[
-            obj().browse(ref('joint_buying_base.company_ELD')).joint_buying_partner_id.id
+            obj().browse(ref('joint_buying_base.company_PZI')).joint_buying_partner_id.id
             ]"
         />
-        <value eval="{'joint_buying_minimum_unit_amount': 70}"/>
+        <value eval="{'joint_buying_use_category': True}"/>
     </function>
-
-    <record id="joint_buying_base.supplier_benoit_ronzon" model="res.partner">
-        <field name="joint_buying_frequency">7</field>
-        <field name="joint_buying_next_start_date" eval="(DateTime.today() + relativedelta(days=-2)).strftime('%Y-%m-%d %H:%M')"/>
-        <field name="joint_buying_next_end_date" eval="(DateTime.today() + relativedelta(days=3)).strftime('%Y-%m-%d %H:%M')"/>
-        <field name="joint_buying_next_deposit_date" eval="(DateTime.today() + relativedelta(days=9)).strftime('%Y-%m-%d %H:%M')"/>
-    </record>
 
 </odoo>

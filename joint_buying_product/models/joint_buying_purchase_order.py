@@ -200,11 +200,10 @@ class JointBuyingPurchaseOrder(models.Model):
 
     # Custom Section
     @api.model
-    def _prepare_order_vals(self, supplier, customer):
+    def _prepare_order_vals(self, supplier, customer, categories):
         OrderLine = self.env["joint.buying.purchase.order.line"]
-
         res = {"customer_id": customer.id, "line_ids": []}
-        for product in supplier._get_joint_buying_products():
+        for product in supplier._get_joint_buying_products(categories):
             vals = OrderLine._prepare_line_vals(product)
             res["line_ids"].append((0, 0, vals))
         return res
@@ -238,3 +237,14 @@ class JointBuyingPurchaseOrder(models.Model):
     def action_draft_purchase(self):
         for order in self.filtered(lambda x: x.purchase_state == "done"):
             order.purchase_state = "draft"
+
+    def button_see_order(self):
+        self.ensure_one()
+        form = self.env.ref(
+            "joint_buying_product.view_joint_buying_purchase_order_form"
+        )
+        action = self.env.ref(
+            "joint_buying_product.action_joint_buying_purchase_order_all"
+        ).read()[0]
+        action.update({"res_id": self.id, "views": [(form.id, "form")]})
+        return action

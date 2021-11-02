@@ -92,6 +92,7 @@
         <field name="code">PZI</field>
         <field name="name">[PZI - small Zests from Italy and elsewhere]</field>
         <field name="street">7 bis rue du Pré Paillard</field>
+        <field name="email">no-spam@petitszestes.fr</field>
         <field name="street2">PAE les Glaisins</field>
         <field name="city">Annecy-Le-Vieux</field>
         <field name="zip">74940</field>
@@ -138,24 +139,12 @@
     </function>
 
     <function model="res.company" name="write">
-        <value eval="[ref('joint_buying_base.company_ELD')]"/>
+        <value eval="[
+            ref('joint_buying_base.company_ELD'), ref('joint_buying_base.company_PZI'),
+        ]"/>
         <value eval="{
             'is_joint_buying_supplier': True,
         }"/>
     </function>
-
-    <function model="res.company" name="demo_geolocalize" eval="[[
-        ref('company_LSE'),
-        ref('company_VEV'),
-        ref('company_CDA'),
-        ref('company_TOU'),
-        ref('company_C3P'),
-        ref('company_CHE'),
-        ref('company_TOU'),
-        ref('company_PZI'),
-        ref('company_CRB'),
-        ref('company_EDC'),
-    ]]"/>
-
 
 </odoo>

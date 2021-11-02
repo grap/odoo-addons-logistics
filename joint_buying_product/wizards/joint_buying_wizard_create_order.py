@@ -27,15 +27,9 @@ class JointBuyingWizardCreateOrder(models.TransientModel):
         string="Start Date", required=True, default=lambda x: x._default_start_date()
     )
 
-    end_date = fields.Datetime(
-        string="End Date", required=True, default=lambda x: x._default_end_date()
-    )
+    end_date = fields.Datetime(string="End Date", required=True)
 
-    deposit_date = fields.Datetime(
-        string="Deposit Date",
-        required=True,
-        default=lambda x: x._default_deposit_date(),
-    )
+    deposit_date = fields.Datetime(string="Deposit Date", required=True)
 
     pivot_company_id = fields.Many2one(
         comodel_name="res.company",
@@ -50,23 +44,22 @@ class JointBuyingWizardCreateOrder(models.TransientModel):
         required=True,
         domain="[('is_joint_buying_stage', '=', True)]",
         context=_JOINT_BUYING_PARTNER_CONTEXT,
-        default=lambda x: x._default_deposit_partner_id(),
     )
 
     minimum_amount = fields.Float(
-        string="Minimum Amount", default=lambda x: x._default_minimum_amount()
+        string="Minimum Amount",
     )
 
     minimum_unit_amount = fields.Float(
-        string="Minimum Unit Amount", default=lambda x: x._default_minimum_unit_amount()
+        string="Minimum Unit Amount",
     )
 
     minimum_weight = fields.Float(
-        string="Minimum Weight", default=lambda x: x._default_minimum_weight()
+        string="Minimum Weight",
     )
 
     minimum_unit_weight = fields.Float(
-        string="Minimum Unit Weight", default=lambda x: x._default_minimum_unit_weight()
+        string="Minimum Unit Weight",
     )
 
     line_ids = fields.One2many(
@@ -76,52 +69,32 @@ class JointBuyingWizardCreateOrder(models.TransientModel):
         inverse_name="wizard_id",
     )
 
+    product_qty = fields.Integer(
+        string="Product Quantity", compute="_compute_product_qty"
+    )
+
     overlap_message = fields.Html(compute="_compute_overlap_message")
 
+    use_joint_buying_category = fields.Boolean(
+        compute="_compute_use_joint_buying_category"
+    )
+
+    category_ids = fields.Many2many(
+        string="Joint Buying Categories",
+        comodel_name="joint.buying.category",
+        domain="[('supplier_id', '=', supplier_id)]",
+    )
+
+    # Default Section
     def _default_partner_id(self):
         return self.env.context.get("active_id")
 
     def _default_start_date(self):
-        partner = self.env["res.partner"].browse(self.env.context.get("active_id"))
-        return (
-            partner.joint_buying_frequency
-            and partner.joint_buying_next_start_date
-            or fields.datetime.now()
-        )
-
-    def _default_end_date(self):
-        partner = self.env["res.partner"].browse(self.env.context.get("active_id"))
-        if partner.joint_buying_frequency:
-            return partner.joint_buying_next_end_date
-
-    def _default_deposit_date(self):
-        partner = self.env["res.partner"].browse(self.env.context.get("active_id"))
-        if partner.joint_buying_frequency:
-            return partner.joint_buying_next_deposit_date
+        return fields.datetime.now()
 
     def _default_pivot_company_id(self):
         partner = self.env["res.partner"].browse(self.env.context.get("active_id"))
         return partner.joint_buying_pivot_company_id
-
-    def _default_deposit_partner_id(self):
-        partner = self.env["res.partner"].browse(self.env.context.get("active_id"))
-        return partner.joint_buying_deposit_partner_id
-
-    def _default_minimum_amount(self):
-        partner = self.env["res.partner"].browse(self.env.context.get("active_id"))
-        return partner.joint_buying_minimum_amount
-
-    def _default_minimum_unit_amount(self):
-        partner = self.env["res.partner"].browse(self.env.context.get("active_id"))
-        return partner.joint_buying_minimum_unit_amount
-
-    def _default_minimum_weight(self):
-        partner = self.env["res.partner"].browse(self.env.context.get("active_id"))
-        return partner.joint_buying_minimum_weight
-
-    def _default_minimum_unit_weight(self):
-        partner = self.env["res.partner"].browse(self.env.context.get("active_id"))
-        return partner.joint_buying_minimum_unit_weight
 
     def _default_line_ids(self):
         partner = self.env["res.partner"].browse(self.env.context.get("active_id"))
@@ -131,6 +104,25 @@ class JointBuyingWizardCreateOrder(models.TransientModel):
         ):
             line_vals.append((0, 0, {"customer_id": partner.id}))
         return line_vals
+
+    # Compute Section
+    @api.depends("supplier_id.joint_buying_category_ids")
+    def _compute_use_joint_buying_category(self):
+        self.ensure_one()
+        self.use_joint_buying_category = bool(
+            self.supplier_id.joint_buying_category_ids
+        )
+
+    @api.depends(
+        "category_ids",
+        "supplier_id.joint_buying_product_ids.purchase_ok",
+        "supplier_id.joint_buying_product_ids.joint_buying_category_id",
+    )
+    def _compute_product_qty(self):
+        self.ensure_one()
+        self.product_qty = len(
+            self.supplier_id._get_joint_buying_products(self.category_ids)
+        )
 
     @api.depends("start_date", "end_date")
     def _compute_overlap_message(self):
@@ -166,16 +158,17 @@ class JointBuyingWizardCreateOrder(models.TransientModel):
         order_grouped = OrderGrouped.create(
             OrderGrouped._prepare_order_grouped_vals(
                 self.supplier_id,
-                customers=self.mapped("line_ids.customer_id"),
-                start_date=self.start_date,
-                end_date=self.end_date,
-                deposit_date=self.deposit_date,
-                pivot_company=self.pivot_company_id,
-                deposit_partner=self.deposit_partner_id,
-                minimum_amount=self.minimum_amount,
-                minimum_unit_amount=self.minimum_unit_amount,
-                minimum_weight=self.minimum_weight,
-                minimum_unit_weight=self.minimum_unit_weight,
+                self.mapped("line_ids.customer_id"),
+                self.start_date,
+                self.end_date,
+                self.deposit_date,
+                self.pivot_company_id,
+                self.deposit_partner_id,
+                self.minimum_amount,
+                self.minimum_unit_amount,
+                self.minimum_weight,
+                self.minimum_unit_weight,
+                self.category_ids,
             )
         )
 
