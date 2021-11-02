@@ -34,11 +34,11 @@
             <xpath expr="//header" position="inside">
                 <button type="action" string="Generate Joint Buying Purchase"
                         name="%(joint_buying_product.action_partner_2_wizard_create_order)d"
-                        attrs="{'invisible': ['|', ('supplier', '=', False), ('joint_buying_frequency_ids', '=', False)]}"
+                        attrs="{'invisible': ['|', ('supplier', '=', False), ('joint_buying_frequency_qty', '=', 0)]}"
                         confirm="A frequency is defined for this supplier. So, Odoo will automatically create joint buying purchase when Start date is reached. Are you sure you want to create manually a new joint buying order ?"/>
                 <button type="action" class="oe_highlight" string="Generate Joint Buying Purchase"
                         name="%(joint_buying_product.action_partner_2_wizard_create_order)d"
-                        attrs="{'invisible': ['|', ('supplier', '=', False), ('joint_buying_frequency_ids', '!=', False)]}" />
+                        attrs="{'invisible': ['|', ('supplier', '=', False), ('joint_buying_frequency_qty', '!=', 0)]}" />
             </xpath>
 
             <div name="button_box" position="inside">
@@ -65,6 +65,7 @@
             </div>
             <group name="vendor_setting" position="inside">
                 <field name="joint_buying_use_category"/>
+                <field name="joint_buying_frequency_qty" invisible="1"/>
             </group>
 
             <group name="vendor_setting" position="after">
