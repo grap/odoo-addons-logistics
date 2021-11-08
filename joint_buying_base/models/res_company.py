@@ -60,6 +60,7 @@ class ResCompany(models.Model):
             "joint_buying_pivot_company_id": self.id,
             "email": self.email,
             "phone": self.phone,
+            "website": self.website,
         }
         for field_name in ADDRESS_FIELDS:
             value = getattr(self, field_name)
