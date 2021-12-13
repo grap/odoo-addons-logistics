@@ -49,6 +49,26 @@ class ResPartner(models.Model):
         string="Use Order Categories", default=False
     )
 
+    joint_buying_use_punctual_grouped_order = fields.Boolean(
+        string="One-time Grouped Order", default=False
+    )
+
+    joint_buying_minimum_amount = fields.Float(
+        string="Minimum Amount For Grouped Order"
+    )
+
+    joint_buying_minimum_weight = fields.Float(
+        string="Minimum Weight For Grouped Order"
+    )
+
+    joint_buying_minimum_unit_amount = fields.Float(
+        string="Minimum Amount For Unit Order"
+    )
+
+    joint_buying_minimum_unit_weight = fields.Float(
+        string="Minimum Weight For Unit Order"
+    )
+
     # Compute Section
     @api.depends("joint_buying_frequency_ids.frequency")
     def _compute_joint_buying_frequency_description(self):

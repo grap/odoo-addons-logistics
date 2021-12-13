@@ -19,7 +19,7 @@ class JointBuyingWizardCreateOrder(models.TransientModel):
         comodel_name="res.partner",
         domain="[('is_joint_buying', '=', True), ('supplier', '=', True)]",
         context=_JOINT_BUYING_PARTNER_CONTEXT,
-        default=lambda x: x._default_partner_id(),
+        default=lambda x: x._default_partner(),
         ondelete="cascade",
     )
 
@@ -35,7 +35,7 @@ class JointBuyingWizardCreateOrder(models.TransientModel):
         comodel_name="res.company",
         string="Pivot Company",
         required=True,
-        default=lambda x: x._default_pivot_company_id(),
+        default=lambda x: x._default_partner().joint_buying_pivot_company_id,
     )
 
     deposit_partner_id = fields.Many2one(
@@ -48,18 +48,22 @@ class JointBuyingWizardCreateOrder(models.TransientModel):
 
     minimum_amount = fields.Float(
         string="Minimum Amount",
+        default=lambda x: x._default_partner().joint_buying_minimum_amount,
     )
 
     minimum_unit_amount = fields.Float(
         string="Minimum Unit Amount",
+        default=lambda x: x._default_partner().joint_buying_minimum_unit_amount,
     )
 
     minimum_weight = fields.Float(
         string="Minimum Weight",
+        default=lambda x: x._default_partner().joint_buying_minimum_weight,
     )
 
     minimum_unit_weight = fields.Float(
         string="Minimum Unit Weight",
+        default=lambda x: x._default_partner().joint_buying_minimum_unit_weight,
     )
 
     line_ids = fields.One2many(
@@ -86,15 +90,11 @@ class JointBuyingWizardCreateOrder(models.TransientModel):
     )
 
     # Default Section
-    def _default_partner_id(self):
-        return self.env.context.get("active_id")
+    def _default_partner(self):
+        return self.env["res.partner"].browse(self.env.context.get("active_id"))
 
     def _default_start_date(self):
         return fields.datetime.now()
-
-    def _default_pivot_company_id(self):
-        partner = self.env["res.partner"].browse(self.env.context.get("active_id"))
-        return partner.joint_buying_pivot_company_id
 
     def _default_line_ids(self):
         partner = self.env["res.partner"].browse(self.env.context.get("active_id"))
