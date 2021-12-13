@@ -60,7 +60,9 @@ class JointBuyingFrequency(models.Model):
         "frequency", "next_start_date", "next_end_date", "next_deposit_date"
     )
     def _check_correct_date(self):
-        if self.frequency % 7:
+        if self.frequency <= 0:
+            raise ValidationError(_("Frequency must be a positive number."))
+        elif self.frequency % 7:
             raise ValidationError(_("Frequency should be a multiple of 7."))
         elif datetime.combine(self.next_start_date, time(0, 0)) >= self.next_end_date:
             raise ValidationError(_("The start date must be less than the end date."))

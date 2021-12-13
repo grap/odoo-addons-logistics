@@ -34,11 +34,13 @@
             <xpath expr="//header" position="inside">
                 <button type="action" string="Generate Joint Buying Purchase"
                         name="%(joint_buying_product.action_partner_2_wizard_create_order)d"
-                        attrs="{'invisible': ['|', ('supplier', '=', False), ('joint_buying_frequency_qty', '=', 0)]}"
+                        attrs="{'invisible': ['|', '|', ('supplier', '=', False),
+                        ('joint_buying_use_punctual_grouped_order', '=', False), ('joint_buying_frequency_qty', '=', 0)]}"
                         confirm="A frequency is defined for this supplier. So, Odoo will automatically create joint buying purchase when Start date is reached. Are you sure you want to create manually a new joint buying order ?"/>
                 <button type="action" class="oe_highlight" string="Generate Joint Buying Purchase"
                         name="%(joint_buying_product.action_partner_2_wizard_create_order)d"
-                        attrs="{'invisible': ['|', ('supplier', '=', False), ('joint_buying_frequency_qty', '!=', 0)]}" />
+                        attrs="{'invisible': ['|', '|', ('supplier', '=', False),
+                        ('joint_buying_use_punctual_grouped_order', '=', False), ('joint_buying_frequency_qty', '!=', 0)]}" />
             </xpath>
 
             <div name="button_box" position="inside">
@@ -65,6 +67,7 @@
             </div>
             <field name="joint_buying_pivot_company_id" position="after">
                 <field name="joint_buying_use_category"/>
+                <field name="joint_buying_use_punctual_grouped_order"/>
                 <field name="joint_buying_frequency_qty" invisible="1"/>
             </field>
 
@@ -100,6 +103,14 @@
                         </tree>
                     </field>
                 </group>
+
+                <group string="Minima for One-time Grouped Orders" col="4" colspan="4" attrs="{'invisible': [('joint_buying_use_punctual_grouped_order', '=', False)]}">
+                    <field name="joint_buying_minimum_amount" string="Min. Am. GO (€)"/>
+                    <field name="joint_buying_minimum_weight" string="Min. Am. GO (kg)"/>
+                    <field name="joint_buying_minimum_unit_amount" string="Min. Am. UO (€)"/>
+                    <field name="joint_buying_minimum_unit_weight" string="Min. Am. UO (kg)"/>
+                </group>
+
 
                 <group string="Products" colspan="4">
                     <field name="joint_buying_product_ids" nolabel="1">
