@@ -10,6 +10,8 @@ from odoo.addons.joint_buying_base.models.res_partner import (
     _JOINT_BUYING_PARTNER_CONTEXT,
 )
 
+from . import joint_buying_purchase_order_grouped
+
 
 class JointBuyingPurchaseOrder(models.Model):
     _name = "joint.buying.purchase.order"
@@ -36,33 +38,33 @@ class JointBuyingPurchaseOrder(models.Model):
 
     name = fields.Char(string="Number", compute="_compute_name", store=True)
 
+    has_grouped_order = fields.Boolean(
+        string="Has Grouped Order",
+        readonly=True,
+        help="Technical field that mention if the order is linked to a grouped"
+        " order of it is a standalone logistic order.",
+    )
+
     grouped_order_id = fields.Many2one(
         comodel_name="joint.buying.purchase.order.grouped",
         string="Grouped Order",
-        required=True,
         readonly=True,
         index=True,
         ondelete="cascade",
     )
 
-    start_date = fields.Datetime(
-        related="grouped_order_id.start_date", string="Start Date", store=True
-    )
+    start_date = fields.Datetime(string="Start Date")
 
-    end_date = fields.Datetime(
-        related="grouped_order_id.end_date", string="End Date", store=True
-    )
+    end_date = fields.Datetime(string="End Date")
 
     deposit_date = fields.Datetime(
-        related="grouped_order_id.deposit_date", string="Deposit Date", store=True
+        string="Deposit Date",
+        required=True,
     )
 
     supplier_id = fields.Many2one(
         comodel_name="res.partner",
-        related="grouped_order_id.supplier_id",
         string="Supplier",
-        readonly=True,
-        store=True,
         index=True,
         context=_JOINT_BUYING_PARTNER_CONTEXT,
     )
@@ -79,7 +81,9 @@ class JointBuyingPurchaseOrder(models.Model):
     )
 
     state = fields.Selection(
-        related="grouped_order_id.state", string="State", store=True
+        string="State",
+        readonly=True,
+        selection=joint_buying_purchase_order_grouped._STATE_SELECTION,
     )
 
     purchase_state = fields.Selection(
@@ -88,14 +92,10 @@ class JointBuyingPurchaseOrder(models.Model):
 
     minimum_unit_amount = fields.Float(
         string="Minimum amount",
-        related="grouped_order_id.minimum_unit_amount",
-        store=True,
     )
 
     minimum_unit_weight = fields.Float(
         string="Minimum Unit Weight",
-        related="grouped_order_id.minimum_unit_weight",
-        store=True,
     )
 
     purchase_ok = fields.Selection(
@@ -156,11 +156,16 @@ class JointBuyingPurchaseOrder(models.Model):
             else:
                 order.purchase_ok = "ok"
 
-    @api.depends("grouped_order_id", "customer_id")
+    @api.depends("grouped_order_id", "supplier_id", "customer_id")
     def _compute_name(self):
-        for order in self:
+        for order in self.filtered(lambda x: x.grouped_order_id):
             order.name = "{}-{}".format(
                 order.grouped_order_id.name,
+                order.customer_id.joint_buying_company_id.code,
+            )
+        for order in self.filtered(lambda x: not x.grouped_order_id):
+            order.name = "{}->{}".format(
+                order.supplier_id.name,
                 order.customer_id.joint_buying_company_id.code,
             )
 
@@ -200,9 +205,12 @@ class JointBuyingPurchaseOrder(models.Model):
 
     # Custom Section
     @api.model
-    def _prepare_order_vals(self, supplier, customer, categories):
+    def _prepare_order_vals(self, grouped_order_vals, supplier, customer, categories):
         OrderLine = self.env["joint.buying.purchase.order.line"]
-        res = {"customer_id": customer.id, "line_ids": []}
+        res = grouped_order_vals.copy()
+        res.update(
+            {"has_grouped_order": True, "customer_id": customer.id, "line_ids": []}
+        )
         for product in supplier._get_joint_buying_products(categories):
             vals = OrderLine._prepare_line_vals(product)
             res["line_ids"].append((0, 0, vals))

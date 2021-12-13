@@ -13,6 +13,24 @@ from odoo.addons.joint_buying_base.models.res_partner import (
     _JOINT_BUYING_PARTNER_CONTEXT,
 )
 
+_STATE_SELECTION = [
+    ("futur", "Futur"),
+    ("in_progress", "In Progress"),
+    ("in_progress_near", "In Progress (Near Closing Date)"),
+    ("in_progress_imminent", "In Progress (Imminent Closing Date)"),
+    ("closed", "Closed"),
+    ("deposited", "Deposited Products"),
+]
+
+_GROUPED_ORDER_RELATED_FIELDS = [
+    "start_date",
+    "end_date",
+    "deposit_date",
+    "supplier_id",
+    "minimum_unit_amount",
+    "minimum_unit_weight",
+]
+
 
 class JointBuyingPurchaseOrderGrouped(models.Model):
     _name = "joint.buying.purchase.order.grouped"
@@ -21,15 +39,6 @@ class JointBuyingPurchaseOrderGrouped(models.Model):
     _order = "end_date desc, supplier_id"
 
     _check_write_access_company_field_id = "pivot_company_id"
-
-    _STATE_SELECTION = [
-        ("futur", "Futur"),
-        ("in_progress", "In Progress"),
-        ("in_progress_near", "In Progress (Near Closing Date)"),
-        ("in_progress_imminent", "In Progress (Imminent Closing Date)"),
-        ("closed", "Closed"),
-        ("deposited", "Deposited Products"),
-    ]
 
     _PURCHASE_OK_SELECTION = [
         ("no_order", "No Orders"),
@@ -289,6 +298,14 @@ class JointBuyingPurchaseOrderGrouped(models.Model):
         res = super().write(vals)
         if not self.env.context.get("update_state_value"):
             self.update_state_value()
+        for grouped_order in self:
+            order_vals = {
+                x: getattr(grouped_order, x)
+                for x in _GROUPED_ORDER_RELATED_FIELDS + ["state"]
+                if x in vals
+            }
+            if order_vals:
+                grouped_order.order_ids.write(order_vals)
         return res
 
     @api.multi
@@ -490,9 +507,16 @@ class JointBuyingPurchaseOrderGrouped(models.Model):
             customers = supplier.mapped(
                 "joint_buying_subscribed_company_ids.joint_buying_partner_id"
             )
+        grouped_order_vals = {x: vals[x] for x in _GROUPED_ORDER_RELATED_FIELDS}
         for customer in customers:
             vals["order_ids"].append(
-                (0, 0, Order._prepare_order_vals(supplier, customer, categories))
+                (
+                    0,
+                    0,
+                    Order._prepare_order_vals(
+                        grouped_order_vals, supplier, customer, categories
+                    ),
+                )
             )
         return vals
 
@@ -597,8 +621,17 @@ class JointBuyingPurchaseOrderGrouped(models.Model):
         Order = self.env["joint.buying.purchase.order"]
         current_customer_partner = self.env.user.company_id.joint_buying_partner_id
 
+        grouped_order_vals = {
+            x: x.endswith("_id") and getattr(self, x).id or getattr(self, x)
+            for x in _GROUPED_ORDER_RELATED_FIELDS
+        }
+        grouped_order_vals["state"] = self.state
+
         vals = Order._prepare_order_vals(
-            self.supplier_id, current_customer_partner, categories=self.category_ids
+            grouped_order_vals,
+            self.supplier_id,
+            current_customer_partner,
+            categories=self.category_ids,
         )
         vals.update({"grouped_order_id": self.id})
         Order.create(vals)
