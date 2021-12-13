@@ -63,10 +63,10 @@
                     </div>
                 </button>
             </div>
-            <group name="vendor_setting" position="inside">
+            <field name="joint_buying_pivot_company_id" position="after">
                 <field name="joint_buying_use_category"/>
                 <field name="joint_buying_frequency_qty" invisible="1"/>
-            </group>
+            </field>
 
             <group name="vendor_setting" position="after">
                 <group string="Order Categories" colspan="4" attrs="{'invisible': [('joint_buying_use_category', '=', False)]}">
