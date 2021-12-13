@@ -69,15 +69,30 @@ class JointBuyingPurchaseOrder(models.Model):
         context=_JOINT_BUYING_PARTNER_CONTEXT,
     )
 
+    deposit_partner_id = fields.Many2one(
+        comodel_name="res.partner",
+        string="Deposit Place",
+        context=_JOINT_BUYING_PARTNER_CONTEXT,
+        required=True,
+        help="Place where the product are deposited",
+    )
+
     supplier_comment = fields.Text(related="supplier_id.comment")
 
     customer_id = fields.Many2one(
         comodel_name="res.partner",
         string="Customer",
-        required=True,
         readonly=True,
         index=True,
         context=_JOINT_BUYING_PARTNER_CONTEXT,
+    )
+
+    recovery_partner_id = fields.Many2one(
+        comodel_name="res.partner",
+        string="Recovery Place",
+        context=_JOINT_BUYING_PARTNER_CONTEXT,
+        required=True,
+        help="Place where the product are deposited",
     )
 
     state = fields.Selection(

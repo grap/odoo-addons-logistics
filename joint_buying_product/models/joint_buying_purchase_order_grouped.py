@@ -29,6 +29,7 @@ _GROUPED_ORDER_RELATED_FIELDS = [
     "supplier_id",
     "minimum_unit_amount",
     "minimum_unit_weight",
+    "deposit_partner_id",
 ]
 
 
