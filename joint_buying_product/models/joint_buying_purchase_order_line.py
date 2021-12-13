@@ -63,10 +63,11 @@ class JointBuyingPurchaseOrderLine(models.Model):
         "('joint_buying_partner_id', '=', parent.supplier_id),"
         " ('purchase_ok', '=', True)"
         "]",
-        required=True,
         context=_JOINT_BUYING_PRODUCT_CONTEXT,
         readonly=True,
     )
+
+    product_name = fields.Char(string="Product Name", required=True)
 
     qty = fields.Float(
         string="Purchase Quantity",
@@ -196,11 +197,19 @@ class JointBuyingPurchaseOrderLine(models.Model):
     def onchange_product_id(self):
         if not self.product_id:
             self.product_uom_package_qty = False
+            self.product_name = ""
             self.uom_id = False
             self.price_unit = 0.0
             self.qty = 0.0
             self.product_weight = 0.0
         else:
+            if self.product_id.default_code:
+                self.product_name = "[{}] {}".format(
+                    self.product_id.default_code,
+                    self.product_id.name,
+                )
+            else:
+                self.product_name = self.product_id.name
             self.product_uom_package_qty = self.product_id.uom_package_qty
             self.uom_id = self.product_id.uom_id.id
             self.product_weight = self.product_id.weight
@@ -208,8 +217,16 @@ class JointBuyingPurchaseOrderLine(models.Model):
 
     @api.model
     def _prepare_line_vals(self, product):
+        if product.default_code:
+            product_name = "[{}] {}".format(
+                product.default_code,
+                product.name,
+            )
+        else:
+            product_name = product.name
         res = {
             "product_id": product.id,
+            "product_name": product_name,
             "uom_measure_type": product.uom_measure_type,
             "uom_id": product.uom_package_id.id or product.uom_po_id.id,
             "product_uom_id": product.uom_id.id,
