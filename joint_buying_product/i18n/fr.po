@@ -6,8 +6,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Odoo Server 12.0\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2021-10-28 14:03+0000\n"
-"PO-Revision-Date: 2021-10-28 14:03+0000\n"
+"POT-Creation-Date: 2021-12-13 21:56+0000\n"
+"PO-Revision-Date: 2021-12-13 21:56+0000\n"
 "Last-Translator: <>\n"
 "Language-Team: \n"
 "MIME-Version: 1.0\n"
@@ -420,7 +420,7 @@ msgid "Deposited Products"
 msgstr "Articles déposés"
 
 #. module: joint_buying_product
-#: model:ir.model.fields,field_description:joint_buying_product.field_product_product__display_joint_buying_propagation
+#: model:ir.model.fields,field_description:joint_buying_product.field_product_product__joint_buying_display_propagation
 msgid "Display Joint Buying Propagation button"
 msgstr "Afficher le bouton de propagation pour les achats groupés"
 
@@ -502,7 +502,13 @@ msgid "Frequency (Days)"
 msgstr "Fréquence (Jour)"
 
 #. module: joint_buying_product
-#: code:addons/joint_buying_product/models/joint_buying_frequency.py:72
+#: code:addons/joint_buying_product/models/joint_buying_frequency.py:64
+#, python-format
+msgid "Frequency must be a positive number."
+msgstr "La fréquence doit être un nombre positif"
+
+#. module: joint_buying_product
+#: code:addons/joint_buying_product/models/joint_buying_frequency.py:66
 #, python-format
 msgid "Frequency should be a multiple of 7."
 msgstr "La fréquence doit être un multiple de 7."
@@ -684,6 +690,12 @@ msgstr "Catégorie pour les commandes groupées"
 #: model:ir.model,name:joint_buying_product.model_joint_buying_frequency
 msgid "Joint Buying Frequencies"
 msgstr "Fréquence pour les commandes groupées"
+
+#. module: joint_buying_product
+#: model:ir.model.fields,field_description:joint_buying_product.field_res_partner__joint_buying_frequency_qty
+#: model:ir.model.fields,field_description:joint_buying_product.field_res_users__joint_buying_frequency_qty
+msgid "Joint Buying Frequency Qty"
+msgstr "Nombre de fréquences de commandes groupées"
 
 #. module: joint_buying_product
 #: model:ir.model.fields,field_description:joint_buying_product.field_product_supplierinfo__joint_buying_partner_id
@@ -880,6 +892,11 @@ msgid "Min. Am. UO (€)"
 msgstr "Fr. C.U. (€)"
 
 #. module: joint_buying_product
+#: model_terms:ir.ui.view,arch_db:joint_buying_product.view_res_partner_form
+msgid "Minima for One-time Grouped Orders"
+msgstr "Minima pour les commandes groupées ponctuelles"
+
+#. module: joint_buying_product
 #: model:ir.model.fields,field_description:joint_buying_product.field_joint_buying_purchase_order_grouped__minimum_amount
 #: model:ir.model.fields,field_description:joint_buying_product.field_joint_buying_wizard_create_order__minimum_amount
 #: model_terms:ir.ui.view,arch_db:joint_buying_product.view_joint_buying_purchase_order_form
@@ -890,11 +907,15 @@ msgstr "Franco"
 
 #. module: joint_buying_product
 #: model:ir.model.fields,field_description:joint_buying_product.field_joint_buying_frequency__minimum_amount
+#: model:ir.model.fields,field_description:joint_buying_product.field_res_partner__joint_buying_minimum_amount
+#: model:ir.model.fields,field_description:joint_buying_product.field_res_users__joint_buying_minimum_amount
 msgid "Minimum Amount For Grouped Order"
 msgstr "Montant pour une commande groupée"
 
 #. module: joint_buying_product
 #: model:ir.model.fields,field_description:joint_buying_product.field_joint_buying_frequency__minimum_unit_amount
+#: model:ir.model.fields,field_description:joint_buying_product.field_res_partner__joint_buying_minimum_unit_amount
+#: model:ir.model.fields,field_description:joint_buying_product.field_res_users__joint_buying_minimum_unit_amount
 msgid "Minimum Amount For Unit Order"
 msgstr "Montant pour une commande unitaire"
 
@@ -925,11 +946,15 @@ msgstr "Poids minimum"
 
 #. module: joint_buying_product
 #: model:ir.model.fields,field_description:joint_buying_product.field_joint_buying_frequency__minimum_weight
+#: model:ir.model.fields,field_description:joint_buying_product.field_res_partner__joint_buying_minimum_weight
+#: model:ir.model.fields,field_description:joint_buying_product.field_res_users__joint_buying_minimum_weight
 msgid "Minimum Weight For Grouped Order"
 msgstr "Poid minimum pour une commande groupée"
 
 #. module: joint_buying_product
 #: model:ir.model.fields,field_description:joint_buying_product.field_joint_buying_frequency__minimum_unit_weight
+#: model:ir.model.fields,field_description:joint_buying_product.field_res_partner__joint_buying_minimum_unit_weight
+#: model:ir.model.fields,field_description:joint_buying_product.field_res_users__joint_buying_minimum_unit_weight
 msgid "Minimum Weight For Unit Order"
 msgstr "Poid minimum pour une commande unitaire"
 
@@ -996,8 +1021,8 @@ msgstr "Prochaine date de fin"
 
 #. module: joint_buying_product
 #: model_terms:ir.ui.view,arch_db:joint_buying_product.view_res_partner_form
-msgid "Next Order"
-msgstr "Prochaine commande"
+msgid "Next Orders"
+msgstr "Prochaines commandes"
 
 #. module: joint_buying_product
 #: model:ir.model.fields,field_description:joint_buying_product.field_joint_buying_frequency__next_start_date
@@ -1121,6 +1146,12 @@ msgstr "Litre d'huile (0.950 kg)"
 #: model:product.template,name:joint_buying_product.product_PZI_oil_product_template
 msgid "Olive Oil"
 msgstr "Huile d'olive"
+
+#. module: joint_buying_product
+#: model:ir.model.fields,field_description:joint_buying_product.field_res_partner__joint_buying_use_punctual_grouped_order
+#: model:ir.model.fields,field_description:joint_buying_product.field_res_users__joint_buying_use_punctual_grouped_order
+msgid "One-time Grouped Order"
+msgstr "Commande groupée ponctuelle"
 
 #. module: joint_buying_product
 #: code:addons/joint_buying_product/models/product_template.py:31
@@ -1383,6 +1414,7 @@ msgid "Saumon fumé des Dombes 200g (Global)"
 msgstr ""
 
 #. module: joint_buying_product
+#: model_terms:ir.ui.view,arch_db:joint_buying_product.view_joint_buying_purchase_order_grouped_form
 #: model_terms:ir.ui.view,arch_db:joint_buying_product.view_joint_buying_purchase_order_grouped_tree
 msgid "See"
 msgstr "Voir"
@@ -1506,7 +1538,7 @@ msgid "Tax ID:"
 msgstr "TVA:"
 
 #. module: joint_buying_product
-#: model:ir.model.fields,help:joint_buying_product.field_product_product__display_joint_buying_propagation
+#: model:ir.model.fields,help:joint_buying_product.field_product_product__joint_buying_display_propagation
 msgid "Technical field to know if the button to create or see the joint buying products is visible"
 msgstr "Champ technique pour savoir si le bouton pour créer ou voir les produits de commandes groupées est visible"
 
@@ -1517,19 +1549,19 @@ msgid "The company '%s' has been subscribed to the supplier '%s'."
 msgstr "La société '%s' a été abonnée au fournisseur '%s'."
 
 #. module: joint_buying_product
-#: code:addons/joint_buying_product/models/joint_buying_frequency.py:76
+#: code:addons/joint_buying_product/models/joint_buying_frequency.py:70
 #, python-format
 msgid "The end date must be less than the deposit date."
 msgstr "La date de fin doit être inférieure à la date de dépôt."
 
 #. module: joint_buying_product
-#: code:addons/joint_buying_product/models/joint_buying_frequency.py:74
+#: code:addons/joint_buying_product/models/joint_buying_frequency.py:68
 #, python-format
 msgid "The start date must be less than the end date."
 msgstr "La date de début doit être inférieure à la date de fin."
 
 #. module: joint_buying_product
-#: code:addons/joint_buying_product/wizards/joint_buying_wizard_create_order.py:145
+#: code:addons/joint_buying_product/wizards/joint_buying_wizard_create_order.py:147
 #, python-format
 msgid "There are already one or more group orders open for this period. Are you sure you want to open another one ?<br/><br/> - %s"
 msgstr "Il y a déjà une ou plusieurs commandes groupées ouverte sur ces périodes. Etes vous sûr de vouloir ouvrir une autre commande groupée ?<br/><br/> - %s"
@@ -1704,7 +1736,7 @@ msgid "Wizard"
 msgstr "Assistant"
 
 #. module: joint_buying_product
-#: code:addons/joint_buying_product/models/product_product.py:116
+#: code:addons/joint_buying_product/models/product_product.py:121
 #, python-format
 msgid "You can not change the value of the Joint buying partner."
 msgstr "Vous ne pouvez pas changer la valeur de partenaire de commande groupée"
@@ -1722,7 +1754,7 @@ msgid "You can not confirm an order without any lines."
 msgstr "Vous ne pouvez pas confirmer une commande sans lignes."
 
 #. module: joint_buying_product
-#: code:addons/joint_buying_product/models/product_product.py:100
+#: code:addons/joint_buying_product/models/product_product.py:105
 #, python-format
 msgid "You can not create a Joint buying Product for this supplier. Please ask to the saler to do it by clicking on 'Offer For Joint Buying' on him product."
 msgstr "Vous ne pouvez pas créer un article pour ce fournisseur. Veuillez lui demander de le faire en cliquaunt sur le bouton 'proposer à la vente' sur sa fiche article"
@@ -1751,7 +1783,7 @@ msgid "You have not reached the minimum amount."
 msgstr "Vous n'avez pas atteint le montant minimum."
 
 #. module: joint_buying_product
-#: code:addons/joint_buying_product/models/product_product.py:88
+#: code:addons/joint_buying_product/models/product_product.py:85
 #, python-format
 msgid "You should set a Joint Buying Supplier for Joint Buying Products"
 msgstr "Vous devriez définir un fournisseur pour ces articles de commandes groupées."

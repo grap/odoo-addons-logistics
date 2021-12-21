@@ -44,12 +44,11 @@ class ProductProduct(models.Model):
         context=_JOINT_BUYING_PARTNER_CONTEXT,
     )
 
-    display_joint_buying_propagation = fields.Boolean(
+    joint_buying_display_propagation = fields.Boolean(
         string="Display Joint Buying Propagation button",
         help="Technical field to know if the button to create or see"
         " the joint buying products is visible",
-        related="company_id.is_joint_buying_supplier",
-        store=True,
+        compute="_compute_joint_buying_display_propagation",
     )
 
     joint_buying_product_id = fields.Many2one(
@@ -79,13 +78,19 @@ class ProductProduct(models.Model):
         return self.env.context.get("joint_buying", False)
 
     # Constrains Sections
-    @api.constrains(
-        "is_joint_buying", "joint_buying_partner_id", "display_joint_buying_propagation"
-    )
+    @api.constrains("is_joint_buying", "joint_buying_partner_id")
     def _check_joint_buying_partner_id(self):
         if self.filtered(lambda x: x.is_joint_buying and not x.joint_buying_partner_id):
             raise ValidationError(
                 _("You should set a Joint Buying Supplier for Joint Buying Products")
+            )
+
+    # compute section
+    @api.depends("company_id.is_joint_buying_supplier")
+    def _compute_joint_buying_display_propagation(self):
+        for product in self:
+            product.joint_buying_display_propagation = (
+                product.company_id.is_joint_buying_supplier
             )
 
     # Overload Section
@@ -139,7 +144,7 @@ class ProductProduct(models.Model):
     def create_joint_buying_product(self):
         products = self.filtered(
             lambda x: (
-                not x.joint_buying_product_id and x.display_joint_buying_propagation
+                not x.joint_buying_product_id and x.joint_buying_display_propagation
             )
         )
         for product in products:

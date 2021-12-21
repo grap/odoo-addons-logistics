@@ -91,19 +91,14 @@ License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl.html).
                         </group>
                     </group>
                     <notebook colspan="4">
-                        <page name='joint_buying_supplier' string="Supplier"
+                        <page name="page_joint_buying_supplier" string="Supplier"
                             attrs="{'invisible': [('supplier', '=', False)]}">
                             <group name="vendor">
-                                <group string="Subscribed Companies" colspan="4">
-                                    <field name="joint_buying_subscribed_company_ids" widget="many2many_tags" nolabel="1"/>
-                                </group>
                                 <group name="vendor_setting" string="Settings" colspan="4" col="4">
+                                    <field name="joint_buying_subscribed_company_ids" widget="many2many_tags" colspan="4"/>
                                     <field name="joint_buying_pivot_company_id" attrs="{'required': [('supplier', '=', True)]}"/>
                                 </group>
-                                <group name="vendor_commission" string="Commission" colspan="4" col="4" groups="joint_buying_base.group_joint_buying_manager">
-                                    <field name="joint_buying_commission_state" string="Commission Agreement"/>
-                                    <field name="joint_buying_commission_rate" string="Commission Rate"/>
-                                </group>
+
                                 <group string="Logistic Information" colspan="4">
                                     <field name="comment" nolabel="1"/>
                                 </group>
@@ -112,7 +107,14 @@ License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl.html).
                                 </group>
                             </group>
                         </page>
-                    <page string="Partner Assignation" name="geo_location">
+                    <page string="Commission" name="page_commission"
+                            groups="joint_buying_base.group_joint_buying_manager">
+                        <group colspan="4" col="4">
+                            <field name="joint_buying_commission_state" string="Commission Agreement"/>
+                            <field name="joint_buying_commission_rate" string="Commission Rate"/>
+                        </group>
+                    </page>
+                    <page string="Partner Assignation" name="page_geo_location">
                         <group colspan="2" col="2">
                             <separator string="Geolocation" colspan="2"/>
                             <button string="Geolocate" name="geo_localize" colspan="2" icon="fa-check" type="object"/>
