@@ -1,0 +1,4 @@
+odoo12-addon-name_search_reset_res_partner @ git+https://github.com/grap/grap-odoo-incubator#subdirectory=setup/name_search_reset_res_partner
+odoo12-addon-product_uom_package @ git+https://github.com/grap/grap-odoo-incubator#subdirectory=setup/product_uom_package
+
+odoo12-addon-product_food @ git+https://github.com/grap/grap-odoo-business#subdirectory=setup/product_food
