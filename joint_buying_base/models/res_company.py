@@ -5,9 +5,8 @@
 from odoo import _, api, fields, models
 
 from odoo.addons.base.models.res_partner import ADDRESS_FIELDS
-from odoo.addons.joint_buying_base.models.res_partner import (
-    _JOINT_BUYING_PARTNER_CONTEXT,
-)
+
+from .res_partner import _JOINT_BUYING_PARTNER_CONTEXT
 
 
 class ResCompany(models.Model):
