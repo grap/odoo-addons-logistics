@@ -11,9 +11,11 @@
     "depends": [
         "base",
         "mail",
-        "name_search_reset_res_partner",
-        "res_company_code",
+        # OCA
         "base_geolocalize_openstreetmap",
+        "res_company_code",
+        # GRAP
+        "name_search_reset_res_partner",
     ],
     "external_dependencies": {"python": ["openupgradelib", "geopy"]},
     "data": [
