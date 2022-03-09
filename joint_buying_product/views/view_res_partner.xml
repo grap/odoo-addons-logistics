@@ -114,7 +114,7 @@
 
                 <group string="Products" colspan="4">
                     <field name="joint_buying_product_ids" nolabel="1">
-                        <tree editable="bottom" decoration-muted="purchase_ok == False">
+                        <tree editable="bottom" decoration-muted="purchase_ok == False" limit="1000">
                             <field name="default_code" string="Sup. Code"/>
                             <field name="name"/>
                             <field name="uom_id" string="UoM" options="{'no_open': True}"/>
