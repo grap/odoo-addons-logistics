@@ -121,6 +121,7 @@ License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl.html).
                         <page name="lines" string="Order line">
                             <field name="line_ids" attrs="{'readonly': ['|', ('purchase_state', '=', 'done'), ('state', 'not in', ['in_progress', 'in_progress_near', 'in_progress_imminent'])]}">
                                 <tree editable="botttom" delete="false" create="false" decoration-info="qty == 0" decoration-bf="is_new == True" limit="1000">
+                                    <field name="image_small" widget="image" options="{'tooltip_image': 'image'}" string="Image"/>
                                     <field name="product_id" force_save="True"/>
                                     <field name="qty" force_save="True"/>
                                     <field name="uom_id" force_save="True"/>

@@ -128,6 +128,7 @@
     <!-- Local Products ELD -->
     <record id="product_ELD_orangettes" model="product.product">
         <field name="default_code">ELD-ORANGETTE</field>
+        <field name="image" type="base64" file="joint_buying_product/static/src/img/product_ELD_orangettes-image.png"/>
         <field name="is_joint_buying" eval="False"/>
         <field name="company_id" ref="joint_buying_base.company_ELD"/>
         <field name="name">Orangette Sachet 200gr</field>
@@ -136,6 +137,7 @@
 
     <record id="product_ELD_gingembrettes" model="product.product">
         <field name="default_code">ELD-GINGEMBRETTE</field>
+        <field name="image" type="base64" file="joint_buying_product/static/src/img/product_ELD_gingembrettes-image.png"/>
         <field name="is_joint_buying" eval="False"/>
         <field name="company_id" ref="joint_buying_base.company_ELD"/>
         <field name="name">Gingembrette Sachet 200gr</field>
