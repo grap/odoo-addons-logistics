@@ -53,7 +53,7 @@ License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl.html).
                     <field name="joint_buying_partner_id"
                             attrs="{'invisible': [('is_joint_buying', '=', False)], 'required': [('is_joint_buying', '=', True)]}"/>
                     <field name="joint_buying_product_id" attrs="{'invisible': [('joint_buying_display_propagation', '=', False)]}"/>
-                    <button string="Update Joint Buying Droduct" type="object" name="update_joint_buying_product"
+                    <button string="Update Joint Buying Product" type="object" name="update_joint_buying_product"
                         attrs="{'invisible': [('joint_buying_product_id', '=', False)]}"/>
                 </group>
             </xpath>
