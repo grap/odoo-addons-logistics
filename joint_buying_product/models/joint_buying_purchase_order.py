@@ -129,7 +129,14 @@ class JointBuyingPurchaseOrder(models.Model):
 
     is_mine = fields.Boolean(compute="_compute_is_mine", search="_search_is_mine")
 
+    has_image = fields.Boolean(compute="_compute_has_image")
+
     # Compute Section
+    @api.depends("line_ids.product_id.image")
+    def _compute_has_image(self):
+        for order in self:
+            order.has_image = any(order.mapped("line_ids.product_id.image"))
+
     @api.depends(
         "amount_untaxed",
         "minimum_unit_amount",
