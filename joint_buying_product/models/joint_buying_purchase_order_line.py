@@ -137,6 +137,10 @@ class JointBuyingPurchaseOrderLine(models.Model):
 
     is_new = fields.Boolean(related="product_id.joint_buying_is_new")
 
+    image = fields.Binary(related="product_id.image")
+
+    image_small = fields.Binary(related="product_id.image_small")
+
     # Compute Section
     @api.depends("product_uom_id", "product_qty", "product_weight", "uom_measure_type")
     def _compute_total_weight(self):

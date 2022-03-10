@@ -23,6 +23,7 @@ License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl.html).
         <field name="arch" type="xml">
             <tree>
                 <field name="is_joint_buying" invisible="1"/>
+                <field name="image_small" string="Image" widget="image" options="{'tooltip_image': 'image'}"/>
                 <field name="default_code" string="Sup. Code"/>
                 <field name="name"/>
                 <field name="lst_price" string="Pricing"/>
@@ -47,11 +48,13 @@ License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl.html).
                     attrs="{'invisible': ['|', ('joint_buying_display_propagation', '=', False), ('joint_buying_product_id', '!=', False)]}"/>
             </xpath>
             <xpath expr="//field[@name='description']/.." position="before">
-                <group name="joint_buying" string="Joint Buying">
+                <group name="joint_buying" string="Joint Buying" col="4">
                     <field name="joint_buying_display_propagation" invisible="1"/>
                     <field name="joint_buying_partner_id"
                             attrs="{'invisible': [('is_joint_buying', '=', False)], 'required': [('is_joint_buying', '=', True)]}"/>
                     <field name="joint_buying_product_id" attrs="{'invisible': [('joint_buying_display_propagation', '=', False)]}"/>
+                    <button string="Update Joint Buying Droduct" type="object" name="update_joint_buying_product"
+                        attrs="{'invisible': [('joint_buying_product_id', '=', False)]}"/>
                 </group>
             </xpath>
         </field>

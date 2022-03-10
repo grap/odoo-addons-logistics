@@ -10,10 +10,13 @@
     "license": "AGPL-3",
     "depends": [
         "product",
+        # OCA
+        "product_uom_measure_type",
+        "web_notify",
+        "web_tree_image_tooltip",
+        # GRAP
         "joint_buying_base",
         "product_uom_package",
-        "web_notify",
-        "product_uom_measure_type",
     ],
     "pre_init_hook": "pre_init_product_db",
     "data": [
@@ -46,5 +49,4 @@
         "demo/joint_buying_frequency.xml",
     ],
     "installable": True,
-    "auto_install": True,
 }
