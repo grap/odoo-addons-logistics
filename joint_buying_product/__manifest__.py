@@ -14,6 +14,7 @@
         "product_uom_measure_type",
         "web_notify",
         "web_tree_image_tooltip",
+        "web_widget_x2many_2d_matrix",
         # GRAP
         "joint_buying_base",
         "product_uom_package",
@@ -23,6 +24,7 @@
         "security/ir.model.access.csv",
         "views/menu.xml",
         "wizards/joint_buying_wizard_create_order.xml",
+        "wizards/joint_buying_wizard_update_order_grouped.xml",
         "views/view_res_config_settings.xml",
         "views/view_product_template.xml",
         "views/view_product_product.xml",

@@ -6,8 +6,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Odoo Server 12.0\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2022-03-10 16:16+0000\n"
-"PO-Revision-Date: 2022-03-10 16:16+0000\n"
+"POT-Creation-Date: 2022-03-11 15:43+0000\n"
+"PO-Revision-Date: 2022-03-11 15:43+0000\n"
 "Last-Translator: <>\n"
 "Language-Team: \n"
 "MIME-Version: 1.0\n"
@@ -284,6 +284,7 @@ msgstr ""
 
 #. module: joint_buying_product
 #: model_terms:ir.ui.view,arch_db:joint_buying_product.view_joint_buying_wizard_create_order_form
+#: model_terms:ir.ui.view,arch_db:joint_buying_product.view_joint_buying_wizard_update_order_grouped_form
 msgid "Cancel"
 msgstr "Annuler"
 
@@ -310,6 +311,11 @@ msgid "Closed"
 msgstr "Fermé"
 
 #. module: joint_buying_product
+#: model:ir.model.fields,field_description:joint_buying_product.field_joint_buying_purchase_order_line__company_code
+msgid "Code"
+msgstr ""
+
+#. module: joint_buying_product
 #: model:ir.model,name:joint_buying_product.model_res_company
 msgid "Companies"
 msgstr "Sociétés"
@@ -319,7 +325,7 @@ msgstr "Sociétés"
 #: code:addons/joint_buying_product/models/joint_buying_purchase_order_grouped.py:565
 #, python-format
 msgid "Compose Email"
-msgstr "Rédiger un courriel"
+msgstr ""
 
 #. module: joint_buying_product
 #: model:ir.model,name:joint_buying_product.model_res_config_settings
@@ -368,6 +374,7 @@ msgstr "Créer une commande"
 #: model:ir.model.fields,field_description:joint_buying_product.field_joint_buying_purchase_order_line__create_uid
 #: model:ir.model.fields,field_description:joint_buying_product.field_joint_buying_wizard_create_order__create_uid
 #: model:ir.model.fields,field_description:joint_buying_product.field_joint_buying_wizard_create_order_line__create_uid
+#: model:ir.model.fields,field_description:joint_buying_product.field_joint_buying_wizard_update_order_grouped__create_uid
 msgid "Created by"
 msgstr "Créé par"
 
@@ -380,6 +387,7 @@ msgstr "Créé par"
 #: model:ir.model.fields,field_description:joint_buying_product.field_joint_buying_purchase_order_line__create_date
 #: model:ir.model.fields,field_description:joint_buying_product.field_joint_buying_wizard_create_order__create_date
 #: model:ir.model.fields,field_description:joint_buying_product.field_joint_buying_wizard_create_order_line__create_date
+#: model:ir.model.fields,field_description:joint_buying_product.field_joint_buying_wizard_update_order_grouped__create_date
 msgid "Created on"
 msgstr "Créé le"
 
@@ -438,6 +446,7 @@ msgstr "Afficher le bouton de propagation pour les achats groupés"
 #: model:ir.model.fields,field_description:joint_buying_product.field_joint_buying_purchase_order_line__display_name
 #: model:ir.model.fields,field_description:joint_buying_product.field_joint_buying_wizard_create_order__display_name
 #: model:ir.model.fields,field_description:joint_buying_product.field_joint_buying_wizard_create_order_line__display_name
+#: model:ir.model.fields,field_description:joint_buying_product.field_joint_buying_wizard_update_order_grouped__display_name
 msgid "Display Name"
 msgstr "Nom affiché"
 
@@ -595,6 +604,7 @@ msgstr ""
 #: model:ir.model.fields,field_description:joint_buying_product.field_joint_buying_purchase_order_line__id
 #: model:ir.model.fields,field_description:joint_buying_product.field_joint_buying_wizard_create_order__id
 #: model:ir.model.fields,field_description:joint_buying_product.field_joint_buying_wizard_create_order_line__id
+#: model:ir.model.fields,field_description:joint_buying_product.field_joint_buying_wizard_update_order_grouped__id
 msgid "ID"
 msgstr ""
 
@@ -794,6 +804,11 @@ msgid "Joint Buying Wizard Create Order Line"
 msgstr "Ligne d'assistant de création de commande groupée"
 
 #. module: joint_buying_product
+#: model:ir.model,name:joint_buying_product.model_joint_buying_wizard_update_order_grouped
+msgid "Joint Buying Wizard Update Order Grouped"
+msgstr "Assitant de mise à jour de commande groupée"
+
+#. module: joint_buying_product
 #: model:ir.actions.server,name:joint_buying_product.cron_grouped_purchase_order_check_state_ir_actions_server
 #: model:ir.cron,cron_name:joint_buying_product.cron_grouped_purchase_order_check_state
 #: model:ir.cron,name:joint_buying_product.cron_grouped_purchase_order_check_state
@@ -823,6 +838,7 @@ msgstr "Commande groupée : décocher les vieux produits"
 #: model:ir.model.fields,field_description:joint_buying_product.field_joint_buying_purchase_order_line____last_update
 #: model:ir.model.fields,field_description:joint_buying_product.field_joint_buying_wizard_create_order____last_update
 #: model:ir.model.fields,field_description:joint_buying_product.field_joint_buying_wizard_create_order_line____last_update
+#: model:ir.model.fields,field_description:joint_buying_product.field_joint_buying_wizard_update_order_grouped____last_update
 msgid "Last Modified on"
 msgstr "Dernière modification le"
 
@@ -835,6 +851,7 @@ msgstr "Dernière modification le"
 #: model:ir.model.fields,field_description:joint_buying_product.field_joint_buying_purchase_order_line__write_uid
 #: model:ir.model.fields,field_description:joint_buying_product.field_joint_buying_wizard_create_order__write_uid
 #: model:ir.model.fields,field_description:joint_buying_product.field_joint_buying_wizard_create_order_line__write_uid
+#: model:ir.model.fields,field_description:joint_buying_product.field_joint_buying_wizard_update_order_grouped__write_uid
 msgid "Last Updated by"
 msgstr "Dernière mise à jour par"
 
@@ -847,12 +864,14 @@ msgstr "Dernière mise à jour par"
 #: model:ir.model.fields,field_description:joint_buying_product.field_joint_buying_purchase_order_line__write_date
 #: model:ir.model.fields,field_description:joint_buying_product.field_joint_buying_wizard_create_order__write_date
 #: model:ir.model.fields,field_description:joint_buying_product.field_joint_buying_wizard_create_order_line__write_date
+#: model:ir.model.fields,field_description:joint_buying_product.field_joint_buying_wizard_update_order_grouped__write_date
 msgid "Last Updated on"
 msgstr "Dernière mise à jour le"
 
 #. module: joint_buying_product
 #: model:ir.model.fields,field_description:joint_buying_product.field_joint_buying_purchase_order__line_ids
 #: model:ir.model.fields,field_description:joint_buying_product.field_joint_buying_wizard_create_order__line_ids
+#: model:ir.model.fields,field_description:joint_buying_product.field_joint_buying_wizard_update_order_grouped__line_ids
 msgid "Line"
 msgstr "Ligne"
 
@@ -1440,6 +1459,11 @@ msgid "Saumon fumé des Dombes 200g (Global)"
 msgstr ""
 
 #. module: joint_buying_product
+#: model_terms:ir.ui.view,arch_db:joint_buying_product.view_joint_buying_wizard_update_order_grouped_form
+msgid "Save and Close"
+msgstr "Sauvegarder et fermer"
+
+#. module: joint_buying_product
 #: model_terms:ir.ui.view,arch_db:joint_buying_product.view_joint_buying_purchase_order_grouped_form
 #: model_terms:ir.ui.view,arch_db:joint_buying_product.view_joint_buying_purchase_order_grouped_tree
 msgid "See"
@@ -1572,6 +1596,11 @@ msgstr "TVA:"
 #: model:ir.model.fields,help:joint_buying_product.field_product_product__joint_buying_display_propagation
 msgid "Technical field to know if the button to create or see the joint buying products is visible"
 msgstr "Champ technique pour savoir si le bouton pour créer ou voir les produits de commandes groupées est visible"
+
+#. module: joint_buying_product
+#: model:ir.model.fields,help:joint_buying_product.field_joint_buying_purchase_order_line__company_code
+msgid "Technical field, used to display matrix with web_widget_x2many_2d_matrix module."
+msgstr "Champ technique, utilisé pour afficher la matrice de produit, via le module web_widget_x2many_2d_matrix."
 
 #. module: joint_buying_product
 #: code:addons/joint_buying_product/models/joint_buying_purchase_order_grouped.py:618
@@ -1741,6 +1770,11 @@ msgid "Uom"
 msgstr "UdM"
 
 #. module: joint_buying_product
+#: model:ir.actions.act_window,name:joint_buying_product.action_order_grouped_2_wizard_update_order_grouped
+msgid "Update Grouped Order"
+msgstr "Mettre à jour la commade groupée"
+
+#. module: joint_buying_product
 #: model_terms:ir.ui.view,arch_db:joint_buying_product.view_product_product_form_classic
 msgid "Update Joint Buying Product"
 msgstr "Mettre à jour le produit de commande groupée"
@@ -1749,6 +1783,11 @@ msgstr "Mettre à jour le produit de commande groupée"
 #: model_terms:ir.ui.view,arch_db:joint_buying_product.view_joint_buying_purchase_order_grouped_form
 msgid "Update Products List"
 msgstr "Mettre à jour la liste des articles"
+
+#. module: joint_buying_product
+#: model_terms:ir.ui.view,arch_db:joint_buying_product.view_joint_buying_purchase_order_grouped_form
+msgid "Update Values"
+msgstr "Mettre à jour les valeurs"
 
 #. module: joint_buying_product
 #: model:ir.model.fields,field_description:joint_buying_product.field_joint_buying_wizard_create_order__use_joint_buying_category
@@ -1765,20 +1804,6 @@ msgstr "Utiliser les catégories de commandes"
 #: model:ir.model,name:joint_buying_product.model_res_users
 msgid "Users"
 msgstr "Utilisateurs"
-
-#. module: joint_buying_product
-#: model:ir.model.fields,field_description:joint_buying_product.field_joint_buying_category__website_message_ids
-#: model:ir.model.fields,field_description:joint_buying_product.field_joint_buying_purchase_order__website_message_ids
-#: model:ir.model.fields,field_description:joint_buying_product.field_joint_buying_purchase_order_grouped__website_message_ids
-msgid "Website Messages"
-msgstr "Messages du site web"
-
-#. module: joint_buying_product
-#: model:ir.model.fields,help:joint_buying_product.field_joint_buying_category__website_message_ids
-#: model:ir.model.fields,help:joint_buying_product.field_joint_buying_purchase_order__website_message_ids
-#: model:ir.model.fields,help:joint_buying_product.field_joint_buying_purchase_order_grouped__website_message_ids
-msgid "Website communication history"
-msgstr "Historique de communication du site web"
 
 #. module: joint_buying_product
 #: model:ir.model.fields,field_description:joint_buying_product.field_joint_buying_wizard_create_order_line__wizard_id
@@ -1898,11 +1923,12 @@ msgstr ""
 
 #. module: joint_buying_product
 #: model_terms:ir.ui.view,arch_db:joint_buying_product.view_joint_buying_wizard_create_order_form
+#: model_terms:ir.ui.view,arch_db:joint_buying_product.view_joint_buying_wizard_update_order_grouped_form
 msgid "or"
 msgstr "ou"
 
 #. module: joint_buying_product
-#: code:addons/joint_buying_product/models/joint_buying_purchase_order_line.py:164
+#: code:addons/joint_buying_product/models/joint_buying_purchase_order_line.py:170
 #, python-format
 msgid "or {} x {}"
 msgstr "soit {} x {}"

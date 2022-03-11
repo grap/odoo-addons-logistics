@@ -54,6 +54,12 @@ class JointBuyingPurchaseOrderLine(models.Model):
         context=_JOINT_BUYING_PARTNER_CONTEXT,
     )
 
+    company_code = fields.Char(
+        related="order_id.customer_id.joint_buying_company_id.code",
+        help="Technical field, used to display matrix"
+        " with web_widget_x2many_2d_matrix module.",
+    )
+
     sequence = fields.Integer(string="Sequence", default=10)
 
     product_id = fields.Many2one(
