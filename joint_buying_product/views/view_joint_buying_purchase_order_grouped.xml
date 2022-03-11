@@ -196,7 +196,7 @@ License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl.html).
                                     <field name="name"/>
                                     <field name="customer_id"/>
                                     <field name="total_weight" sum="Total Weight" attrs="{'invisible': [('total_weight', '=', 0)]}"/>
-                                    <field name="amount_untaxed" sum="Total Amount Untaxed"  attrs="{'invisible': [('total_weight', '=', 0)]}"/>
+                                    <field name="amount_untaxed" sum="Total Amount Untaxed"  attrs="{'invisible': [('amount_untaxed', '=', 0)]}"/>
                                     <field name="purchase_state"/>
                                     <field name="purchase_ok"/>
                                     <button type="object" name="button_see_order" string="See" attrs="{
