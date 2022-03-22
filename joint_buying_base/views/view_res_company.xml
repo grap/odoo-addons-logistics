@@ -18,6 +18,7 @@ License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl.html).
                             <field name="is_joint_buying_customer"/>
                             <field name="is_joint_buying_supplier"/>
                             <newline/>
+                            <field name="joint_buying_auto_subscribe"/>
                         </group>
                     </group>
                 </page>
