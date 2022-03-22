@@ -114,12 +114,24 @@ class TestModule(TransactionCase):
             )
             self.ResPartner.create(vals)
 
-    def test_06_create_partner_subscription(self):
+    def test_06_create_partner_subscription_by_company(self):
         self.env.user.company_id.joint_buying_auto_subscribe = False
         supplier = self._create_supplier()
         self.assertFalse(supplier.joint_buying_is_subscribed)
 
         self.env.user.company_id.joint_buying_auto_subscribe = True
+        supplier = self._create_supplier()
+        self.assertTrue(supplier.joint_buying_is_subscribed)
+
+        supplier.toggle_joint_buying_is_subscribed()
+        self.assertFalse(supplier.joint_buying_is_subscribed)
+
+    def test_06_create_partner_subscription_by_user(self):
+        self.env.user.joint_buying_auto_subscribe = False
+        supplier = self._create_supplier()
+        self.assertFalse(supplier.joint_buying_is_subscribed)
+
+        self.env.user.joint_buying_auto_subscribe = True
         supplier = self._create_supplier()
         self.assertTrue(supplier.joint_buying_is_subscribed)
 
