@@ -114,7 +114,7 @@
 
                 <group string="Products" colspan="4">
                     <field name="joint_buying_product_ids" nolabel="1">
-                        <tree editable="bottom" decoration-muted="purchase_ok == False">
+                        <tree editable="bottom" decoration-muted="purchase_ok == False" delete="false">
                             <field name="default_code" string="Sup. Code"/>
                             <field name="name"/>
                             <field name="uom_id" string="UoM" options="{'no_open': True}"/>
@@ -125,11 +125,20 @@
                             <field name="weight" attrs="{'invisible': [('uom_measure_type', '=', 'weight')], 'required': [('uom_measure_type', '!=', 'weight')], }"/>
                             <field name="uom_measure_type" invisible="1"/>
                             <field name="purchase_ok" widget="boolean_toggle" string="Avail. ?"/>
-                            <field name="joint_buying_is_new" widget="boolean_toggle" string="New ?"/>
+                            <field name="joint_buying_is_sold" invisible="1"/>
+                            <field name="joint_buying_is_new" widget="boolean_toggle" string="New ?" invisible="1"/>
                             <field name="joint_buying_category_id" string="Cat." options="{'no_create': True, 'no_open': True}"
                             attrs="{
                                 'column_invisible': [('parent.joint_buying_use_category', '=', False)],
                             }"/>
+                            <button name="toggle_active" type="object" class="fa fa-archive"
+                                help="Archive this product"
+                                confirm="By confirming, you'll archive this product. Are you sure you want to continue ?"
+                                attrs="{'invisible': ['|', ('joint_buying_is_sold', '=', False), ('id', '=', False)]}"/>
+                            <button name="unlink" type="object" class="fa fa-trash-o"
+                                help="Unlink completely this product"
+                                confirm="By confirming, you'll unlink completely this product. Are you sure you want to continue ?"
+                                attrs="{'invisible': ['|', ('joint_buying_is_sold', '=', True), ('id', '=', False)]}"/>
                         </tree>
                     </field>
                 </group>
