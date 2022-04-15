@@ -9,7 +9,7 @@ class ResPartner(models.Model):
     _inherit = "res.partner"
 
     joint_buying_product_ids = fields.One2many(
-        "product.product", inverse_name="joint_buying_partner_id"
+        comodel_name="product.product", inverse_name="joint_buying_partner_id"
     )
 
     joint_buying_product_qty = fields.Integer(
