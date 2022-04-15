@@ -73,6 +73,16 @@ class ProductProduct(models.Model):
         default=lambda x: x._default_joint_is_new(),
     )
 
+    joint_buying_purchase_order_line_ids = fields.One2many(
+        comodel_name="joint.buying.purchase.order.line",
+        inverse_name="product_id",
+        string="Order Lines",
+    )
+
+    joint_buying_is_sold = fields.Boolean(
+        compute="_compute_joint_buying_is_sold",
+    )
+
     # Default Section
     def _default_joint_is_new(self):
         return self.env.context.get("joint_buying", False)
@@ -86,6 +96,13 @@ class ProductProduct(models.Model):
             )
 
     # compute section
+    @api.depends("joint_buying_purchase_order_line_ids.product_id")
+    def _compute_joint_buying_is_sold(self):
+        for product in self.filtered(lambda x: x.is_joint_buying):
+            product.joint_buying_is_sold = len(
+                product.joint_buying_purchase_order_line_ids
+            )
+
     @api.depends("company_id.is_joint_buying_supplier")
     def _compute_joint_buying_display_propagation(self):
         for product in self:
