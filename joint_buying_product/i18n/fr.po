@@ -6,8 +6,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Odoo Server 12.0\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2022-03-11 15:43+0000\n"
-"PO-Revision-Date: 2022-03-11 15:43+0000\n"
+"POT-Creation-Date: 2022-04-15 11:33+0000\n"
+"PO-Revision-Date: 2022-04-15 11:33+0000\n"
 "Last-Translator: <>\n"
 "Language-Team: \n"
 "MIME-Version: 1.0\n"
@@ -632,6 +632,7 @@ msgstr "Si actif, certains messages ont une erreur de livraison."
 #. module: joint_buying_product
 #: model_terms:ir.ui.view,arch_db:joint_buying_product.view_joint_buying_purchase_order_form
 #: model_terms:ir.ui.view,arch_db:joint_buying_product.view_product_product_tree
+#: model_terms:ir.ui.view,arch_db:joint_buying_product.view_res_partner_form
 msgid "Image"
 msgstr ""
 
@@ -1770,11 +1771,6 @@ msgid "Uom"
 msgstr "UdM"
 
 #. module: joint_buying_product
-#: model:ir.actions.act_window,name:joint_buying_product.action_order_grouped_2_wizard_update_order_grouped
-msgid "Update Grouped Order"
-msgstr "Mettre à jour la commade groupée"
-
-#. module: joint_buying_product
 #: model_terms:ir.ui.view,arch_db:joint_buying_product.view_product_product_form_classic
 msgid "Update Joint Buying Product"
 msgstr "Mettre à jour le produit de commande groupée"
@@ -1785,6 +1781,7 @@ msgid "Update Products List"
 msgstr "Mettre à jour la liste des articles"
 
 #. module: joint_buying_product
+#: model:ir.actions.act_window,name:joint_buying_product.action_order_grouped_2_wizard_update_order_grouped
 #: model_terms:ir.ui.view,arch_db:joint_buying_product.view_joint_buying_purchase_order_grouped_form
 msgid "Update Values"
 msgstr "Mettre à jour les valeurs"
@@ -1844,6 +1841,11 @@ msgstr "Vous ne pouvez pas sélectionner plusieurs fois le même article pour un
 #, python-format
 msgid "You can not set UoM Weight / Unit if the product has a invoice supplier UoM different of the main UoM."
 msgstr "Vous ne pouvez pas mettre une unité de mesure poids / unité, si l'articl ea une unité de mesure fournisseur différente de l'unité de mesure principale."
+
+#. module: joint_buying_product
+#: sql_constraint:joint.buying.purchase.order.line:0
+msgid "You can not set a negative quantity in the 'Purchase Quantity' field !"
+msgstr "Vous ne pouvez pas saisir de quantité négative dans le champs 'quantité à commander' !"
 
 #. module: joint_buying_product
 #: model_terms:ir.ui.view,arch_db:joint_buying_product.view_joint_buying_purchase_order_form
@@ -1928,12 +1930,6 @@ msgid "or"
 msgstr "ou"
 
 #. module: joint_buying_product
-#: code:addons/joint_buying_product/models/joint_buying_purchase_order_line.py:170
-#, python-format
-msgid "or {} x {}"
-msgstr "soit {} x {}"
-
-#. module: joint_buying_product
 #: code:addons/joint_buying_product/models/joint_buying_purchase_order.py:230
 #, python-format
 msgid "you cannot confirm an order for which you have not reached the minimum purchase amount."
@@ -1944,3 +1940,4 @@ msgstr "Vous ne pouvez pas confirmer une commande si vous n'avez pas atteint le 
 #, python-format
 msgid "you cannot confirm an order for which you have not reached the minimum weight."
 msgstr "Vous ne pouvez pas confirmer une commande si vous n'avez pas atteint le poid minimum."
+
