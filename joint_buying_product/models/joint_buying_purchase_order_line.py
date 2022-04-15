@@ -22,7 +22,12 @@ class JointBuyingPurchaseOrderLine(models.Model):
             "order_product_uniq",
             "unique (order_id,product_id)",
             "You can not select the same product many times for the same Order !",
-        )
+        ),
+        (
+            "qty_not_negative",
+            "CHECK(qty >= 0)",
+            "You can not set a negative quantity in the 'Purchase Quantity' field !",
+        ),
     ]
 
     order_id = fields.Many2one(
