@@ -80,9 +80,10 @@ class TestModule(TransactionCase):
         )
 
         # Create a new local product
+        product_name = "Some Chocolate"
         new_local_product = self.ProductProduct.create(
             {
-                "name": "Some Chocolate",
+                "name": product_name,
                 "company_id": self.company_ELD.id,
                 "categ_id": self.category_all.id,
                 "lst_price": 10.0,
@@ -134,6 +135,12 @@ class TestModule(TransactionCase):
             0.0,
             "Global Product should allways have 0 as price.",
         )
+
+        new_product_name = "Some Chocolate Updated"
+        new_local_product.name = new_product_name
+        self.assertEqual(new_global_product.name, product_name)
+        new_local_product.update_joint_buying_product()
+        self.assertEqual(new_global_product.name, new_product_name)
 
     def test_02_joint_buying_product_creation(self):
         vals = {

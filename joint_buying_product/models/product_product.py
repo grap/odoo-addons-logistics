@@ -73,6 +73,16 @@ class ProductProduct(models.Model):
         default=lambda x: x._default_joint_is_new(),
     )
 
+    joint_buying_purchase_order_line_ids = fields.One2many(
+        comodel_name="joint.buying.purchase.order.line",
+        inverse_name="product_id",
+        string="Order Lines",
+    )
+
+    joint_buying_is_sold = fields.Boolean(
+        compute="_compute_joint_buying_is_sold",
+    )
+
     # Default Section
     def _default_joint_is_new(self):
         return self.env.context.get("joint_buying", False)
@@ -86,6 +96,13 @@ class ProductProduct(models.Model):
             )
 
     # compute section
+    @api.depends("joint_buying_purchase_order_line_ids.product_id")
+    def _compute_joint_buying_is_sold(self):
+        for product in self.filtered(lambda x: x.is_joint_buying):
+            product.joint_buying_is_sold = len(
+                product.joint_buying_purchase_order_line_ids
+            )
+
     @api.depends("company_id.is_joint_buying_supplier")
     def _compute_joint_buying_display_propagation(self):
         for product in self:
@@ -148,23 +165,40 @@ class ProductProduct(models.Model):
             )
         )
         for product in products:
-            vals = product._prepare_joint_buying_product()
+            vals = product._prepare_joint_buying_product("create")
             product.joint_buying_product_id = self.with_context(
                 joint_buying=True, joint_buying_local_to_global=True
             ).create(vals)
         return products.mapped("joint_buying_product_id")
 
-    def _prepare_joint_buying_product(self):
+    def update_joint_buying_product(self):
+        products = self.filtered(lambda x: (x.joint_buying_product_id))
+        for product in products:
+            vals = product._prepare_joint_buying_product("update")
+            global_product = product.joint_buying_product_id.with_context(
+                joint_buying=True, joint_buying_local_to_global=True
+            )
+            global_product.write(vals)
+
+    def _prepare_joint_buying_product(self, action):
         self.ensure_one()
         vals = {
             "name": self.name,
-            "uom_id": self.uom_id.id,
-            "uom_po_id": self.uom_id.id,
+            "image": self.image,
             "default_code": self.default_code,
             "weight": self.weight,
             "barcode": self.barcode,
-            "categ_id": self.env.ref("joint_buying_product.product_category").id,
-            "joint_buying_partner_id": self.company_id.joint_buying_partner_id.id,
-            "lst_price": 0.0,
         }
+        if action == "create":
+            vals.update(
+                {
+                    "uom_id": self.uom_id.id,
+                    "uom_po_id": self.uom_id.id,
+                    "categ_id": self.env.ref(
+                        "joint_buying_product.product_category"
+                    ).id,
+                    "joint_buying_partner_id": self.company_id.joint_buying_partner_id.id,
+                    "lst_price": 0.0,
+                }
+            )
         return vals

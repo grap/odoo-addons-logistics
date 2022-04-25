@@ -3,6 +3,7 @@
 # License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl.html).
 
 from odoo import _, api, fields, models
+from odoo.exceptions import ValidationError
 
 from odoo.addons import decimal_precision as dp
 from odoo.addons.joint_buying_base.models.res_partner import (
@@ -22,7 +23,12 @@ class JointBuyingPurchaseOrderLine(models.Model):
             "order_product_uniq",
             "unique (order_id,product_id)",
             "You can not select the same product many times for the same Order !",
-        )
+        ),
+        (
+            "qty_not_negative",
+            "CHECK(qty >= 0)",
+            "You can not set a negative quantity in the 'Purchase Quantity' field !",
+        ),
     ]
 
     order_id = fields.Many2one(
@@ -52,6 +58,12 @@ class JointBuyingPurchaseOrderLine(models.Model):
         index=True,
         store=True,
         context=_JOINT_BUYING_PARTNER_CONTEXT,
+    )
+
+    company_code = fields.Char(
+        related="order_id.customer_id.joint_buying_company_id.code",
+        help="Technical field, used to display matrix"
+        " with web_widget_x2many_2d_matrix module.",
     )
 
     sequence = fields.Integer(string="Sequence", default=10)
@@ -136,6 +148,27 @@ class JointBuyingPurchaseOrderLine(models.Model):
     )
 
     is_new = fields.Boolean(related="product_id.joint_buying_is_new")
+
+    image = fields.Binary(related="product_id.image")
+
+    image_small = fields.Binary(related="product_id.image_small")
+
+    # Constrain section
+    @api.constrains("qty", "product_uom_package_qty", "uom_id")
+    def check_qty_package(self):
+        ProductTemplate = self.env["product.template"]
+        for line in self.filtered(lambda x: x.qty):
+            if ProductTemplate._round_package_quantity(
+                line.qty, line.product_uom_package_qty, False, line.uom_id
+            )["warning"]:
+                raise ValidationError(
+                    _(
+                        f"Unable to set the quantity {line.qty} {line.uom_id.name}"
+                        f" for the product '{line.product_id.name}' because it doesn't"
+                        f" respect the packaging"
+                        f" '{line.product_uom_package_qty} {line.uom_id.name}'"
+                    )
+                )
 
     # Compute Section
     @api.depends("product_uom_id", "product_qty", "product_weight", "uom_measure_type")

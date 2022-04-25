@@ -10,16 +10,21 @@
     "license": "AGPL-3",
     "depends": [
         "product",
+        # OCA
+        "product_uom_measure_type",
+        "web_notify",
+        "web_tree_image_tooltip",
+        "web_widget_x2many_2d_matrix",
+        # GRAP
         "joint_buying_base",
         "product_uom_package",
-        "web_notify",
-        "product_uom_measure_type",
     ],
     "pre_init_hook": "pre_init_product_db",
     "data": [
         "security/ir.model.access.csv",
         "views/menu.xml",
         "wizards/joint_buying_wizard_create_order.xml",
+        "wizards/joint_buying_wizard_update_order_grouped.xml",
         "views/view_res_config_settings.xml",
         "views/view_product_template.xml",
         "views/view_product_product.xml",
@@ -46,5 +51,4 @@
         "demo/joint_buying_frequency.xml",
     ],
     "installable": True,
-    "auto_install": True,
 }
