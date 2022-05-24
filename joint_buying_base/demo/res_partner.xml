@@ -98,7 +98,23 @@
         <field name="company_id" ref="joint_buying_base.company_3PP"/>
         <field name="customer" eval="False"/>
         <field name="supplier" eval="True"/>
-        <field name="joint_buying_global_partner_id"  model="res.partner" eval="obj().env.ref('joint_buying_base.company_ELD').joint_buying_partner_id.id"/>
+        <field name="joint_buying_global_partner_id" model="res.partner" eval="obj().env.ref('joint_buying_base.company_ELD').joint_buying_partner_id.id"/>
+    </record>
+
+    <record id="customer_3PP_at_ELD" model="res.partner">
+        <field name="name">Three Peas @ Elodia D</field>
+        <field name="company_id" ref="joint_buying_base.company_ELD"/>
+        <field name="customer" eval="True"/>
+        <field name="supplier" eval="False"/>
+        <field name="joint_buying_global_partner_id" model="res.partner" eval="obj().env.ref('joint_buying_base.company_3PP').joint_buying_partner_id.id"/>
+    </record>
+
+    <record id="customer_1GG_at_ELD" model="res.partner">
+        <field name="name">A Grain in the Granary @ Elodia D</field>
+        <field name="company_id" ref="joint_buying_base.company_ELD"/>
+        <field name="customer" eval="True"/>
+        <field name="supplier" eval="False"/>
+        <field name="joint_buying_global_partner_id" model="res.partner" eval="obj().env.ref('joint_buying_base.company_1GG').joint_buying_partner_id.id"/>
     </record>
 
     <record id="supplier_fumet_dombes_at_3PP" model="res.partner">
@@ -108,5 +124,35 @@
         <field name="supplier" eval="True"/>
         <field name="joint_buying_global_partner_id" ref="supplier_fumet_dombes"/>
     </record>
+
+
+    <function model="res.partner" name="write">
+        <value model="res.company" eval="[
+            obj().browse(ref('joint_buying_base.company_PZI')).joint_buying_partner_id.id
+            ]"
+        />
+        <value eval="{
+            'joint_buying_subscribed_company_ids': [
+                (4, ref('joint_buying_base.company_1GG')),
+                (4, ref('joint_buying_base.company_3PP')),
+            ]
+        }"/>
+    </function>
+
+    <function model="res.partner" name="write">
+        <value model="res.company" eval="[
+            obj().browse(ref('joint_buying_base.company_ELD')).joint_buying_partner_id.id
+            ]"
+        />
+        <value eval="{
+            'joint_buying_subscribed_company_ids': [
+                (4, ref('joint_buying_base.company_1GG')),
+                (4, ref('joint_buying_base.company_3PP')),
+                (4, ref('joint_buying_base.company_EDC')),
+                (4, ref('joint_buying_base.company_CRB')),
+                (4, ref('joint_buying_base.company_VEV')),
+            ]
+        }"/>
+    </function>
 
 </odoo>

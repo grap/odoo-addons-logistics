@@ -11,9 +11,10 @@ License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl.html).
         <field name="model">res.partner</field>
         <field name="inherit_id" ref="base.view_partner_form"/>
         <field name="arch" type="xml">
-            <group name="purchase" position="inside">
-                <field name="joint_buying_global_partner_id"
-                    attrs="{'invisible': [('supplier', '=', False)]}"/>
+            <group name="container_row_2" position="inside">
+                <group string="Joint Buying">
+                    <field name="joint_buying_global_partner_id"/>
+                </group>
             </group>
         </field>
     </record>
