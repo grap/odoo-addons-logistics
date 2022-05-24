@@ -127,7 +127,12 @@ class JointBuyingPurchaseOrder(models.Model):
         digits=dp.get_precision("Stock Weight"),
     )
 
-    is_mine = fields.Boolean(compute="_compute_is_mine", search="_search_is_mine")
+    is_mine_customer = fields.Boolean(
+        compute="_compute_is_mine_customer", search="_search_is_mine_customer"
+    )
+    is_mine_supplier = fields.Boolean(
+        compute="_compute_is_mine_supplier", search="_search_is_mine_supplier"
+    )
 
     has_image = fields.Boolean(compute="_compute_has_image")
 
@@ -171,13 +176,18 @@ class JointBuyingPurchaseOrder(models.Model):
                 order.customer_id.joint_buying_company_id.code,
             )
 
-    def _compute_is_mine(self):
-        current_customer_partner = self.env.user.company_id.joint_buying_partner_id
+    def _compute_is_mine_customer(self):
+        current_partner = self.env.user.company_id.joint_buying_partner_id
         for order in self:
-            order.is_mine = order.customer_id == current_customer_partner
+            order.is_mine_customer = order.customer_id == current_partner
 
-    def _search_is_mine(self, operator, value):
-        current_customer_partner = self.env.user.company_id.joint_buying_partner_id
+    def _compute_is_mine_supplier(self):
+        current_partner = self.env.user.company_id.joint_buying_partner_id
+        for order in self:
+            order.is_mine_supplier = order.supplier_id == current_partner
+
+    def _search_is_mine_customer(self, operator, value):
+        current_partner = self.env.user.company_id.joint_buying_partner_id
         if (operator == "=" and value) or (operator == "!=" and not value):
             search_operator = "in"
         else:
@@ -186,7 +196,21 @@ class JointBuyingPurchaseOrder(models.Model):
             (
                 "id",
                 search_operator,
-                self.search([("customer_id", "=", current_customer_partner.id)]).ids,
+                self.search([("customer_id", "=", current_partner.id)]).ids,
+            )
+        ]
+
+    def _search_is_mine_supplier(self, operator, value):
+        current_partner = self.env.user.company_id.joint_buying_partner_id
+        if (operator == "=" and value) or (operator == "!=" and not value):
+            search_operator = "in"
+        else:
+            search_operator = "not in"
+        return [
+            (
+                "id",
+                search_operator,
+                self.search([("supplier_id", "=", current_partner.id)]).ids,
             )
         ]
 

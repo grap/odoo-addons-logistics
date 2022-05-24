@@ -7,7 +7,21 @@
             obj().browse(ref('joint_buying_base.company_PZI')).joint_buying_partner_id.id
             ]"
         />
-        <value eval="{'joint_buying_use_category': True}"/>
+        <value eval="{
+            'joint_buying_use_category': True,
+            'joint_buying_use_punctual_grouped_order': True,
+        }"/>
     </function>
+
+    <function model="res.partner" name="write">
+        <value model="res.company" eval="[
+            obj().browse(ref('joint_buying_base.company_ELD')).joint_buying_partner_id.id
+            ]"
+        />
+        <value eval="{
+            'joint_buying_use_punctual_grouped_order': True,
+        }"/>
+    </function>
+
 
 </odoo>

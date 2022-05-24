@@ -140,6 +140,17 @@ class ProductProduct(models.Model):
         return super().write(vals)
 
     # custom Section
+    def get_joint_buying_local_partner_id(self):
+        """Return the local product of a global product, if exists"""
+        self.ensure_one()
+        products = self.with_context(joint_buying=False).search(
+            [
+                ("joint_buying_product_id", "=", self.id),
+                ("company_id", "=", self.env.user.company_id.id),
+            ]
+        )
+        return products and products[0] or False
+
     @api.model
     def joint_byuing_cron_check_new(self):
         """This cron function will unflag the field 'joint_buying_is_new'
