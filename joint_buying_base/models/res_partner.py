@@ -216,6 +216,27 @@ class ResPartner(models.Model):
         return super().unlink()
 
     # Custom section
+    def get_joint_buying_local_partner_id(self):
+        """Return the local partner of a global partner, if exists"""
+        self.ensure_one()
+        partners = self.with_context(joint_buying=False).search(
+            [
+                ("joint_buying_global_partner_id", "=", self.id),
+                ("company_id", "=", self.env.user.company_id.id),
+            ]
+        )
+        return partners and partners[0] or False
+
+    def set_joint_buying_local_partner_id(self, new_local_partner):
+        self.ensure_one()
+        current_local_partner = self.get_joint_buying_local_partner_id()
+        if current_local_partner == new_local_partner:
+            # Nothing change
+            return
+        if current_local_partner:
+            current_local_partner.joint_buying_global_partner_id = False
+        new_local_partner.joint_buying_global_partner_id = self and self.id
+
     def toggle_joint_buying_is_subscribed(self):
         self.ensure_one()
         self.joint_buying_is_subscribed = not self.joint_buying_is_subscribed

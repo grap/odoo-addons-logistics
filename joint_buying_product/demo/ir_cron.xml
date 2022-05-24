@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<odoo noupdate="0">
+<!--
+    <function model="ir.cron" name="method_direct_trigger">
+        <value eval="[ref('joint_buying_product.cron_create_purchase_order_grouped')
+            ]"/>
+    </function> -->
+</odoo>

@@ -50,6 +50,7 @@
         "demo/product_product.xml",
         "demo/res_partner.xml",
         "demo/joint_buying_frequency.xml",
+        "demo/ir_cron.xml",
     ],
     "installable": True,
 }
