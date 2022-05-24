@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+Copyright (C) 2021 - Today: GRAP (http://www.grap.coop)
+@author: Sylvain LE GAL (https://twitter.com/legalsylvain)
+License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl.html).
+-->
+<odoo>
+    <record id="view_joint_buying_create_sale_order_wizard_form" model="ir.ui.view">
+        <field name="model">joint.buying.create.sale.order.wizard</field>
+        <field name="arch" type="xml">
+            <form>
+                <group>
+                    <field name="grouped_order_id" />
+                </group>
+                <group string="List of Customers">
+                    <field name="line_ids" nolabel="1">
+                        <tree editable="bottom" create="false">
+                            <field name="order_id" force_save="True"/>
+                            <field name="amount_untaxed"/>
+                            <field name="joint_buying_global_customer_id" force_save="True"/>
+                            <field name="joint_buying_local_customer_id"/>
+                        </tree>
+                    </field>
+                </group>
+                <footer>
+                    <button name="create_sale_order"
+                            string="Generate Sale Orders"
+                            type="object"
+                            class="oe_highlight"/>
+                    or
+                    <button string="Cancel" class="oe_link" special="cancel"/>
+                </footer>
+            </form>
+        </field>
+    </record>
+
+    <record id="action_wizard_create_sale_order" model="ir.actions.act_window">
+        <field name="name">Generate Sale Orders</field>
+        <field name="type">ir.actions.act_window</field>
+        <field name="res_model">joint.buying.create.sale.order.wizard</field>
+        <field name="view_type">form</field>
+        <field name="view_mode">form</field>
+        <field name="target">new</field>
+        <field name="binding_model_id" ref="joint_buying_product.model_joint_buying_purchase_order_grouped" />
+    </record>
+
+</odoo>
