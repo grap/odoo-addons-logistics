@@ -49,7 +49,9 @@ class ResPartner(models.Model):
     )
 
     joint_buying_company_id = fields.Many2one(
-        comodel_name="res.company", name="Related Company for Joint Buyings"
+        comodel_name="res.company",
+        name="Related Company for Joint Buyings",
+        readonly=True,
     )
 
     joint_buying_pivot_company_id = fields.Many2one(
@@ -67,8 +69,11 @@ class ResPartner(models.Model):
 
     joint_buying_description = fields.Html(string="Complete Description")
 
-    joint_buying_is_mine = fields.Boolean(
-        compute="_compute_joint_buying_is_mine", search="_search_joint_buying_is_mine"
+    joint_buying_is_mine_pivot = fields.Boolean(
+        compute="_compute_joint_buying_is_mine_pivot",
+        search="_search_joint_buying_is_mine_pivot",
+        help="This box is checked if the current company of the user is the pivot company"
+        " of the given joint buying partner.",
     )
 
     joint_buying_commission_state = fields.Selection(
@@ -142,10 +147,10 @@ class ResPartner(models.Model):
             return companies.ids
 
     # Compute Section
-    def _compute_joint_buying_is_mine(self):
+    def _compute_joint_buying_is_mine_pivot(self):
         current_company = self.env.user.company_id
         for partner in self:
-            partner.joint_buying_is_mine = (
+            partner.joint_buying_is_mine_pivot = (
                 partner.joint_buying_pivot_company_id == current_company
             )
 
@@ -156,7 +161,7 @@ class ResPartner(models.Model):
             )
 
     # Search Section
-    def _search_joint_buying_is_mine(self, operator, value):
+    def _search_joint_buying_is_mine_pivot(self, operator, value):
         current_company = self.env.user.company_id
         if (operator == "=" and value) or (operator == "!=" and not value):
             search_operator = "in"

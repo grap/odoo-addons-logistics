@@ -98,6 +98,7 @@ License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl.html).
                                 <group name="vendor_setting" string="Settings" colspan="4" col="4">
                                     <field name="joint_buying_subscribed_company_ids" widget="many2many_tags" colspan="4"/>
                                     <field name="joint_buying_pivot_company_id" attrs="{'required': [('supplier', '=', True)]}"/>
+                                    <field name="joint_buying_company_id" attrs="{'invisible': [('joint_buying_company_id', '=', False)]}"/>
                                 </group>
 
                                 <group string="Logistic Information" colspan="4">
@@ -231,7 +232,7 @@ License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl.html).
         <field name="view_id" ref="view_res_partner_tree"/>
         <field name="view_mode">tree,form</field>
         <field name="domain">[
-            ('joint_buying_is_mine', '=', True),
+            ('joint_buying_is_mine_pivot', '=', True),
             ('supplier', '=', True),
         ]</field>
         <field name="context">
