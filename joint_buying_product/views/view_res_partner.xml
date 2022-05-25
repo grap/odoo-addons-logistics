@@ -116,7 +116,7 @@
                     <field name="joint_buying_product_ids" nolabel="1">
                         <tree editable="bottom" decoration-muted="purchase_ok == False" limit="1000"  delete="false">
                             <field name="image_small" widget="image" options="{'tooltip_image': 'image'}" string="Image"/>
-                            <field name="default_code" string="Sup. Code"/>
+                            <field name="default_code" string="Sup. Code" attrs="{'readonly': [('parent.joint_buying_company_id', '!=', False)]}"/>
                             <field name="name"/>
                             <field name="uom_id" string="UoM" options="{'no_open': True}"/>
                             <field name="uom_po_id" string="Invoice Supplier UoM" options="{'no_open': True}"/>
