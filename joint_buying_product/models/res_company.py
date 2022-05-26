@@ -15,3 +15,11 @@ class ResCompany(models.Model):
     joint_buying_send_pivot_email_closed = fields.Boolean(
         "Send email when closing Grouped Order", default=True
     )
+
+    joint_buying_pricelist_id = fields.Many2one(
+        name="Joint Buying Pricelist",
+        comodel_name="product.pricelist",
+        help="This pricelist will be used to define the price of the"
+        " joint buying global products created from your local product."
+        " If not set, the default 'price' field will be used.",
+    )
