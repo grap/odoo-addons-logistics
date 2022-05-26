@@ -193,12 +193,18 @@ class ProductProduct(models.Model):
 
     def _prepare_joint_buying_product(self, action):
         self.ensure_one()
+        pricelist = self.company_id.joint_buying_pricelist_id
+        if pricelist:
+            price = self.with_context(pricelist=pricelist.id).price
+        else:
+            price = self.lst_price
         vals = {
             "name": self.name,
             "image": self.image,
             "default_code": self.default_code,
             "weight": self.weight,
             "barcode": self.barcode,
+            "lst_price": price,
         }
         if action == "create":
             vals.update(
@@ -209,7 +215,6 @@ class ProductProduct(models.Model):
                         "joint_buying_product.product_category"
                     ).id,
                     "joint_buying_partner_id": self.company_id.joint_buying_partner_id.id,
-                    "lst_price": 0.0,
                 }
             )
         return vals

@@ -86,7 +86,7 @@ class TestModule(TransactionCase):
                 "name": product_name,
                 "company_id": self.company_ELD.id,
                 "categ_id": self.category_all.id,
-                "lst_price": 10.0,
+                "lst_price": 100.0,
             }
         )
 
@@ -132,15 +132,26 @@ class TestModule(TransactionCase):
 
         self.assertEqual(
             new_global_product.lst_price,
-            0.0,
-            "Global Product should allways have 0 as price.",
+            new_local_product.lst_price,
+            "Global Product should has same price as the local product.",
         )
 
+        # Check that update name on local product update name on global product
         new_product_name = "Some Chocolate Updated"
         new_local_product.name = new_product_name
         self.assertEqual(new_global_product.name, product_name)
         new_local_product.update_joint_buying_product()
         self.assertEqual(new_global_product.name, new_product_name)
+
+        # Check that set a joint buying pricelist update the price of the global product
+        self.company_ELD.joint_buying_pricelist_id = self.pricelist_ELD
+        new_local_product.update_joint_buying_product()
+
+        self.assertEqual(
+            new_global_product.lst_price,
+            new_local_product.lst_price * 0.9,
+            "Global Product should has a price depending on joint buying pricelist.",
+        )
 
     def test_02_joint_buying_product_creation(self):
         vals = {
