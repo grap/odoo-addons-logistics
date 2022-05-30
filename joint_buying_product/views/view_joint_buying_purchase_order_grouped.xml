@@ -19,8 +19,8 @@ License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl.html).
         <field name="model">joint.buying.purchase.order.grouped</field>
         <field name="arch" type="xml">
             <search>
-                <field name="name"/>
                 <field name="supplier_id"/>
+                <field name="name"/>
                 <field name="state"/>
                 <filter name="in_progress" string="In Progress"
                     domain="[('state', 'in', ['in_progress', 'in_progress_near', 'in_progress_imminent'])]"/>
