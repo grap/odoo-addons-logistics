@@ -10,8 +10,8 @@ License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl.html).
         <field name="model">joint.buying.purchase.order</field>
         <field name="arch" type="xml">
             <search>
-                <field name="grouped_order_id"/>
                 <field name="supplier_id"/>
+                <field name="grouped_order_id"/>
                 <field name="customer_id"/>
                 <field name="purchase_state"/>
                 <field name="state"/>
