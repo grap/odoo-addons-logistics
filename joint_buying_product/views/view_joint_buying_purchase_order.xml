@@ -156,25 +156,68 @@ License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl.html).
         </field>
     </record>
 
+    <record id="view_joint_buying_purchase_order_to_place_tree" model="ir.ui.view">
+        <field name="model">joint.buying.purchase.order</field>
+        <field name="inherit_id" ref="view_joint_buying_purchase_order_tree"/>
+        <field name="mode">primary</field>
+        <field name="arch" type="xml">
+            <xpath expr="//tree" position="attributes">
+                <attribute name="default_order">end_date, supplier_id</attribute>
+            </xpath>
+        </field>
+    </record>
+
     <record id="action_joint_buying_purchase_order_my" model="ir.actions.act_window">
-        <field name="name">My Orders</field>
+        <field name="name">My Orders to Place</field>
         <field name="type">ir.actions.act_window</field>
         <field name="res_model">joint.buying.purchase.order</field>
         <field name="view_type">form</field>
         <field name="view_mode">tree,calendar,form</field>
-        <field name="domain">[("is_mine", "=", True)]</field>
+        <field name="view_id" ref="view_joint_buying_purchase_order_to_place_tree"/>
+        <field name="domain">[("is_mine", "=", True),('state', 'in', ['in_progress', 'in_progress_near', 'in_progress_imminent']), ('purchase_state', '=', 'draft')]</field>
         <field name="context">{
             "joint_buying": 1,
-            "search_default_to_enter_by_customer": 1,
             "invisible_customer_id": 1,
         }</field>
     </record>
 
     <menuitem id="menu_joint_buying_purchase_order_my"
-        name="My Orders"
+        name="My Orders to Place"
         parent="joint_buying_product.menu_order"
         action="action_joint_buying_purchase_order_my"
         sequence="1"
+    />
+
+    <record id="view_joint_buying_purchase_order_placed_tree" model="ir.ui.view">
+        <field name="model">joint.buying.purchase.order</field>
+        <field name="inherit_id" ref="view_joint_buying_purchase_order_tree"/>
+        <field name="mode">primary</field>
+        <field name="arch" type="xml">
+            <xpath expr="//tree" position="attributes">
+                <attribute name="default_order">deposit_date desc, supplier_id</attribute>
+            </xpath>
+        </field>
+    </record>
+
+    <record id="action_joint_buying_purchase_order_my_placed" model="ir.actions.act_window">
+        <field name="name">My Placed Orders</field>
+        <field name="type">ir.actions.act_window</field>
+        <field name="res_model">joint.buying.purchase.order</field>
+        <field name="view_type">form</field>
+        <field name="view_mode">tree,calendar,form</field>
+        <field name="domain">[("is_mine", "=", True), ('amount_untaxed', '!=', 0)]</field>
+        <field name="view_id" ref="view_joint_buying_purchase_order_placed_tree"/>
+        <field name="context">{
+            "joint_buying": 1,
+            "invisible_customer_id": 1,
+        }</field>
+    </record>
+
+    <menuitem id="menu_joint_buying_purchase_order_my_placed"
+        name="My Placed Orders"
+        parent="joint_buying_product.menu_order"
+        action="action_joint_buying_purchase_order_my_placed"
+        sequence="2"
     />
 
     <record id="action_joint_buying_purchase_order_all" model="ir.actions.act_window">
