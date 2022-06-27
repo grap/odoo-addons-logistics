@@ -15,6 +15,7 @@ class JointBuyingPurchaseOrder(models.Model):
     _name = "joint.buying.purchase.order"
     _description = "Joint Buying Purchase Order"
     _inherit = ["mail.thread", "mail.activity.mixin"]
+    _order = "end_date desc, supplier_id, customer_id"
 
     _PURCHASE_STATE = [("draft", "To Enter"), ("done", "Confirmed")]
 
