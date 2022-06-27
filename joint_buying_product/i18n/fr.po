@@ -1326,7 +1326,7 @@ msgstr "Commandes groupées en cours"
 #: model:ir.model.fields,field_description:joint_buying_product.field_joint_buying_wizard_create_order__pivot_company_id
 msgid "Pivot Company"
 msgstr "Société pivot"
-fr_FR
+
 #. module: joint_buying_product
 #: model:ir.model.fields,help:joint_buying_product.field_joint_buying_frequency__deposit_partner_id
 msgid "Place that will serve as a deposit for this supplier"
