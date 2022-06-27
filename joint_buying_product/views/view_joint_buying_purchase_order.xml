@@ -24,7 +24,7 @@ License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl.html).
     <record id="view_joint_buying_purchase_order_tree" model="ir.ui.view">
         <field name="model">joint.buying.purchase.order</field>
         <field name="arch" type="xml">
-            <tree decoration-info="purchase_state == 'draft'" create="false">
+            <tree decoration-info="purchase_state == 'draft'" decoration-it="purchase_state == 'skipped'" create="false">
                 <field name="name"/>
                 <field name="supplier_id"/>
                 <field name="customer_id" invisible="context.get('invisible_customer_id', False)"/>
@@ -60,7 +60,9 @@ License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl.html).
                     <button name="action_confirm_purchase" type="object" string="Confirm order"
                         attrs="{'invisible': ['|', '|', ('purchase_state', '!=', 'draft'), ('state', 'not in', ['in_progress', 'in_progress_near', 'in_progress_imminent']), ('purchase_ok', '=', 'ok')]}"/>
                     <button name="action_draft_purchase" type="object" string="Reset to Draft"
-                        attrs="{'invisible': ['|', ('purchase_state', '!=', 'done'), ('state', 'not in', ['in_progress', 'in_progress_near', 'in_progress_imminent'])]}"/>
+                        attrs="{'invisible': ['|', ('purchase_state', '==', 'draft'), ('state', 'not in', ['in_progress', 'in_progress_near', 'in_progress_imminent'])]}"/>
+                    <button name="action_skip_purchase" type="object" string="Skip Order"
+                        attrs="{'invisible': ['|', ('purchase_state', '!=', 'draft'), ('state', 'not in', ['in_progress', 'in_progress_near', 'in_progress_imminent'])]}"/>
                     <field name="purchase_state" widget="statusbar"/>
                     <field name="state" widget="statusbar" statusbar_visible="futur,in_progress,closed,deposited"/>
                 </header>
@@ -205,7 +207,7 @@ License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl.html).
         <field name="res_model">joint.buying.purchase.order</field>
         <field name="view_type">form</field>
         <field name="view_mode">tree,calendar,form</field>
-        <field name="domain">[("is_mine", "=", True), ('amount_untaxed', '!=', 0)]</field>
+        <field name="domain">[("is_mine", "=", True), ('amount_untaxed', '!=', 0), ("purchase_state", "!=", "skipped")]</field>
         <field name="view_id" ref="view_joint_buying_purchase_order_placed_tree"/>
         <field name="context">{
             "joint_buying": 1,
@@ -218,6 +220,27 @@ License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl.html).
         parent="joint_buying_product.menu_order"
         action="action_joint_buying_purchase_order_my_placed"
         sequence="2"
+    />
+
+    <record id="action_joint_buying_purchase_order_my_skipped" model="ir.actions.act_window">
+        <field name="name">My Skipped Orders</field>
+        <field name="type">ir.actions.act_window</field>
+        <field name="res_model">joint.buying.purchase.order</field>
+        <field name="view_type">form</field>
+        <field name="view_mode">tree,calendar,form</field>
+        <field name="domain">[("is_mine", "=", True), ('purchase_state', '=', 'skipped')]</field>
+        <field name="view_id" ref="view_joint_buying_purchase_order_placed_tree"/>
+        <field name="context">{
+            "joint_buying": 1,
+            "invisible_customer_id": 1,
+        }</field>
+    </record>
+
+    <menuitem id="menu_joint_buying_purchase_order_my_skipped"
+        name="My Skipped Orders"
+        parent="joint_buying_product.menu_order"
+        action="action_joint_buying_purchase_order_my_skipped"
+        sequence="3"
     />
 
     <record id="action_joint_buying_purchase_order_all" model="ir.actions.act_window">

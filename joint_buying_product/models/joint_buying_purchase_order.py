@@ -17,7 +17,11 @@ class JointBuyingPurchaseOrder(models.Model):
     _inherit = ["mail.thread", "mail.activity.mixin"]
     _order = "end_date desc, supplier_id, customer_id"
 
-    _PURCHASE_STATE = [("draft", "To Enter"), ("done", "Confirmed")]
+    _PURCHASE_STATE = [
+        ("draft", "To Enter"),
+        ("done", "Confirmed"),
+        ("skipped", "Skipped"),
+    ]
 
     _PURCHASE_OK_SELECTION = [
         ("no_line", "No Lines"),
@@ -243,8 +247,12 @@ class JointBuyingPurchaseOrder(models.Model):
             order.purchase_state = "done"
 
     def action_draft_purchase(self):
-        for order in self.filtered(lambda x: x.purchase_state == "done"):
+        for order in self.filtered(lambda x: x.purchase_state != "draft"):
             order.purchase_state = "draft"
+
+    def action_skip_purchase(self):
+        for order in self.filtered(lambda x: x.purchase_state == "draft"):
+            order.purchase_state = "skipped"
 
     def button_see_order(self):
         self.ensure_one()
