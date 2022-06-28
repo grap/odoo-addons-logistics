@@ -48,3 +48,10 @@ class ResConfigSettings(models.TransientModel):
         related="company_id.joint_buying_send_pivot_email_closed",
         readonly=False,
     )
+
+    joint_buying_pricelist_id = fields.Many2one(
+        string="Joint Buying Pricelist",
+        comodel_name="product.pricelist",
+        related="company_id.joint_buying_pricelist_id",
+        readonly=False,
+    )

@@ -24,25 +24,6 @@
         <field name="country_id" ref="base.fr"/>
     </record>
 
-    <record id="company_VEV" model="res.company">
-        <field name="code">VEV</field>
-        <field name="name">[VEV - Bulk in Green]</field>
-        <field name="street">7 Rue Roger Salengro</field>
-        <field name="city">Saint-Etienne</field>
-        <field name="zip">42000</field>
-        <field name="country_id" ref="base.fr"/>
-    </record>
-
-    <record id="company_TOU" model="res.company">
-        <field name="code">TOU</field>
-        <field name="name">[TOU - With Sunflower]</field>
-        <field name="street">22 route de l'Eyrieux</field>
-        <field name="street2">Quartier Fortuné</field>
-        <field name="city">Beauchastel</field>
-        <field name="zip">07800</field>
-        <field name="country_id" ref="base.fr"/>
-    </record>
-
     <record id="company_C3P" model="res.company">
         <field name="code">C3P</field>
         <field name="name">[C3P - Like Three Apples]</field>
@@ -70,12 +51,12 @@
         <field name="country_id" ref="base.fr"/>
     </record>
 
-    <record id="company_ELD" model="res.company">
-        <field name="code">ELD</field>
-        <field name="name">[ELD - Elodia-D]</field>
-        <field name="street">520 route de Combe Boiron</field>
-        <field name="city">St Maurice sur Dargoire</field>
-        <field name="zip">69440</field>
+    <record id="company_CRB" model="res.company">
+        <field name="code">CRB</field>
+        <field name="name">[CRB - Fang Bauges]</field>
+        <field name="street">Impasse du Nant d'Orange</field>
+        <field name="city">Lescheraines</field>
+        <field name="zip">73340</field>
         <field name="country_id" ref="base.fr"/>
     </record>
 
@@ -88,17 +69,6 @@
         <field name="country_id" ref="base.fr"/>
     </record>
 
-    <record id="company_PZI" model="res.company">
-        <field name="code">PZI</field>
-        <field name="name">[PZI - small Zests from Italy and elsewhere]</field>
-        <field name="street">7 bis rue du Pré Paillard</field>
-        <field name="email">no-spam@petitszestes.fr</field>
-        <field name="street2">PAE les Glaisins</field>
-        <field name="city">Annecy-Le-Vieux</field>
-        <field name="zip">74940</field>
-        <field name="country_id" ref="base.fr"/>
-    </record>
-
     <record id="company_EDC" model="res.company">
         <field name="code">EDC</field>
         <field name="name">[EDC - The Quince Grocery]</field>
@@ -108,13 +78,14 @@
         <field name="country_id" ref="base.fr"/>
     </record>
 
-    <record id="company_CRB" model="res.company">
-        <field name="code">CRB</field>
-        <field name="name">[CRB - Fang Bauges]</field>
-        <field name="street">Impasse du Nant d'Orange</field>
-        <field name="city">Lescheraines</field>
-        <field name="zip">73340</field>
+    <record id="company_ELD" model="res.company">
+        <field name="code">ELD</field>
+        <field name="name">[ELD - Elodia-D]</field>
+        <field name="street">520 route de Combe Boiron</field>
+        <field name="city">St Maurice sur Dargoire</field>
+        <field name="zip">69440</field>
         <field name="country_id" ref="base.fr"/>
+        <field name="email">ELD@ELD.fr</field>
     </record>
 
     <record id="company_LSE" model="res.company">
@@ -123,6 +94,36 @@
         <field name="street">105, avenue Jean Jaurès</field>
         <field name="city">Oullins</field>
         <field name="zip">69600</field>
+        <field name="country_id" ref="base.fr"/>
+    </record>
+
+    <record id="company_PZI" model="res.company">
+        <field name="code">PZI</field>
+        <field name="name">[PZI - small Zests from Italy and elsewhere]</field>
+        <field name="street">7 bis rue du Pré Paillard</field>
+        <field name="street2">PAE les Glaisins</field>
+        <field name="city">Annecy-Le-Vieux</field>
+        <field name="zip">74940</field>
+        <field name="country_id" ref="base.fr"/>
+        <field name="email">PZI@PZI.fr</field>
+    </record>
+
+    <record id="company_TOU" model="res.company">
+        <field name="code">TOU</field>
+        <field name="name">[TOU - With Sunflower]</field>
+        <field name="street">22 route de l'Eyrieux</field>
+        <field name="street2">Quartier Fortuné</field>
+        <field name="city">Beauchastel</field>
+        <field name="zip">07800</field>
+        <field name="country_id" ref="base.fr"/>
+    </record>
+
+    <record id="company_VEV" model="res.company">
+        <field name="code">VEV</field>
+        <field name="name">[VEV - Bulk in Green]</field>
+        <field name="street">7 Rue Roger Salengro</field>
+        <field name="city">Saint-Etienne</field>
+        <field name="zip">42000</field>
         <field name="country_id" ref="base.fr"/>
     </record>
 

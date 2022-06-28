@@ -274,7 +274,7 @@ class JointBuyingPurchaseOrderGrouped(models.Model):
     def _compute_current_order_id(self):
         for grouped_order in self:
             grouped_order.current_order_id = grouped_order.order_ids.filtered(
-                lambda x: x.is_mine
+                lambda x: x.is_mine_customer
             )
 
     # Overload Section

@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<odoo>
+
+    <record id="product_ELD_ecureuil" model="product.product">
+        <field name="default_code">ELD-ECUREUIL</field>
+        <field name="name">Ecureuil Garni 150gr LAIT (VAT INCL)</field>
+        <field name="is_joint_buying" eval="False"/>
+        <field name="company_id" ref="joint_buying_base.company_ELD"/>
+        <field name="price">10</field>
+        <field name="taxes_id" eval="[
+            (4, ref('joint_buying_account.tax_20_included')),
+        ]"/>
+    </record>
+
+    <record id="product_ELD_hibou" model="product.product">
+        <field name="default_code">ELD-HIBOU</field>
+        <field name="name">Hibou Garni 150gr LAIT</field>
+        <field name="is_joint_buying" eval="False"/>
+        <field name="company_id" ref="joint_buying_base.company_ELD"/>
+        <field name="price">10</field>
+        <field name="taxes_id" eval="[
+            (4, ref('joint_buying_account.tax_20_excluded')),
+        ]"/>
+    </record>
+
+</odoo>
