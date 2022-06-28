@@ -173,11 +173,26 @@ License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl.html).
         </field>
     </record>
 
+    <record id="view_res_partner_joint_buying_search" model="ir.ui.view">
+        <field name="model">res.partner</field>
+        <field name="priority">100</field>
+        <field name="arch" type="xml">
+            <search>
+                <field name="name"/>
+                <field name="joint_buying_pivot_company_id"/>
+                <field name="category_id"/>
+                <field name="zip"/>
+                <field name="city"/>
+            </search>
+        </field>
+    </record>
+
     <record id="action_res_partner_supplier" model="ir.actions.act_window">
         <field name="name">Suppliers</field>
         <field name="type">ir.actions.act_window</field>
         <field name="res_model">res.partner</field>
         <field name="view_mode">tree,form</field>
+        <field name="search_view_id" ref="view_res_partner_joint_buying_search"></field>
         <field name="domain">[('supplier', '=', 1)]</field>
         <field name="context">
             {
