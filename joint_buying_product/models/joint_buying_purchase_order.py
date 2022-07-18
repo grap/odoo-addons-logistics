@@ -15,8 +15,13 @@ class JointBuyingPurchaseOrder(models.Model):
     _name = "joint.buying.purchase.order"
     _description = "Joint Buying Purchase Order"
     _inherit = ["mail.thread", "mail.activity.mixin"]
+    _order = "end_date desc, supplier_id, customer_id"
 
-    _PURCHASE_STATE = [("draft", "To Enter"), ("done", "Confirmed")]
+    _PURCHASE_STATE = [
+        ("draft", "Draft"),
+        ("done", "Confirmed"),
+        ("skipped", "Skipped"),
+    ]
 
     _PURCHASE_OK_SELECTION = [
         ("no_line", "No Lines"),
@@ -30,7 +35,7 @@ class JointBuyingPurchaseOrder(models.Model):
         (
             "group_order_customer_uniq",
             "unique (grouped_order_id,customer_id)",
-            "Customer can have only on purchase for this grouped order !",
+            "Customer can have only one purchase for this grouped order !",
         )
     ]
 
@@ -252,22 +257,26 @@ class JointBuyingPurchaseOrder(models.Model):
             elif order.purchase_ok == "no_minimum_amount":
                 raise ValidationError(
                     _(
-                        "you cannot confirm an order for which you have"
+                        "You cannot confirm an order for which you have"
                         " not reached the minimum purchase amount."
                     )
                 )
             elif order.purchase_ok == "no_minimum_weight":
                 raise ValidationError(
                     _(
-                        "you cannot confirm an order for which you have"
+                        "You cannot confirm an order for which you have"
                         " not reached the minimum weight."
                     )
                 )
             order.purchase_state = "done"
 
     def action_draft_purchase(self):
-        for order in self.filtered(lambda x: x.purchase_state == "done"):
+        for order in self.filtered(lambda x: x.purchase_state != "draft"):
             order.purchase_state = "draft"
+
+    def action_skip_purchase(self):
+        for order in self.filtered(lambda x: x.purchase_state == "draft"):
+            order.purchase_state = "skipped"
 
     def button_see_order(self):
         self.ensure_one()
@@ -279,3 +288,14 @@ class JointBuyingPurchaseOrder(models.Model):
         ).read()[0]
         action.update({"res_id": self.id, "views": [(form.id, "form")]})
         return action
+
+    def correct_purchase_state(self):
+        for order in self.filtered(lambda x: x.purchase_state == "draft"):
+            if order.grouped_order_id.state in ["closed", "deposited"]:
+                if order.amount_untaxed == 0:
+                    order.action_skip_purchase()
+                else:
+                    try:
+                        order.action_confirm_purchase()
+                    except ValidationError:
+                        pass
