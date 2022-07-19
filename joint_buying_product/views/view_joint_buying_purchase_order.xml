@@ -171,6 +171,10 @@ License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl.html).
             <xpath expr="//tree" position="attributes">
                 <attribute name="default_order">end_date, supplier_id</attribute>
             </xpath>
+            <field name="state" position="after">
+                <button name="action_skip_purchase" type="object"
+                    string="Skip" help="Skip this Order"/>
+            </field>
         </field>
     </record>
 
