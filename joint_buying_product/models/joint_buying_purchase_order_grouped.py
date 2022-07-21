@@ -382,7 +382,7 @@ class JointBuyingPurchaseOrderGrouped(models.Model):
                 )
                 # we send mail, when the grouped order is closed
                 if correct_state == "closed":
-                    # grouped_order.mapped("order_ids").correct_purchase_state()
+                    grouped_order.mapped("order_ids").correct_purchase_state()
                     grouped_order.send_mail_to_pivot_company()
                 # we send mail, when the grouped order is openened. (and was not before)
                 if correct_state.startswith(
