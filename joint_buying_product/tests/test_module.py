@@ -292,7 +292,9 @@ class TestModule(TransactionCase):
         # Case 1) company_ELD orders 24 units of rillette
         # Minimum amount is reached (24*8 > 150)
         # but not minimum weight (24*0.5 < 14)
-        order_ELD = order_grouped.order_ids.filtered(lambda x: x.customer_id.joint_buying_company_id.code == "ELD")
+        order_ELD = order_grouped.order_ids.filtered(
+            lambda x: x.customer_id.joint_buying_company_id.code == "ELD"
+        )
         line_ELD_rillette = self.OrderLine.search(
             [
                 ("order_id", "=", order_ELD.id),
@@ -310,7 +312,9 @@ class TestModule(TransactionCase):
         # Case 2) company_CHE orders 15 liters of olive oil
         # Minimum weight is reached (15*0.950 > 14)
         # but not minimum amount (15*8 < 150)
-        order_CHE = order_grouped.order_ids.filtered(lambda x: x.customer_id.joint_buying_company_id.code == "CHE")
+        order_CHE = order_grouped.order_ids.filtered(
+            lambda x: x.customer_id.joint_buying_company_id.code == "CHE"
+        )
         line_CHE_olive = self.OrderLine.search(
             [
                 ("order_id", "=", order_CHE.id),
@@ -326,7 +330,9 @@ class TestModule(TransactionCase):
         self.assertEqual(order_CHE.purchase_ok, "no_minimum_amount")
 
         # Case 3) company_3PP orders nothing
-        order_3PP = order_grouped.order_ids.filtered(lambda x: x.customer_id.joint_buying_company_id.code == "3PP")
+        order_3PP = order_grouped.order_ids.filtered(
+            lambda x: x.customer_id.joint_buying_company_id.code == "3PP"
+        )
         self.assertEqual(order_3PP.purchase_ok, "null_amount")
 
         # ## Check state
