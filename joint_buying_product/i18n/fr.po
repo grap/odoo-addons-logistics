@@ -1,13 +1,13 @@
 # Translation of Odoo Server.
 # This file contains the translation of the following modules:
-#   * joint_buying_product
+#	* joint_buying_product
 #
 msgid ""
 msgstr ""
 "Project-Id-Version: Odoo Server 12.0\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2022-05-25 10:21+0000\n"
-"PO-Revision-Date: 2022-05-25 10:21+0000\n"
+"POT-Creation-Date: 2022-08-02 15:41+0000\n"
+"PO-Revision-Date: 2022-08-02 15:41+0000\n"
 "Last-Translator: <>\n"
 "Language-Team: \n"
 "MIME-Version: 1.0\n"
@@ -77,48 +77,146 @@ msgid "<div style=\"margin: 0px; padding: 0px;\">\n"
 "                <p style=\"margin: 0px; padding: 0px; font-size: 13px;\">\n"
 "                    Hello ${object.pivot_company_id.name}\n"
 "                    <br/><br/>\n"
-"                    The Grouped Order <strong>${object.name}</strong> for the supplier ${object.supplier_id.name} has just ended.\n"
-"                    <ul>\n"
-"                        <li>Total Amount Untaxed : <strong>${round(object.amount_untaxed, 2)} €</strong></li>\n"
-"                        <li>Total Brut Weight : <strong>${round(object.total_weight, 2)} kg</strong></li>\n"
-"                    </ul>\n"
 "\n"
-"                    Please,\n"
-"                    <ul>\n"
-"                        <li>Check the content of the orders</li>\n"
-"                        <li>Check that there are no errors or omissions</li>\n"
-"                        <li>Send the order to the supplier</li>\n"
-"                    </ul>\n"
+"                    The Grouped Order <strong>${object.name}</strong> for the supplier ${object.supplier_id.name} has just ended.\n"
+"                    <br/><br/>\n"
+"\n"
+"                    % if object.purchase_ok == \"no_minimum_amount\":\n"
+"                        <b>The minimum amount (${object.minimum_amount} €) is not reached.</b> Please check the orders.<br/>\n"
+"\n"
+"                    % elif object.purchase_ok == \"no_minimum_weight\":\n"
+"                        <b>The minimum weight (${object.minimum_weight} kg) is not reached.</b> Please check the orders.<br/>\n"
+"\n"
+"                    % else:\n"
+"                        <b>Here is a summary :</b>\n"
+"                        <ul>\n"
+"                            <li>Total Amount Untaxed : <strong>${round(object.amount_untaxed, 2)} €</strong></li>\n"
+"                            <li>Total Brut Weight : <strong>${round(object.total_weight, 2)} kg</strong></li>\n"
+"                        </ul>\n"
+"                        <br/>\n"
+"\n"
+"                        % if \"done\" in object.order_ids.mapped(\"purchase_state\"):\n"
+"                          <b>Confirmed orders :</b>\n"
+"                          <br/>\n"
+"                          <ul>\n"
+"                            % for order in object.order_ids:\n"
+"                              % if order.purchase_state == \"done\":\n"
+"                                  <li>${order.name} : total amount ${round(order.amount_untaxed, 2)} €</li>\n"
+"                              % endif\n"
+"                            % endfor\n"
+"                          </ul>\n"
+"                          <br/>\n"
+"                        % endif\n"
+"\n"
+"                        % if \"draft\" in object.order_ids.mapped(\"purchase_state\"):\n"
+"                          <b>Draft orders :</b>\n"
+"                          <br/>\n"
+"                          Some orders couldn't be processed because the minimum amount or weight wasn't reached.<br/>\n"
+"                          Please edit them in order to either complete and confirm them, or skip them.\n"
+"                          <br/>\n"
+"                          <ul>\n"
+"                            % for order in object.order_ids:\n"
+"                              % if order.purchase_state == \"draft\":\n"
+"\n"
+"                                % if order.purchase_ok == \"no_minimum_amount\":\n"
+"                                  <li><a href=\"${order.get_url_purchase_order()}\">${order.name}</a> total amount ${round(order.amount_untaxed, 2)} €, unit minimum amount not reached (${object.minimum_unit_amount} €) </li>\n"
+"                                % endif\n"
+"\n"
+"                                % if order.purchase_ok == \"no_minimum_weight\":\n"
+"                                  <li><a href=\"${order.get_url_purchase_order()}\">${order.name}</a> : total weight ${round(order.total_weight, 2)} kg, unit minimum weight not reached (${object.minimum_unit_weight} kg) </li>\n"
+"                                % endif\n"
+"\n"
+"                              % endif\n"
+"                            % endfor\n"
+"                          </ul>\n"
+"                        % endif\n"
+"\n"
+"                      Please,\n"
+"                      <ul>\n"
+"                          <li>Check the content of the orders</li>\n"
+"                          <li>Check that there are no errors or omissions</li>\n"
+"                          <li>Send the order to the supplier</li>\n"
+"                      </ul>\n"
+"                    % endif\n"
 "                    <br/>\n"
 "                    You can see your grouped order by clicking on <a href=\"${object.get_url()}\">this link.</a>\n"
-"                    <br/>\n"
+"                    <br/><br/>\n"
 "                    Have a nice day.\n"
 "                </p>\n"
 "            </div>\n"
 "        "
 msgstr "<div style=\"margin: 0px; padding: 0px;\">\n"
 "                <p style=\"margin: 0px; padding: 0px; font-size: 13px;\">\n"
-"                    Bonjour ${object.pivot_company_id.name}\n"
+"                    Hello ${object.pivot_company_id.name}\n"
 "                    <br/><br/>\n"
-"                    La commande groupée <strong>${object.name}</strong> pour le fournisseur ${object.supplier_id.name} vient de se terminer.\n"
-"                    <ul>\n"
-"                        <li>Montant HT : <strong>${round(object.amount_untaxed, 2)} €</strong></li>\n"
-"                        <li>Poids brut : <strong>${round(object.total_weight, 2)} kg</strong></li>\n"
-"                    </ul>\n"
 "\n"
-"                    Merci\n"
-"                    <ul>\n"
-"                        <li>de vérifier le contenu des commandes</li>\n"
-"                        <li>de vérifier qu'il n'y a pas d'erreur ou d'oublis</li>\n"
-"                        <li>d'envoyer la commande groupée au fournisseur</li>\n"
+"                    La commande groupée <strong>${object.name}</strong> pour le fournisseur ${object.supplier_id.name} vient de se clôturer.n"
+"                    <br/><br/>\n"
+"\n"
+"                    % if object.purchase_ok == \"no_minimum_amount\":\n"
+"                        <b>Le franco de port (${object.minimum_amount} €) n'est pas atteint.</b> Merci de vérifier les commandes.<br/>\n"
+"\n"
+"                    % elif object.purchase_ok == \"no_minimum_weight\":\n"
+"                        <b>Le franco de port (${object.minimum_weight} kg) n'est pas atteint.</b> Merci de vérifier les commandes.<br/>\n"
+"\n"
+"                    % else:\n"
+"                        <b>Voici un récapitulatif :</b>\n"
+"                        <ul>\n"
+"                            <li>Montant total HT : <strong>${round(object.amount_untaxed, 2)} €</strong></li>\n"
+"                            <li>Poids total : <strong>${round(object.total_weight, 2)} kg</strong></li>\n"
+"                        </ul>\n"
+"                        <br/>\n"
+"\n"
+"                        % if \"done\" in object.order_ids.mapped(\"purchase_state\"):\n"
+"                          <b>Commandes confirmées :</b>\n"
+"                          <br/>\n"
+"                          <ul>\n"
+"                            % for order in object.order_ids:\n"
+"                              % if order.purchase_state == \"done\":\n"
+"                                  <li>${order.name} : montant ${round(order.amount_untaxed, 2)} €</li>\n"
+"                              % endif\n"
+"                            % endfor\n"
+"                          </ul>\n"
+"                          <br/>\n"
+"                        % endif\n"
+"\n"
+"                        % if \"draft\" in object.order_ids.mapped(\"purchase_state\"):\n"
+"                          <b>Commandes non traitées :</b>\n"
+"                          <br/>\n"
+"                          Certaines commandes n'ont pu être traitées parce que leur franco de port n'a pas été atteint.<br/>\n"
+"                          Merci de les éditer pour : soit les compléter et les confirmer, soit les passer en \"ignoré\".\n"
+"                          <br/>\n"
+"                          <ul>\n"
+"                            % for order in object.order_ids:\n"
+"                              % if order.purchase_state == \"draft\":\n"
+"\n"
+"                                % if order.purchase_ok == \"no_minimum_amount\":\n"
+"                                  <li><a href=\"${order.get_url_purchase_order()}\">${order.name}</a> montant ${round(order.amount_untaxed, 2)} €, franco de port (${object.minimum_unit_amount} €) </li>\n"
+"                                % endif\n"
+"\n"
+"                                % if order.purchase_ok == \"no_minimum_weight\":\n"
+"                                  <li><a href=\"${order.get_url_purchase_order()}\">${order.name}</a> : poids ${round(order.total_weight, 2)} kg, franco de port (${object.minimum_unit_weight} kg) </li>\n"
+"                                % endif\n"
+"\n"
+"                              % endif\n"
+"                            % endfor\n"
+"                          </ul>\n"
+"                        % endif\n"
+"\n"
+"                      Merci\n"
+  "                    <ul>\n"
+  "                        <li>de vérifier le contenu des commandes</li>\n"
+  "                        <li>de vérifier qu'il n'y a pas d'erreur ou d'oublis</li>\n"
+  "                        <li>d'envoyer la commande groupée au fournisseur</li>\n"
 "                    </ul>\n"
+"                    % endif\n"
 "                    <br/>\n"
 "                    Vous pouvez accéder à la commande groupée en cliquant sur <a href=\"${object.get_url()}\">ce lien.</a>\n"
-"                    <br/>\n"
+"                    <br/><br/>\n"
 "                    Passez une bonne journée.\n"
 "                </p>\n"
 "            </div>\n"
-""
+"        "
 
 #. module: joint_buying_product
 #: model:mail.template,body_html:joint_buying_product.email_template_pivot_company_in_progress
@@ -336,11 +434,11 @@ msgid "Companies"
 msgstr "Sociétés"
 
 #. module: joint_buying_product
-#: code:addons/joint_buying_product/models/joint_buying_purchase_order_grouped.py:524
-#: code:addons/joint_buying_product/models/joint_buying_purchase_order_grouped.py:565
+#: code:addons/joint_buying_product/models/joint_buying_purchase_order_grouped.py:525
+#: code:addons/joint_buying_product/models/joint_buying_purchase_order_grouped.py:573
 #, python-format
 msgid "Compose Email"
-msgstr ""
+msgstr "Écrire un email"
 
 #. module: joint_buying_product
 #: model:ir.model,name:joint_buying_product.model_res_config_settings
@@ -361,6 +459,11 @@ msgstr "Confirmée"
 #: model:ir.model,name:joint_buying_product.model_res_partner
 msgid "Contact"
 msgstr ""
+
+#. module: joint_buying_product
+#: model_terms:ir.ui.view,arch_db:joint_buying_product.view_joint_buying_purchase_order_form
+msgid "Correct purchase state"
+msgstr "Corriger l'état de la commande"
 
 #. module: joint_buying_product
 #: model_terms:ir.ui.view,arch_db:joint_buying_product.view_joint_buying_purchase_order_grouped_tree
@@ -420,8 +523,8 @@ msgstr "Client"
 
 #. module: joint_buying_product
 #: sql_constraint:joint.buying.purchase.order:0
-msgid "Customer can have only on purchase for this grouped order !"
-msgstr "Un client peut seulement avoir un achat pour cette commande groupée !"
+msgid "Customer can have only one purchase for this grouped order !"
+msgstr "La·e client·e ne peut avoir qu'une commande pour cette commande groupée !"
 
 #. module: joint_buying_product
 #: model:ir.model.fields,field_description:joint_buying_product.field_joint_buying_purchase_order__deposit_date
@@ -464,6 +567,11 @@ msgstr "Afficher le bouton de propagation pour les achats groupés"
 #: model:ir.model.fields,field_description:joint_buying_product.field_joint_buying_wizard_update_order_grouped__display_name
 msgid "Display Name"
 msgstr "Nom affiché"
+
+#. module: joint_buying_product
+#: selection:joint.buying.purchase.order,purchase_state:0
+msgid "Draft"
+msgstr "Brouillon"
 
 #. module: joint_buying_product
 #: model:product.pricelist,name:joint_buying_product.pricelist_10_percent
@@ -569,8 +677,8 @@ msgid "Gingembrette Sachet 200gr"
 msgstr ""
 
 #. module: joint_buying_product
-#: code:addons/joint_buying_product/models/joint_buying_purchase_order_grouped.py:512
-#: code:addons/joint_buying_product/models/joint_buying_purchase_order_grouped.py:555
+#: code:addons/joint_buying_product/models/joint_buying_purchase_order_grouped.py:513
+#: code:addons/joint_buying_product/models/joint_buying_purchase_order_grouped.py:563
 #: model:ir.actions.report,name:joint_buying_product.action_report_joint_buying_purchase_order_grouped
 #: model:ir.model.fields,field_description:joint_buying_product.field_joint_buying_purchase_order__grouped_order_id
 #: model_terms:ir.ui.view,arch_db:joint_buying_product.view_joint_buying_purchase_order_grouped_form
@@ -708,10 +816,19 @@ msgid "Is Follower"
 msgstr "Est un abonné"
 
 #. module: joint_buying_product
-#: model:ir.model.fields,field_description:joint_buying_product.field_joint_buying_purchase_order__is_mine
 #: model:ir.model.fields,field_description:joint_buying_product.field_joint_buying_purchase_order_grouped__is_mine
 msgid "Is Mine"
 msgstr "Me concerne"
+
+#. module: joint_buying_product
+#: model:ir.model.fields,field_description:joint_buying_product.field_joint_buying_purchase_order__is_mine_customer
+msgid "Is Mine Customer"
+msgstr "Me concerne en tant que client"
+
+#. module: joint_buying_product
+#: model:ir.model.fields,field_description:joint_buying_product.field_joint_buying_purchase_order__is_mine_supplier
+msgid "Is Mine Supplier"
+msgstr "Me concerne en tant que fournisseur"
 
 #. module: joint_buying_product
 #: model:ir.model.fields,field_description:joint_buying_product.field_joint_buying_purchase_order_line__is_new
@@ -793,6 +910,12 @@ msgstr "Description de fréquence pour les commandes groupées"
 #: model:ir.model.fields,field_description:joint_buying_product.field_product_product__joint_buying_partner_id
 msgid "Joint Buying Partner"
 msgstr "Partneraire Achats Groupés"
+
+#. module: joint_buying_product
+#: model:ir.model.fields,field_description:joint_buying_product.field_res_company__joint_buying_pricelist_id
+#: model:ir.model.fields,field_description:joint_buying_product.field_res_config_settings__joint_buying_pricelist_id
+msgid "Joint Buying Pricelist"
+msgstr "Liste de prix Achats Groupés"
 
 #. module: joint_buying_product
 #: model:ir.model.fields,field_description:joint_buying_product.field_product_product__joint_buying_product_id
@@ -1015,20 +1138,20 @@ msgstr "Poids minimum"
 #: model:ir.model.fields,field_description:joint_buying_product.field_res_partner__joint_buying_minimum_weight
 #: model:ir.model.fields,field_description:joint_buying_product.field_res_users__joint_buying_minimum_weight
 msgid "Minimum Weight For Grouped Order"
-msgstr "Poid minimum pour une commande groupée"
+msgstr "Poids minimum pour une commande groupée"
 
 #. module: joint_buying_product
 #: model:ir.model.fields,field_description:joint_buying_product.field_joint_buying_frequency__minimum_unit_weight
 #: model:ir.model.fields,field_description:joint_buying_product.field_res_partner__joint_buying_minimum_unit_weight
 #: model:ir.model.fields,field_description:joint_buying_product.field_res_users__joint_buying_minimum_unit_weight
 msgid "Minimum Weight For Unit Order"
-msgstr "Poid minimum pour une commande unitaire"
+msgstr "Poids minimum pour une commande unitaire"
 
 #. module: joint_buying_product
 #: selection:joint.buying.purchase.order,purchase_ok:0
 #: selection:joint.buying.purchase.order.grouped,purchase_ok:0
 msgid "Minimum Weight Not reached"
-msgstr "Poid minimum non atteint"
+msgstr "Poids minimum non atteint"
 
 #. module: joint_buying_product
 #: model:ir.model.fields,field_description:joint_buying_product.field_joint_buying_purchase_order__minimum_unit_amount
@@ -1042,10 +1165,22 @@ msgid "My Grouped Orders"
 msgstr "Mes commandes groupées"
 
 #. module: joint_buying_product
-#: model:ir.actions.act_window,name:joint_buying_product.action_joint_buying_purchase_order_my
-#: model:ir.ui.menu,name:joint_buying_product.menu_joint_buying_purchase_order_my
-msgid "My Orders"
-msgstr "Mes commandes"
+#: model:ir.actions.act_window,name:joint_buying_product.action_joint_buying_purchase_order_to_place_my
+#: model:ir.ui.menu,name:joint_buying_product.menu_joint_buying_purchase_order_to_place_my
+msgid "My Orders to Place"
+msgstr "Mes commandes à saisir"
+
+#. module: joint_buying_product
+#: model:ir.actions.act_window,name:joint_buying_product.action_joint_buying_purchase_order_placed_my
+#: model:ir.ui.menu,name:joint_buying_product.menu_joint_buying_purchase_order_placed_my
+msgid "My Placed Orders"
+msgstr "Mes commandes saisies"
+
+#. module: joint_buying_product
+#: model:ir.actions.act_window,name:joint_buying_product.action_joint_buying_purchase_order_skipped_my
+#: model:ir.ui.menu,name:joint_buying_product.menu_joint_buying_purchase_order_skipped_my
+msgid "My Skipped Orders"
+msgstr "Mes commandes ignorées"
 
 #. module: joint_buying_product
 #: model:ir.model.fields,field_description:joint_buying_product.field_joint_buying_category__name
@@ -1223,7 +1358,7 @@ msgstr "Commande groupée ponctuelle"
 #: code:addons/joint_buying_product/models/product_template.py:31
 #, python-format
 msgid "Only Weight and Unit are correct main UoM in a joint buying purchase context."
-msgstr "Seulement les unités de mesure de poid et d'unité sont correctes comme unité principale dans le contexte de commande groupée."
+msgstr "Seulement les unités de mesure de poids et d'unité sont correctes comme unité principale dans le contexte de commande groupée."
 
 #. module: joint_buying_product
 #: model:product.product,name:joint_buying_product.product_morell_orange
@@ -1536,6 +1671,26 @@ msgid "Sequence"
 msgstr "Séquence"
 
 #. module: joint_buying_product
+#: model_terms:ir.ui.view,arch_db:joint_buying_product.view_joint_buying_purchase_order_to_place_my_tree
+msgid "Skip"
+msgstr "Ignorer"
+
+#. module: joint_buying_product
+#: model_terms:ir.ui.view,arch_db:joint_buying_product.view_joint_buying_purchase_order_form
+msgid "Skip Order"
+msgstr "Ignorer la commande"
+
+#. module: joint_buying_product
+#: model_terms:ir.ui.view,arch_db:joint_buying_product.view_joint_buying_purchase_order_to_place_my_tree
+msgid "Skip this Order"
+msgstr "Ignorer cette commande"
+
+#. module: joint_buying_product
+#: selection:joint.buying.purchase.order,purchase_state:0
+msgid "Skipped"
+msgstr "Ignorée"
+
+#. module: joint_buying_product
 #: model:ir.model.fields,field_description:joint_buying_product.field_joint_buying_purchase_order_line__image_small
 msgid "Small-sized image"
 msgstr "Image de petite taille"
@@ -1629,7 +1784,7 @@ msgid "Technical field, used to display matrix with web_widget_x2many_2d_matrix 
 msgstr "Champ technique, utilisé pour afficher la matrice de produit, via le module web_widget_x2many_2d_matrix."
 
 #. module: joint_buying_product
-#: code:addons/joint_buying_product/models/joint_buying_purchase_order_grouped.py:618
+#: code:addons/joint_buying_product/models/joint_buying_purchase_order_grouped.py:626
 #, python-format
 msgid "The company '%s' has been subscribed to the supplier '%s'."
 msgstr "La société '%s' a été abonnée au fournisseur '%s'."
@@ -1658,13 +1813,24 @@ msgid "This note is only for internal purposes."
 msgstr "Cette note est pour usage interne seulement."
 
 #. module: joint_buying_product
+#: model_terms:ir.ui.view,arch_db:joint_buying_product.view_res_config_settings_form
+msgid "This pricelist will be used to define the price of the\n"
+" joint buying global products created from your local product. If not set, the default 'price' field will be used. of the online document that will be added to the email send to the supplier."
+msgstr "Cette liste de prix sera utilisée pour définir le prix des articles que vous proposez en commande groupée. Si elle n'est pas définie, c'est le prix par défaut sera utilisé"
+
+#. module: joint_buying_product
+#: model:ir.model.fields,help:joint_buying_product.field_res_company__joint_buying_pricelist_id
+#: model:ir.model.fields,help:joint_buying_product.field_res_config_settings__joint_buying_pricelist_id
+msgid "This pricelist will be used to define the price of the joint buying global products created from your local product. If not set, the default 'price' field will be used."
+msgstr "Cette liste de prix sera utilisée pour définir le prix des articles que vous proposez en commande groupée. Si elle n'est pas définie, c'est le prix par défaut qui sera utilisé."
+
+#. module: joint_buying_product
 #: model_terms:ir.ui.view,arch_db:joint_buying_product.view_joint_buying_purchase_order_grouped_form
 msgid "This will update the products list of the pending orders. If product are marked as unavailable, the lines will be DELETED. If new products are available, new lines will be added. If products informations changed (price, package quantity, etc...), lines will be updated"
 msgstr "En confirmant votre action, cela va mettre à jour la liste des produits des commandes de la commande groupées en cours. Si des produits sont marqués comme indisponible, les lignes associées seront SUPPRIMEES. Si des nouveaux articles sont disponibles, de nouvelles lignes seront ajoutées. Si des informations d'articles ont changés (prix, conditionnement, etc...), les lignes seront mises à jour."
 
 #. module: joint_buying_product
 #: model_terms:ir.ui.view,arch_db:joint_buying_product.view_joint_buying_purchase_order_search
-#: selection:joint.buying.purchase.order,purchase_state:0
 msgid "To Enter"
 msgstr "A saisir"
 
@@ -1704,7 +1870,7 @@ msgstr "Total HT"
 #: model:ir.model.fields,field_description:joint_buying_product.field_joint_buying_purchase_order_grouped_line__total_weight
 #: model_terms:ir.ui.view,arch_db:joint_buying_product.view_joint_buying_purchase_order_grouped_form
 msgid "Total Weight"
-msgstr "Poid total"
+msgstr "Poids total"
 
 #. module: joint_buying_product
 #: model:ir.model.fields,field_description:joint_buying_product.field_joint_buying_purchase_order_line__uom_measure_type
@@ -1833,20 +1999,6 @@ msgid "Users"
 msgstr "Utilisateurs"
 
 #. module: joint_buying_product
-#: model:ir.model.fields,field_description:joint_buying_product.field_joint_buying_category__website_message_ids
-#: model:ir.model.fields,field_description:joint_buying_product.field_joint_buying_purchase_order__website_message_ids
-#: model:ir.model.fields,field_description:joint_buying_product.field_joint_buying_purchase_order_grouped__website_message_ids
-msgid "Website Messages"
-msgstr "Messages du site web"
-
-#. module: joint_buying_product
-#: model:ir.model.fields,help:joint_buying_product.field_joint_buying_category__website_message_ids
-#: model:ir.model.fields,help:joint_buying_product.field_joint_buying_purchase_order__website_message_ids
-#: model:ir.model.fields,help:joint_buying_product.field_joint_buying_purchase_order_grouped__website_message_ids
-msgid "Website communication history"
-msgstr "Historique de communication du site web"
-
-#. module: joint_buying_product
 #: model:ir.model.fields,field_description:joint_buying_product.field_joint_buying_wizard_create_order_line__wizard_id
 msgid "Wizard"
 msgstr "Assistant"
@@ -1858,13 +2010,13 @@ msgid "You can not change the value of the Joint buying partner."
 msgstr "Vous ne pouvez pas changer la valeur de partenaire de commande groupée"
 
 #. module: joint_buying_product
-#: code:addons/joint_buying_product/models/joint_buying_purchase_order.py:226
+#: code:addons/joint_buying_product/models/joint_buying_purchase_order.py:255
 #, python-format
 msgid "You can not confirm an order with null amount."
 msgstr "Vous ne pouvez pas confirmer une commande avec un montant nul."
 
 #. module: joint_buying_product
-#: code:addons/joint_buying_product/models/joint_buying_purchase_order.py:222
+#: code:addons/joint_buying_product/models/joint_buying_purchase_order.py:251
 #, python-format
 msgid "You can not confirm an order without any lines."
 msgstr "Vous ne pouvez pas confirmer une commande sans lignes."
@@ -1889,13 +2041,25 @@ msgstr "Vous ne pouvez pas mettre une unité de mesure poids / unité, si l'arti
 #. module: joint_buying_product
 #: sql_constraint:joint.buying.purchase.order.line:0
 msgid "You can not set a negative quantity in the 'Purchase Quantity' field !"
-msgstr "Vous ne pouvez pas saisir de quantité négative dans le champs 'quantité à commander' !"
+msgstr "Vous ne pouvez pas saisir de quantité négative dans le champ 'quantité à commander' !"
+
+#. module: joint_buying_product
+#: code:addons/joint_buying_product/models/joint_buying_purchase_order.py:259
+#, python-format
+msgid "You cannot confirm an order for which you have not reached the minimum purchase amount."
+msgstr "Vous ne pouvez pas confirmer une commande pour laquelle le franco de port n'est pas atteint."
+
+#. module: joint_buying_product
+#: code:addons/joint_buying_product/models/joint_buying_purchase_order.py:266
+#, python-format
+msgid "You cannot confirm an order for which you have not reached the minimum weight."
+msgstr "Vous ne pouvez pas confirmer une commande pour laquelle le franco de port n'est pas atteint."
 
 #. module: joint_buying_product
 #: model_terms:ir.ui.view,arch_db:joint_buying_product.view_joint_buying_purchase_order_form
 #: model_terms:ir.ui.view,arch_db:joint_buying_product.view_joint_buying_purchase_order_grouped_form
 msgid "You have not reached the minimum Weight."
-msgstr "Vous n'avez pas atteint le poid minimum."
+msgstr "Vous n'avez pas atteint le poids minimum."
 
 #. module: joint_buying_product
 #: model_terms:ir.ui.view,arch_db:joint_buying_product.view_joint_buying_purchase_order_form
@@ -1972,16 +2136,3 @@ msgstr ""
 #: model_terms:ir.ui.view,arch_db:joint_buying_product.view_joint_buying_wizard_update_order_grouped_form
 msgid "or"
 msgstr "ou"
-
-#. module: joint_buying_product
-#: code:addons/joint_buying_product/models/joint_buying_purchase_order.py:230
-#, python-format
-msgid "you cannot confirm an order for which you have not reached the minimum purchase amount."
-msgstr "Vous ne pouvez pas confirmer une commande si vous n'avez pas atteint le montant minimum."
-
-#. module: joint_buying_product
-#: code:addons/joint_buying_product/models/joint_buying_purchase_order.py:237
-#, python-format
-msgid "you cannot confirm an order for which you have not reached the minimum weight."
-msgstr "Vous ne pouvez pas confirmer une commande si vous n'avez pas atteint le poid minimum."
-
