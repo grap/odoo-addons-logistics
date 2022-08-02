@@ -85,78 +85,69 @@
                     Hello ${object.pivot_company_id.name}
                     <br/><br/>
 
-
                     The Grouped Order <strong>${object.name}</strong> for the supplier ${object.supplier_id.name} has just ended.
-                    <ul>
-                        <li>Total Amount Untaxed : <strong>${round(object.amount_untaxed, 2)} €</strong></li>
-                        <li>Total Brut Weight : <strong>${round(object.total_weight, 2)} kg</strong></li>
-                    </ul>
                     <br/><br/>
 
-                    <strong>Summary of the orders</strong>
-                    <br/><br/>
-                    <b>Confirmed orders :</b>
-                    <br/><br/>
-                    <ul>
-                      % for order in object.order_ids:
-                        % if order.purchase_state == "done":
-                            <li>${order.name} : total amount ${round(order.amount_untaxed, 2)} €</li>
+                    % if object.purchase_ok == "no_minimum_amount":
+                        <b>The minimum amount (${object.minimum_amount} €) is not reached.</b> Please check the orders.<br/>
+
+                    % elif object.purchase_ok == "no_minimum_weight":
+                        <b>The minimum weight (${object.minimum_weight} kg) is not reached.</b> Please check the orders.<br/>
+
+                    % else:
+                        <b>Here is a summary :</b>
+                        <ul>
+                            <li>Total Amount Untaxed : <strong>${round(object.amount_untaxed, 2)} €</strong></li>
+                            <li>Total Brut Weight : <strong>${round(object.total_weight, 2)} kg</strong></li>
+                        </ul>
+                        <br/>
+
+                        % if "done" in object.order_ids.mapped("purchase_state"):
+                          <b>Confirmed orders :</b>
+                          <br/>
+                          <ul>
+                            % for order in object.order_ids:
+                              % if order.purchase_state == "done":
+                                  <li>${order.name} : total amount ${round(order.amount_untaxed, 2)} €</li>
+                              % endif
+                            % endfor
+                          </ul>
+                          <br/>
                         % endif
-                      % endfor
-                    </ul>
-                    <br/>
 
-                    <b>Skipped orders :</b>
-                    <br/><br/>
-                    <ul>
-                      % for order in object.order_ids:
-                        % if order.purchase_state == "skipped":
-                            <li>${order.name}</li>
+                        % if "draft" in object.order_ids.mapped("purchase_state"):
+                          <b>Draft orders :</b>
+                          <br/>
+                          Some orders couldn't be processed because the minimum amount or weight wasn't reached.<br/>
+                          Please edit them in order to either complete and confirm them, or skip them.
+                          <br/>
+                          <ul>
+                            % for order in object.order_ids:
+                              % if order.purchase_state == "draft":
+
+                                % if order.purchase_ok == "no_minimum_amount":
+                                  <li><a href="${order.get_url_purchase_order()}">${order.name}</a> total amount ${round(order.amount_untaxed, 2)} €, unit minimum amount not reached (${object.minimum_unit_amount} €) </li>
+                                % endif
+
+                                % if order.purchase_ok == "no_minimum_weight":
+                                  <li><a href="${order.get_url_purchase_order()}">${order.name}</a> : total weight ${round(order.total_weight, 2)} kg, unit minimum weight not reached (${object.minimum_unit_weight} kg) </li>
+                                % endif
+
+                              % endif
+                            % endfor
+                          </ul>
                         % endif
-                      % endfor
-                    </ul>
-                    <br/>
 
-                    <b>Draft orders :</b>
-                    <br/>
-                    Some orders couldn't be processed because the minimum amount or weight wasn't reached.<br/>
-                    Please edit them in order to either complete and confirm them, or skip them.
-                    <br/><br/>
-                    <ul>
-                      % for order in object.order_ids:
-                        % if order.purchase_state == "draft":
-
-                          % if order.purchase_ok == "no_minimum_amount":
-                            % if object.minimum_amount:
-                              <li>${order.name} : total amount ${round(order.amount_untaxed, 2)} €, grouped minimum amount not reached (${object.minimum_amount} €) </li>
-                            % elif order.minimum_unit_amount:
-                              <li>${order.name} : total amount ${round(order.amount_untaxed, 2)} €, unit minimum amount not reached (${object.minimum_unit_amount} €) </li>
-                            % endif
-                          % endif
-
-                          % if order.purchase_ok == "no_minimum_weight":
-                            % if object.minimum_weight:
-                              <li>${order.name} : total weight ${round(order.total_weight, 2)} €, grouped minimum weight not reached (${object.minimum_weight} kg) </li>
-                            % elif order.minimum_unit_weight:
-                              <li>${order.name} : total weight ${round(order.total_weight, 2)} €, unit minimum weight not reached (${object.minimum_unit_weight} kg) </li>
-                            % endif
-                          % endif
-
-                        % endif
-                      % endfor
-                    </ul>
-
-                    <br/>
-
-                    Please,
-                    <ul>
-                        <li>Check the content of the orders</li>
-                        <li>Check that there are no errors or omissions</li>
-                        <li>Send the order to the supplier</li>
-                    </ul>
+                      Please,
+                      <ul>
+                          <li>Check the content of the orders</li>
+                          <li>Check that there are no errors or omissions</li>
+                          <li>Send the order to the supplier</li>
+                      </ul>
+                    % endif
                     <br/>
                     You can see your grouped order by clicking on <a href="${object.get_url()}">this link.</a>
-                    <br/>
+                    <br/><br/>
                     Have a nice day.
                 </p>
             </div>
