@@ -299,3 +299,25 @@ class JointBuyingPurchaseOrder(models.Model):
                         order.action_confirm_purchase()
                     except ValidationError:
                         pass
+
+    @api.multi
+    def get_url_purchase_order(self):
+        self.ensure_one()
+        base_url = self.env["ir.config_parameter"].sudo().get_param("web.base.url")
+        action_id = self.env.ref(
+            "joint_buying_product.action_joint_buying_purchase_order_to_place_my"
+        ).id
+        menu_id = self.env.ref("joint_buying_base.menu_root").id
+        return (
+            "{base_url}/web?"
+            "#id={id}"
+            "&action={action_id}"
+            "&model=joint.buying.purchase.order"
+            "&view_type=form"
+            "&menu_id={menu_id}".format(
+                base_url=base_url,
+                id=self.id,
+                action_id=action_id,
+                menu_id=menu_id,
+            )
+        )
