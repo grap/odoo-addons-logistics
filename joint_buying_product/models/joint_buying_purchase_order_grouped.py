@@ -169,12 +169,12 @@ class JointBuyingPurchaseOrderGrouped(models.Model):
             elif grouped_order.amount_untaxed == 0.0:
                 grouped_order.purchase_ok = "null_amount"
             elif (
-                grouped_order.minimum_unit_amount
+                grouped_order.minimum_amount
                 and grouped_order.minimum_amount > grouped_order.amount_untaxed
             ):
                 grouped_order.purchase_ok = "no_minimum_amount"
             elif (
-                grouped_order.minimum_unit_weight
+                grouped_order.minimum_weight
                 and grouped_order.minimum_weight > grouped_order.total_weight
             ):
                 grouped_order.purchase_ok = "no_minimum_weight"
