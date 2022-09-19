@@ -169,12 +169,12 @@ class JointBuyingPurchaseOrderGrouped(models.Model):
             elif grouped_order.amount_untaxed == 0.0:
                 grouped_order.purchase_ok = "null_amount"
             elif (
-                grouped_order.minimum_unit_amount
+                grouped_order.minimum_amount
                 and grouped_order.minimum_amount > grouped_order.amount_untaxed
             ):
                 grouped_order.purchase_ok = "no_minimum_amount"
             elif (
-                grouped_order.minimum_unit_weight
+                grouped_order.minimum_weight
                 and grouped_order.minimum_weight > grouped_order.total_weight
             ):
                 grouped_order.purchase_ok = "no_minimum_weight"
@@ -382,6 +382,7 @@ class JointBuyingPurchaseOrderGrouped(models.Model):
                 )
                 # we send mail, when the grouped order is closed
                 if correct_state == "closed":
+                    grouped_order.mapped("order_ids").correct_purchase_state()
                     grouped_order.send_mail_to_pivot_company()
                 # we send mail, when the grouped order is openened. (and was not before)
                 if correct_state.startswith(
@@ -575,7 +576,7 @@ class JointBuyingPurchaseOrderGrouped(models.Model):
 
     def see_current_order(self):
         result = self.env.ref(
-            "joint_buying_product.action_joint_buying_purchase_order_my"
+            "joint_buying_product.action_joint_buying_purchase_order_to_place_my"
         ).read()[0]
         form_view = self.env.ref(
             "joint_buying_product.view_joint_buying_purchase_order_form"

@@ -209,7 +209,7 @@ class TestModule(TransactionCase):
         # Create an order for the main_company
         res = order_grouped.create_current_order()
         self.assertEqual(order_grouped.order_qty, 4)
-        order = self.Order.browse(res["res_id"])
+        order_main = self.Order.browse(res["res_id"])
 
         # Create an order for the current company should automatically subscribe
         # to the supplier
@@ -222,7 +222,7 @@ class TestModule(TransactionCase):
         purchasable_products = self.salaison_devidal.joint_buying_product_ids.filtered(
             lambda x: x.purchase_ok
         )
-        self.assertEqual(order.line_qty, len(purchasable_products))
+        self.assertEqual(order_main.line_qty, len(purchasable_products))
 
         # ## Check lines
 
@@ -230,9 +230,9 @@ class TestModule(TransactionCase):
         # We want to buy 12 Rillette
         # Price : 8€ / Unit
         # Weight : 0.5 kg / the unit
-        line = self.OrderLine.search(
+        line_main_rillette = self.OrderLine.search(
             [
-                ("order_id", "=", order.id),
+                ("order_id", "=", order_main.id),
                 (
                     "product_id",
                     "=",
@@ -241,17 +241,17 @@ class TestModule(TransactionCase):
             ]
         )
 
-        line.qty = 12.0
-        self.assertEqual(line.amount_untaxed, 12 * 8)
-        self.assertEqual(line.total_weight, 12 * 0.5)
+        line_main_rillette.qty = 12.0
+        self.assertEqual(line_main_rillette.amount_untaxed, 12 * 8)
+        self.assertEqual(line_main_rillette.total_weight, 12 * 0.5)
 
         # Case 2) Checking when the uom_id is the product.uom_po_id
         # We want to buy 3 Olive Oil bag of 5L
         # Price : 8€ / Liter
         # Weight : 1L of oil weight 0.950 kg
-        line = self.OrderLine.search(
+        line_main_olive = self.OrderLine.search(
             [
-                ("order_id", "=", order.id),
+                ("order_id", "=", order_main.id),
                 (
                     "product_id",
                     "=",
@@ -260,16 +260,16 @@ class TestModule(TransactionCase):
             ]
         )
 
-        line.qty = 15.0
-        self.assertEqual(line.amount_untaxed, 3 * 5 * 8)
-        self.assertEqual(line.total_weight, 3 * 5 * 0.95)
+        line_main_olive.qty = 15.0
+        self.assertEqual(line_main_olive.amount_untaxed, 3 * 5 * 8)
+        self.assertEqual(line_main_olive.total_weight, 3 * 5 * 0.95)
 
         # Case 3) Checking when the Purchase unit is the product.uom_package_id
         # We want to buy 5 Caillette of 0.300 kg / piece
         # Price is 13.00€ / kg
-        line = self.OrderLine.search(
+        line_main_caillette = self.OrderLine.search(
             [
-                ("order_id", "=", order.id),
+                ("order_id", "=", order_main.id),
                 (
                     "product_id",
                     "=",
@@ -278,39 +278,92 @@ class TestModule(TransactionCase):
             ]
         )
 
-        line.qty = 5.0
-        self.assertEqual(line.amount_untaxed, 5 * 0.3 * 13.0)
-        self.assertEqual(line.total_weight, 5 * 0.3)
+        line_main_caillette.qty = 5.0
+        self.assertEqual(line_main_caillette.amount_untaxed, 5 * 0.3 * 13.0)
+        self.assertEqual(line_main_caillette.total_weight, 5 * 0.3)
+
+        # ## Check purchase state
+        self.assertEqual(order_main.purchase_state, "draft")
+
+        # Set minimum weight and amount for grouped order
+        order_grouped.minimum_unit_amount = 150
+        order_grouped.minimum_unit_weight = 14
+
+        # Case 1) company_ELD orders 24 units of rillette
+        # Minimum amount is reached (24*8 > 150)
+        # but not minimum weight (24*0.5 < 14)
+        order_ELD = order_grouped.order_ids.filtered(
+            lambda x: x.customer_id.joint_buying_company_id.code == "ELD"
+        )
+        line_ELD_rillette = self.OrderLine.search(
+            [
+                ("order_id", "=", order_ELD.id),
+                (
+                    "product_id",
+                    "=",
+                    self.env.ref("joint_buying_product.product_devidal_rillette").id,
+                ),
+            ]
+        )
+
+        line_ELD_rillette.qty = 24.0
+        self.assertEqual(order_ELD.purchase_ok, "no_minimum_weight")
+
+        # Case 2) company_CHE orders 15 liters of olive oil
+        # Minimum weight is reached (15*0.950 > 14)
+        # but not minimum amount (15*8 < 150)
+        order_CHE = order_grouped.order_ids.filtered(
+            lambda x: x.customer_id.joint_buying_company_id.code == "CHE"
+        )
+        line_CHE_olive = self.OrderLine.search(
+            [
+                ("order_id", "=", order_CHE.id),
+                (
+                    "product_id",
+                    "=",
+                    self.env.ref("joint_buying_product.product_devidal_huile_olive").id,
+                ),
+            ]
+        )
+
+        line_CHE_olive.qty = 15.0
+        self.assertEqual(order_CHE.purchase_ok, "no_minimum_amount")
+
+        # Case 3) company_3PP orders nothing
+        order_3PP = order_grouped.order_ids.filtered(
+            lambda x: x.customer_id.joint_buying_company_id.code == "3PP"
+        )
+        self.assertEqual(order_3PP.purchase_ok, "null_amount")
 
         # ## Check state
         # Check state "futur" (+1d / +7d / +14d)
-        self.assertEqual(order.state, "futur")
+        self.assertEqual(order_main.state, "futur")
 
         # Check state "in_progress" (-1d / +7d / +14d)
         order_grouped.start_date = fields.datetime.now() + timedelta(days=-1)
-        self.assertEqual(order.state, "in_progress")
+        self.assertEqual(order_main.state, "in_progress")
 
         # Check state "in_progress_near" (-1d / +3d-- / +14d)
         order_grouped.end_date = fields.datetime.now() + timedelta(
             days=self.end_date_near_day, seconds=-1
         )
-        self.assertEqual(order.state, "in_progress_near")
+        self.assertEqual(order_main.state, "in_progress_near")
 
         # Check state "in_progress_imminent" (-1d / +1d-- / +14d)
         order_grouped.end_date = fields.datetime.now() + timedelta(
             days=self.end_date_imminent_day, seconds=-1
         )
-        self.assertEqual(order.state, "in_progress_imminent")
+        self.assertEqual(order_main.state, "in_progress_imminent")
 
         # Check state "closed" (-8d / -5d / +14d)
         order_grouped.start_date = fields.datetime.now() + timedelta(days=-8)
         order_grouped.end_date = fields.datetime.now() + timedelta(days=-5)
-        self.assertEqual(order.state, "closed")
+        self.assertEqual(order_main.state, "closed")
 
         # Check state "deposited" (-8d / -5d / -2d)
         order_grouped.deposit_date = fields.datetime.now() + timedelta(days=-2)
 
-        # Rest to emminent (-8d / +1s / +15d)
+        # Reset to imminent (-8d / +1s / +15d)
         order_grouped.write(
             {
                 "start_date": fields.datetime.now() + timedelta(days=-8),
@@ -318,12 +371,21 @@ class TestModule(TransactionCase):
                 "deposit_date": fields.datetime.now() + timedelta(days=+15),
             }
         )
-        self.assertEqual(order.state, "in_progress_imminent")
+        self.assertEqual(order_main.state, "in_progress_imminent")
 
         # Check Cron (-8d / -0.1s / +15d)
         time.sleep(1.1)
         self.OrderGrouped.cron_check_state()
-        self.assertEqual(order.state, "closed", "Cron doesn't work.")
+        self.assertEqual(order_main.state, "closed", "Cron doesn't work.")
+
+        # Cron also corrects purchase state after grouped order is closed
+        #     if orders are still as draft
+        # They become done if purchase_ok = ok, skipped if null amount,
+        # and stay draft if minimum amount or weight isn't reached
+        self.assertEqual(order_main.purchase_state, "done")
+        self.assertEqual(order_ELD.purchase_state, "draft")
+        self.assertEqual(order_CHE.purchase_state, "draft")
+        self.assertEqual(order_3PP.purchase_state, "skipped")
 
         # Generate report to make sure the syntax is correct
         self.grouped_order_report.render_qweb_html(order_grouped.ids)
