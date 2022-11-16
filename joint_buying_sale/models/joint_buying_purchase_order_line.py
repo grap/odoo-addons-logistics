@@ -12,7 +12,7 @@ class JointBuyingPurchaseOrderLine(models.Model):
         self.ensure_one()
         return {
             "order_id": sale_order.id,
-            "product_id": self.product_id.get_joint_buying_local_partner_id().id,
+            "product_id": self.product_id.get_joint_buying_local_product_id().id,
             "product_uom_qty": self.qty,
             "product_uom": self.uom_id.id,
         }
