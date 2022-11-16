@@ -6,6 +6,23 @@
 -->
 <odoo>
 
+    <record id="supplier_demo_joint_buying" model="res.partner">
+        <field name="name">Joint Buying Supplier for Your Company / Demo User</field>
+        <field name="street">street</field>
+        <field name="street2">street 2</field>
+        <field name="city">City</field>
+        <field name="zip">01000</field>
+        <field name="country_id" ref="base.fr"/>
+        <field name="phone">01.01.01.01.01</field>
+        <field name="email">email@mywebsite.com</field>
+        <field name="website">https://mywebsite.com</field>
+        <field name="is_joint_buying" eval="True"/>
+        <field name="customer" eval="False"/>
+        <field name="supplier" eval="True"/>
+        <field name="company_id" eval="False"/>
+        <field name="joint_buying_pivot_company_id" ref="base.main_company"/>
+    </record>
+
     <record id="supplier_fumet_dombes" model="res.partner">
         <field name="name">le Fumet des Dombes</field>
         <field name="street">Z.I. Sure</field>
