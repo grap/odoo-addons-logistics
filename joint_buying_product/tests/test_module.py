@@ -440,6 +440,10 @@ class TestModule(TransactionCase):
             "next_start_date": now + timedelta(days=-1),
             "next_end_date": now + timedelta(days=+8),
             "next_deposit_date": now + timedelta(days=+12),
+            "minimum_amount": 100,
+            "minimum_weight": 10,
+            "minimum_unit_amount": 20,
+            "minimum_unit_weight": 2,
         }
         self.supplier_oscar_morell.write(
             {
@@ -459,9 +463,16 @@ class TestModule(TransactionCase):
         self.assertEqual(
             len(order_grouped), 1, "Creation of Grouped Order by cron failed"
         )
+        # Check dates
         self.assertEqual(order_grouped.start_date, now + timedelta(days=-1))
         self.assertEqual(order_grouped.end_date, now + timedelta(days=+8))
         self.assertEqual(order_grouped.deposit_date, now + timedelta(days=+12))
+
+        # Check Minimum Values
+        self.assertEqual(order_grouped.minimum_amount, 100)
+        self.assertEqual(order_grouped.minimum_weight, 10)
+        self.assertEqual(order_grouped.minimum_unit_amount, 20)
+        self.assertEqual(order_grouped.minimum_unit_weight, 2)
 
         # Check that supplier dateds has been correctly incremented
         self.assertEqual(
