@@ -317,15 +317,7 @@ class JointBuyingPurchaseOrderGrouped(models.Model):
             wizard = (
                 self.env["joint.buying.wizard.create.order"]
                 .with_context(active_id=frequency.partner_id.id)
-                .create(
-                    {
-                        "category_ids": [(6, 0, frequency.category_ids.ids)],
-                        "start_date": frequency.next_start_date,
-                        "end_date": frequency.next_end_date,
-                        "deposit_date": frequency.next_deposit_date,
-                        "deposit_partner_id": frequency.deposit_partner_id.id,
-                    }
-                )
+                .create(frequency._prepare_wizard_values())
             )
             wizard.create_order_grouped()
 
