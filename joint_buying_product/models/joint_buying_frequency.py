@@ -68,3 +68,17 @@ class JointBuyingFrequency(models.Model):
             raise ValidationError(_("The start date must be less than the end date."))
         elif self.next_end_date >= datetime.combine(self.next_deposit_date, time(0, 0)):
             raise ValidationError(_("The end date must be less than the deposit date."))
+
+    def _prepare_wizard_values(self):
+        self.ensure_one()
+        return {
+            "category_ids": [(6, 0, self.category_ids.ids)],
+            "start_date": self.next_start_date,
+            "end_date": self.next_end_date,
+            "deposit_date": self.next_deposit_date,
+            "deposit_partner_id": self.deposit_partner_id.id,
+            "minimum_amount": self.minimum_amount,
+            "minimum_weight": self.minimum_weight,
+            "minimum_unit_amount": self.minimum_unit_amount,
+            "minimum_unit_weight": self.minimum_unit_weight,
+        }
