@@ -1,5 +1,5 @@
 # Do NOT update manually; changes here will be overwritten by Copier
-_commit: 7de0cb5
+_commit: 5a39237
 _src_path: https://github.com/grap/oca-addons-repo-template-new.git
 ci: GitHub
 dependency_installation_mode: PIP
@@ -16,33 +16,28 @@ odoo_version: 16.0
 org_name: GRAP
 org_slug: grap
 rebel_module_groups: []
-repo_description: "
+repo_description: '
 
-Authors
--------
+    ## Authors
 
-* La Jardinière
+    * La Jardinière
 
-* GRAP (https://www.grap.coop/)
+    * GRAP (https://www.grap.coop/)
 
-Contributors
-------------
+    ## Contributors
 
-* Sylvain LE GAL <https://twitter.com/legalsylvain>
+    * Sylvain LE GAL <https://twitter.com/legalsylvain>
 
 
-Funders
--------
+    ## Funders
 
-The development of this module has been financially supported by:
+    The development of this module has been financially supported by:
 
-* La Région Auvergne Rhône-Alpes
+    * La Région Auvergne Rhône-Alpes
 
-![La Région Auvergne Rhône-Alpes](./static/logo_region_auvergne_rhone_alpes.png)
+    ![La Région Auvergne Rhône-Alpes](./static/logo_region_auvergne_rhone_alpes.png)
 
-"
-
-
+    '
 repo_name: Main repository for GRAP Logistics modules
 repo_slug: odoo-addons-logistics
 repo_website: https://github.com/grap/odoo-addons-logistics
