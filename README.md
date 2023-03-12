@@ -1,44 +1,76 @@
-[![Build Status](https://travis-ci.org/grap/odoo-addons-logistics.svg?branch=12.0)](https://travis-ci.org/grap/odoo-addons-logistics?branch=12.0)
-[![codecov](https://codecov.io/gh/grap/odoo-addons-logistics/branch/12.0/graph/badge.svg)](https://codecov.io/gh/grap/odoo-addons-logistics)
-[![Coverage Status](https://coveralls.io/repos/github/grap/odoo-addons-logistics/badge.svg?branch=12.0)](https://coveralls.io/github/grap/odoo-addons-logistics?branch=12.0)
 
-# odoo-addons-logistics
-Main repository for LOG modules
+<!-- /!\ Non OCA Context : Set here the badge of your runbot / runboat instance. -->
+[![Pre-commit Status](https://github.com/grap/odoo-addons-logistics/actions/workflows/pre-commit.yml/badge.svg?branch=12.0)](https://github.com/grap/odoo-addons-logistics/actions/workflows/pre-commit.yml?query=branch%3A12.0)
+[![Build Status](https://github.com/grap/odoo-addons-logistics/actions/workflows/test.yml/badge.svg?branch=12.0)](https://github.com/grap/odoo-addons-logistics/actions/workflows/test.yml?query=branch%3A12.0)
+[![codecov](https://codecov.io/gh/grap/odoo-addons-logistics/branch/12.0/graph/badge.svg)](https://codecov.io/gh/grap/odoo-addons-logistics)
+<!-- /!\ Non OCA Context : Set here the badge of your translation instance. -->
+
+<!-- /!\ do not modify above this line -->
+
+# Main repository for GRAP Logistics modules
+
+
+## Authors
+* La Jardinière
+* GRAP (https://www.grap.coop/)
+## Contributors
+* Sylvain LE GAL <https://twitter.com/legalsylvain>
+
+## Funders
+The development of this module has been financially supported by:
+* La Région Auvergne Rhône-Alpes
+![La Région Auvergne Rhône-Alpes](./static/logo_region_auvergne_rhone_alpes.png)
+
+
+<!-- /!\ do not modify below this line -->
+
+<!-- prettier-ignore-start -->
 
 [//]: # (addons)
 
-Available addons
-----------------
-addon | version | maintainers | summary
---- | --- | --- | ---
-[joint_buying_account](joint_buying_account/) | 12.0.1.0.2 |  | Joint Buying - Account
-[joint_buying_base](joint_buying_base/) | 12.0.3.0.5 |  | Joint Buying - Base
-[joint_buying_product](joint_buying_product/) | 12.0.2.0.8 |  | Joint Buying - Products
-[joint_buying_product_food](joint_buying_product_food/) | 12.0.1.1.3 |  | Joint Buying - Products Food
-[joint_buying_sale](joint_buying_sale/) | 12.0.1.1.5 |  | Joint Buying - Sale
+This part will be replaced when running the oca-gen-addons-table script from OCA/maintainer-tools.
 
 [//]: # (end addons)
 
+<!-- prettier-ignore-end -->
 
-Authors
--------
+## Licenses
 
-* La Jardinière
-* GRAP (https://www.grap.coop/)
-* Hashbang (https://hashbang.coop/)
+This repository is licensed under [AGPL-3.0](LICENSE).
 
-Contributors
-------------
+However, each module can have a totally different license, as long as they adhere to GRAP
+policy. Consult each module's `__manifest__.py` file, which contains a `license` key
+that explains its license.
 
-* Sylvain LE GAL <https://twitter.com/legalsylvain>
-* Lucien DELEU (https://github.com/LucienD)
+----
 
+## About GRAP
 
-Funders
--------
+<p align="center">
+   <img src="http://www.grap.coop/wp-content/uploads/2016/11/GRAP.png" width="200"/>
+</p>
 
-The development of this module has been financially supported by:
+GRAP, [Groupement Régional Alimentaire de Proximité](http://www.grap.coop) is a
+french company which brings together activities that sale food products in the
+region Rhône Alpes. We promote organic and local food, social and solidarity
+economy and cooperation.
 
-* La Région Auvergne Rhône-Alpes
+The GRAP IT Team promote Free Software and developp all the Odoo modules under
+AGPL-3 Licence.
 
-![La Région Auvergne Rhône-Alpes](./static/logo_region_auvergne_rhone_alpes.png)
+You can find all these modules here:
+
+* on the [OCA Apps Store](https://odoo-community.org/shop?&search=GRAP)
+* on the [Odoo Apps Store](https://www.odoo.com/apps/modules/browse?author=GRAP).
+* on [Odoo Code Search](https://odoo-code-search.com/ocs/search?q=author%3AOCA+author%3AGRAP)
+
+You can also take a look on the following repositories:
+
+* [grap-odoo-incubator](https://github.com/grap/grap-odoo-incubator)
+* [grap-odoo-business](https://github.com/grap/grap-odoo-business)
+* [grap-odoo-business-supplier-invoice](https://github.com/grap/grap-odoo-business-supplier-invoice)
+* [odoo-addons-logistics](https://github.com/grap/odoo-addons-logistics)
+* [odoo-addons-cae](https://github.com/grap/odoo-addons-cae)
+* [odoo-addons-intercompany-trade](https://github.com/grap/odoo-addons-intercompany-trade)
+* [odoo-addons-multi-company](https://github.com/grap/odoo-addons-multi-company)
+* [odoo-addons-company-wizard](https://github.com/grap/odoo-addons-company-wizard)
