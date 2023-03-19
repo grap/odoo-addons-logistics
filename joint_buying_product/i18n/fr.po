@@ -1967,6 +1967,7 @@ msgid "Uom"
 msgstr "UdM"
 
 #. module: joint_buying_product
+#: model:ir.actions.server,name:joint_buying_product.actions_server_update_joint_buying_product
 #: model_terms:ir.ui.view,arch_db:joint_buying_product.view_product_product_form_classic
 msgid "Update Joint Buying Product"
 msgstr "Mettre à jour le produit de commande groupée"
