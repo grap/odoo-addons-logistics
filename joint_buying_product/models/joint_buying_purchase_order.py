@@ -289,6 +289,9 @@ class JointBuyingPurchaseOrder(models.Model):
         action.update({"res_id": self.id, "views": [(form.id, "form")]})
         return action
 
+    def button_reopen_order(self):
+        self.write({"purchase_state": "draft"})
+
     def correct_purchase_state(self):
         for order in self.filtered(lambda x: x.purchase_state == "draft"):
             if order.grouped_order_id.state in ["closed", "deposited"]:

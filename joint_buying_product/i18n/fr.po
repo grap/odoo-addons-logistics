@@ -1581,6 +1581,11 @@ msgstr "Quantité (exprimée dans l'unité principale)"
 
 #. module: joint_buying_product
 #: model_terms:ir.ui.view,arch_db:joint_buying_product.view_joint_buying_purchase_order_grouped_form
+msgid "Re-Open"
+msgstr "Réouvrir"
+
+#. module: joint_buying_product
+#: model_terms:ir.ui.view,arch_db:joint_buying_product.view_joint_buying_purchase_order_grouped_form
 msgid "Resend  to Supplier by Email"
 msgstr "Réenvoyer au fournisseur par email"
 
