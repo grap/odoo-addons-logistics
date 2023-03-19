@@ -14,9 +14,10 @@ License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl.html).
 
                 <button name="%(joint_buying_sale.action_wizard_create_sale_order)d" string="Generate Sale Orders"
                     type="action" class="btn-primary"
-                    attrs="{'invisible': ['|',
+                    attrs="{'invisible': ['|', '|',
                         ('state', 'not in', ['closed', 'deposited']),
                         ('is_mine', '=', False),
+                        ('supplier_company_id', '=', False),
                     ]}"
                     />
             </button>
