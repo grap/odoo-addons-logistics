@@ -51,6 +51,13 @@ class JointBuyingPurchaseOrderGrouped(models.Model):
         context=_JOINT_BUYING_PARTNER_CONTEXT,
     )
 
+    supplier_company_id = fields.Many2one(
+        comodel_name="res.company",
+        string="Related company of the supplier",
+        help="Odoo Company related to the supplier (if any)",
+        related="supplier_id.joint_buying_company_id",
+    )
+
     supplier_comment = fields.Text(related="supplier_id.comment")
 
     state = fields.Selection(

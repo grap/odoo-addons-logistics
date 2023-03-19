@@ -154,6 +154,7 @@ License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl.html).
                     <group>
                         <group>
                             <field name="supplier_id"/>
+                            <field name="supplier_company_id" invisible="1"/>
                             <field name="pivot_company_id"/>
                             <field name="deposit_partner_id"/>
                             <field name="category_ids" widget="many2many_tags" attrs="{'invisible': [('category_ids', '=', False)]}"/>
