@@ -786,6 +786,16 @@ msgid "In Progress (Near Closing Date)"
 msgstr "En cours (clôture proche)"
 
 #. module: joint_buying_product
+#: model:ir.model.fields,help:joint_buying_product.field_joint_buying_wizard_update_order_grouped__show_all_orders
+msgid "Include empty orders."
+msgstr "Inclure les ventes vides."
+
+#. module: joint_buying_product
+#: model:ir.model.fields,help:joint_buying_product.field_joint_buying_wizard_update_order_grouped__show_all_products
+msgid "Include products that have not been ordered."
+msgstr "Inclure les articles qui n'ont pas été commandés."
+
+#. module: joint_buying_product
 #: code:addons/joint_buying_product/models/joint_buying_purchase_order_grouped.py:144
 #, python-format
 msgid "Incorrect setting:\n"
@@ -1669,6 +1679,16 @@ msgstr "Envoyer au fournisseur par email"
 #: model:ir.model.fields,field_description:joint_buying_product.field_joint_buying_purchase_order_line__sequence
 msgid "Sequence"
 msgstr "Séquence"
+
+#. module: joint_buying_product
+#: model:ir.model.fields,field_description:joint_buying_product.field_joint_buying_wizard_update_order_grouped__show_all_orders
+msgid "Show All Orders"
+msgstr "Afficher toutes les commandes"
+
+#. module: joint_buying_product
+#: model:ir.model.fields,field_description:joint_buying_product.field_joint_buying_wizard_update_order_grouped__show_all_products
+msgid "Show All Products"
+msgstr "Afficher tous les articles"
 
 #. module: joint_buying_product
 #: model_terms:ir.ui.view,arch_db:joint_buying_product.view_joint_buying_purchase_order_to_place_my_tree
