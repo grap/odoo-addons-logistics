@@ -121,6 +121,15 @@ License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl.html).
         </field>
     </record>
 
+    <record id="actions_server_update_joint_buying_product" model="ir.actions.server">
+        <field name="name">Update Joint Buying Product</field>
+        <field name="type">ir.actions.server</field>
+        <field name="state">code</field>
+        <field name="model_id" ref="product.model_product_product"/>
+        <field name="binding_model_id" ref="product.model_product_product"/>
+        <field name="code">records.update_joint_buying_product()</field>
+    </record>
+
     <record id="action_res_partner_2_product_product" model="ir.actions.act_window">
         <field name="name">Products</field>
         <field name="type">ir.actions.act_window</field>
