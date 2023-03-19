@@ -91,6 +91,21 @@ class JointBuyingPurchaseOrder(models.Model):
         selection=_PURCHASE_STATE, required=True, default="draft", track_visibility=True
     )
 
+    pivot_company_id = fields.Many2one(
+        comodel_name="res.company",
+        string="Pivot Company",
+        related="grouped_order_id.pivot_company_id",
+        store=True,
+    )
+
+    deposit_partner_id = fields.Many2one(
+        comodel_name="res.partner",
+        string="Deposit Partner",
+        related="grouped_order_id.deposit_partner_id",
+        store=True,
+        context=_JOINT_BUYING_PARTNER_CONTEXT,
+    )
+
     minimum_unit_amount = fields.Float(
         string="Minimum amount",
         related="grouped_order_id.minimum_unit_amount",

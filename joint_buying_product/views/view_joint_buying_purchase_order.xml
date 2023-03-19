@@ -11,12 +11,17 @@ License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl.html).
         <field name="arch" type="xml">
             <search>
                 <field name="supplier_id"/>
+                <field name="pivot_company_id"/>
+                <field name="deposit_partner_id"/>
                 <field name="grouped_order_id"/>
                 <field name="customer_id"/>
                 <field name="purchase_state"/>
                 <field name="state"/>
                 <filter name="to_enter_by_customer" string="To Enter"
                     domain="[('state', 'in', ['in_progress', 'in_progress_near', 'in_progress_imminent']), ('purchase_state', '=', 'draft')]"/>
+                <filter string="Supplier" context="{'group_by': 'supplier_id'}" name="group_by_supplier_id"/>
+                <filter string="Pivot Company" context="{'group_by': 'pivot_company_id'}" name="group_by_pivot_company_id"/>
+                <filter string="Deposit Partner" context="{'group_by': 'deposit_partner_id'}" name="group_by_deposit_partner_id"/>
             </search>
         </field>
     </record>
