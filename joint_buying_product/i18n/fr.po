@@ -1856,6 +1856,8 @@ msgstr "Total HT"
 #: model:ir.model.fields,field_description:joint_buying_product.field_joint_buying_purchase_order__total_weight
 #: model:ir.model.fields,field_description:joint_buying_product.field_joint_buying_purchase_order_grouped__total_weight
 #: model:ir.model.fields,field_description:joint_buying_product.field_joint_buying_purchase_order_line__total_weight
+#: model_terms:ir.ui.view,arch_db:joint_buying_product.view_joint_buying_purchase_order_grouped_tree
+#: model_terms:ir.ui.view,arch_db:joint_buying_product.view_joint_buying_purchase_order_tree
 msgid "Total Brut Weight"
 msgstr "Total poids brut"
 
