@@ -311,6 +311,12 @@ msgid "A frequency is defined for this supplier. So, Odoo will automatically cre
 msgstr "Une fréquence est définie pour ce fournisseur. Ainsi, odoo va créer automatiquement des commandes groupées quand la date dé début sera atteinte. Etes-vous sur de vouloir créer manuellement une commande groupée ? Cela risque de faire doublon."
 
 #. module: joint_buying_product
+#: code:addons/joint_buying_product/wizards/mail_compose_message_purchase_order_grouped.py:70
+#, python-format
+msgid "About the Grouped Order %s (Supplier %s)"
+msgstr "Concernant la commande groupée %s (Frs : %s)"
+
+#. module: joint_buying_product
 #: model:ir.model.fields,field_description:joint_buying_product.field_joint_buying_category__message_needaction
 #: model:ir.model.fields,field_description:joint_buying_product.field_joint_buying_purchase_order__message_needaction
 #: model:ir.model.fields,field_description:joint_buying_product.field_joint_buying_purchase_order_grouped__message_needaction
@@ -417,6 +423,11 @@ msgstr "Catégories"
 #: model:ir.model.fields,help:joint_buying_product.field_product_product__joint_buying_is_new
 msgid "Check this box if the product is new. This box will be automatically unchecked by cron task after a given number of days."
 msgstr "Cocher cette case si l'article est nouveau. Cette case sera automatiquement décochée après un nombre donné de jour."
+
+#. module: joint_buying_product
+#: model:ir.model.fields,help:joint_buying_product.field_mail_compose_message_purchase_order_grouped__include_empty_orders
+msgid "Check this box if you want to send an email to customers that doesn't ordered any products."
+msgstr "Cocher cette case si vous souhaitez envoyer un email également aux client qui n'ont pas commandé d'articles."
 
 #. module: joint_buying_product
 #: selection:joint.buying.purchase.order.grouped,state:0
@@ -809,6 +820,11 @@ msgstr "Paramétrage incorrect:\n"
 "\n"
 " * La date de début doit être inférieur à la date de fin\n"
 " * La date de fin doit être inférieur à la date de dépôt"
+
+#. module: joint_buying_product
+#: model:ir.model.fields,field_description:joint_buying_product.field_mail_compose_message_purchase_order_grouped__include_empty_orders
+msgid "Include Empty Orders"
+msgstr "Inclure les commandes vides"
 
 #. module: joint_buying_product
 #: model_terms:ir.ui.view,arch_db:joint_buying_product.view_product_product_form
@@ -1658,14 +1674,9 @@ msgid "See My Order"
 msgstr "Voir ma commande"
 
 #. module: joint_buying_product
-#: model_terms:ir.ui.view,arch_db:joint_buying_product.view_joint_buying_purchase_order_grouped_form
-msgid "Send Test email (Closed)"
-msgstr "Envoyer un mail de test (Fermée)"
-
-#. module: joint_buying_product
-#: model_terms:ir.ui.view,arch_db:joint_buying_product.view_joint_buying_purchase_order_grouped_form
-msgid "Send Test email (In Progress)"
-msgstr "Envoyer un mail de test (En cours)"
+#: model:ir.actions.act_window,name:joint_buying_product.action_send_email_customer
+msgid "Send Email to Customers"
+msgstr "Envoyer un email aux clients"
 
 #. module: joint_buying_product
 #: model:ir.model.fields,field_description:joint_buying_product.field_res_company__joint_buying_send_pivot_email_closed
