@@ -291,4 +291,14 @@ License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl.html).
         }</field>
     </record>
 
+    <record id="action_send_email_customer" model="ir.actions.act_window">
+        <field name="name">Send Email to Customers</field>
+        <field name="binding_model_id" ref="joint_buying_product.model_joint_buying_purchase_order_grouped" />
+        <field name="res_model">mail.compose.message.purchase.order.grouped</field>
+        <field name="type">ir.actions.act_window</field>
+        <field name="view_type">form</field>
+        <field name="view_mode">form</field>
+        <field name="target">new</field>
+    </record>
+
 </odoo>
