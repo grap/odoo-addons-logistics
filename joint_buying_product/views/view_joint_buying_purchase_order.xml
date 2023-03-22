@@ -62,7 +62,11 @@ License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl.html).
                     <button name="action_draft_purchase" type="object" string="Reset to Draft"
                         attrs="{'invisible': ['|', ('purchase_state', '==', 'draft'), ('state', 'not in', ['in_progress', 'in_progress_near', 'in_progress_imminent'])]}"/>
                     <button name="action_skip_purchase" type="object" string="Skip Order"
-                        attrs="{'invisible': ['|', ('purchase_state', '!=', 'draft'), ('state', 'not in', ['in_progress', 'in_progress_near', 'in_progress_imminent'])]}"/>
+                        attrs="{'invisible': ['|', '|',
+                            ('amount_untaxed', '!=', 0),
+                            ('purchase_state', '!=', 'draft'),
+                            ('state', 'not in', ['in_progress', 'in_progress_near', 'in_progress_imminent']),
+                        ]}"/>
                     <button name="correct_purchase_state" type="object" string="Correct purchase state"
                       attrs="{'invisible': [('state', 'not in', ['closed', 'deposited'])]}"
                       groups="base.group_erp_manager"/>
@@ -174,7 +178,10 @@ License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl.html).
             </xpath>
             <field name="state" position="after">
                 <button name="action_skip_purchase" type="object"
-                    string="Skip" help="Skip this Order"/>
+                    string="Skip" help="Skip this Order" attrs="{'invisible': ['|', '|',
+                        ('amount_untaxed', '!=', 0),
+                        ('purchase_state', '!=', 'draft'),
+                ]}"/>
             </field>
         </field>
     </record>
