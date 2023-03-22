@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+Copyright (C) 2023 - Today: GRAP (http://www.grap.coop)
+@author: Sylvain LE GAL (https://twitter.com/legalsylvain)
+License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl.html).
+-->
+<odoo>
+    <record id="view_joint_buying_create_purchase_order_wizard_form" model="ir.ui.view">
+        <field name="model">joint.buying.create.purchase.order.wizard</field>
+        <field name="arch" type="xml">
+            <form>
+                <group col="4">
+                    <field name="order_id" />
+                    <field name="date_planned" required="1"/>
+                </group>
+                <group col="4">
+                    <field name="joint_buying_global_supplier_id" />
+                    <field name="joint_buying_local_supplier_id" required="1"/>
+                </group>
+                <group string="List of Products">
+                    <field name="line_ids" nolabel="1">
+                        <tree editable="bottom" create="false">
+                            <field name="joint_buying_purchase_order_line_id" force_save="True" invisible="1"/>
+                            <field name="joint_buying_global_product_id" force_save="True"/>
+                            <field name="joint_buying_local_product_id" required="1"/>
+                            <field name="purchase_qty" force_save="True" attrs="{'invisible': [('joint_buying_local_product_id', '=', False)]}"/>
+                            <field name="purchase_price_unit" force_save="True" attrs="{'invisible': [('joint_buying_local_product_id', '=', False)]}"/>
+                            <field name="purchase_uom_id" force_save="True" attrs="{'invisible': [('joint_buying_local_product_id', '=', False)]}"/>
+                        </tree>
+                    </field>
+                </group>
+
+                <footer>
+                    <button name="create_purchase_order"
+                            string="Generate Purchase Order"
+                            type="object"
+                            class="oe_highlight"/>
+                    or
+                    <button string="Cancel" class="oe_link" special="cancel"/>
+                </footer>
+            </form>
+        </field>
+    </record>
+
+    <record id="action_wizard_create_purchase_order" model="ir.actions.act_window">
+        <field name="name">Generate Purchase Order</field>
+        <field name="type">ir.actions.act_window</field>
+        <field name="res_model">joint.buying.create.purchase.order.wizard</field>
+        <field name="view_type">form</field>
+        <field name="view_mode">form</field>
+        <field name="target">new</field>
+        <field name="binding_model_id" ref="joint_buying_product.model_joint_buying_purchase_order" />
+    </record>
+</odoo>

@@ -40,6 +40,15 @@ class TestModule(TransactionCase):
         self.company_LSE = self.env.ref("joint_buying_base.company_LSE")
 
         self.pricelist_ELD = self.env.ref("joint_buying_product.pricelist_10_percent")
+        self.product_ELD_orangettes = self.env.ref(
+            "joint_buying_product.product_ELD_orangettes"
+        )
+        self.product_3PP_orangettes = self.env.ref(
+            "joint_buying_product.product_3PP_orangettes"
+        )
+        self.product_3PP_gingembrettes = self.env.ref(
+            "joint_buying_product.product_3PP_gingembrettes"
+        )
 
         self.partner_supplier_fumet_dombes = self.env.ref(
             "joint_buying_base.supplier_fumet_dombes"
@@ -152,6 +161,50 @@ class TestModule(TransactionCase):
             new_local_product.lst_price * 0.9,
             "Global Product should has a price depending on joint buying pricelist.",
         )
+
+    def test_01_B_test_local_global_links_supplier_context(self):
+        self.env.user.company_id = self.company_ELD
+
+        new_local_product = self.ProductProduct.create(
+            {
+                "name": "A New Chocolate @ELD",
+                "company_id": self.company_ELD.id,
+                "categ_id": self.category_all.id,
+                "lst_price": 100.0,
+            }
+        )
+        # Create a chocolate and propagate the information should success
+        # because Elodie D is a supplier
+        new_global_product = new_local_product.create_joint_buying_product()
+        self.assertNotEqual(new_global_product.id, False)
+
+        # Update the information should success because
+        # the global product "is mine"
+        new_local_product.update_joint_buying_product()
+
+        # Try to set new local product for the glocal product
+        with self.assertRaises(ValidationError):
+            new_global_product.set_joint_buying_local_product_id(
+                self.product_ELD_orangettes
+            )
+        with self.assertRaises(ValidationError):
+            new_global_product.set_joint_buying_local_product_id(False)
+
+    def test_01_D_test_local_global_links_not_supplier_context(self):
+        self.env.user.company_id = self.company_3PP
+
+        new_local_product = self.ProductProduct.create(
+            {
+                "name": "A New Chocolate @3PP",
+                "company_id": self.company_3PP.id,
+                "categ_id": self.category_all.id,
+                "lst_price": 100.0,
+            }
+        )
+        # Create a chocolate and propagate the information should fail
+        # because 3PP is not a supplier
+        new_global_product = new_local_product.create_joint_buying_product()
+        self.assertEqual(new_global_product.id, False)
 
     def test_02_joint_buying_product_creation(self):
         vals = {
@@ -567,15 +620,19 @@ class TestModule(TransactionCase):
     def test_07_joint_buying_grouped_order_with_categories(self):
         now = fields.datetime.now()
 
+        orders_grouped_step_1 = self.OrderGrouped.search(
+            [("supplier_id", "=", self.partner_supplier_PZI.id)]
+        )
+
         # no regression
         self.OrderGrouped.cron_create_purchase_order_grouped()
-        orders_grouped = self.OrderGrouped.search(
+        orders_grouped_step_2 = self.OrderGrouped.search(
             [("supplier_id", "=", self.partner_supplier_PZI.id)]
         )
 
         self.assertEqual(
-            len(orders_grouped),
-            0,
+            len(orders_grouped_step_1),
+            len(orders_grouped_step_2),
             "Creation of Grouped Order should not be launched"
             " if start date is not reached",
         )
@@ -585,8 +642,21 @@ class TestModule(TransactionCase):
             "joint_buying_product.frequency_oil_PZI"
         ).next_start_date = now + timedelta(days=-1)
         self.OrderGrouped.cron_create_purchase_order_grouped()
-        oil_orders_grouped = self.OrderGrouped.search(
+
+        orders_grouped_step_3 = self.OrderGrouped.search(
             [("supplier_id", "=", self.partner_supplier_PZI.id)]
+        )
+
+        self.assertEqual(
+            len(orders_grouped_step_2) + 1,
+            len(orders_grouped_step_3),
+            "Creation of Grouped Order should be launched" " if start date is reached",
+        )
+
+        oil_orders_grouped = self.OrderGrouped.search(
+            [("supplier_id", "=", self.partner_supplier_PZI.id)],
+            order="id desc",
+            limit=1,
         )
         self.assertEqual(
             len(oil_orders_grouped),
