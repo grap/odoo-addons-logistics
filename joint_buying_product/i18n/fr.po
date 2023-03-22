@@ -150,8 +150,7 @@ msgstr "<div style=\"margin: 0px; padding: 0px;\">\n"
 "                    Hello ${object.pivot_company_id.name}\n"
 "                    <br/><br/>\n"
 "\n"
-"                    La commande groupée <strong>${object.name}</strong> pour le fournisseur ${object.supplier_id.name} vient de se clôturer.n"
-"                    <br/><br/>\n"
+"                    La commande groupée <strong>${object.name}</strong> pour le fournisseur ${object.supplier_id.name} vient de se clôturer.n                    <br/><br/>\n"
 "\n"
 "                    % if object.purchase_ok == \"no_minimum_amount\":\n"
 "                        <b>Le franco de port (${object.minimum_amount} €) n'est pas atteint.</b> Merci de vérifier les commandes.<br/>\n"
@@ -204,10 +203,10 @@ msgstr "<div style=\"margin: 0px; padding: 0px;\">\n"
 "                        % endif\n"
 "\n"
 "                      Merci\n"
-  "                    <ul>\n"
-  "                        <li>de vérifier le contenu des commandes</li>\n"
-  "                        <li>de vérifier qu'il n'y a pas d'erreur ou d'oublis</li>\n"
-  "                        <li>d'envoyer la commande groupée au fournisseur</li>\n"
+"                    <ul>\n"
+"                        <li>de vérifier le contenu des commandes</li>\n"
+"                        <li>de vérifier qu'il n'y a pas d'erreur ou d'oublis</li>\n"
+"                        <li>d'envoyer la commande groupée au fournisseur</li>\n"
 "                    </ul>\n"
 "                    % endif\n"
 "                    <br/>\n"
@@ -324,6 +323,11 @@ msgid "Action Needed"
 msgstr "Nécessite une action"
 
 #. module: joint_buying_product
+#: model:ir.model.fields,field_description:joint_buying_product.field_mail_compose_message_purchase_order_grouped__active_domain
+msgid "Active domain"
+msgstr "Domaine actif"
+
+#. module: joint_buying_product
 #: model:ir.model.fields,field_description:joint_buying_product.field_joint_buying_purchase_order__activity_ids
 #: model:ir.model.fields,field_description:joint_buying_product.field_joint_buying_purchase_order_grouped__activity_ids
 msgid "Activities"
@@ -334,6 +338,16 @@ msgstr "Activités"
 #: model:ir.model.fields,field_description:joint_buying_product.field_joint_buying_purchase_order_grouped__activity_state
 msgid "Activity State"
 msgstr "Status de l'Activité"
+
+#. module: joint_buying_product
+#: model:ir.model.fields,field_description:joint_buying_product.field_mail_compose_message_purchase_order_grouped__add_sign
+msgid "Add Sign"
+msgstr "Ajouter Signature"
+
+#. module: joint_buying_product
+#: model:ir.model.fields,field_description:joint_buying_product.field_mail_compose_message_purchase_order_grouped__partner_ids
+msgid "Additional Contacts"
+msgstr "Contacts supplémentaires"
 
 #. module: joint_buying_product
 #: model:ir.actions.act_window,name:joint_buying_product.action_joint_buying_purchase_order_grouped_all
@@ -353,6 +367,11 @@ msgid "Amount Untaxed"
 msgstr "Montant HT"
 
 #. module: joint_buying_product
+#: model:ir.model.fields,help:joint_buying_product.field_mail_compose_message_purchase_order_grouped__no_auto_thread
+msgid "Answers do not go in the original document discussion thread. This has an impact on the generated message-id."
+msgstr "Les réponses ne vont pas dans le fil de discussion du document original. Ceci a un impact sur le message-id généré."
+
+#. module: joint_buying_product
 #: model_terms:ir.ui.view,arch_db:joint_buying_product.view_res_partner_form
 msgid "Archive this product"
 msgstr "Archiver cet article"
@@ -363,6 +382,31 @@ msgstr "Archiver cet article"
 #: model:ir.model.fields,field_description:joint_buying_product.field_joint_buying_purchase_order_grouped__message_attachment_count
 msgid "Attachment Count"
 msgstr "Nombre de pièces jointes"
+
+#. module: joint_buying_product
+#: model:ir.model.fields,field_description:joint_buying_product.field_mail_compose_message_purchase_order_grouped__attachment_ids
+msgid "Attachments"
+msgstr "Pièces jointes"
+
+#. module: joint_buying_product
+#: model:ir.model.fields,help:joint_buying_product.field_mail_compose_message_purchase_order_grouped__attachment_ids
+msgid "Attachments are linked to a document through model / res_id and to the message through this field."
+msgstr "Les pièces jointes sont liées à un document par model / res_id et au message via ce champ."
+
+#. module: joint_buying_product
+#: model:ir.model.fields,field_description:joint_buying_product.field_mail_compose_message_purchase_order_grouped__author_id
+msgid "Author"
+msgstr "Auteur"
+
+#. module: joint_buying_product
+#: model:ir.model.fields,help:joint_buying_product.field_mail_compose_message_purchase_order_grouped__author_id
+msgid "Author of the message. If not set, email_from may hold an email address that did not match any partner."
+msgstr "Auteur du message. S'il n'est pas indiqué, email_from peut contenir une adresse électronique ne correspondant à aucun partenaire."
+
+#. module: joint_buying_product
+#: model:ir.model.fields,field_description:joint_buying_product.field_mail_compose_message_purchase_order_grouped__author_avatar
+msgid "Author's avatar"
+msgstr "Avatar de l'auteur"
 
 #. module: joint_buying_product
 #: model_terms:ir.ui.view,arch_db:joint_buying_product.view_res_partner_form
@@ -419,6 +463,11 @@ msgid "Categories"
 msgstr "Catégories"
 
 #. module: joint_buying_product
+#: model:ir.model.fields,field_description:joint_buying_product.field_mail_compose_message_purchase_order_grouped__channel_ids
+msgid "Channels"
+msgstr "Canaux"
+
+#. module: joint_buying_product
 #: model:ir.model.fields,help:joint_buying_product.field_joint_buying_purchase_order_line__is_new
 #: model:ir.model.fields,help:joint_buying_product.field_product_product__joint_buying_is_new
 msgid "Check this box if the product is new. This box will be automatically unchecked by cron task after a given number of days."
@@ -428,6 +477,11 @@ msgstr "Cocher cette case si l'article est nouveau. Cette case sera automatiquem
 #: model:ir.model.fields,help:joint_buying_product.field_mail_compose_message_purchase_order_grouped__include_empty_orders
 msgid "Check this box if you want to send an email to customers that doesn't ordered any products."
 msgstr "Cocher cette case si vous souhaitez envoyer un email également aux client qui n'ont pas commandé d'articles."
+
+#. module: joint_buying_product
+#: model:ir.model.fields,field_description:joint_buying_product.field_mail_compose_message_purchase_order_grouped__child_ids
+msgid "Child Messages"
+msgstr "Messages enfants"
 
 #. module: joint_buying_product
 #: selection:joint.buying.purchase.order.grouped,state:0
@@ -445,11 +499,21 @@ msgid "Companies"
 msgstr "Sociétés"
 
 #. module: joint_buying_product
-#: code:addons/joint_buying_product/models/joint_buying_purchase_order_grouped.py:525
-#: code:addons/joint_buying_product/models/joint_buying_purchase_order_grouped.py:573
+#: code:addons/joint_buying_product/models/joint_buying_purchase_order_grouped.py:528
+#: code:addons/joint_buying_product/models/joint_buying_purchase_order_grouped.py:569
 #, python-format
 msgid "Compose Email"
-msgstr "Écrire un email"
+msgstr ""
+
+#. module: joint_buying_product
+#: model:ir.model.fields,field_description:joint_buying_product.field_mail_compose_message_purchase_order_grouped__composer_id
+msgid "Composer"
+msgstr "Compositeur"
+
+#. module: joint_buying_product
+#: model:ir.model.fields,field_description:joint_buying_product.field_mail_compose_message_purchase_order_grouped__composition_mode
+msgid "Composition mode"
+msgstr "Mode de composition"
 
 #. module: joint_buying_product
 #: model:ir.model,name:joint_buying_product.model_res_config_settings
@@ -470,6 +534,11 @@ msgstr "Confirmée"
 #: model:ir.model,name:joint_buying_product.model_res_partner
 msgid "Contact"
 msgstr ""
+
+#. module: joint_buying_product
+#: model:ir.model.fields,field_description:joint_buying_product.field_mail_compose_message_purchase_order_grouped__body
+msgid "Contents"
+msgstr "Contenus"
 
 #. module: joint_buying_product
 #: model_terms:ir.ui.view,arch_db:joint_buying_product.view_joint_buying_purchase_order_form
@@ -504,6 +573,7 @@ msgstr "Créer une commande"
 #: model:ir.model.fields,field_description:joint_buying_product.field_joint_buying_wizard_create_order__create_uid
 #: model:ir.model.fields,field_description:joint_buying_product.field_joint_buying_wizard_create_order_line__create_uid
 #: model:ir.model.fields,field_description:joint_buying_product.field_joint_buying_wizard_update_order_grouped__create_uid
+#: model:ir.model.fields,field_description:joint_buying_product.field_mail_compose_message_purchase_order_grouped__create_uid
 msgid "Created by"
 msgstr "Créé par"
 
@@ -517,6 +587,7 @@ msgstr "Créé par"
 #: model:ir.model.fields,field_description:joint_buying_product.field_joint_buying_wizard_create_order__create_date
 #: model:ir.model.fields,field_description:joint_buying_product.field_joint_buying_wizard_create_order_line__create_date
 #: model:ir.model.fields,field_description:joint_buying_product.field_joint_buying_wizard_update_order_grouped__create_date
+#: model:ir.model.fields,field_description:joint_buying_product.field_mail_compose_message_purchase_order_grouped__create_date
 msgid "Created on"
 msgstr "Créé le"
 
@@ -524,6 +595,11 @@ msgstr "Créé le"
 #: model:ir.model.fields,field_description:joint_buying_product.field_joint_buying_purchase_order_grouped__current_order_id
 msgid "Current Order"
 msgstr "Vente en cours"
+
+#. module: joint_buying_product
+#: model:ir.model.fields,help:joint_buying_product.field_mail_compose_message_purchase_order_grouped__starred
+msgid "Current user has a starred notification linked to this message"
+msgstr "L'utilisateur actuel a une notification \"favori\" associée à ce message"
 
 #. module: joint_buying_product
 #: model:ir.model.fields,field_description:joint_buying_product.field_joint_buying_purchase_order__customer_id
@@ -536,6 +612,26 @@ msgstr "Client"
 #: sql_constraint:joint.buying.purchase.order:0
 msgid "Customer can have only one purchase for this grouped order !"
 msgstr "La·e client·e ne peut avoir qu'une commande pour cette commande groupée !"
+
+#. module: joint_buying_product
+#: model:ir.model.fields,field_description:joint_buying_product.field_mail_compose_message_purchase_order_grouped__date
+msgid "Date"
+msgstr "Date "
+
+#. module: joint_buying_product
+#: model:ir.model.fields,field_description:joint_buying_product.field_mail_compose_message_purchase_order_grouped__auto_delete
+msgid "Delete Emails"
+msgstr "Supprimer les courriels"
+
+#. module: joint_buying_product
+#: model:ir.model.fields,field_description:joint_buying_product.field_mail_compose_message_purchase_order_grouped__auto_delete_message
+msgid "Delete Message Copy"
+msgstr "Supprimer la copie du message"
+
+#. module: joint_buying_product
+#: model:ir.model.fields,help:joint_buying_product.field_mail_compose_message_purchase_order_grouped__auto_delete
+msgid "Delete sent emails (mass mailing only)"
+msgstr "Supprimer les courriels envoyés (seulement publipostage)"
 
 #. module: joint_buying_product
 #: model:ir.model.fields,field_description:joint_buying_product.field_joint_buying_purchase_order__deposit_date
@@ -579,8 +675,14 @@ msgstr "Afficher le bouton de propagation pour les achats groupés"
 #: model:ir.model.fields,field_description:joint_buying_product.field_joint_buying_wizard_create_order__display_name
 #: model:ir.model.fields,field_description:joint_buying_product.field_joint_buying_wizard_create_order_line__display_name
 #: model:ir.model.fields,field_description:joint_buying_product.field_joint_buying_wizard_update_order_grouped__display_name
+#: model:ir.model.fields,field_description:joint_buying_product.field_mail_compose_message_purchase_order_grouped__display_name
 msgid "Display Name"
 msgstr "Nom affiché"
+
+#. module: joint_buying_product
+#: model:ir.model.fields,help:joint_buying_product.field_mail_compose_message_purchase_order_grouped__auto_delete_message
+msgid "Do not keep a copy of the email in the document communication history (mass mailing only)"
+msgstr "Ne pas conserver pas de copie de l'e-mail dans l'historique de communication de documents (publipostage uniquement)"
 
 #. module: joint_buying_product
 #: selection:joint.buying.purchase.order,purchase_state:0
@@ -591,6 +693,11 @@ msgstr "Brouillon"
 #: model:product.pricelist,name:joint_buying_product.pricelist_10_percent
 msgid "ELD - Pricelist -10%"
 msgstr "ELD - Tarification -10%"
+
+#. module: joint_buying_product
+#: model:ir.model.fields,help:joint_buying_product.field_mail_compose_message_purchase_order_grouped__email_from
+msgid "Email address of the sender. This field is set when no matching partner is found and replaces the author_id field in the chatter."
+msgstr "Adresse courriel de l'expéditeur. Ce champ est défini quand aucun partenaire correspondant n'est trouvé et remplace le champ author_id dans le chatter."
 
 #. module: joint_buying_product
 #: model:ir.model.fields,field_description:joint_buying_product.field_joint_buying_purchase_order__end_date
@@ -615,6 +722,11 @@ msgstr "Taux de saisie"
 #: model_terms:ir.ui.view,arch_db:joint_buying_product.report_joint_buying_purchase_order_grouped_document
 msgid "Equivalent"
 msgstr ""
+
+#. module: joint_buying_product
+#: model:ir.model.fields,field_description:joint_buying_product.field_mail_compose_message_purchase_order_grouped__starred_partner_ids
+msgid "Favorited By"
+msgstr "Préféré par"
 
 #. module: joint_buying_product
 #: model:ir.model.fields,field_description:joint_buying_product.field_joint_buying_category__message_follower_ids
@@ -665,6 +777,11 @@ msgid "Frequency should be a multiple of 7."
 msgstr "La fréquence doit être un multiple de 7."
 
 #. module: joint_buying_product
+#: model:ir.model.fields,field_description:joint_buying_product.field_mail_compose_message_purchase_order_grouped__email_from
+msgid "From"
+msgstr "De"
+
+#. module: joint_buying_product
 #: selection:joint.buying.purchase.order.grouped,state:0
 msgid "Futur"
 msgstr "A venir"
@@ -691,10 +808,17 @@ msgid "Gingembrette Sachet 200gr"
 msgstr ""
 
 #. module: joint_buying_product
-#: code:addons/joint_buying_product/models/joint_buying_purchase_order_grouped.py:513
-#: code:addons/joint_buying_product/models/joint_buying_purchase_order_grouped.py:563
+#: model:product.product,name:joint_buying_product.product_3PP_gingembrettes
+#: model:product.template,name:joint_buying_product.product_3PP_gingembrettes_product_template
+msgid "Gingembrette Sachet 200gr @ Three Peas"
+msgstr ""
+
+#. module: joint_buying_product
+#: code:addons/joint_buying_product/models/joint_buying_purchase_order_grouped.py:516
+#: code:addons/joint_buying_product/models/joint_buying_purchase_order_grouped.py:559
 #: model:ir.actions.report,name:joint_buying_product.action_report_joint_buying_purchase_order_grouped
 #: model:ir.model.fields,field_description:joint_buying_product.field_joint_buying_purchase_order__grouped_order_id
+#: model:ir.model.fields,field_description:joint_buying_product.field_mail_compose_message_purchase_order_grouped__grouped_order_id
 #: model_terms:ir.ui.view,arch_db:joint_buying_product.view_joint_buying_purchase_order_grouped_form
 #: model_terms:ir.ui.view,arch_db:joint_buying_product.view_joint_buying_wizard_create_order_form
 #, python-format
@@ -727,6 +851,12 @@ msgid "Has Image"
 msgstr "A une image"
 
 #. module: joint_buying_product
+#: model:ir.model.fields,field_description:joint_buying_product.field_mail_compose_message_purchase_order_grouped__has_error
+#: model:ir.model.fields,help:joint_buying_product.field_mail_compose_message_purchase_order_grouped__has_error
+msgid "Has error"
+msgstr "A une erreur"
+
+#. module: joint_buying_product
 #: model:product.product,name:joint_buying_product.product_devidal_huile_olive
 #: model:product.template,name:joint_buying_product.product_devidal_huile_olive_product_template
 msgid "Huile d'Olive (bidon de 5L) (Global)"
@@ -742,6 +872,7 @@ msgstr ""
 #: model:ir.model.fields,field_description:joint_buying_product.field_joint_buying_wizard_create_order__id
 #: model:ir.model.fields,field_description:joint_buying_product.field_joint_buying_wizard_create_order_line__id
 #: model:ir.model.fields,field_description:joint_buying_product.field_joint_buying_wizard_update_order_grouped__id
+#: model:ir.model.fields,field_description:joint_buying_product.field_mail_compose_message_purchase_order_grouped__id
 msgid "ID"
 msgstr ""
 
@@ -800,6 +931,11 @@ msgid "In Progress (Near Closing Date)"
 msgstr "En cours (clôture proche)"
 
 #. module: joint_buying_product
+#: model:ir.model.fields,field_description:joint_buying_product.field_mail_compose_message_purchase_order_grouped__include_empty_orders
+msgid "Include Empty Orders"
+msgstr "Inclure les commandes vides"
+
+#. module: joint_buying_product
 #: model:ir.model.fields,help:joint_buying_product.field_joint_buying_wizard_update_order_grouped__show_all_orders
 msgid "Include empty orders."
 msgstr "Inclure les ventes vides."
@@ -810,7 +946,7 @@ msgid "Include products that have not been ordered."
 msgstr "Inclure les articles qui n'ont pas été commandés."
 
 #. module: joint_buying_product
-#: code:addons/joint_buying_product/models/joint_buying_purchase_order_grouped.py:144
+#: code:addons/joint_buying_product/models/joint_buying_purchase_order_grouped.py:151
 #, python-format
 msgid "Incorrect setting:\n"
 "\n"
@@ -822,9 +958,9 @@ msgstr "Paramétrage incorrect:\n"
 " * La date de fin doit être inférieur à la date de dépôt"
 
 #. module: joint_buying_product
-#: model:ir.model.fields,field_description:joint_buying_product.field_mail_compose_message_purchase_order_grouped__include_empty_orders
-msgid "Include Empty Orders"
-msgstr "Inclure les commandes vides"
+#: model:ir.model.fields,help:joint_buying_product.field_mail_compose_message_purchase_order_grouped__parent_id
+msgid "Initial thread message."
+msgstr "Message initial du fil."
 
 #. module: joint_buying_product
 #: model_terms:ir.ui.view,arch_db:joint_buying_product.view_product_product_form
@@ -917,6 +1053,11 @@ msgstr "Nombre de Commandes groupées"
 #: model:ir.model,name:joint_buying_product.model_joint_buying_purchase_order_grouped_line
 msgid "Joint Buying Grouped Purchase Order Grouped Line"
 msgstr "Ligne de commande groupée"
+
+#. module: joint_buying_product
+#: model:ir.model.fields,field_description:joint_buying_product.field_product_product__joint_buying_is_mine
+msgid "Joint Buying Is Mine"
+msgstr "Est mon article de commande groupée"
 
 #. module: joint_buying_product
 #: model:ir.model.fields,field_description:joint_buying_product.field_product_product__joint_buying_is_sold
@@ -1012,6 +1153,7 @@ msgstr "Commande groupée : décocher les vieux produits"
 #: model:ir.model.fields,field_description:joint_buying_product.field_joint_buying_wizard_create_order____last_update
 #: model:ir.model.fields,field_description:joint_buying_product.field_joint_buying_wizard_create_order_line____last_update
 #: model:ir.model.fields,field_description:joint_buying_product.field_joint_buying_wizard_update_order_grouped____last_update
+#: model:ir.model.fields,field_description:joint_buying_product.field_mail_compose_message_purchase_order_grouped____last_update
 msgid "Last Modified on"
 msgstr "Dernière modification le"
 
@@ -1025,6 +1167,7 @@ msgstr "Dernière modification le"
 #: model:ir.model.fields,field_description:joint_buying_product.field_joint_buying_wizard_create_order__write_uid
 #: model:ir.model.fields,field_description:joint_buying_product.field_joint_buying_wizard_create_order_line__write_uid
 #: model:ir.model.fields,field_description:joint_buying_product.field_joint_buying_wizard_update_order_grouped__write_uid
+#: model:ir.model.fields,field_description:joint_buying_product.field_mail_compose_message_purchase_order_grouped__write_uid
 msgid "Last Updated by"
 msgstr "Dernière mise à jour par"
 
@@ -1038,8 +1181,14 @@ msgstr "Dernière mise à jour par"
 #: model:ir.model.fields,field_description:joint_buying_product.field_joint_buying_wizard_create_order__write_date
 #: model:ir.model.fields,field_description:joint_buying_product.field_joint_buying_wizard_create_order_line__write_date
 #: model:ir.model.fields,field_description:joint_buying_product.field_joint_buying_wizard_update_order_grouped__write_date
+#: model:ir.model.fields,field_description:joint_buying_product.field_mail_compose_message_purchase_order_grouped__write_date
 msgid "Last Updated on"
 msgstr "Dernière mise à jour le"
+
+#. module: joint_buying_product
+#: model:ir.model.fields,field_description:joint_buying_product.field_mail_compose_message_purchase_order_grouped__layout
+msgid "Layout"
+msgstr "Agencement"
 
 #. module: joint_buying_product
 #: model:ir.model.fields,field_description:joint_buying_product.field_joint_buying_purchase_order__line_ids
@@ -1059,9 +1208,24 @@ msgid "List of Customers"
 msgstr "Liste des clients"
 
 #. module: joint_buying_product
+#: model:ir.model.fields,field_description:joint_buying_product.field_mail_compose_message_purchase_order_grouped__is_log
+msgid "Log an Internal Note"
+msgstr "Enregistrer une note interne"
+
+#. module: joint_buying_product
 #: model_terms:ir.ui.view,arch_db:joint_buying_product.view_product_product_form
 msgid "Logistics"
 msgstr "Logistique"
+
+#. module: joint_buying_product
+#: model:ir.model.fields,field_description:joint_buying_product.field_mail_compose_message_purchase_order_grouped__mail_activity_type_id
+msgid "Mail Activity Type"
+msgstr "Envoyer le type d'activité par e-mail"
+
+#. module: joint_buying_product
+#: model:ir.model,name:joint_buying_product.model_mail_compose_message_purchase_order_grouped
+msgid "Mail Composer for Purchase Order Grouped"
+msgstr "Assistant de courriel pour commandes groupées"
 
 #. module: joint_buying_product
 #: model:ir.model.fields,field_description:joint_buying_product.field_joint_buying_purchase_order_grouped__is_mail_sent
@@ -1076,11 +1240,36 @@ msgid "Main Attachment"
 msgstr "Pièce jointe principale"
 
 #. module: joint_buying_product
+#: model:ir.model.fields,help:joint_buying_product.field_product_product__joint_buying_is_mine
+msgid "Mention if the related joint buying product is sold by the company of the current product."
+msgstr "Indique si l'article de commande groupée est vendue par la société de l'article courrant."
+
+#. module: joint_buying_product
 #: model:ir.model.fields,field_description:joint_buying_product.field_joint_buying_category__message_has_error
 #: model:ir.model.fields,field_description:joint_buying_product.field_joint_buying_purchase_order__message_has_error
 #: model:ir.model.fields,field_description:joint_buying_product.field_joint_buying_purchase_order_grouped__message_has_error
 msgid "Message Delivery error"
 msgstr "Erreur d'envoi du message"
+
+#. module: joint_buying_product
+#: model:ir.model.fields,field_description:joint_buying_product.field_mail_compose_message_purchase_order_grouped__record_name
+msgid "Message Record Name"
+msgstr "Nom de l'enregistrement du message"
+
+#. module: joint_buying_product
+#: model:ir.model.fields,help:joint_buying_product.field_mail_compose_message_purchase_order_grouped__message_type
+msgid "Message type: email for email message, notification for system message, comment for other messages such as user replies"
+msgstr "Type de message : \"Courriel\" pour les courriers électroniques, \"Notification\" pour les messages du système, \"Commentaire\" pour les autres messages tels que les réponses des utilisateurs"
+
+#. module: joint_buying_product
+#: model:ir.model.fields,help:joint_buying_product.field_mail_compose_message_purchase_order_grouped__message_id
+msgid "Message unique identifier"
+msgstr "Identifiant unique de message"
+
+#. module: joint_buying_product
+#: model:ir.model.fields,field_description:joint_buying_product.field_mail_compose_message_purchase_order_grouped__message_id
+msgid "Message-Id"
+msgstr "ID du message"
 
 #. module: joint_buying_product
 #: model:ir.model.fields,field_description:joint_buying_product.field_joint_buying_category__message_ids
@@ -1188,6 +1377,16 @@ msgid "Minimum amount"
 msgstr "Montant minimum"
 
 #. module: joint_buying_product
+#: model:ir.model.fields,field_description:joint_buying_product.field_mail_compose_message_purchase_order_grouped__moderator_id
+msgid "Moderated By"
+msgstr "Modéré Par"
+
+#. module: joint_buying_product
+#: model:ir.model.fields,field_description:joint_buying_product.field_mail_compose_message_purchase_order_grouped__moderation_status
+msgid "Moderation Status"
+msgstr "Statut de la Modération"
+
+#. module: joint_buying_product
 #: model:ir.actions.act_window,name:joint_buying_product.action_joint_buying_purchase_order_grouped_my
 #: model:ir.ui.menu,name:joint_buying_product.menu_joint_buying_purchase_order_grouped_my
 msgid "My Grouped Orders"
@@ -1215,6 +1414,22 @@ msgstr "Mes commandes ignorées"
 #: model:ir.model.fields,field_description:joint_buying_product.field_joint_buying_category__name
 msgid "Name"
 msgstr "Nom"
+
+#. module: joint_buying_product
+#: model:ir.model.fields,help:joint_buying_product.field_mail_compose_message_purchase_order_grouped__record_name
+msgid "Name get of the related document."
+msgstr "Nom obtenu pour le document relié."
+
+#. module: joint_buying_product
+#: model:ir.model.fields,field_description:joint_buying_product.field_mail_compose_message_purchase_order_grouped__needaction
+#: model:ir.model.fields,help:joint_buying_product.field_mail_compose_message_purchase_order_grouped__needaction
+msgid "Need Action"
+msgstr "Nécessite une action"
+
+#. module: joint_buying_product
+#: model:ir.model.fields,field_description:joint_buying_product.field_mail_compose_message_purchase_order_grouped__need_moderation
+msgid "Need moderation"
+msgstr "Nécessite une modération"
 
 #. module: joint_buying_product
 #: model_terms:ir.ui.view,arch_db:joint_buying_product.view_res_partner_form
@@ -1270,10 +1485,30 @@ msgid "No Orders"
 msgstr "Pas de commandes"
 
 #. module: joint_buying_product
+#: model:ir.model.fields,field_description:joint_buying_product.field_mail_compose_message_purchase_order_grouped__no_auto_thread
+msgid "No threading for answers"
+msgstr "Pas de suivi dans le fil pour les réponses"
+
+#. module: joint_buying_product
 #: model:ir.model.fields,field_description:joint_buying_product.field_joint_buying_purchase_order__supplier_comment
 #: model:ir.model.fields,field_description:joint_buying_product.field_joint_buying_purchase_order_grouped__supplier_comment
 msgid "Notes"
 msgstr ""
+
+#. module: joint_buying_product
+#: model:ir.model.fields,field_description:joint_buying_product.field_mail_compose_message_purchase_order_grouped__notification_ids
+msgid "Notifications"
+msgstr ""
+
+#. module: joint_buying_product
+#: model:ir.model.fields,field_description:joint_buying_product.field_mail_compose_message_purchase_order_grouped__notify
+msgid "Notify followers"
+msgstr "Avertir les abonnés"
+
+#. module: joint_buying_product
+#: model:ir.model.fields,help:joint_buying_product.field_mail_compose_message_purchase_order_grouped__notify
+msgid "Notify followers of the document (mass post only)"
+msgstr "Avertir les abonnés de ce document (publipostage uniquement)"
 
 #. module: joint_buying_product
 #: selection:joint.buying.purchase.order,purchase_ok:0
@@ -1362,6 +1597,11 @@ msgid "OK"
 msgstr ""
 
 #. module: joint_buying_product
+#: model:ir.model.fields,help:joint_buying_product.field_joint_buying_purchase_order_grouped__supplier_company_id
+msgid "Odoo Company related to the supplier (if any)"
+msgstr "Société dans odoo lié à ce fournisseur (si fournisseur interne)"
+
+#. module: joint_buying_product
 #: model_terms:ir.ui.view,arch_db:joint_buying_product.view_product_product_form_classic
 msgid "Offer For joint Buying"
 msgstr "Proposer aux commandes groupées"
@@ -1414,6 +1654,12 @@ msgid "Orangette Sachet 200gr"
 msgstr ""
 
 #. module: joint_buying_product
+#: model:product.product,name:joint_buying_product.product_3PP_orangettes
+#: model:product.template,name:joint_buying_product.product_3PP_orangettes_product_template
+msgid "Orangette Sachet 200gr @ Three Peas"
+msgstr ""
+
+#. module: joint_buying_product
 #: model:ir.model.fields,field_description:joint_buying_product.field_joint_buying_purchase_order_grouped__order_ids
 msgid "Order"
 msgstr "Commande"
@@ -1458,6 +1704,11 @@ msgid "Other Product Allway present"
 msgstr "Autre produits toujours présent"
 
 #. module: joint_buying_product
+#: model:ir.model.fields,field_description:joint_buying_product.field_mail_compose_message_purchase_order_grouped__mail_server_id
+msgid "Outgoing mail server"
+msgstr "Serveur courriel sortant"
+
+#. module: joint_buying_product
 #: selection:joint.buying.purchase.order,activity_state:0
 #: selection:joint.buying.purchase.order.grouped,activity_state:0
 msgid "Overdue"
@@ -1472,6 +1723,16 @@ msgstr "Message de chevauchement"
 #: model:ir.model.fields,field_description:joint_buying_product.field_joint_buying_purchase_order_line__product_uom_package_qty
 msgid "Package Quantity"
 msgstr "Conditionnement"
+
+#. module: joint_buying_product
+#: model:ir.model.fields,field_description:joint_buying_product.field_mail_compose_message_purchase_order_grouped__parent_id
+msgid "Parent Message"
+msgstr "Message parent"
+
+#. module: joint_buying_product
+#: model:ir.model.fields,field_description:joint_buying_product.field_mail_compose_message_purchase_order_grouped__needaction_partner_ids
+msgid "Partners with Need Action"
+msgstr "Partenaire nécessitant une action."
 
 #. module: joint_buying_product
 #: model:ir.actions.act_window,name:joint_buying_product.action_joint_buying_purchase_order_grouped_pending
@@ -1617,6 +1878,31 @@ msgid "Re-Open"
 msgstr "Réouvrir"
 
 #. module: joint_buying_product
+#: model:ir.model.fields,field_description:joint_buying_product.field_mail_compose_message_purchase_order_grouped__res_id
+msgid "Related Document ID"
+msgstr "ID du document associé"
+
+#. module: joint_buying_product
+#: model:ir.model.fields,field_description:joint_buying_product.field_mail_compose_message_purchase_order_grouped__model
+msgid "Related Document Model"
+msgstr "Modèle de document concerné"
+
+#. module: joint_buying_product
+#: model:ir.model.fields,field_description:joint_buying_product.field_joint_buying_purchase_order_grouped__supplier_company_id
+msgid "Related company of the supplier"
+msgstr "Société fournisseur"
+
+#. module: joint_buying_product
+#: model:ir.model.fields,help:joint_buying_product.field_mail_compose_message_purchase_order_grouped__reply_to
+msgid "Reply email address. Setting the reply_to bypasses the automatic thread creation."
+msgstr "Adresse courriel de réponse. Définir le champ reply_to contourne la création automatique de fil."
+
+#. module: joint_buying_product
+#: model:ir.model.fields,field_description:joint_buying_product.field_mail_compose_message_purchase_order_grouped__reply_to
+msgid "Reply-To"
+msgstr "Répondre à"
+
+#. module: joint_buying_product
 #: model_terms:ir.ui.view,arch_db:joint_buying_product.view_joint_buying_purchase_order_grouped_form
 msgid "Resend  to Supplier by Email"
 msgstr "Réenvoyer au fournisseur par email"
@@ -1738,6 +2024,16 @@ msgid "Small-sized image"
 msgstr "Image de petite taille"
 
 #. module: joint_buying_product
+#: model:ir.model.fields,help:joint_buying_product.field_mail_compose_message_purchase_order_grouped__author_avatar
+msgid "Small-sized image of this contact. It is automatically resized as a 64x64px image, with aspect ratio preserved. Use this field anywhere a small image is required."
+msgstr "Image de petite taille de ce contact. Elle est automatiquement redimensionnée en une image de 64x64px, avec un ratio d'aspect préservé. Utiliser ce champ partout où une petite image est nécessaire."
+
+#. module: joint_buying_product
+#: model:ir.model.fields,field_description:joint_buying_product.field_mail_compose_message_purchase_order_grouped__starred
+msgid "Starred"
+msgstr "Favoris"
+
+#. module: joint_buying_product
 #: model:ir.model.fields,field_description:joint_buying_product.field_joint_buying_purchase_order__start_date
 #: model:ir.model.fields,field_description:joint_buying_product.field_joint_buying_purchase_order_grouped__start_date
 #: model:ir.model.fields,field_description:joint_buying_product.field_joint_buying_wizard_create_order__start_date
@@ -1764,9 +2060,19 @@ msgstr "Statut basé sur les activités\n"
 "Planifiée : activités futures"
 
 #. module: joint_buying_product
+#: model:ir.model.fields,field_description:joint_buying_product.field_mail_compose_message_purchase_order_grouped__subject
+msgid "Subject"
+msgstr "Sujet"
+
+#. module: joint_buying_product
 #: model_terms:ir.ui.view,arch_db:joint_buying_product.report_joint_buying_purchase_order_grouped_document
 msgid "Subtotal"
 msgstr "Sous-total"
+
+#. module: joint_buying_product
+#: model:ir.model.fields,field_description:joint_buying_product.field_mail_compose_message_purchase_order_grouped__subtype_id
+msgid "Subtype"
+msgstr "Sous-type"
 
 #. module: joint_buying_product
 #: model:ir.model.fields,field_description:joint_buying_product.field_joint_buying_purchase_order_grouped__summary_line_ids
@@ -1828,7 +2134,7 @@ msgid "Technical field, used to display matrix with web_widget_x2many_2d_matrix 
 msgstr "Champ technique, utilisé pour afficher la matrice de produit, via le module web_widget_x2many_2d_matrix."
 
 #. module: joint_buying_product
-#: code:addons/joint_buying_product/models/joint_buying_purchase_order_grouped.py:626
+#: code:addons/joint_buying_product/models/joint_buying_purchase_order_grouped.py:622
 #, python-format
 msgid "The company '%s' has been subscribed to the supplier '%s'."
 msgstr "La société '%s' a été abonnée au fournisseur '%s'."
@@ -1919,6 +2225,21 @@ msgid "Total Weight"
 msgstr "Poids total"
 
 #. module: joint_buying_product
+#: model:ir.model.fields,help:joint_buying_product.field_mail_compose_message_purchase_order_grouped__tracking_value_ids
+msgid "Tracked values are stored in a separate model. This field allow to reconstruct the tracking and to generate statistics on the model."
+msgstr "Les valeurs suivies sont stockées dans un modèle distinct. Ce champ permet de reconstruire le suivi et de générer des statistiques sur le modèle."
+
+#. module: joint_buying_product
+#: model:ir.model.fields,field_description:joint_buying_product.field_mail_compose_message_purchase_order_grouped__tracking_value_ids
+msgid "Tracking values"
+msgstr "Suivi des valeurs"
+
+#. module: joint_buying_product
+#: model:ir.model.fields,field_description:joint_buying_product.field_mail_compose_message_purchase_order_grouped__message_type
+msgid "Type"
+msgstr ""
+
+#. module: joint_buying_product
 #: model:ir.model.fields,field_description:joint_buying_product.field_joint_buying_purchase_order_line__uom_measure_type
 msgid "Type of measurement category"
 msgstr "Type de catégorie de système de mesure"
@@ -1936,6 +2257,12 @@ msgid "Unavailable Product (450gr) (Global)"
 msgstr "Article indisponible (450gr) (Global)"
 
 #. module: joint_buying_product
+#: code:addons/joint_buying_product/models/product_product.py:168
+#, python-format
+msgid "Unimplemented Feature"
+msgstr "Fonctionnalité non implémentée"
+
+#. module: joint_buying_product
 #: model_terms:ir.ui.view,arch_db:joint_buying_product.view_joint_buying_purchase_order_form
 #: model_terms:ir.ui.view,arch_db:joint_buying_product.view_joint_buying_purchase_order_grouped_form
 #: model_terms:ir.ui.view,arch_db:joint_buying_product.view_joint_buying_wizard_create_order_form
@@ -1949,6 +2276,8 @@ msgid "Unit Price"
 msgstr "Prix unitaire"
 
 #. module: joint_buying_product
+#: model:product.product,uom_name:joint_buying_product.product_3PP_gingembrettes
+#: model:product.product,uom_name:joint_buying_product.product_3PP_orangettes
 #: model:product.product,uom_name:joint_buying_product.product_ELD_gingembrettes
 #: model:product.product,uom_name:joint_buying_product.product_ELD_orangettes
 #: model:product.product,uom_name:joint_buying_product.product_PZI_oil
@@ -1958,6 +2287,8 @@ msgstr "Prix unitaire"
 #: model:product.product,uom_name:joint_buying_product.product_devidal_unavailable_product
 #: model:product.product,uom_name:joint_buying_product.product_dombes_smoked_salmon_100
 #: model:product.product,uom_name:joint_buying_product.product_dombes_smoked_salmon_200
+#: model:product.template,uom_name:joint_buying_product.product_3PP_gingembrettes_product_template
+#: model:product.template,uom_name:joint_buying_product.product_3PP_orangettes_product_template
 #: model:product.template,uom_name:joint_buying_product.product_ELD_gingembrettes_product_template
 #: model:product.template,uom_name:joint_buying_product.product_ELD_orangettes_product_template
 #: model:product.template,uom_name:joint_buying_product.product_PZI_oil_product_template
@@ -2041,9 +2372,38 @@ msgid "Use Order Categories"
 msgstr "Utiliser les catégories de commandes"
 
 #. module: joint_buying_product
+#: model:ir.model.fields,field_description:joint_buying_product.field_mail_compose_message_purchase_order_grouped__use_active_domain
+msgid "Use active domain"
+msgstr "Utiliser un domaine actif"
+
+#. module: joint_buying_product
+#: model:ir.model.fields,field_description:joint_buying_product.field_mail_compose_message_purchase_order_grouped__template_id
+msgid "Use template"
+msgstr "Utiliser un modèle"
+
+#. module: joint_buying_product
 #: model:ir.model,name:joint_buying_product.model_res_users
 msgid "Users"
 msgstr "Utilisateurs"
+
+#. module: joint_buying_product
+#: model:ir.model.fields,field_description:joint_buying_product.field_joint_buying_category__website_message_ids
+#: model:ir.model.fields,field_description:joint_buying_product.field_joint_buying_purchase_order__website_message_ids
+#: model:ir.model.fields,field_description:joint_buying_product.field_joint_buying_purchase_order_grouped__website_message_ids
+msgid "Website Messages"
+msgstr "Messages du site web"
+
+#. module: joint_buying_product
+#: model:ir.model.fields,help:joint_buying_product.field_joint_buying_category__website_message_ids
+#: model:ir.model.fields,help:joint_buying_product.field_joint_buying_purchase_order__website_message_ids
+#: model:ir.model.fields,help:joint_buying_product.field_joint_buying_purchase_order_grouped__website_message_ids
+msgid "Website communication history"
+msgstr "Historique de communication du site web"
+
+#. module: joint_buying_product
+#: model:ir.model.fields,help:joint_buying_product.field_mail_compose_message_purchase_order_grouped__is_log
+msgid "Whether the message is an internal note (comment mode only)"
+msgstr "Si un message est une note interne (en mode commentaire seulement)"
 
 #. module: joint_buying_product
 #: model:ir.model.fields,field_description:joint_buying_product.field_joint_buying_wizard_create_order_line__wizard_id
@@ -2051,25 +2411,25 @@ msgid "Wizard"
 msgstr "Assistant"
 
 #. module: joint_buying_product
-#: code:addons/joint_buying_product/models/product_product.py:138
+#: code:addons/joint_buying_product/models/product_product.py:145
 #, python-format
 msgid "You can not change the value of the Joint buying partner."
 msgstr "Vous ne pouvez pas changer la valeur de partenaire de commande groupée"
 
 #. module: joint_buying_product
-#: code:addons/joint_buying_product/models/joint_buying_purchase_order.py:255
+#: code:addons/joint_buying_product/models/joint_buying_purchase_order.py:270
 #, python-format
 msgid "You can not confirm an order with null amount."
 msgstr "Vous ne pouvez pas confirmer une commande avec un montant nul."
 
 #. module: joint_buying_product
-#: code:addons/joint_buying_product/models/joint_buying_purchase_order.py:251
+#: code:addons/joint_buying_product/models/joint_buying_purchase_order.py:266
 #, python-format
 msgid "You can not confirm an order without any lines."
 msgstr "Vous ne pouvez pas confirmer une commande sans lignes."
 
 #. module: joint_buying_product
-#: code:addons/joint_buying_product/models/product_product.py:122
+#: code:addons/joint_buying_product/models/product_product.py:129
 #, python-format
 msgid "You can not create a Joint buying Product for this supplier. Please ask to the saler to do it by clicking on 'Offer For Joint Buying' on him product."
 msgstr "Vous ne pouvez pas créer un article pour ce fournisseur. Veuillez lui demander de le faire en cliquaunt sur le bouton 'proposer à la vente' sur sa fiche article"
@@ -2091,13 +2451,13 @@ msgid "You can not set a negative quantity in the 'Purchase Quantity' field !"
 msgstr "Vous ne pouvez pas saisir de quantité négative dans le champ 'quantité à commander' !"
 
 #. module: joint_buying_product
-#: code:addons/joint_buying_product/models/joint_buying_purchase_order.py:259
+#: code:addons/joint_buying_product/models/joint_buying_purchase_order.py:274
 #, python-format
 msgid "You cannot confirm an order for which you have not reached the minimum purchase amount."
 msgstr "Vous ne pouvez pas confirmer une commande pour laquelle le franco de port n'est pas atteint."
 
 #. module: joint_buying_product
-#: code:addons/joint_buying_product/models/joint_buying_purchase_order.py:266
+#: code:addons/joint_buying_product/models/joint_buying_purchase_order.py:281
 #, python-format
 msgid "You cannot confirm an order for which you have not reached the minimum weight."
 msgstr "Vous ne pouvez pas confirmer une commande pour laquelle le franco de port n'est pas atteint."
@@ -2115,7 +2475,7 @@ msgid "You have not reached the minimum amount."
 msgstr "Vous n'avez pas atteint le montant minimum."
 
 #. module: joint_buying_product
-#: code:addons/joint_buying_product/models/product_product.py:95
+#: code:addons/joint_buying_product/models/product_product.py:102
 #, python-format
 msgid "You should set a Joint Buying Supplier for Joint Buying Products"
 msgstr "Vous devriez définir un fournisseur pour ces articles de commandes groupées."
@@ -2130,6 +2490,8 @@ msgstr "Vous devriez définir un fournisseur pour ces articles de commandes grou
 #: model:product.product,uom_name:joint_buying_product.product_ronzon_patatoe_agila
 #: model:product.product,uom_name:joint_buying_product.product_ronzon_patatoe_cephora
 #: model:product.product,uom_name:joint_buying_product.product_ronzon_patatoe_charlotte
+#: model:product.product,weight_uom_name:joint_buying_product.product_3PP_gingembrettes
+#: model:product.product,weight_uom_name:joint_buying_product.product_3PP_orangettes
 #: model:product.product,weight_uom_name:joint_buying_product.product_ELD_gingembrettes
 #: model:product.product,weight_uom_name:joint_buying_product.product_ELD_orangettes
 #: model:product.product,weight_uom_name:joint_buying_product.product_PZI_oil
@@ -2157,6 +2519,8 @@ msgstr "Vous devriez définir un fournisseur pour ces articles de commandes grou
 #: model:product.template,uom_name:joint_buying_product.product_ronzon_patatoe_agila_product_template
 #: model:product.template,uom_name:joint_buying_product.product_ronzon_patatoe_cephora_product_template
 #: model:product.template,uom_name:joint_buying_product.product_ronzon_patatoe_charlotte_product_template
+#: model:product.template,weight_uom_name:joint_buying_product.product_3PP_gingembrettes_product_template
+#: model:product.template,weight_uom_name:joint_buying_product.product_3PP_orangettes_product_template
 #: model:product.template,weight_uom_name:joint_buying_product.product_ELD_gingembrettes_product_template
 #: model:product.template,weight_uom_name:joint_buying_product.product_ELD_orangettes_product_template
 #: model:product.template,weight_uom_name:joint_buying_product.product_PZI_oil_product_template
@@ -2183,3 +2547,4 @@ msgstr ""
 #: model_terms:ir.ui.view,arch_db:joint_buying_product.view_joint_buying_wizard_update_order_grouped_form
 msgid "or"
 msgstr "ou"
+
