@@ -151,6 +151,17 @@ class ProductProduct(models.Model):
         )
         return products and products[0] or False
 
+    def set_joint_buying_local_product_id(self, new_local_product):
+        self.ensure_one()
+        current_local_product = self.get_joint_buying_local_product_id()
+        if current_local_product == new_local_product:
+            # Nothing change
+            return
+        if current_local_product:
+            raise ValidationError(_("Unimplemented Feature : TODO"))
+            # new_local_product.joint_buying_global_product_id = False
+        new_local_product.joint_buying_global_product_id = self and self.id
+
     @api.model
     def joint_byuing_cron_check_new(self):
         """This cron function will unflag the field 'joint_buying_is_new'
