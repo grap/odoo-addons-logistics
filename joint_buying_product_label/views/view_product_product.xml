@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+Copyright (C) 2023 - Today: GRAP (http://www.grap.coop)
+@author: Sylvain LE GAL (https://twitter.com/legalsylvain)
+License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl.html).
+-->
+<odoo>
+
+    <record id="view_product_product_form" model="ir.ui.view">
+        <field name="model">product.product</field>
+        <field name="inherit_id" ref="joint_buying_product.view_product_product_form"/>
+        <field name="arch" type="xml">
+            <group name="group_logistic" position="after">
+                <group name="group_label" string="Labels">
+                    <field name="label_ids" widget="many2many_tags"/>
+                </group>
+            </group>
+        </field>
+    </record>
+
+</odoo>

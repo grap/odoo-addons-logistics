@@ -80,6 +80,12 @@ class JointBuyingPurchaseOrderLine(models.Model):
         readonly=True,
     )
 
+    label_ids = fields.Many2many(
+        comodel_name="product.label",
+        related="product_id.label_ids",
+        store=False,
+    )
+
     qty = fields.Float(
         string="Purchase Quantity",
         digits=dp.get_precision("Product Unit of Measure"),

@@ -102,8 +102,10 @@ License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl.html).
                                     <field name="joint_buying_is_new" widget="boolean_toggle"/>
                                     <field name="joint_buying_is_sold"/>
                                 </group>
-                                <group name="group_logistic" string="Logistics">
-                                    <field name="weight"/>
+                                <group name="right_part" col="1">
+                                    <group name="group_logistic" string="Logistics">
+                                        <field name="weight"/>
+                                    </group>
                                 </group>
                             </group>
                             <group string="Internal Notes">
