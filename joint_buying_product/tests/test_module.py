@@ -180,7 +180,7 @@ class TestModule(TransactionCase):
         with self.assertRaises(ValidationError):
             product.joint_buying_partner_id = self.salaison_devidal.id
 
-    def test_03_order_grouped_full_workflow(self):
+    def _create_order_grouped_by_wizard(self):
         # configure subscription
         self.salaison_devidal.joint_buying_subscribed_company_ids = [
             (6, 0, [self.company_ELD.id, self.company_3PP.id, self.company_CHE.id])
@@ -205,6 +205,10 @@ class TestModule(TransactionCase):
         res = wizard.create_order_grouped()
         order_grouped = self.OrderGrouped.browse(res["res_id"])
         self.assertEqual(order_grouped.order_qty, 3)
+        return order_grouped
+
+    def test_03_order_grouped_full_workflow(self):
+        order_grouped = self._create_order_grouped_by_wizard()
 
         # Create an order for the main_company
         res = order_grouped.create_current_order()
@@ -609,3 +613,18 @@ class TestModule(TransactionCase):
             "Create order for a category should select product for this category"
             " or product allways available.",
         )
+
+    def test_08_joint_buying_grouped_send_mail(self):
+        # Create a grouped order, with one not null order
+        order_grouped = self._create_order_grouped_by_wizard()
+        order_grouped.order_ids[0].line_ids[0].qty = 10
+
+        MailWizard = self.env["mail.compose.message.purchase.order.grouped"]
+        wizard = MailWizard.with_context(active_ids=[order_grouped.id]).create({})
+
+        wizard.onchange_include_empty_orders()
+        self.assertEqual(len(wizard.partner_ids), 1)
+
+        wizard.include_empty_orders = True
+        wizard.onchange_include_empty_orders()
+        self.assertEqual(len(wizard.partner_ids), order_grouped.order_qty)

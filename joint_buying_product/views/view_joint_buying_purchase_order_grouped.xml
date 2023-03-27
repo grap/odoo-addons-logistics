@@ -124,8 +124,6 @@ License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl.html).
 
                     <button name="action_send_email_for_supplier" string="Send to Supplier by Email" type="object" class="oe_highlight" attrs="{'invisible': ['|', ('is_mine', '=', False), ('is_mail_sent', '=', True)]}"/>
                     <button name="action_send_email_for_supplier" string="Resend  to Supplier by Email" type="object" attrs="{'invisible': [('is_mail_sent', '=', False)]}"/>
-                    <button name="action_send_email_for_pivot_in_progress" string="Send Test email (In Progress)" type="object" groups="base.group_erp_manager" />
-                    <button name="action_send_email_for_pivot_closed" string="Send Test email (Closed)" type="object" groups="base.group_erp_manager"/>
                     <button name="see_current_order" string="See My Order" type="object" attrs="{'invisible': [('current_order_id', '=', False)]}"/>
                     <button name="create_current_order" string="Create Order" class="oe_highlight" type="object" attrs="{'invisible': ['|', ('current_order_id', '!=', False), ('state', 'not in', ['in_progress', 'in_progress_near', 'in_progress_imminent'])]}" help="Create New Order and subscribe to the Supplier"/>
                     <button name="update_product_list" string="Update Products List" type="object" attrs="{'invisible': ['|', ('is_mine', '=', False), ('state', 'not in', ['in_progress', 'in_progress_near', 'in_progress_imminent'])]}" class="btn-danger" confirm="This will update the products list of the pending orders. If product are marked as unavailable, the lines will be DELETED. If new products are available, new lines will be added. If products informations changed (price, package quantity, etc...), lines will be updated"/>
@@ -305,6 +303,16 @@ License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl.html).
             "joint_buying": 1,
             "search_default_supplier_id": active_id,
         }</field>
+    </record>
+
+    <record id="action_send_email_customer" model="ir.actions.act_window">
+        <field name="name">Send Email to Customers</field>
+        <field name="binding_model_id" ref="joint_buying_product.model_joint_buying_purchase_order_grouped" />
+        <field name="res_model">mail.compose.message.purchase.order.grouped</field>
+        <field name="type">ir.actions.act_window</field>
+        <field name="view_type">form</field>
+        <field name="view_mode">form</field>
+        <field name="target">new</field>
     </record>
 
 </odoo>

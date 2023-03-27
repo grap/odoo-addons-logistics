@@ -9,6 +9,7 @@
     <record id="company_1GG" model="res.company">
         <field name="code">1GG</field>
         <field name="name">[1GG - A Grain in the Granary]</field>
+        <field name="email">no-spam@grain-grenier.fr</field>
         <field name="street">1, rue du mail</field>
         <field name="city">Lyon</field>
         <field name="zip">69004</field>
@@ -18,6 +19,7 @@
     <record id="company_3PP" model="res.company">
         <field name="code">3PP</field>
         <field name="name">[3PP - Three Peas]</field>
+        <field name="email">no-spam@3ptitspois.fr</field>
         <field name="street">124 Rue Sébastien Gryphe</field>
         <field name="city">Lyon</field>
         <field name="zip">69007</field>
@@ -27,6 +29,7 @@
     <record id="company_C3P" model="res.company">
         <field name="code">C3P</field>
         <field name="name">[C3P - Like Three Apples]</field>
+        <field name="email">no-spam@commetroispommes.fr/</field>
         <field name="street">335 Chemin de l’Olagnier</field>
         <field name="city">Portes-lès-Valence</field>
         <field name="zip">26800</field>
@@ -36,6 +39,7 @@
     <record id="company_CDA" model="res.company">
         <field name="code">CDA</field>
         <field name="name">[CDA - Artichoke Heart]</field>
+        <field name="email">no-spam@coeurdartichaut.org</field>
         <field name="street"> 22 rue de saint Agrève  </field>
         <field name="city">Tence</field>
         <field name="zip">43190</field>
@@ -45,6 +49,7 @@
     <record id="company_CHE" model="res.company">
         <field name="code">CHE</field>
         <field name="name">[CHE - The Goat and Cabbage]</field>
+        <field name="email">no-spam@lachevreetlechou.fr</field>
         <field name="street">2 Grande Rue</field>
         <field name="city">Saint-Sauveur-de-Montagut</field>
         <field name="zip">07190</field>
@@ -54,6 +59,7 @@
     <record id="company_CRB" model="res.company">
         <field name="code">CRB</field>
         <field name="name">[CRB - Fang Bauges]</field>
+        <field name="email">no-spam@biobauges.com</field>
         <field name="street">Impasse du Nant d'Orange</field>
         <field name="city">Lescheraines</field>
         <field name="zip">73340</field>
@@ -63,6 +69,7 @@
     <record id="company_DOZ" model="res.company">
         <field name="code">DOZ</field>
         <field name="name">[DOZ - The Right Doze]</field>
+        <field name="email">no-spam@bonnedoze.fr</field>
         <field name="street">2 Rue Henri Legay</field>
         <field name="city">Villeurbanne</field>
         <field name="zip">69100</field>
@@ -72,6 +79,7 @@
     <record id="company_EDC" model="res.company">
         <field name="code">EDC</field>
         <field name="name">[EDC - The Quince Grocery]</field>
+        <field name="email">no-spam@epicerie-du-coing.fr</field>
         <field name="street">75 place du Bourniau</field>
         <field name="city">Novalaise</field>
         <field name="zip">73470</field>
@@ -81,16 +89,17 @@
     <record id="company_ELD" model="res.company">
         <field name="code">ELD</field>
         <field name="name">[ELD - Elodia-D]</field>
+        <field name="email">no-spam@elodie-d.fr</field>
         <field name="street">520 route de Combe Boiron</field>
         <field name="city">St Maurice sur Dargoire</field>
         <field name="zip">69440</field>
         <field name="country_id" ref="base.fr"/>
-        <field name="email">ELD@ELD.fr</field>
     </record>
 
     <record id="company_LSE" model="res.company">
         <field name="code">LSE</field>
         <field name="name">[LSE - The Super Mall]</field>
+        <field name="email">no-spam@lasuperhalle.fr</field>
         <field name="street">105, avenue Jean Jaurès</field>
         <field name="city">Oullins</field>
         <field name="zip">69600</field>
@@ -100,17 +109,18 @@
     <record id="company_PZI" model="res.company">
         <field name="code">PZI</field>
         <field name="name">[PZI - small Zests from Italy and elsewhere]</field>
+        <field name="email">no-spam@petitszestes.fr</field>
         <field name="street">7 bis rue du Pré Paillard</field>
         <field name="street2">PAE les Glaisins</field>
         <field name="city">Annecy-Le-Vieux</field>
         <field name="zip">74940</field>
         <field name="country_id" ref="base.fr"/>
-        <field name="email">PZI@PZI.fr</field>
     </record>
 
     <record id="company_TOU" model="res.company">
         <field name="code">TOU</field>
         <field name="name">[TOU - With Sunflower]</field>
+        <field name="email">no-spam@autournesol.fr</field>
         <field name="street">22 route de l'Eyrieux</field>
         <field name="street2">Quartier Fortuné</field>
         <field name="city">Beauchastel</field>
@@ -121,6 +131,7 @@
     <record id="company_VEV" model="res.company">
         <field name="code">VEV</field>
         <field name="name">[VEV - Bulk in Green]</field>
+        <field name="email">no-spam@vracenvert.fr</field>
         <field name="street">7 Rue Roger Salengro</field>
         <field name="city">Saint-Etienne</field>
         <field name="zip">42000</field>
