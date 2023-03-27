@@ -535,7 +535,10 @@ msgid "Deposit Date"
 msgstr "Date de dépôt"
 
 #. module: joint_buying_product
+#: model:ir.model.fields,field_description:joint_buying_product.field_joint_buying_purchase_order__deposit_partner_id
 #: model:ir.model.fields,field_description:joint_buying_product.field_joint_buying_purchase_order_grouped__deposit_partner_id
+#: model_terms:ir.ui.view,arch_db:joint_buying_product.view_joint_buying_purchase_order_grouped_search
+#: model_terms:ir.ui.view,arch_db:joint_buying_product.view_joint_buying_purchase_order_search
 msgid "Deposit Partner"
 msgstr "Partenaire de dépôt"
 
@@ -1451,8 +1454,11 @@ msgid "Pending Grouped Orders"
 msgstr "Commandes groupées en cours"
 
 #. module: joint_buying_product
+#: model:ir.model.fields,field_description:joint_buying_product.field_joint_buying_purchase_order__pivot_company_id
 #: model:ir.model.fields,field_description:joint_buying_product.field_joint_buying_purchase_order_grouped__pivot_company_id
 #: model:ir.model.fields,field_description:joint_buying_product.field_joint_buying_wizard_create_order__pivot_company_id
+#: model_terms:ir.ui.view,arch_db:joint_buying_product.view_joint_buying_purchase_order_grouped_search
+#: model_terms:ir.ui.view,arch_db:joint_buying_product.view_joint_buying_purchase_order_search
 msgid "Pivot Company"
 msgstr "Société pivot"
 
@@ -1750,6 +1756,8 @@ msgstr "Code frs."
 #: model:ir.model.fields,field_description:joint_buying_product.field_joint_buying_purchase_order_grouped__supplier_id
 #: model:ir.model.fields,field_description:joint_buying_product.field_joint_buying_purchase_order_line__supplier_id
 #: model:ir.model.fields,field_description:joint_buying_product.field_joint_buying_wizard_create_order__supplier_id
+#: model_terms:ir.ui.view,arch_db:joint_buying_product.view_joint_buying_purchase_order_grouped_search
+#: model_terms:ir.ui.view,arch_db:joint_buying_product.view_joint_buying_purchase_order_search
 msgid "Supplier"
 msgstr "Fournisseur"
 
