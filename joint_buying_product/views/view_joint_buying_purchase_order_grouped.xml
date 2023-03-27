@@ -114,7 +114,7 @@ License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl.html).
                 <button type="action" string="Update Values"
                         name="%(joint_buying_product.action_order_grouped_2_wizard_update_order_grouped)d"
                         groups="joint_buying_base.group_joint_buying_user"
-                        attrs="{'invisible': [('state', '=', 'deposited')]}"/>
+                        attrs="{'invisible': ['|', ('is_mine', '=', False), ('state', '=', 'deposited')]}"/>
 
                     <button name="action_send_email_for_supplier" string="Send to Supplier by Email" type="object" class="oe_highlight" attrs="{'invisible': ['|', ('is_mine', '=', False), ('is_mail_sent', '=', True)]}"/>
                     <button name="action_send_email_for_supplier" string="Resend  to Supplier by Email" type="object" attrs="{'invisible': [('is_mail_sent', '=', False)]}"/>
