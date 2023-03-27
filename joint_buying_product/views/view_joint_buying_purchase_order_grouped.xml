@@ -45,6 +45,7 @@ License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl.html).
                 <field name="end_date" options="{'bg_color': 'orange: state == &quot;in_progress_near&quot;; red: state == &quot;in_progress_imminent&quot;'}"/>
                 <field name="deposit_date"/>
                 <field name="entry_rate_description" string="Entry"/>
+                <field name="total_weight" sum="Total Brut Weight"/>
                 <field name="amount_untaxed" sum="Total Amount Untaxed"/>
                 <field name="pivot_company_id"/>
                 <field name="state" invisible="1"/>
