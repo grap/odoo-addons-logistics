@@ -379,22 +379,24 @@ class JointBuyingPurchaseOrderGrouped(models.Model):
                 grouped_order.with_context(update_state_value=True).write(
                     {"state": correct_state}
                 )
-                # we send mail, when the grouped order is closed
                 if correct_state == "closed":
                     grouped_order.mapped("order_ids").correct_purchase_state()
-                    grouped_order.send_mail_to_pivot_company()
-                # we send mail, when the grouped order is openened. (and was not before)
-                if correct_state.startswith(
-                    "in_progress"
-                ) and not previous_state.startswith("in_progress"):
-                    grouped_order.send_mail_to_pivot_company()
+
+                # Send email to pivot company if required
+                grouped_order.send_mail_to_pivot_company(previous_state)
 
     @api.multi
-    def send_mail_to_pivot_company(self):
+    def send_mail_to_pivot_company(self, previous_state):
+        """
+        Send an email to the pivot company if the current state and the previous state
+        require to send an email, and if the pivot company want to receive email,
+        depending on it configuration.
+        """
         self.ensure_one()
-        # Send opening mail. (if set on the pivot company)
+        # Send 'In Progress' mail (if it was not in progress before)
         if (
             self.state.startswith("in_progress")
+            and not previous_state.startswith("in_progress")
             and self.pivot_company_id.joint_buying_send_pivot_email_in_progress
         ):
             template = self.env.ref(
@@ -402,9 +404,11 @@ class JointBuyingPurchaseOrderGrouped(models.Model):
             )
             template.send_mail(self.id, force_send=True)
 
-        # Send closing mail. (if set on the pivot company)
+        # Send 'Closed' mail (if it was not deposited before)
+        # (rare case where pivot company change date manually)
         if (
             self.state == "closed"
+            and previous_state != "deposited"
             and self.pivot_company_id.joint_buying_send_pivot_email_closed
         ):
             template = self.env.ref(
