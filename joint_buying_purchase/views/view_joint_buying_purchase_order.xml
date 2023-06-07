@@ -13,8 +13,10 @@ License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl.html).
             <button name="action_skip_purchase" position="after">
                 <button name="%(joint_buying_purchase.action_wizard_create_purchase_order)d" string="Generate Purchase Order"
                     type="action" class="btn-primary"
-                    attrs="{'invisible': [
+                    attrs="{'invisible': ['|', '|',
                         ('purchase_state', '!=', 'done'),
+                        ('is_mine_customer', '=', False),
+                        ('purchase_order_id', '!=', False),
                     ]}"
                     />
             </button>
@@ -25,6 +27,4 @@ License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl.html).
         </field>
     </record>
 
-<!--                         ('is_mine', '=', False),
- -->
 </odoo>
