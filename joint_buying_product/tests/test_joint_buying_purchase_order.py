@@ -414,6 +414,21 @@ class TestJointBuyingPurchaseOrder(TestAbstract):
             " or product allways available.",
         )
 
+    def test_13_joint_buying_grouped_order_local_product(self):
+        self.env.user.company_id = self.company_LSE
+        order = self._get_order_benoit_ronzon(customer_code="LSE")
+        line_patatoe_agila = order.line_ids.filtered(
+            lambda x: x.product_id == self.product_ronzon_patatoe_agila
+        )
+        line_patatoe_charlotte = order.line_ids.filtered(
+            lambda x: x.product_id == self.product_ronzon_patatoe_charlotte
+        )
+
+        self.assertEqual(
+            line_patatoe_agila.local_product_id, self.product_LSE_patatoe_agila
+        )
+        self.assertFalse(line_patatoe_charlotte.local_product_id)
+
     def test_20_joint_buying_grouped_send_mail(self):
         # Create a grouped order, with one not null order
         order_grouped = self._create_order_grouped_salaison_devidal_by_wizard()

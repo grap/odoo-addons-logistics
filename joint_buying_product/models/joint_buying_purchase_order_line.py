@@ -80,6 +80,11 @@ class JointBuyingPurchaseOrderLine(models.Model):
         readonly=True,
     )
 
+    local_product_id = fields.Many2one(
+        comodel_name="product.product",
+        compute="_compute_local_product_id",
+    )
+
     qty = fields.Float(
         string="Purchase Quantity",
         digits=dp.get_precision("Product Unit of Measure"),
@@ -171,6 +176,11 @@ class JointBuyingPurchaseOrderLine(models.Model):
                 )
 
     # Compute Section
+    @api.depends("product_id")
+    def _compute_local_product_id(self):
+        for line in self:
+            line.local_product_id = line.product_id.get_joint_buying_local_product_id()
+
     @api.depends("product_uom_id", "product_qty", "product_weight", "uom_measure_type")
     def _compute_total_weight(self):
         for line in self.filtered(lambda x: x.uom_measure_type == "unit"):
