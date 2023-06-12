@@ -6,66 +6,22 @@ import time
 from datetime import timedelta
 
 from odoo import fields
-from odoo.exceptions import ValidationError
 from odoo.tests import tagged
-from odoo.tests.common import TransactionCase
+
+from .test_abstract import TestAbstract
 
 
 @tagged("post_install", "-at_install")
-class TestModule(TransactionCase):
+class TestJointBuyingPurchaseOrder(TestAbstract):
     def setUp(self):
         super().setUp()
-        self.ProductProduct = self.env["product.product"].with_context(
-            mail_create_nosubscribe=True
-        )
-        self.IrConfigParameter = self.env["ir.config_parameter"].sudo()
 
-        self.JointBuyingProductProduct = self.env["product.product"].with_context(
-            mail_create_nosubscribe=True, joint_buying=True
-        )
-
-        self.JointBuyingResPartner = self.env["res.partner"].with_context(
-            joint_buying=True
-        )
-
-        self.JointBuyingWizardCreateOrder = self.env["joint.buying.wizard.create.order"]
-        self.OrderGrouped = self.env["joint.buying.purchase.order.grouped"]
-        self.Order = self.env["joint.buying.purchase.order"]
-        self.OrderLine = self.env["joint.buying.purchase.order.line"]
-
-        self.company_ELD = self.env.ref("joint_buying_base.company_ELD")
-        self.company_CDA = self.env.ref("joint_buying_base.company_CDA")
-        self.company_CHE = self.env.ref("joint_buying_base.company_CHE")
-        self.company_3PP = self.env.ref("joint_buying_base.company_3PP")
-        self.company_LSE = self.env.ref("joint_buying_base.company_LSE")
-
-        self.pricelist_ELD = self.env.ref("joint_buying_product.pricelist_10_percent")
-        self.product_ELD_orangettes = self.env.ref(
-            "joint_buying_product.product_ELD_orangettes"
-        )
-        self.product_3PP_orangettes = self.env.ref(
-            "joint_buying_product.product_3PP_orangettes"
-        )
-        self.product_3PP_gingembrettes = self.env.ref(
-            "joint_buying_product.product_3PP_gingembrettes"
-        )
-
-        self.partner_supplier_fumet_dombes = self.env.ref(
-            "joint_buying_base.supplier_fumet_dombes"
-        )
-        self.partner_supplier_benoit_ronzon = self.env.ref(
-            "joint_buying_base.supplier_benoit_ronzon"
-        )
-        self.salaison_devidal = self.JointBuyingResPartner.browse(
-            self.env.ref("joint_buying_base.supplier_salaison_devidal").id
-        )
         self.supplier_oscar_morell = self.JointBuyingResPartner.browse(
             self.env.ref("joint_buying_base.supplier_oscar_morell").id
         )
         self.partner_supplier_PZI = self.env.ref(
             "joint_buying_base.company_PZI"
         ).joint_buying_partner_id
-        self.category_all = self.env.ref("product.product_category_all")
         self.end_date_near_day = int(
             self.IrConfigParameter.get_param("joint_buying_product.end_date_near_day")
         )
@@ -74,194 +30,12 @@ class TestModule(TransactionCase):
                 "joint_buying_product.end_date_imminent_day"
             )
         )
-        self.new_product_day = int(
-            self.IrConfigParameter.get_param("joint_buying_product.new_product_day")
-        )
-
         self.grouped_order_report = self.env.ref(
             "joint_buying_product.action_report_joint_buying_purchase_order_grouped"
         )
 
-    def test_01_search_and_propagate(self):
-        len_local_before_local_creation = len(self.ProductProduct.search([]))
-        len_joint_buying_before_local_creation = len(
-            self.JointBuyingProductProduct.search([])
-        )
-
-        # Create a new local product
-        product_name = "Some Chocolate"
-        new_local_product = self.ProductProduct.create(
-            {
-                "name": product_name,
-                "company_id": self.company_ELD.id,
-                "categ_id": self.category_all.id,
-                "lst_price": 100.0,
-            }
-        )
-
-        # Test if the new product is searchable locally
-        len_local_after_local_creation = len(self.ProductProduct.search([]))
-        self.assertEqual(
-            len_local_before_local_creation + 1,
-            len_local_after_local_creation,
-            "Create a new local product should increase the number of local products",
-        )
-
-        # Test if the new product is not searchable in a joint buying context
-        len_joint_buying_after_local_creation = len(
-            self.JointBuyingProductProduct.search([])
-        )
-        self.assertEqual(
-            len_joint_buying_before_local_creation,
-            len_joint_buying_after_local_creation,
-            "Create a new local product should not increase the number"
-            " of joint buying products",
-        )
-
-        # Test the possibility to offer the local product to the joint buying catalog
-        # Without pricelist
-        new_global_product = new_local_product.create_joint_buying_product()
-
-        len_joint_buying_after_joint_buying_creation = len(
-            self.JointBuyingProductProduct.search([])
-        )
-        self.assertEqual(
-            len_joint_buying_before_local_creation + 1,
-            len_joint_buying_after_joint_buying_creation,
-            "Set a local product as Joint buying should increase the number"
-            " of joint buying products",
-        )
-
-        # Check created global product
-        self.assertNotEqual(new_global_product.id, new_local_product.id)
-
-        self.assertEqual(
-            new_global_product.default_code, new_local_product.default_code
-        )
-
-        self.assertEqual(
-            new_global_product.lst_price,
-            new_local_product.lst_price,
-            "Global Product should has same price as the local product.",
-        )
-
-        # Check that update name on local product update name on global product
-        new_product_name = "Some Chocolate Updated"
-        new_local_product.name = new_product_name
-        self.assertEqual(new_global_product.name, product_name)
-        new_local_product.update_joint_buying_product()
-        self.assertEqual(new_global_product.name, new_product_name)
-
-        # Check that set a joint buying pricelist update the price of the global product
-        self.company_ELD.joint_buying_pricelist_id = self.pricelist_ELD
-        new_local_product.update_joint_buying_product()
-
-        self.assertEqual(
-            new_global_product.lst_price,
-            new_local_product.lst_price * 0.9,
-            "Global Product should has a price depending on joint buying pricelist.",
-        )
-
-    def test_01_B_test_local_global_links_supplier_context(self):
-        self.env.user.company_id = self.company_ELD
-
-        new_local_product = self.ProductProduct.create(
-            {
-                "name": "A New Chocolate @ELD",
-                "company_id": self.company_ELD.id,
-                "categ_id": self.category_all.id,
-                "lst_price": 100.0,
-            }
-        )
-        # Create a chocolate and propagate the information should success
-        # because Elodie D is a supplier
-        new_global_product = new_local_product.create_joint_buying_product()
-        self.assertNotEqual(new_global_product.id, False)
-
-        # Update the information should success because
-        # the global product "is mine"
-        new_local_product.update_joint_buying_product()
-
-        # Try to set new local product for the glocal product
-        with self.assertRaises(ValidationError):
-            new_global_product.set_joint_buying_local_product_id(
-                self.product_ELD_orangettes
-            )
-        with self.assertRaises(ValidationError):
-            new_global_product.set_joint_buying_local_product_id(False)
-
-    def test_01_D_test_local_global_links_not_supplier_context(self):
-        self.env.user.company_id = self.company_3PP
-
-        new_local_product = self.ProductProduct.create(
-            {
-                "name": "A New Chocolate @3PP",
-                "company_id": self.company_3PP.id,
-                "categ_id": self.category_all.id,
-                "lst_price": 100.0,
-            }
-        )
-        # Create a chocolate and propagate the information should fail
-        # because 3PP is not a supplier
-        new_global_product = new_local_product.create_joint_buying_product()
-        self.assertEqual(new_global_product.id, False)
-
-    def test_02_joint_buying_product_creation(self):
-        vals = {
-            "name": "Some Product",
-            "categ_id": self.category_all.id,
-            "joint_buying_partner_id": self.company_ELD.joint_buying_partner_id.id,
-            "company_id": False,
-        }
-
-        # create a product for a supplier that is a seller in odoo
-        # should fail
-        with self.assertRaises(ValidationError):
-            self.JointBuyingProductProduct.create(vals)
-
-        # create a product for a supplier that is not a seller in odoo
-        # should success
-        vals.update(
-            {
-                "name": "Some Product 2",
-                "joint_buying_partner_id": self.partner_supplier_fumet_dombes.id,
-            }
-        )
-        product = self.JointBuyingProductProduct.create(vals)
-
-        # Change partner of a joint buying product should fail
-        with self.assertRaises(ValidationError):
-            product.joint_buying_partner_id = self.salaison_devidal.id
-
-    def _create_order_grouped_by_wizard(self):
-        # configure subscription
-        self.salaison_devidal.joint_buying_subscribed_company_ids = [
-            (6, 0, [self.company_ELD.id, self.company_3PP.id, self.company_CHE.id])
-        ]
-
-        # Use Wizard to create grouped order
-        start_date = fields.datetime.now() + timedelta(days=1)
-        end_date = fields.datetime.now() + timedelta(days=7)
-        deposit_date = fields.datetime.now() + timedelta(days=14)
-
-        wizard = self.JointBuyingWizardCreateOrder.with_context(
-            active_id=self.salaison_devidal.id
-        ).create(
-            {
-                "start_date": start_date,
-                "end_date": end_date,
-                "deposit_date": deposit_date,
-                "deposit_partner_id": self.company_CDA.joint_buying_partner_id.id,
-            }
-        )
-
-        res = wizard.create_order_grouped()
-        order_grouped = self.OrderGrouped.browse(res["res_id"])
-        self.assertEqual(order_grouped.order_qty, 3)
-        return order_grouped
-
-    def test_03_order_grouped_full_workflow(self):
-        order_grouped = self._create_order_grouped_by_wizard()
+    def test_01_order_grouped_full_workflow(self):
+        order_grouped = self._create_order_grouped_salaison_devidal_by_wizard()
 
         # Create an order for the main_company
         res = order_grouped.create_current_order()
@@ -447,36 +221,7 @@ class TestModule(TransactionCase):
         # Generate report to make sure the syntax is correct
         self.grouped_order_report.render_qweb_html(order_grouped.ids)
 
-    def test_04_product_new(self):
-        # Check that new created product are marked as new by default
-        product = self.JointBuyingProductProduct.create(
-            {
-                "name": "Some Product",
-                "categ_id": self.category_all.id,
-                "joint_buying_partner_id": self.partner_supplier_fumet_dombes.id,
-                "company_id": False,
-            }
-        )
-        self.assertTrue(
-            product.joint_buying_is_new,
-            "New Joint buying product should be marked as new",
-        )
-
-        # We hard change product create_date to make it old
-        create_date = fields.datetime.now() + timedelta(
-            days=-(self.new_product_day + 1)
-        )
-        sql = "UPDATE product_product SET create_date=%s WHERE id=%s;"
-        self.env.cr.execute(sql, (create_date, product.id))
-
-        # Check that cron is working to mark product old
-        product.joint_byuing_cron_check_new()
-        self.assertFalse(
-            product.joint_buying_is_new,
-            "Old Joint buying product should not be marked as new",
-        )
-
-    def test_05_joint_buying_purchase_order_grouped_check_date(self):
+    def test_10_joint_buying_purchase_order_grouped_check_date(self):
         now = fields.datetime.now()
 
         self.OrderGrouped.cron_create_purchase_order_grouped()
@@ -545,79 +290,64 @@ class TestModule(TransactionCase):
             now + timedelta(days=+26),
         )
 
-    def test_06_joint_buying_grouped_order_update_product_list(self):
-        def _get_grouped_order():
-            return self.partner_supplier_benoit_ronzon.joint_buying_grouped_order_ids[0]
+    def test_11_joint_buying_grouped_order_update_product_list(self):
 
-        def _get_order():
-            return _get_grouped_order().order_ids[0]
-
-        self.product_ronzon_patatoe_charlotte = self.env.ref(
-            "joint_buying_product.product_ronzon_patatoe_charlotte"
-        )
-        self.product_ronzon_patatoe_cephora = self.env.ref(
-            "joint_buying_product.product_ronzon_patatoe_cephora"
-        )
-        self.product_ronzon_patatoe_agila = self.env.ref(
-            "joint_buying_product.product_ronzon_patatoe_agila"
-        )
-
-        if not self.partner_supplier_benoit_ronzon.joint_buying_grouped_order_ids:
-            self.OrderGrouped.cron_create_purchase_order_grouped()
-        grouped_order = _get_grouped_order()
+        grouped_order = self._get_grouped_order_benoit_ronzon()
 
         # Check 0 : we check that the order is correctly set
 
         # We check if the product product_ronzon_patatoe_charlotte is sold
-        filtered_lines = _get_order().line_ids.filtered(
+        filtered_lines = self._get_order_benoit_ronzon().line_ids.filtered(
             lambda x: x.product_id.id == self.product_ronzon_patatoe_charlotte.id
         )
         self.assertEqual(len(filtered_lines), 1)
 
         # We check if the product product_ronzon_patatoe_cephora is not sold
-        filtered_lines = _get_order().line_ids.filtered(
+        filtered_lines = self._get_order_benoit_ronzon().line_ids.filtered(
             lambda x: x.product_id.id == self.product_ronzon_patatoe_cephora.id
         )
         self.assertEqual(len(filtered_lines), 0)
 
         # We check if the product product_ronzon_patatoe_cephora is not sold
-        filtered_lines = _get_order().line_ids.filtered(
+        filtered_lines = self._get_order_benoit_ronzon().line_ids.filtered(
             lambda x: x.product_id.id == self.product_ronzon_patatoe_agila.id
         )
         self.assertEqual(filtered_lines.price_unit, 1.50)
 
-        initial_count = len(_get_order().line_ids)
+        initial_count = len(self._get_order_benoit_ronzon().line_ids)
         self.assertEqual(initial_count, 2)
 
         # CHECK 1 : product purchase_ok True -> False
         self.product_ronzon_patatoe_charlotte.purchase_ok = False
         grouped_order.update_product_list()
-        filtered_lines = _get_order().line_ids.filtered(
+        filtered_lines = self._get_order_benoit_ronzon().line_ids.filtered(
             lambda x: x.product_id.id == self.product_ronzon_patatoe_charlotte.id
         )
         self.assertEqual(len(filtered_lines), 0)
-        self.assertEqual(len(_get_order().line_ids), initial_count - 1)
+        self.assertEqual(
+            len(self._get_order_benoit_ronzon().line_ids), initial_count - 1
+        )
 
         # CHECK 2 : product purchase_ok False -> True
         self.product_ronzon_patatoe_cephora.purchase_ok = True
         grouped_order.update_product_list()
-        filtered_lines = _get_order().line_ids.filtered(
+        filtered_lines = self._get_order_benoit_ronzon().line_ids.filtered(
             lambda x: x.product_id.id == self.product_ronzon_patatoe_cephora.id
         )
         self.assertEqual(len(filtered_lines), 1)
-        self.assertEqual(len(_get_order().line_ids), initial_count)
+        self.assertEqual(len(self._get_order_benoit_ronzon().line_ids), initial_count)
 
         # CHECK 3 : Change price 1.5 -> 1.99
         self.product_ronzon_patatoe_agila.lst_price = 1.99
         grouped_order.update_product_list()
-        filtered_lines = _get_order().line_ids.filtered(
+        filtered_lines = self._get_order_benoit_ronzon().line_ids.filtered(
             lambda x: x.product_id.id == self.product_ronzon_patatoe_agila.id
         )
         self.assertEqual(len(filtered_lines), 1)
         self.assertEqual(filtered_lines.price_unit, 1.99)
-        self.assertEqual(len(_get_order().line_ids), initial_count)
+        self.assertEqual(len(self._get_order_benoit_ronzon().line_ids), initial_count)
 
-    def test_07_joint_buying_grouped_order_with_categories(self):
+    def test_12_joint_buying_grouped_order_with_categories(self):
         now = fields.datetime.now()
 
         orders_grouped_step_1 = self.OrderGrouped.search(
@@ -684,9 +414,24 @@ class TestModule(TransactionCase):
             " or product allways available.",
         )
 
-    def test_08_joint_buying_grouped_send_mail(self):
+    def test_13_joint_buying_grouped_order_local_product(self):
+        self.env.user.company_id = self.company_LSE
+        order = self._get_order_benoit_ronzon(customer_code="LSE")
+        line_patatoe_agila = order.line_ids.filtered(
+            lambda x: x.product_id == self.product_ronzon_patatoe_agila
+        )
+        line_patatoe_charlotte = order.line_ids.filtered(
+            lambda x: x.product_id == self.product_ronzon_patatoe_charlotte
+        )
+
+        self.assertEqual(
+            line_patatoe_agila.local_product_id, self.product_LSE_patatoe_agila
+        )
+        self.assertFalse(line_patatoe_charlotte.local_product_id)
+
+    def test_20_joint_buying_grouped_send_mail(self):
         # Create a grouped order, with one not null order
-        order_grouped = self._create_order_grouped_by_wizard()
+        order_grouped = self._create_order_grouped_salaison_devidal_by_wizard()
         order_grouped.order_ids[0].line_ids[0].qty = 10
 
         MailWizard = self.env["mail.compose.message.purchase.order.grouped"]

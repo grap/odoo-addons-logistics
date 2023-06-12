@@ -170,6 +170,19 @@
             eval="obj().browse(ref('joint_buying_product.product_ELD_gingembrettes')).joint_buying_product_id.id"/>
     </record>
 
+    <!-- Local Products LSE -->
+    <record id="product_LSE_patatoe_agila" model="product.product">
+        <field name="name">Potatoes Agila (Bag of 10kg) @ Super Mall</field>
+        <field name="type">product</field>
+        <field name="default_code">LSE-PATATOE-AGILA</field>
+        <field name="is_joint_buying" eval="False"/>
+        <field name="company_id" ref="joint_buying_base.company_LSE"/>
+        <field name="joint_buying_product_id" ref="product_ronzon_patatoe_agila"/>
+        <field name="uom_id" ref="uom.product_uom_kgm"/>
+        <field name="uom_po_id" ref="uom.product_uom_kgm"/>
+        <field name="price">2.5</field>
+    </record>
+
     <!-- Local Products PZI -->
     <record id="product_PZI_orange_navelina" model="product.product">
         <field name="default_code">PZI-OR-NAV</field>
