@@ -34,12 +34,12 @@ addon | version | maintainers | summary
 --- | --- | --- | ---
 [joint_buying_account](joint_buying_account/) | 12.0.1.0.2 |  | Joint Buying - Account
 [joint_buying_base](joint_buying_base/) | 12.0.3.0.6 |  | Joint Buying - Base
-[joint_buying_product](joint_buying_product/) | 12.0.2.0.21 |  | Joint Buying - Products
+[joint_buying_product](joint_buying_product/) | 12.0.2.0.22 |  | Joint Buying - Products
 [joint_buying_product_food](joint_buying_product_food/) | 12.0.1.1.3 |  | Joint Buying - Products Food
 [joint_buying_product_label](joint_buying_product_label/) | 12.0.1.0.3 |  | Joint Buying - Product Labels
 [joint_buying_purchase](joint_buying_purchase/) | 12.0.1.0.2 |  | Joint Buying - Purchase
 [joint_buying_sale](joint_buying_sale/) | 12.0.1.1.6 |  | Joint Buying - Sale
-[joint_buying_stock](joint_buying_stock/) | 12.0.1.0.0 |  | Joint Buying - Stock
+[joint_buying_stock](joint_buying_stock/) | 12.0.1.0.1 |  | Joint Buying - Stock
 
 [//]: # (end addons)
 
