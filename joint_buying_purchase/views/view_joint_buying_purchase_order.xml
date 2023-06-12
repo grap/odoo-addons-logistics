@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+Copyright (C) 2023 - Today: GRAP (http://www.grap.coop)
+@author: Sylvain LE GAL (https://twitter.com/legalsylvain)
+License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl.html).
+-->
+<odoo>
+
+    <record id="view_joint_buying_purchase_order_form" model="ir.ui.view">
+        <field name="model">joint.buying.purchase.order</field>
+        <field name="inherit_id" ref="joint_buying_product.view_joint_buying_purchase_order_form"/>
+        <field name="arch" type="xml">
+            <button name="action_skip_purchase" position="after">
+                <button name="%(joint_buying_purchase.action_wizard_create_purchase_order)d" string="Generate Purchase Order"
+                    type="action" class="btn-primary"
+                    attrs="{'invisible': ['|', '|',
+                        ('purchase_state', '!=', 'done'),
+                        ('is_mine_customer', '=', False),
+                        ('purchase_order_id', '!=', False),
+                    ]}"
+                    />
+            </button>
+
+            <field name="deposit_date" position="after">
+                <field name="purchase_order_id" attrs="{'invisible': [('purchase_order_id', '=', False)]}"/>
+            </field>
+        </field>
+    </record>
+
+</odoo>

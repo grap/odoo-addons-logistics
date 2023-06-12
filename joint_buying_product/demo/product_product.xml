@@ -151,6 +151,25 @@
         />
     </function>
 
+    <!-- Local Products 3PP -->
+    <record id="product_3PP_orangettes" model="product.product">
+        <field name="default_code">3PP-ORANGETTE</field>
+        <field name="is_joint_buying" eval="False"/>
+        <field name="company_id" ref="joint_buying_base.company_3PP"/>
+        <field name="name">Orangette Sachet 200gr @ Three Peas</field>
+        <field name="joint_buying_product_id" model="product.product"
+            eval="obj().browse(ref('joint_buying_product.product_ELD_orangettes')).joint_buying_product_id.id"/>
+    </record>
+
+    <record id="product_3PP_gingembrettes" model="product.product">
+        <field name="default_code">3PP-GINGEMBRETTE</field>
+        <field name="is_joint_buying" eval="False"/>
+        <field name="company_id" ref="joint_buying_base.company_3PP"/>
+        <field name="name">Gingembrette Sachet 200gr @ Three Peas</field>
+        <field name="joint_buying_product_id" model="product.product"
+            eval="obj().browse(ref('joint_buying_product.product_ELD_gingembrettes')).joint_buying_product_id.id"/>
+    </record>
+
     <!-- Local Products PZI -->
     <record id="product_PZI_orange_navelina" model="product.product">
         <field name="default_code">PZI-OR-NAV</field>

@@ -59,6 +59,13 @@ class ProductProduct(models.Model):
         copy=False,
     )
 
+    joint_buying_is_mine = fields.Boolean(
+        readonly=True,
+        help="Mention if the related joint buying product"
+        " is sold by the company of the current product.",
+        copy=False,
+    )
+
     joint_buying_category_id = fields.Many2one(
         string="Joint Buying Category",
         comodel_name="joint.buying.category",
@@ -150,6 +157,16 @@ class ProductProduct(models.Model):
             ]
         )
         return products and products[0] or False
+
+    def set_joint_buying_local_product_id(self, new_local_product):
+        self.ensure_one()
+        current_local_product = self.get_joint_buying_local_product_id()
+        if current_local_product == new_local_product:
+            # Nothing change
+            return
+        if current_local_product:
+            raise ValidationError(_("Unimplemented Feature"))
+        new_local_product.joint_buying_product_id = self and self.id
 
     @api.model
     def joint_byuing_cron_check_new(self):
