@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<odoo>
+
+    <record id="joint_buying_product.product_LSE_patatoe_agila" model="product.product">
+        <field name="type">product</field>
+    </record>
+
+</odoo>

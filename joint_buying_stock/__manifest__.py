@@ -16,6 +16,9 @@
     "data": [
         "views/view_joint_buying_purchase_order.xml",
     ],
+    "demo": [
+        "demo/product_product.xml",
+    ],
     "installable": True,
     "auto_install": True,
 }

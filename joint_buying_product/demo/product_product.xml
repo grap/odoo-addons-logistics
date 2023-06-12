@@ -173,7 +173,6 @@
     <!-- Local Products LSE -->
     <record id="product_LSE_patatoe_agila" model="product.product">
         <field name="name">Potatoes Agila (Bag of 10kg) @ Super Mall</field>
-        <field name="type">product</field>
         <field name="default_code">LSE-PATATOE-AGILA</field>
         <field name="is_joint_buying" eval="False"/>
         <field name="company_id" ref="joint_buying_base.company_LSE"/>
