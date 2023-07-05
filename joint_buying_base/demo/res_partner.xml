@@ -108,6 +108,8 @@
         <field name="customer" eval="False"/>
         <field name="supplier" eval="False"/>
         <field name="company_id" eval="False"/>
+        <field name="partner_latitude">45.56650356987968</field>
+        <field name="partner_longitude">5.637343182496801</field>
     </record>
 
     <record id="supplier_ELD_at_3PP" model="res.partner">

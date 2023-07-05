@@ -1,9 +1,7 @@
 # Copyright (C) 2021 - Today: GRAP (http://www.grap.coop)
 # @author: Sylvain LE GAL (https://twitter.com/legalsylvain)
 # License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl.html).
-from datetime import timedelta
 
-from odoo import fields
 from odoo.exceptions import AccessError, ValidationError
 from odoo.tests import tagged
 from odoo.tests.common import TransactionCase
@@ -16,8 +14,6 @@ class TestModule(TransactionCase):
         self.company_3PP = self.env.ref("joint_buying_base.company_3PP")
         self.user_3PP = self.env.ref("joint_buying_base.user_joint_buying_user")
         self.ResCompany = self.env["res.company"]
-        self.TourWizard = self.env["joint.buying.wizard.set.tour"]
-        self.JointBuyingTour = self.env["joint.buying.tour"]
         self.ResPartner = self.env["res.partner"].with_context(
             mail_create_nosubscribe=True
         )
@@ -27,7 +23,6 @@ class TestModule(TransactionCase):
         self.company_ELD = self.env.ref("joint_buying_base.company_ELD")
         self.company_CHE = self.env.ref("joint_buying_base.company_CHE")
         self.company_3PP = self.env.ref("joint_buying_base.company_3PP")
-        self.carrier = self.env.ref("joint_buying_base.carrier_coolivri_lyon")
 
     # Test Section
     def test_01_write_company_to_partner_info(self):
@@ -187,11 +182,6 @@ class TestModule(TransactionCase):
             extra_vals={"joint_buying_pivot_company_id": self.company_3PP.id}
         )
 
-    def test_09_set_tour_via_wizard(self):
-        tour = self._create_tour()
-        self.assertEqual(tour.distance, 0)
-        self.assertEqual(len(tour.line_ids), 0)
-
     # Custom Functions
     def _create_supplier(self, user=False, extra_vals=False):
         if not user:
@@ -202,16 +192,3 @@ class TestModule(TransactionCase):
             self.ResPartner.sudo(user).with_context(joint_buying=True).create(vals)
         )
         return supplier
-
-    def _create_tour(self, user=False, extra_vals=False):
-        if not user:
-            user = self.env.user
-        vals = {
-            "name": "My Tour",
-            "carrier_id": self.carrier.id,
-            "start_date": fields.datetime.now(),
-            "end_date": fields.datetime.now() + timedelta(hours=4),
-        }
-        vals.update(extra_vals or {})
-        tour = self.JointBuyingTour.sudo(user).create(vals)
-        return tour

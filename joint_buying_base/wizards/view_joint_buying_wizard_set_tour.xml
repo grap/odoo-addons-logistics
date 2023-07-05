@@ -12,13 +12,22 @@ License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl.html).
                 <group>
                     <group>
                         <field name="tour_id" readonly="1"/>
+                        <field name="starting_point_id"/>
                     </group>
                 </group>
                 <separator string="Steps"/>
                 <field name="line_ids">
                     <tree editable="bottom">
-                        <field name="sequence" widget="handle"/>
-                        <field name="point_id"/>
+                        <field name="sequence" widget="sequence"/>
+                        <field name="sequence_type"/>
+                        <field name="point_id" attrs="{
+                            'invisible': [('sequence_type', '=', 'handling')],
+                            'required=': [('sequence_type', '=', 'journey')],
+                        }"/>
+                        <field name="duration" widget="float_time"/>
+                        <field name="distance" attrs="{
+                            'invisible': [('sequence_type', '=', 'handling')],
+                        }"/>
                     </tree>
                 </field>
                 <footer>

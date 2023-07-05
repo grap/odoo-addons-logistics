@@ -2,6 +2,8 @@
 # @author: Sylvain LE GAL (https://twitter.com/legalsylvain)
 # License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl.html).
 
+from datetime import timedelta
+
 from odoo import _, api, fields, models
 
 from .res_partner import _JOINT_BUYING_PARTNER_CONTEXT
@@ -22,7 +24,6 @@ class JointBuyingTour(models.Model):
     distance = fields.Float(
         compute="_compute_distance",
         store=True,
-        help="Distance as the crow flies, in kilometer",
     )
 
     carrier_id = fields.Many2one(
@@ -31,7 +32,11 @@ class JointBuyingTour(models.Model):
 
     start_date = fields.Datetime(required=True, track_visibility=True)
 
-    end_date = fields.Datetime(required=True, track_visibility=True)
+    end_date = fields.Datetime(
+        compute="_compute_end_fields", store=True, track_visibility=True
+    )
+
+    duration = fields.Float(compute="_compute_end_fields", store=True)
 
     starting_point_id = fields.Many2one(
         comodel_name="res.partner",
@@ -65,7 +70,10 @@ class JointBuyingTour(models.Model):
     @api.depends("line_ids")
     def _compute_stop_qty(self):
         for tour in self:
-            tour.stop_qty = len(tour.line_ids) - 1
+            tour.stop_qty = max(
+                0,
+                len(tour.line_ids.filtered(lambda x: x.sequence_type == "journey")) - 1,
+            )
 
     @api.depends("carrier_id.name", "stop_qty")
     def _compute_calendar_description(self):
@@ -85,15 +93,24 @@ class JointBuyingTour(models.Model):
         for tour in self:
             tour.distance = sum(tour.mapped("line_ids.distance"))
 
+    @api.depends("line_ids.duration", "start_date")
+    def _compute_end_fields(self):
+        for tour in self:
+            tour.duration = sum(tour.mapped("line_ids.duration"))
+            tour.end_date = tour.start_date + timedelta(hours=tour.duration or 1)
+
     @api.depends(
         "line_ids.starting_point_id", "line_ids.sequence", "line_ids.arrival_point_id"
     )
     def _compute_points(self):
         for tour in self:
-            if not tour.line_ids:
+            journey_lines = tour.line_ids.filtered(
+                lambda x: x.sequence_type == "journey"
+            )
+            if not journey_lines:
                 continue
-            tour.starting_point_id = tour.line_ids[0].starting_point_id
-            tour.arrival_point_id = tour.line_ids[-1].arrival_point_id
+            tour.starting_point_id = journey_lines[0].starting_point_id
+            tour.arrival_point_id = journey_lines[-1].arrival_point_id
 
     # Overload Section
     @api.multi
@@ -103,20 +120,5 @@ class JointBuyingTour(models.Model):
         default["name"] = _("%s (copy)") % self.name
         return super().copy(default)
 
-    # Custom Section
-    @api.multi
-    def change_tour_lines(self, wizard_lines):
-        self.ensure_one()
-        TourLine = self.env["joint.buying.tour.line"]
-
-        self.line_ids.unlink()
-
-        for i in range(len(wizard_lines))[:-1]:
-            TourLine.create(
-                {
-                    "sequence": i,
-                    "tour_id": self.id,
-                    "starting_point_id": wizard_lines[i].point_id.id,
-                    "arrival_point_id": wizard_lines[i + 1].point_id.id,
-                }
-            )
+    def estimate_route(self):
+        self.mapped("line_ids").estimate_route()

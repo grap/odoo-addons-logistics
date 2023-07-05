@@ -14,6 +14,8 @@
         <field name="city">Lyon</field>
         <field name="zip">69004</field>
         <field name="country_id" ref="base.fr"/>
+        <field name="partner_latitude">45.77646614690542</field>
+        <field name="partner_longitude">4.833008453675811</field>
     </record>
 
     <record id="company_3PP" model="res.company">
@@ -24,6 +26,8 @@
         <field name="city">Lyon</field>
         <field name="zip">69007</field>
         <field name="country_id" ref="base.fr"/>
+        <field name="partner_latitude">45.74851940483866</field>
+        <field name="partner_longitude">4.839314069016747</field>
     </record>
 
     <record id="company_C3P" model="res.company">
@@ -34,16 +38,20 @@
         <field name="city">Portes-lès-Valence</field>
         <field name="zip">26800</field>
         <field name="country_id" ref="base.fr"/>
+        <field name="partner_latitude">44.882324811226006</field>
+        <field name="partner_longitude">4.891729782449202</field>
     </record>
 
     <record id="company_CDA" model="res.company">
         <field name="code">CDA</field>
         <field name="name">[CDA - Artichoke Heart]</field>
         <field name="email">no-spam@coeurdartichaut.org</field>
-        <field name="street"> 22 rue de saint Agrève  </field>
+        <field name="street">22 rue de saint Agrève</field>
         <field name="city">Tence</field>
         <field name="zip">43190</field>
         <field name="country_id" ref="base.fr"/>
+        <field name="partner_latitude">45.113401714197586</field>
+        <field name="partner_longitude">4.2917803810108515</field>
     </record>
 
     <record id="company_CHE" model="res.company">
@@ -54,26 +62,20 @@
         <field name="city">Saint-Sauveur-de-Montagut</field>
         <field name="zip">07190</field>
         <field name="country_id" ref="base.fr"/>
+        <field name="partner_latitude">44.82201059050429</field>
+        <field name="partner_longitude">4.5807232112807545</field>
     </record>
 
     <record id="company_CRB" model="res.company">
         <field name="code">CRB</field>
         <field name="name">[CRB - Fang Bauges]</field>
         <field name="email">no-spam@biobauges.com</field>
-        <field name="street">Impasse du Nant d'Orange</field>
+        <field name="street">30 Impasse du Nant d'Orange</field>
         <field name="city">Lescheraines</field>
         <field name="zip">73340</field>
         <field name="country_id" ref="base.fr"/>
-    </record>
-
-    <record id="company_DOZ" model="res.company">
-        <field name="code">DOZ</field>
-        <field name="name">[DOZ - The Right Doze]</field>
-        <field name="email">no-spam@bonnedoze.fr</field>
-        <field name="street">2 Rue Henri Legay</field>
-        <field name="city">Villeurbanne</field>
-        <field name="zip">69100</field>
-        <field name="country_id" ref="base.fr"/>
+        <field name="partner_latitude">45.71948980151224</field>
+        <field name="partner_longitude">6.105972209493155</field>
     </record>
 
     <record id="company_EDC" model="res.company">
@@ -84,6 +86,8 @@
         <field name="city">Novalaise</field>
         <field name="zip">73470</field>
         <field name="country_id" ref="base.fr"/>
+        <field name="partner_latitude">45.59524332992821</field>
+        <field name="partner_longitude">5.770232580648787</field>
     </record>
 
     <record id="company_ELD" model="res.company">
@@ -94,6 +98,8 @@
         <field name="city">St Maurice sur Dargoire</field>
         <field name="zip">69440</field>
         <field name="country_id" ref="base.fr"/>
+        <field name="partner_latitude">45.59040298097635</field>
+        <field name="partner_longitude">4.635941555753008</field>
     </record>
 
     <record id="company_LSE" model="res.company">
@@ -104,6 +110,8 @@
         <field name="city">Oullins</field>
         <field name="zip">69600</field>
         <field name="country_id" ref="base.fr"/>
+        <field name="partner_latitude">45.71355112210139</field>
+        <field name="partner_longitude">4.819783362129657</field>
     </record>
 
     <record id="company_PZI" model="res.company">
@@ -115,6 +123,8 @@
         <field name="city">Annecy-Le-Vieux</field>
         <field name="zip">74940</field>
         <field name="country_id" ref="base.fr"/>
+        <field name="partner_latitude">45.929312169478244</field>
+        <field name="partner_longitude">6.1653444383436256</field>
     </record>
 
     <record id="company_TOU" model="res.company">
@@ -126,6 +136,8 @@
         <field name="city">Beauchastel</field>
         <field name="zip">07800</field>
         <field name="country_id" ref="base.fr"/>
+        <field name="partner_latitude">44.82939043303582</field>
+        <field name="partner_longitude">4.7830685959383406</field>
     </record>
 
     <record id="company_VEV" model="res.company">
@@ -136,6 +148,8 @@
         <field name="city">Saint-Etienne</field>
         <field name="zip">42000</field>
         <field name="country_id" ref="base.fr"/>
+        <field name="partner_latitude">45.44154290945075</field>
+        <field name="partner_longitude">4.3889082689952605</field>
     </record>
 
     <function model="res.company" name="write">
@@ -143,7 +157,6 @@
                 ref('joint_buying_base.company_1GG'),
                 ref('joint_buying_base.company_3PP'),
                 ref('joint_buying_base.company_CHE'),
-                ref('joint_buying_base.company_DOZ'),
             ]"/>
         <value eval="{
             'is_joint_buying_customer': True,
