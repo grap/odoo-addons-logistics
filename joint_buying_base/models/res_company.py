@@ -60,6 +60,8 @@ class ResCompany(models.Model):
             "email": self.email,
             "phone": self.phone,
             "website": self.website,
+            "partner_latitude": self.partner_latitude,
+            "partner_longitude": self.partner_longitude,
         }
         for field_name in ADDRESS_FIELDS:
             value = getattr(self, field_name)

@@ -253,7 +253,6 @@ msgstr "Créé le"
 #: model:res.company,overdue_msg:joint_buying_base.company_CDA
 #: model:res.company,overdue_msg:joint_buying_base.company_CHE
 #: model:res.company,overdue_msg:joint_buying_base.company_CRB
-#: model:res.company,overdue_msg:joint_buying_base.company_DOZ
 #: model:res.company,overdue_msg:joint_buying_base.company_EDC
 #: model:res.company,overdue_msg:joint_buying_base.company_ELD
 #: model:res.company,overdue_msg:joint_buying_base.company_LSE

@@ -12,8 +12,10 @@
         "base",
         "mail",
         # OCA
-        "base_geolocalize_openstreetmap",
+        "base_geolocalize_company",
         "res_company_code",
+        "web_notify",
+        "web_view_leaflet_map_partner",
         # GRAP
         "name_search_reset_res_partner",
     ],

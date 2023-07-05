@@ -58,8 +58,13 @@ License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl.html).
         <field name="arch" type="xml">
             <form>
                 <header>
-                    <button type="action" class="oe_stat_button" string="Configure"
-                            name="%(joint_buying_base.action_tour_2_wizard_set_tour)d"/>
+                     <button type="action" class="oe_highlight" string="Configure"
+                            name="%(joint_buying_base.action_tour_2_wizard_set_tour)d"
+                            attrs="{'invisible': [('stop_qty', '!=', 0)]}"/>
+                     <button type="action" string="Configure"
+                            name="%(joint_buying_base.action_tour_2_wizard_set_tour)d"
+                            attrs="{'invisible': [('stop_qty', '=', 0)]}"/>
+                    <button type="object" name="estimate_route" string="Estimate Route"/>
                 </header>
                 <sheet>
                     <div class="oe_button_box" name="button_box" />
@@ -73,16 +78,10 @@ License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl.html).
                             <field name="start_date"/>
                             <field name="end_date"/>
                             <field name="starting_point_id"/>
-                            <field name="arrival_point_id" attrs="{'invisible': [('is_loop', '=', True)]}"/>
-                            <newline/>
+                            <field name="arrival_point_id"/>
+                            <field name="duration" widget="float_time"/>
+                            <field name="distance"/>
                             <field name="carrier_id"/>
-                        </group>
-                        <group colspan="4" col="4">
-                            <label for="distance"/>
-                            <div class="o_row">
-                                <field name="distance"/>
-                                <span>km</span>
-                            </div>
                             <field name="stop_qty"/>
                             <field name="is_loop" invisible="1"/>
                         </group>
@@ -91,10 +90,20 @@ License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl.html).
                         <page name="lines" string="Steps">
                             <field name="line_ids">
                                 <tree editable="botttom">
-                                    <field name="sequence" widget="handle"/>
-                                    <field name="starting_point_id"/>
-                                    <field name="arrival_point_id"/>
-                                    <field name="distance"/>
+                                    <field name="sequence" invisible="1"/>
+                                    <field name="sequence_type"/>
+                                    <field name="starting_point_id" attrs="{
+                                        'invisible': [('sequence_type', '=', 'handling')],
+                                        'required': [('sequence_type', '=', 'journey')],
+                                    }"/>
+                                    <field name="arrival_point_id" attrs="{
+                                        'invisible': [('sequence_type', '=', 'handling')],
+                                        'required': [('sequence_type', '=', 'journey')],
+                                    }"/>
+                                    <field name="duration" widget="float_time" sum="Total Duration"/>
+                                    <field name="distance" attrs="{
+                                        'invisible': [('sequence_type', '=', 'handling')],
+                                    }" sum="Total Distance"/>
                                 </tree>
                             </field>
                         </page>
@@ -119,9 +128,9 @@ License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl.html).
 
     <menuitem id="menu_joint_buying_tour_all"
         name="Tours"
-        parent="menu_root"
+        parent="menu_journey"
         action="action_joint_buying_tour_all"
-        sequence="30"
+        sequence="10"
     />
 
 </odoo>

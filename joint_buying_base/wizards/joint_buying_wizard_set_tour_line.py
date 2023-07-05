@@ -12,16 +12,23 @@ class JointBuyingWizardSetTourLine(models.TransientModel):
     _description = "Joint Buying Wizard Set Tour Line"
     _order = "sequence"
 
-    sequence = fields.Integer()
+    sequence = fields.Integer(default=1000)
+
+    sequence_type = fields.Selection(
+        selection=[("journey", "Journey"), ("handling", "Handling")], required=True
+    )
 
     wizard_id = fields.Many2one(
         comodel_name="joint.buying.wizard.set.tour", ondelete="cascade", required=True
     )
 
     point_id = fields.Many2one(
-        required=True,
         string="Step",
         comodel_name="res.partner",
         context=_JOINT_BUYING_PARTNER_CONTEXT,
         domain="[('is_joint_buying_stage', '=', True)]",
     )
+
+    duration = fields.Float()
+
+    distance = fields.Float()

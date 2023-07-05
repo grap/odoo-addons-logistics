@@ -25,7 +25,6 @@
             (4, ref('joint_buying_base.company_CDA')),
             (4, ref('joint_buying_base.company_CHE')),
             (4, ref('joint_buying_base.company_CRB')),
-            (4, ref('joint_buying_base.company_DOZ')),
             (4, ref('joint_buying_base.company_EDC')),
             (4, ref('joint_buying_base.company_ELD')),
             (4, ref('joint_buying_base.company_LSE')),
@@ -80,7 +79,6 @@
             (4, ref('joint_buying_base.company_1GG')),
             (4, ref('joint_buying_base.company_3PP')),
             (4, ref('joint_buying_base.company_CHE')),
-            (4, ref('joint_buying_base.company_DOZ')),
             (4, ref('joint_buying_base.company_ELD')),
             (4, ref('joint_buying_base.company_LSE')),
         ]" />

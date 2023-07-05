@@ -18,6 +18,12 @@ License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl.html).
         sequence="15"
     />
 
+    <menuitem id="menu_journey"
+        name="Journeys"
+        parent="menu_root"
+        sequence="20"
+    />
+
     <menuitem id="menu_configuration"
         name="Configuration"
         parent="menu_root"
