@@ -6,19 +6,22 @@
 -->
 <odoo>
 
-    <record id="carrier_coolivri_lyon" model="joint.buying.carrier">
-        <field name="name">Coolivri Lyon</field>
+    <record id="carrier_coolivri_grap" model="joint.buying.carrier">
+        <field name="name">Coolivri GRAP</field>
         <field name="is_provider" eval="False"/>
+        <field name="currency_id" ref="base.EUR"/>
     </record>
 
     <record id="carrier_coolivri_savoie" model="joint.buying.carrier">
         <field name="name">Coolivri Savoie</field>
         <field name="is_provider" eval="False"/>
+        <field name="currency_id" ref="base.EUR"/>
     </record>
 
-    <record id="carrier_teddy_bear" model="joint.buying.carrier">
-        <field name="name">Teddy Bear</field>
-        <field name="is_provider" eval="True"/>
+    <record id="carrier_coolivri_chevre" model="joint.buying.carrier">
+        <field name="name">Coolivri Chèvre Choux</field>
+        <field name="is_provider" eval="False"/>
+        <field name="currency_id" ref="base.EUR"/>
     </record>
 
 </odoo>

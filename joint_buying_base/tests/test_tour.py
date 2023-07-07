@@ -13,7 +13,7 @@ class TestModule(TransactionCase):
         super().setUp()
         self.JointBuyingTour = self.env["joint.buying.tour"]
         self.WizardTour = self.env["joint.buying.wizard.set.tour"]
-        self.carrier = self.env.ref("joint_buying_base.carrier_coolivri_lyon")
+        self.carrier = self.env.ref("joint_buying_base.carrier_coolivri_grap")
         self.point_romagnieu = self.env.ref("joint_buying_base.place_romagnieu")
         self.point_3PP = self.env.ref(
             "joint_buying_base.company_3PP"
