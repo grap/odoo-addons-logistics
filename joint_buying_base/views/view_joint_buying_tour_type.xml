@@ -1,34 +1,33 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!--
-Copyright (C) 2021 - Today: GRAP (http://www.grap.coop)
+Copyright (C) 2023 - Today: GRAP (http://www.grap.coop)
 @author: Sylvain LE GAL (https://twitter.com/legalsylvain)
 License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl.html).
 -->
 <odoo>
 
-    <record id="view_joint_buying_carrier_search" model="ir.ui.view">
-        <field name="model">joint.buying.carrier</field>
+    <record id="view_joint_buying_tour_type_search" model="ir.ui.view">
+        <field name="model">joint.buying.tour.type</field>
         <field name="arch" type="xml">
             <search>
                 <field name="name"/>
-                <field name="is_provider"/>
+                <field name="carrier_id"/>
             </search>
         </field>
     </record>
 
-    <record id="view_joint_buying_carrier_tree" model="ir.ui.view">
-        <field name="model">joint.buying.carrier</field>
+    <record id="view_joint_buying_tour_type_tree" model="ir.ui.view">
+        <field name="model">joint.buying.tour.type</field>
         <field name="arch" type="xml">
             <tree>
                 <field name="name"/>
-                <field name="is_provider"/>
-                <field name="payload"/>
+                <field name="carrier_id"/>
             </tree>
         </field>
     </record>
 
-    <record id="view_joint_buying_carrier_form" model="ir.ui.view">
-        <field name="model">joint.buying.carrier</field>
+    <record id="view_joint_buying_tour_type_form" model="ir.ui.view">
+        <field name="model">joint.buying.tour.type</field>
         <field name="arch" type="xml">
             <form>
                 <header />
@@ -40,18 +39,7 @@ License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl.html).
                         </h1>
                     </div>
                     <group>
-                        <group>
-                            <field name="is_provider"/>
-                            <label for="payload"/>
-                            <div class="o_row">
-                                <field name="payload"/>
-                                <span>kg</span>
-                            </div>
-                            <field name="hourly_cost"/>
-                            <field name="kilometer_cost"/>
-                            <field name="currency_id" groups="base.group_multi_currency"/>
-                        </group>
-                        <group/>
+                        <field name="carrier_id"/>
                     </group>
                 </sheet>
                 <div class="oe_chatter">
@@ -63,18 +51,18 @@ License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl.html).
         </field>
     </record>
 
-    <record id="action_joint_buying_carrier" model="ir.actions.act_window">
-        <field name="name">Carriers</field>
+    <record id="action_joint_buying_tour_type" model="ir.actions.act_window">
+        <field name="name">Tour Types</field>
         <field name="type">ir.actions.act_window</field>
-        <field name="res_model">joint.buying.carrier</field>
+        <field name="res_model">joint.buying.tour.type</field>
         <field name="view_type">form</field>
         <field name="view_mode">tree,form</field>
     </record>
 
-    <menuitem id="menu_joint_buying_carrier"
-        name="Carriers"
+    <menuitem id="menu_joint_buying_tour_type"
+        name="Tour Types"
         parent="menu_configuration"
-        action="action_joint_buying_carrier"
+        action="action_joint_buying_tour_type"
         groups="group_joint_buying_manager"
         sequence="1"
     />

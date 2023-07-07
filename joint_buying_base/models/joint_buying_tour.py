@@ -26,8 +26,10 @@ class JointBuyingTour(models.Model):
         store=True,
     )
 
-    carrier_id = fields.Many2one(
-        comodel_name="joint.buying.carrier", string="Carrier", required=True
+    carrier_id = fields.Many2one(comodel_name="joint.buying.carrier", required=True)
+
+    type_id = fields.Many2one(
+        comodel_name="joint.buying.tour.type",
     )
 
     start_date = fields.Datetime(required=True, track_visibility=True)
@@ -66,7 +68,38 @@ class JointBuyingTour(models.Model):
 
     is_loop = fields.Boolean(string="Is a Loop", compute="_compute_is_loop", store=True)
 
+    hourly_cost = fields.Monetary(currency_field="currency_id")
+
+    kilometer_cost = fields.Monetary(currency_field="currency_id")
+
+    cost = fields.Monetary(
+        compute="_compute_cost", store=True, currency_field="currency_id"
+    )
+
+    currency_id = fields.Many2one(
+        comodel_name="res.currency", related="carrier_id.currency_id"
+    )
+
+    @api.onchange("type_id")
+    def _onchange_type_id(self):
+        if self.type_id and self.type_id.carrier_id:
+            self.carrier_id = self.type_id.carrier_id
+
+    @api.onchange("carrier_id")
+    def _onchange_carrier_id(self):
+        if self.carrier_id:
+            self.payload = self.carrier_id.payload
+            self.hourly_cost = self.carrier_id.hourly_cost
+            self.kilometer_cost = self.carrier_id.kilometer_cost
+
     # Compute Section
+    @api.depends("hourly_cost", "kilometer_cost", "duration", "distance")
+    def _compute_cost(self):
+        for tour in self:
+            tour.cost = (tour.duration * tour.hourly_cost) + (
+                tour.distance * tour.kilometer_cost
+            )
+
     @api.depends("line_ids")
     def _compute_stop_qty(self):
         for tour in self:
