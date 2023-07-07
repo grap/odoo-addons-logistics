@@ -16,6 +16,7 @@
         <field name="country_id" ref="base.fr"/>
         <field name="partner_latitude">45.77646614690542</field>
         <field name="partner_longitude">4.833008453675811</field>
+        <field name="logo" type="base64" file="joint_buying_base/static/img/company_1GG-logo.png"/>
     </record>
 
     <record id="company_3PP" model="res.company">
@@ -28,6 +29,7 @@
         <field name="country_id" ref="base.fr"/>
         <field name="partner_latitude">45.74851940483866</field>
         <field name="partner_longitude">4.839314069016747</field>
+        <field name="logo" type="base64" file="joint_buying_base/static/img/company_3PP-logo.png"/>
     </record>
 
     <record id="company_C3P" model="res.company">
@@ -40,6 +42,7 @@
         <field name="country_id" ref="base.fr"/>
         <field name="partner_latitude">44.882324811226006</field>
         <field name="partner_longitude">4.891729782449202</field>
+        <field name="logo" type="base64" file="joint_buying_base/static/img/company_C3P-logo.png"/>
     </record>
 
     <record id="company_CDA" model="res.company">
@@ -52,6 +55,7 @@
         <field name="country_id" ref="base.fr"/>
         <field name="partner_latitude">45.113401714197586</field>
         <field name="partner_longitude">4.2917803810108515</field>
+        <field name="logo" type="base64" file="joint_buying_base/static/img/company_CDA-logo.png"/>
     </record>
 
     <record id="company_CHE" model="res.company">
@@ -64,6 +68,7 @@
         <field name="country_id" ref="base.fr"/>
         <field name="partner_latitude">44.82201059050429</field>
         <field name="partner_longitude">4.5807232112807545</field>
+        <field name="logo" type="base64" file="joint_buying_base/static/img/company_CHE-logo.png"/>
     </record>
 
     <record id="company_CRB" model="res.company">
@@ -76,6 +81,7 @@
         <field name="country_id" ref="base.fr"/>
         <field name="partner_latitude">45.71948980151224</field>
         <field name="partner_longitude">6.105972209493155</field>
+        <field name="logo" type="base64" file="joint_buying_base/static/img/company_CRB-logo.png"/>
     </record>
 
     <record id="company_EDC" model="res.company">
@@ -88,6 +94,7 @@
         <field name="country_id" ref="base.fr"/>
         <field name="partner_latitude">45.59524332992821</field>
         <field name="partner_longitude">5.770232580648787</field>
+        <field name="logo" type="base64" file="joint_buying_base/static/img/company_EDC-logo.png"/>
     </record>
 
     <record id="company_ELD" model="res.company">
@@ -100,6 +107,7 @@
         <field name="country_id" ref="base.fr"/>
         <field name="partner_latitude">45.59040298097635</field>
         <field name="partner_longitude">4.635941555753008</field>
+        <field name="logo" type="base64" file="joint_buying_base/static/img/company_ELD-logo.png"/>
     </record>
 
     <record id="company_LSE" model="res.company">
@@ -112,6 +120,7 @@
         <field name="country_id" ref="base.fr"/>
         <field name="partner_latitude">45.71355112210139</field>
         <field name="partner_longitude">4.819783362129657</field>
+        <field name="logo" type="base64" file="joint_buying_base/static/img/company_LSE-logo.png"/>
     </record>
 
     <record id="company_PZI" model="res.company">
@@ -125,6 +134,7 @@
         <field name="country_id" ref="base.fr"/>
         <field name="partner_latitude">45.929312169478244</field>
         <field name="partner_longitude">6.1653444383436256</field>
+        <field name="logo" type="base64" file="joint_buying_base/static/img/company_PZI-logo.png"/>
     </record>
 
     <record id="company_TOU" model="res.company">
@@ -138,6 +148,7 @@
         <field name="country_id" ref="base.fr"/>
         <field name="partner_latitude">44.82939043303582</field>
         <field name="partner_longitude">4.7830685959383406</field>
+        <field name="logo" type="base64" file="joint_buying_base/static/img/company_TOU-logo.png"/>
     </record>
 
     <record id="company_VEV" model="res.company">
@@ -150,6 +161,7 @@
         <field name="country_id" ref="base.fr"/>
         <field name="partner_latitude">45.44154290945075</field>
         <field name="partner_longitude">4.3889082689952605</field>
+        <field name="logo" type="base64" file="joint_buying_base/static/img/company_VEV-logo.png"/>
     </record>
 
     <function model="res.company" name="write">
