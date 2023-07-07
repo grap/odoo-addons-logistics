@@ -6,8 +6,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Odoo Server 12.0\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2022-05-25 10:20+0000\n"
-"PO-Revision-Date: 2022-05-25 10:20+0000\n"
+"POT-Creation-Date: 2023-07-07 23:17+0000\n"
+"PO-Revision-Date: 2023-07-07 23:17+0000\n"
 "Last-Translator: <>\n"
 "Language-Team: \n"
 "MIME-Version: 1.0\n"
@@ -16,10 +16,10 @@ msgstr ""
 "Plural-Forms: \n"
 
 #. module: joint_buying_base
-#: code:addons/joint_buying_base/models/joint_buying_tour.py:103
+#: code:addons/joint_buying_base/models/joint_buying_tour.py:153
 #, python-format
 msgid "%s (copy)"
-msgstr ""%s (copie)""
+msgstr "%s (copie)"
 
 #. module: joint_buying_base
 #: model_terms:ir.ui.view,arch_db:joint_buying_base.view_res_partner_form
@@ -47,25 +47,23 @@ msgid "<span>kg</span>"
 msgstr ""
 
 #. module: joint_buying_base
-#: model_terms:ir.ui.view,arch_db:joint_buying_base.view_joint_buying_tour_form
-msgid "<span>km</span>"
-msgstr ""
-
-#. module: joint_buying_base
 #: model:ir.model.fields,field_description:joint_buying_base.field_joint_buying_carrier__message_needaction
 #: model:ir.model.fields,field_description:joint_buying_base.field_joint_buying_tour__message_needaction
+#: model:ir.model.fields,field_description:joint_buying_base.field_joint_buying_tour_type__message_needaction
 msgid "Action Needed"
 msgstr "Nécessite une action"
 
 #. module: joint_buying_base
 #: model:ir.model.fields,field_description:joint_buying_base.field_joint_buying_carrier__activity_ids
 #: model:ir.model.fields,field_description:joint_buying_base.field_joint_buying_tour__activity_ids
+#: model:ir.model.fields,field_description:joint_buying_base.field_joint_buying_tour_type__activity_ids
 msgid "Activities"
 msgstr "Activités"
 
 #. module: joint_buying_base
 #: model:ir.model.fields,field_description:joint_buying_base.field_joint_buying_carrier__activity_state
 #: model:ir.model.fields,field_description:joint_buying_base.field_joint_buying_tour__activity_state
+#: model:ir.model.fields,field_description:joint_buying_base.field_joint_buying_tour_type__activity_state
 msgid "Activity State"
 msgstr "Status de l'Activité"
 
@@ -95,6 +93,7 @@ msgstr "Lieu d'arrivée"
 #. module: joint_buying_base
 #: model:ir.model.fields,field_description:joint_buying_base.field_joint_buying_carrier__message_attachment_count
 #: model:ir.model.fields,field_description:joint_buying_base.field_joint_buying_tour__message_attachment_count
+#: model:ir.model.fields,field_description:joint_buying_base.field_joint_buying_tour_type__message_attachment_count
 msgid "Attachment Count"
 msgstr "Nombre de pièces jointes"
 
@@ -122,6 +121,7 @@ msgstr "Annuler"
 
 #. module: joint_buying_base
 #: model:ir.model.fields,field_description:joint_buying_base.field_joint_buying_tour__carrier_id
+#: model:ir.model.fields,field_description:joint_buying_base.field_joint_buying_tour_type__carrier_id
 msgid "Carrier"
 msgstr "Transporteur"
 
@@ -224,6 +224,11 @@ msgid "Contact Tags"
 msgstr "Étiquettes de contact"
 
 #. module: joint_buying_base
+#: model:ir.model.fields,field_description:joint_buying_base.field_joint_buying_tour__cost
+msgid "Cost"
+msgstr "Coût"
+
+#. module: joint_buying_base
 #: model_terms:ir.ui.view,arch_db:joint_buying_base.view_res_partner_form
 msgid "Country"
 msgstr "Pays"
@@ -232,6 +237,7 @@ msgstr "Pays"
 #: model:ir.model.fields,field_description:joint_buying_base.field_joint_buying_carrier__create_uid
 #: model:ir.model.fields,field_description:joint_buying_base.field_joint_buying_tour__create_uid
 #: model:ir.model.fields,field_description:joint_buying_base.field_joint_buying_tour_line__create_uid
+#: model:ir.model.fields,field_description:joint_buying_base.field_joint_buying_tour_type__create_uid
 #: model:ir.model.fields,field_description:joint_buying_base.field_joint_buying_wizard_set_tour__create_uid
 #: model:ir.model.fields,field_description:joint_buying_base.field_joint_buying_wizard_set_tour_line__create_uid
 msgid "Created by"
@@ -241,41 +247,17 @@ msgstr "Créé par"
 #: model:ir.model.fields,field_description:joint_buying_base.field_joint_buying_carrier__create_date
 #: model:ir.model.fields,field_description:joint_buying_base.field_joint_buying_tour__create_date
 #: model:ir.model.fields,field_description:joint_buying_base.field_joint_buying_tour_line__create_date
+#: model:ir.model.fields,field_description:joint_buying_base.field_joint_buying_tour_type__create_date
 #: model:ir.model.fields,field_description:joint_buying_base.field_joint_buying_wizard_set_tour__create_date
 #: model:ir.model.fields,field_description:joint_buying_base.field_joint_buying_wizard_set_tour_line__create_date
 msgid "Created on"
 msgstr "Créé le"
 
 #. module: joint_buying_base
-#: model:res.company,overdue_msg:joint_buying_base.company_1GG
-#: model:res.company,overdue_msg:joint_buying_base.company_3PP
-#: model:res.company,overdue_msg:joint_buying_base.company_C3P
-#: model:res.company,overdue_msg:joint_buying_base.company_CDA
-#: model:res.company,overdue_msg:joint_buying_base.company_CHE
-#: model:res.company,overdue_msg:joint_buying_base.company_CRB
-#: model:res.company,overdue_msg:joint_buying_base.company_EDC
-#: model:res.company,overdue_msg:joint_buying_base.company_ELD
-#: model:res.company,overdue_msg:joint_buying_base.company_LSE
-#: model:res.company,overdue_msg:joint_buying_base.company_PZI
-#: model:res.company,overdue_msg:joint_buying_base.company_TOU
-#: model:res.company,overdue_msg:joint_buying_base.company_VEV
-msgid "Dear Sir/Madam,\n"
-"\n"
-"Our records indicate that some payments on your account are still due. Please find details below.\n"
-"If the amount has already been paid, please disregard this notice. Otherwise, please forward us the total amount stated below.\n"
-"If you have any queries regarding your account, Please contact us.\n"
-"\n"
-"Thank you in advance for your cooperation.\n"
-"Best Regards,"
-msgstr "Madame, Monsieur,\n"
-"\n"
-"D'après nos relevés, nous sommes encore en attente à ce jour de paiements de votre part, dont les détails sont indiqués ci-dessous.\n"
-"Si ces sommes ont déjà été réglées, vous pouvez ignorer ce rappel. Dans le cas contraire, nous vous remercions de bien vouloir nous faire parvenir votre règlement.\n"
-"Si vous avez d'autres questions concernant votre compte, vous pouvez nous contacter directement.\n"
-"\n"
-"En vous remerciant par avance.\n"
-"\n"
-"Cordialement,"
+#: model:ir.model.fields,field_description:joint_buying_base.field_joint_buying_carrier__currency_id
+#: model:ir.model.fields,field_description:joint_buying_base.field_joint_buying_tour__currency_id
+msgid "Currency"
+msgstr "Devise"
 
 #. module: joint_buying_base
 #: model:res.partner.category,name:joint_buying_base.partner_category_delicatessen
@@ -288,6 +270,7 @@ msgstr "Charcuterie"
 #: model:ir.model.fields,field_description:joint_buying_base.field_joint_buying_mixin__display_name
 #: model:ir.model.fields,field_description:joint_buying_base.field_joint_buying_tour__display_name
 #: model:ir.model.fields,field_description:joint_buying_base.field_joint_buying_tour_line__display_name
+#: model:ir.model.fields,field_description:joint_buying_base.field_joint_buying_tour_type__display_name
 #: model:ir.model.fields,field_description:joint_buying_base.field_joint_buying_wizard_set_tour__display_name
 #: model:ir.model.fields,field_description:joint_buying_base.field_joint_buying_wizard_set_tour_line__display_name
 msgid "Display Name"
@@ -296,19 +279,26 @@ msgstr "Nom affiché"
 #. module: joint_buying_base
 #: model:ir.model.fields,field_description:joint_buying_base.field_joint_buying_tour__distance
 #: model:ir.model.fields,field_description:joint_buying_base.field_joint_buying_tour_line__distance
+#: model:ir.model.fields,field_description:joint_buying_base.field_joint_buying_wizard_set_tour_line__distance
 msgid "Distance"
 msgstr ""
 
 #. module: joint_buying_base
-#: model:ir.model.fields,help:joint_buying_base.field_joint_buying_tour__distance
-#: model:ir.model.fields,help:joint_buying_base.field_joint_buying_tour_line__distance
-msgid "Distance as the crow flies, in kilometer"
-msgstr "Distance à vol d'oiseau, en kilomètre"
+#: model:ir.model.fields,field_description:joint_buying_base.field_joint_buying_tour__duration
+#: model:ir.model.fields,field_description:joint_buying_base.field_joint_buying_tour_line__duration
+#: model:ir.model.fields,field_description:joint_buying_base.field_joint_buying_wizard_set_tour_line__duration
+msgid "Duration"
+msgstr "Durée"
 
 #. module: joint_buying_base
 #: model:ir.model.fields,field_description:joint_buying_base.field_joint_buying_tour__end_date
 msgid "End Date"
 msgstr "Date de fin"
+
+#. module: joint_buying_base
+#: model_terms:ir.ui.view,arch_db:joint_buying_base.view_joint_buying_tour_form
+msgid "Estimate Route"
+msgstr "Estimer le trajet"
 
 #. module: joint_buying_base
 #: model:res.partner.category,name:joint_buying_base.partner_category_fishmonger
@@ -318,18 +308,21 @@ msgstr "Poissonnerie"
 #. module: joint_buying_base
 #: model:ir.model.fields,field_description:joint_buying_base.field_joint_buying_carrier__message_follower_ids
 #: model:ir.model.fields,field_description:joint_buying_base.field_joint_buying_tour__message_follower_ids
+#: model:ir.model.fields,field_description:joint_buying_base.field_joint_buying_tour_type__message_follower_ids
 msgid "Followers"
 msgstr "Abonnés"
 
 #. module: joint_buying_base
 #: model:ir.model.fields,field_description:joint_buying_base.field_joint_buying_carrier__message_channel_ids
 #: model:ir.model.fields,field_description:joint_buying_base.field_joint_buying_tour__message_channel_ids
+#: model:ir.model.fields,field_description:joint_buying_base.field_joint_buying_tour_type__message_channel_ids
 msgid "Followers (Channels)"
 msgstr "Abonnés (Canaux)"
 
 #. module: joint_buying_base
 #: model:ir.model.fields,field_description:joint_buying_base.field_joint_buying_carrier__message_partner_ids
 #: model:ir.model.fields,field_description:joint_buying_base.field_joint_buying_tour__message_partner_ids
+#: model:ir.model.fields,field_description:joint_buying_base.field_joint_buying_tour_type__message_partner_ids
 msgid "Followers (Partners)"
 msgstr "Abonnés (Partenaires)"
 
@@ -362,11 +355,24 @@ msgid "Global Settings"
 msgstr "Paramétrages globaux"
 
 #. module: joint_buying_base
+#: selection:joint.buying.tour.line,sequence_type:0
+#: selection:joint.buying.wizard.set.tour.line,sequence_type:0
+msgid "Handling"
+msgstr "Manutention"
+
+#. module: joint_buying_base
+#: model:ir.model.fields,field_description:joint_buying_base.field_joint_buying_carrier__hourly_cost
+#: model:ir.model.fields,field_description:joint_buying_base.field_joint_buying_tour__hourly_cost
+msgid "Hourly Cost"
+msgstr "Coût horaire"
+
+#. module: joint_buying_base
 #: model:ir.model.fields,field_description:joint_buying_base.field_joint_buying_carrier__id
 #: model:ir.model.fields,field_description:joint_buying_base.field_joint_buying_check_access_mixin__id
 #: model:ir.model.fields,field_description:joint_buying_base.field_joint_buying_mixin__id
 #: model:ir.model.fields,field_description:joint_buying_base.field_joint_buying_tour__id
 #: model:ir.model.fields,field_description:joint_buying_base.field_joint_buying_tour_line__id
+#: model:ir.model.fields,field_description:joint_buying_base.field_joint_buying_tour_type__id
 #: model:ir.model.fields,field_description:joint_buying_base.field_joint_buying_wizard_set_tour__id
 #: model:ir.model.fields,field_description:joint_buying_base.field_joint_buying_wizard_set_tour_line__id
 msgid "ID"
@@ -375,24 +381,28 @@ msgstr ""
 #. module: joint_buying_base
 #: model:ir.model.fields,help:joint_buying_base.field_joint_buying_carrier__message_unread
 #: model:ir.model.fields,help:joint_buying_base.field_joint_buying_tour__message_unread
+#: model:ir.model.fields,help:joint_buying_base.field_joint_buying_tour_type__message_unread
 msgid "If checked new messages require your attention."
 msgstr "Si coché, de nouveaux messages demandent votre attention."
 
 #. module: joint_buying_base
 #: model:ir.model.fields,help:joint_buying_base.field_joint_buying_carrier__message_needaction
 #: model:ir.model.fields,help:joint_buying_base.field_joint_buying_tour__message_needaction
+#: model:ir.model.fields,help:joint_buying_base.field_joint_buying_tour_type__message_needaction
 msgid "If checked, new messages require your attention."
 msgstr "Si coché, de nouveaux messages demandent votre attention."
 
 #. module: joint_buying_base
 #: model:ir.model.fields,help:joint_buying_base.field_joint_buying_carrier__message_has_error
 #: model:ir.model.fields,help:joint_buying_base.field_joint_buying_tour__message_has_error
+#: model:ir.model.fields,help:joint_buying_base.field_joint_buying_tour_type__message_has_error
 msgid "If checked, some messages have a delivery error."
 msgstr "Si actif, certains messages ont une erreur de livraison."
 
 #. module: joint_buying_base
 #: model:ir.model.fields,field_description:joint_buying_base.field_joint_buying_carrier__message_is_follower
 #: model:ir.model.fields,field_description:joint_buying_base.field_joint_buying_tour__message_is_follower
+#: model:ir.model.fields,field_description:joint_buying_base.field_joint_buying_tour_type__message_is_follower
 msgid "Is Follower"
 msgstr "Est un abonné"
 
@@ -463,10 +473,10 @@ msgid "Joint Buying Global Partner"
 msgstr "Partenaire global pour les commandes groupées"
 
 #. module: joint_buying_base
-#: model:ir.model.fields,field_description:joint_buying_base.field_res_partner__joint_buying_is_mine
-#: model:ir.model.fields,field_description:joint_buying_base.field_res_users__joint_buying_is_mine
-msgid "Joint Buying Is Mine"
-msgstr "Me concerne"
+#: model:ir.model.fields,field_description:joint_buying_base.field_res_partner__joint_buying_is_mine_pivot
+#: model:ir.model.fields,field_description:joint_buying_base.field_res_users__joint_buying_is_mine_pivot
+msgid "Joint Buying Is Mine Pivot"
+msgstr ""
 
 #. module: joint_buying_base
 #: model:ir.model,name:joint_buying_base.model_joint_buying_mixin
@@ -487,6 +497,11 @@ msgstr "Partenaires abonnés aux commandes groupées"
 #: model:ir.model,name:joint_buying_base.model_joint_buying_tour_line
 msgid "Joint Buying Tour Lines"
 msgstr "Lignes de tournées de commande groupée"
+
+#. module: joint_buying_base
+#: model:ir.model,name:joint_buying_base.model_joint_buying_tour_type
+msgid "Joint Buying Tour Type"
+msgstr "Types de tournées de commande groupée"
 
 #. module: joint_buying_base
 #: model:ir.model,name:joint_buying_base.model_joint_buying_wizard_set_tour
@@ -512,11 +527,29 @@ msgid "Joint buying tour"
 msgstr "Tournée de commandes groupées"
 
 #. module: joint_buying_base
+#: selection:joint.buying.tour.line,sequence_type:0
+#: selection:joint.buying.wizard.set.tour.line,sequence_type:0
+msgid "Journey"
+msgstr "Trajet"
+
+#. module: joint_buying_base
+#: model:ir.ui.menu,name:joint_buying_base.menu_journey
+msgid "Journeys"
+msgstr "Trajets"
+
+#. module: joint_buying_base
+#: model:ir.model.fields,field_description:joint_buying_base.field_joint_buying_carrier__kilometer_cost
+#: model:ir.model.fields,field_description:joint_buying_base.field_joint_buying_tour__kilometer_cost
+msgid "Kilometer Cost"
+msgstr "Côut au kilomètre"
+
+#. module: joint_buying_base
 #: model:ir.model.fields,field_description:joint_buying_base.field_joint_buying_carrier____last_update
 #: model:ir.model.fields,field_description:joint_buying_base.field_joint_buying_check_access_mixin____last_update
 #: model:ir.model.fields,field_description:joint_buying_base.field_joint_buying_mixin____last_update
 #: model:ir.model.fields,field_description:joint_buying_base.field_joint_buying_tour____last_update
 #: model:ir.model.fields,field_description:joint_buying_base.field_joint_buying_tour_line____last_update
+#: model:ir.model.fields,field_description:joint_buying_base.field_joint_buying_tour_type____last_update
 #: model:ir.model.fields,field_description:joint_buying_base.field_joint_buying_wizard_set_tour____last_update
 #: model:ir.model.fields,field_description:joint_buying_base.field_joint_buying_wizard_set_tour_line____last_update
 msgid "Last Modified on"
@@ -526,6 +559,7 @@ msgstr "Dernière modification le"
 #: model:ir.model.fields,field_description:joint_buying_base.field_joint_buying_carrier__write_uid
 #: model:ir.model.fields,field_description:joint_buying_base.field_joint_buying_tour__write_uid
 #: model:ir.model.fields,field_description:joint_buying_base.field_joint_buying_tour_line__write_uid
+#: model:ir.model.fields,field_description:joint_buying_base.field_joint_buying_tour_type__write_uid
 #: model:ir.model.fields,field_description:joint_buying_base.field_joint_buying_wizard_set_tour__write_uid
 #: model:ir.model.fields,field_description:joint_buying_base.field_joint_buying_wizard_set_tour_line__write_uid
 msgid "Last Updated by"
@@ -535,6 +569,7 @@ msgstr "Dernière mise à jour par"
 #: model:ir.model.fields,field_description:joint_buying_base.field_joint_buying_carrier__write_date
 #: model:ir.model.fields,field_description:joint_buying_base.field_joint_buying_tour__write_date
 #: model:ir.model.fields,field_description:joint_buying_base.field_joint_buying_tour_line__write_date
+#: model:ir.model.fields,field_description:joint_buying_base.field_joint_buying_tour_type__write_date
 #: model:ir.model.fields,field_description:joint_buying_base.field_joint_buying_wizard_set_tour__write_date
 #: model:ir.model.fields,field_description:joint_buying_base.field_joint_buying_wizard_set_tour_line__write_date
 msgid "Last Updated on"
@@ -554,6 +589,7 @@ msgstr "Information logistique"
 #. module: joint_buying_base
 #: model:ir.model.fields,field_description:joint_buying_base.field_joint_buying_carrier__message_main_attachment_id
 #: model:ir.model.fields,field_description:joint_buying_base.field_joint_buying_tour__message_main_attachment_id
+#: model:ir.model.fields,field_description:joint_buying_base.field_joint_buying_tour_type__message_main_attachment_id
 msgid "Main Attachment"
 msgstr "Pièce jointe principale"
 
@@ -565,12 +601,14 @@ msgstr "Gestionnaire"
 #. module: joint_buying_base
 #: model:ir.model.fields,field_description:joint_buying_base.field_joint_buying_carrier__message_has_error
 #: model:ir.model.fields,field_description:joint_buying_base.field_joint_buying_tour__message_has_error
+#: model:ir.model.fields,field_description:joint_buying_base.field_joint_buying_tour_type__message_has_error
 msgid "Message Delivery error"
 msgstr "Erreur d'envoi du message"
 
 #. module: joint_buying_base
 #: model:ir.model.fields,field_description:joint_buying_base.field_joint_buying_carrier__message_ids
 #: model:ir.model.fields,field_description:joint_buying_base.field_joint_buying_tour__message_ids
+#: model:ir.model.fields,field_description:joint_buying_base.field_joint_buying_tour_type__message_ids
 msgid "Messages"
 msgstr ""
 
@@ -582,24 +620,28 @@ msgstr "Mes fournisseurs"
 #. module: joint_buying_base
 #: model:ir.model.fields,field_description:joint_buying_base.field_joint_buying_carrier__name
 #: model:ir.model.fields,field_description:joint_buying_base.field_joint_buying_tour__name
+#: model:ir.model.fields,field_description:joint_buying_base.field_joint_buying_tour_type__name
 msgid "Name"
 msgstr "Nom"
 
 #. module: joint_buying_base
 #: model:ir.model.fields,field_description:joint_buying_base.field_joint_buying_carrier__activity_date_deadline
 #: model:ir.model.fields,field_description:joint_buying_base.field_joint_buying_tour__activity_date_deadline
+#: model:ir.model.fields,field_description:joint_buying_base.field_joint_buying_tour_type__activity_date_deadline
 msgid "Next Activity Deadline"
 msgstr "Date limite de l'Activité à Venir"
 
 #. module: joint_buying_base
 #: model:ir.model.fields,field_description:joint_buying_base.field_joint_buying_carrier__activity_summary
 #: model:ir.model.fields,field_description:joint_buying_base.field_joint_buying_tour__activity_summary
+#: model:ir.model.fields,field_description:joint_buying_base.field_joint_buying_tour_type__activity_summary
 msgid "Next Activity Summary"
 msgstr "Résumé d'activité suivant"
 
 #. module: joint_buying_base
 #: model:ir.model.fields,field_description:joint_buying_base.field_joint_buying_carrier__activity_type_id
 #: model:ir.model.fields,field_description:joint_buying_base.field_joint_buying_tour__activity_type_id
+#: model:ir.model.fields,field_description:joint_buying_base.field_joint_buying_tour_type__activity_type_id
 msgid "Next Activity Type"
 msgstr "Type d'Activités à Venir"
 
@@ -611,36 +653,42 @@ msgstr "Non applicable"
 #. module: joint_buying_base
 #: model:ir.model.fields,field_description:joint_buying_base.field_joint_buying_carrier__message_needaction_counter
 #: model:ir.model.fields,field_description:joint_buying_base.field_joint_buying_tour__message_needaction_counter
+#: model:ir.model.fields,field_description:joint_buying_base.field_joint_buying_tour_type__message_needaction_counter
 msgid "Number of Actions"
 msgstr "Nombre d'actions"
 
 #. module: joint_buying_base
 #: model:ir.model.fields,field_description:joint_buying_base.field_joint_buying_carrier__message_has_error_counter
 #: model:ir.model.fields,field_description:joint_buying_base.field_joint_buying_tour__message_has_error_counter
+#: model:ir.model.fields,field_description:joint_buying_base.field_joint_buying_tour_type__message_has_error_counter
 msgid "Number of error"
 msgstr "Nombre d'erreurs"
 
 #. module: joint_buying_base
 #: model:ir.model.fields,help:joint_buying_base.field_joint_buying_carrier__message_needaction_counter
 #: model:ir.model.fields,help:joint_buying_base.field_joint_buying_tour__message_needaction_counter
+#: model:ir.model.fields,help:joint_buying_base.field_joint_buying_tour_type__message_needaction_counter
 msgid "Number of messages which requires an action"
 msgstr "Nombre de messages exigeant une action"
 
 #. module: joint_buying_base
 #: model:ir.model.fields,help:joint_buying_base.field_joint_buying_carrier__message_has_error_counter
 #: model:ir.model.fields,help:joint_buying_base.field_joint_buying_tour__message_has_error_counter
+#: model:ir.model.fields,help:joint_buying_base.field_joint_buying_tour_type__message_has_error_counter
 msgid "Number of messages with delivery error"
 msgstr "Nombre de messages avec des erreurs d'envoi"
 
 #. module: joint_buying_base
 #: model:ir.model.fields,help:joint_buying_base.field_joint_buying_carrier__message_unread_counter
 #: model:ir.model.fields,help:joint_buying_base.field_joint_buying_tour__message_unread_counter
+#: model:ir.model.fields,help:joint_buying_base.field_joint_buying_tour_type__message_unread_counter
 msgid "Number of unread messages"
 msgstr "Nombre de messages non lus"
 
 #. module: joint_buying_base
 #: selection:joint.buying.carrier,activity_state:0
 #: selection:joint.buying.tour,activity_state:0
+#: selection:joint.buying.tour.type,activity_state:0
 msgid "Overdue"
 msgstr "En retard"
 
@@ -673,6 +721,7 @@ msgstr "Fonction pivot"
 #. module: joint_buying_base
 #: selection:joint.buying.carrier,activity_state:0
 #: selection:joint.buying.tour,activity_state:0
+#: selection:joint.buying.tour.type,activity_state:0
 msgid "Planned"
 msgstr "Planifiée"
 
@@ -689,6 +738,7 @@ msgstr "Refusé"
 #. module: joint_buying_base
 #: model:ir.model.fields,field_description:joint_buying_base.field_joint_buying_carrier__activity_user_id
 #: model:ir.model.fields,field_description:joint_buying_base.field_joint_buying_tour__activity_user_id
+#: model:ir.model.fields,field_description:joint_buying_base.field_joint_buying_tour_type__activity_user_id
 msgid "Responsible User"
 msgstr "Responsable"
 
@@ -697,6 +747,12 @@ msgstr "Responsable"
 #: model:ir.model.fields,field_description:joint_buying_base.field_joint_buying_wizard_set_tour_line__sequence
 msgid "Sequence"
 msgstr "Séquence"
+
+#. module: joint_buying_base
+#: model:ir.model.fields,field_description:joint_buying_base.field_joint_buying_tour_line__sequence_type
+#: model:ir.model.fields,field_description:joint_buying_base.field_joint_buying_wizard_set_tour_line__sequence_type
+msgid "Sequence Type"
+msgstr "Type d'opération"
 
 #. module: joint_buying_base
 #: model:ir.actions.act_window,name:joint_buying_base.action_tour_2_wizard_set_tour
@@ -717,6 +773,12 @@ msgid "Signed"
 msgstr "Signé"
 
 #. module: joint_buying_base
+#: model:ir.actions.act_window,name:joint_buying_base.action_res_partner_stage
+#: model:ir.ui.menu,name:joint_buying_base.menu_res_partner_stage
+msgid "Stages"
+msgstr "Etapes"
+
+#. module: joint_buying_base
 #: model:ir.model.fields,field_description:joint_buying_base.field_joint_buying_tour__start_date
 msgid "Start Date"
 msgstr "Date de début"
@@ -735,6 +797,7 @@ msgstr "État"
 #. module: joint_buying_base
 #: model:ir.model.fields,help:joint_buying_base.field_joint_buying_carrier__activity_state
 #: model:ir.model.fields,help:joint_buying_base.field_joint_buying_tour__activity_state
+#: model:ir.model.fields,help:joint_buying_base.field_joint_buying_tour_type__activity_state
 msgid "Status based on activities\n"
 "Overdue: Due date is already passed\n"
 "Today: Activity date is today\n"
@@ -745,6 +808,7 @@ msgstr "Statut basé sur les activités\n"
 "Planifiée : activités futures"
 
 #. module: joint_buying_base
+#: model:ir.model.fields,field_description:joint_buying_base.field_joint_buying_wizard_set_tour__starting_point_id
 #: model:ir.model.fields,field_description:joint_buying_base.field_joint_buying_wizard_set_tour_line__point_id
 msgid "Step"
 msgstr "Etape"
@@ -801,17 +865,46 @@ msgid "Suppliers (Editable View)"
 msgstr "Fournisseurs (Vue éditable)"
 
 #. module: joint_buying_base
+#: model_terms:ir.ui.view,arch_db:joint_buying_base.view_joint_buying_tour_form
+msgid "Technical Informations"
+msgstr "Informations techniques"
+
+#. module: joint_buying_base
+#: model:ir.model.fields,help:joint_buying_base.field_res_partner__joint_buying_is_mine_pivot
+#: model:ir.model.fields,help:joint_buying_base.field_res_users__joint_buying_is_mine_pivot
+msgid "This box is checked if the current company of the user is the pivot company of the given joint buying partner."
+msgstr "Cette case est cochée si la société actuelle de l'utilisateur est la société pivot de du partenaire donné"
+
+#. module: joint_buying_base
 #: selection:joint.buying.carrier,activity_state:0
 #: selection:joint.buying.tour,activity_state:0
+#: selection:joint.buying.tour.type,activity_state:0
 msgid "Today"
 msgstr "Aujourd'hui"
 
 #. module: joint_buying_base
+#: model_terms:ir.ui.view,arch_db:joint_buying_base.view_joint_buying_tour_form
+msgid "Total Distance"
+msgstr "Distance total"
+
+#. module: joint_buying_base
+#: model_terms:ir.ui.view,arch_db:joint_buying_base.view_joint_buying_tour_form
+msgid "Total Duration"
+msgstr "Durée totale"
+
+#. module: joint_buying_base
 #: model:ir.model.fields,field_description:joint_buying_base.field_joint_buying_carrier__tour_ids
 #: model:ir.model.fields,field_description:joint_buying_base.field_joint_buying_tour_line__tour_id
+#: model:ir.model.fields,field_description:joint_buying_base.field_joint_buying_tour_type__tour_ids
 #: model:ir.model.fields,field_description:joint_buying_base.field_joint_buying_wizard_set_tour__tour_id
 msgid "Tour"
 msgstr "Tournée"
+
+#. module: joint_buying_base
+#: model:ir.actions.act_window,name:joint_buying_base.action_joint_buying_tour_type
+#: model:ir.ui.menu,name:joint_buying_base.menu_joint_buying_tour_type
+msgid "Tour Types"
+msgstr "Types de tournées"
 
 #. module: joint_buying_base
 #: model:ir.actions.act_window,name:joint_buying_base.action_joint_buying_tour_all
@@ -820,14 +913,27 @@ msgid "Tours"
 msgstr "Tournées"
 
 #. module: joint_buying_base
+#: model:ir.model.fields,field_description:joint_buying_base.field_joint_buying_tour__type_id
+msgid "Type"
+msgstr ""
+
+#. module: joint_buying_base
+#: code:addons/joint_buying_base/models/joint_buying_tour_line.py:68
+#, python-format
+msgid "Unable to reach the service 'router.project-osrm.org'."
+msgstr "Impossible d'accéder au service 'router.project-osrm.org'."
+
+#. module: joint_buying_base
 #: model:ir.model.fields,field_description:joint_buying_base.field_joint_buying_carrier__message_unread
 #: model:ir.model.fields,field_description:joint_buying_base.field_joint_buying_tour__message_unread
+#: model:ir.model.fields,field_description:joint_buying_base.field_joint_buying_tour_type__message_unread
 msgid "Unread Messages"
 msgstr "Messages non lus"
 
 #. module: joint_buying_base
 #: model:ir.model.fields,field_description:joint_buying_base.field_joint_buying_carrier__message_unread_counter
 #: model:ir.model.fields,field_description:joint_buying_base.field_joint_buying_tour__message_unread_counter
+#: model:ir.model.fields,field_description:joint_buying_base.field_joint_buying_tour_type__message_unread_counter
 msgid "Unread Messages Counter"
 msgstr "Compteur de messages non lus"
 
@@ -852,7 +958,7 @@ msgid "Wizard"
 msgstr "Assistant"
 
 #. module: joint_buying_base
-#: code:addons/joint_buying_base/models/res_partner.py:129
+#: code:addons/joint_buying_base/models/res_partner.py:134
 #, python-format
 msgid "You can not create a customer joint buying partner. You should ask to you ERP manager to do it via the creation of a company."
 msgstr "Vous ne pouvez pas créer un client pour les commandes groupées. Vous devez demander au responsable de l'ERP de le faire, via la création d'une société."
@@ -870,13 +976,13 @@ msgid "You can not create this item because you are not responsible for it"
 msgstr "Vous ne pouvez pas créer cet élément, car vous n'en êtes pas responsable."
 
 #. module: joint_buying_base
-#: code:addons/joint_buying_base/models/res_partner.py:211
+#: code:addons/joint_buying_base/models/res_partner.py:216
 #, python-format
 msgid "You can not delete this partner because it is related to a company for joint Buyings. Please archive it."
 msgstr "Vous ne pouvez pas supprimer ce contact, car il est lié à une société pour les commandes groupées. Vous pouvez simplement l'archiver."
 
 #. module: joint_buying_base
-#: code:addons/joint_buying_base/models/res_partner.py:114
+#: code:addons/joint_buying_base/models/res_partner.py:119
 #, python-format
 msgid "You can not link the supplier %s to the Joint Buying partner %s because you have other suppliers that are still related to him : \n"
 "\n"
@@ -898,7 +1004,7 @@ msgid "You can not update this item because you are not responsible for it"
 msgstr "Vous ne pouvez pas mettre à jour cet élément, car vous n'en êtes pas responsable."
 
 #. module: joint_buying_base
-#: code:addons/joint_buying_base/models/res_partner.py:200
+#: code:addons/joint_buying_base/models/res_partner.py:205
 #, python-format
 msgid "You can not update this partner this way you should ask to your ERP Manager to update this field via the related company."
 msgstr "Vous ne pouvez pas mettre à jour ce contact de cette manière, vous devez demander au responsable de votre ERP de mettre à jour les données, via la société associée."
@@ -912,10 +1018,4 @@ msgstr "Code postal"
 #: model_terms:ir.ui.view,arch_db:joint_buying_base.view_joint_buying_wizard_set_tour_form
 msgid "or"
 msgstr "ou"
-
-#. module: joint_buying_base
-#: code:addons/joint_buying_base/models/res_company.py:53
-#, python-format
-msgid "{} (Joint Buyings)"
-msgstr "{} (Commandes Groupées)"
 
