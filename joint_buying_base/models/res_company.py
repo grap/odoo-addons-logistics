@@ -2,7 +2,7 @@
 # @author: Sylvain LE GAL (https://twitter.com/legalsylvain)
 # License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl.html).
 
-from odoo import _, api, fields, models
+from odoo import api, fields, models
 
 from odoo.addons.base.models.res_partner import ADDRESS_FIELDS
 
@@ -46,11 +46,25 @@ class ResCompany(models.Model):
         store=True,
     )
 
+    def _get_company_fields_for_joint_buying_partner(self):
+        return ADDRESS_FIELDS + (
+            "name",
+            "email",
+            "phone",
+            "website",
+            "partner_latitude",
+            "partner_longitude",
+            "logo",
+        )
+
     def _prepare_joint_buying_partner_vals(self):
         self.ensure_one()
+        icp = self.env["ir.config_parameter"].sudo()
+        group_name = icp.get_param("joint_buying_base.group_name", "")
+        suffix = group_name and ("(" + group_name + ")") or ""
         sanitized_name = self.name.replace("|", "")
         vals = {
-            "name": _("{} (Joint Buyings)").format(sanitized_name),
+            "name": f"{sanitized_name} {suffix}",
             "is_joint_buying": True,
             "is_joint_buying_stage": True,
             "joint_buying_company_id": self.id,
@@ -60,8 +74,10 @@ class ResCompany(models.Model):
             "email": self.email,
             "phone": self.phone,
             "website": self.website,
+            "vat": self.vat,
             "partner_latitude": self.partner_latitude,
             "partner_longitude": self.partner_longitude,
+            "image": self.logo,
         }
         for field_name in ADDRESS_FIELDS:
             value = getattr(self, field_name)
@@ -87,9 +103,10 @@ class ResCompany(models.Model):
                 write_joint_buying_partner=True, no_check_joint_buying=True
             ),
         ).write(vals)
+        partner_fields = self._get_company_fields_for_joint_buying_partner()
         for company in self:
             partner_vals = company._prepare_joint_buying_partner_vals()
-            if list(set(vals.keys()) & set(partner_vals)):
+            if list(set(vals.keys()) & set(partner_fields)):
                 company.joint_buying_partner_id.with_context(
                     write_joint_buying_partner=True
                 ).write(partner_vals)

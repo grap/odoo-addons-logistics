@@ -31,7 +31,7 @@ class TestModule(TransactionCase):
 
         self.assertEqual(
             new_company.joint_buying_partner_id.name,
-            "{} (Joint Buyings)".format(company_name),
+            f"{company_name} (Réseau GRAP)",
             "Create a company should create a related joint buying partner",
         )
 
