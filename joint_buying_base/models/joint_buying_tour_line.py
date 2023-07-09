@@ -52,7 +52,7 @@ class JointBuyingTourLine(models.Model):
             response = requests.get(url)
         except requests.exceptions.ConnectionError:
             raise UserError(_("Unable to reach the service 'router.project-osrm.org'."))
-        if response.status_code != "200":
+        if response.status_code != 200:
             raise UserError(
                 _(
                     "Calling 'router.project-osrm.org' returned the following error"
