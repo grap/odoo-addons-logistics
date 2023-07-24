@@ -47,14 +47,18 @@ class ResCompany(models.Model):
     )
 
     def _get_company_fields_for_joint_buying_partner(self):
+        """Return the company fields that raise the update
+        of the related joint buying partner"""
         return ADDRESS_FIELDS + (
             "name",
+            "active",
             "email",
             "phone",
             "website",
             "partner_latitude",
             "partner_longitude",
             "logo",
+            "vat",
         )
 
     def _prepare_joint_buying_partner_vals(self):
@@ -65,6 +69,7 @@ class ResCompany(models.Model):
         sanitized_name = self.name.replace("|", "")
         vals = {
             "name": f"{sanitized_name} {suffix}",
+            "active": self.active,
             "is_joint_buying": True,
             "is_joint_buying_stage": True,
             "joint_buying_company_id": self.id,
@@ -74,9 +79,9 @@ class ResCompany(models.Model):
             "email": self.email,
             "phone": self.phone,
             "website": self.website,
-            "vat": self.vat,
             "partner_latitude": self.partner_latitude,
             "partner_longitude": self.partner_longitude,
+            "vat": self.vat,
             "image": self.logo,
         }
         for field_name in ADDRESS_FIELDS:
@@ -94,6 +99,7 @@ class ResCompany(models.Model):
         ).create(res._prepare_joint_buying_partner_vals())
         return res
 
+    @api.multi
     def write(self, vals):
         # Technical Note: we add context key here
         # to avoid error when recomputing related / computed values
@@ -104,10 +110,13 @@ class ResCompany(models.Model):
             ),
         ).write(vals)
         partner_fields = self._get_company_fields_for_joint_buying_partner()
-        for company in self:
-            partner_vals = company._prepare_joint_buying_partner_vals()
-            if list(set(vals.keys()) & set(partner_fields)):
-                company.joint_buying_partner_id.with_context(
-                    write_joint_buying_partner=True
-                ).write(partner_vals)
+        if list(set(vals.keys()) & set(partner_fields)):
+            self.update_joint_buying_partners()
         return res
+
+    @api.multi
+    def update_joint_buying_partners(self):
+        for company in self:
+            company.joint_buying_partner_id.with_context(
+                write_joint_buying_partner=True
+            ).write(company._prepare_joint_buying_partner_vals())

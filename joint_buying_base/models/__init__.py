@@ -1,3 +1,4 @@
+from . import ir_config_parameter
 from . import joint_buying_check_access_mixin
 from . import joint_buying_mixin
 from . import res_company
