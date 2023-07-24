@@ -15,7 +15,7 @@ class JointBuyingTour(models.Model):
     _description = "Joint buying tour"
     _order = "start_date, name"
 
-    name = fields.Char(required=True)
+    name = fields.Char(compute="_compute_name", store=True)
 
     calendar_description = fields.Char(
         compute="_compute_calendar_description", store=True
@@ -93,6 +93,13 @@ class JointBuyingTour(models.Model):
             self.kilometer_cost = self.carrier_id.kilometer_cost
 
     # Compute Section
+    @api.depends("start_date", "type_id")
+    def _compute_name(self):
+        for tour in self:
+            tour.name = f"{tour.start_date.strftime('%Y-%m-%d')}"
+            if tour.type_id:
+                tour.name += f" - {tour.type_id.name}"
+
     @api.depends("hourly_cost", "kilometer_cost", "duration", "distance")
     def _compute_cost(self):
         for tour in self:
