@@ -8,7 +8,7 @@
 
     <record id="parameter_group_name" model="ir.config_parameter">
         <field name="key">joint_buying_base.group_name</field>
-        <field name="value">Réseau GRAP</field>
+        <field name="value">Your Group Name</field>
     </record>
 
 </odoo>

@@ -14,6 +14,7 @@
         # OCA
         "base_geolocalize_company",
         "res_company_code",
+        "res_company_active",
         "web_notify",
         "web_view_leaflet_map_partner",
         # GRAP
