@@ -155,3 +155,15 @@ class JointBuyingTour(models.Model):
 
     def estimate_route(self):
         self.mapped("line_ids").estimate_route()
+
+    def see_steps(self):
+        self.ensure_one()
+        action = self.env["ir.actions.act_window"].for_xml_id(
+            "joint_buying_base", "action_res_partner_stage"
+        )
+        steps = self.mapped("line_ids.starting_point_id") | self.mapped(
+            "line_ids.arrival_point_id"
+        )
+        action["view_mode"] = "leaflet_map,tree,form"
+        action["domain"] = [("id", "in", steps.ids)]
+        return action
