@@ -67,7 +67,14 @@ License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl.html).
                     <button type="object" name="estimate_route" string="Estimate Route"/>
                 </header>
                 <sheet>
-                    <div class="oe_button_box" name="button_box" />
+                    <div class="oe_button_box" name="button_box">
+                        <button
+                            class="oe_stat_button" string="Steps"
+                            type="object"
+                            name="see_steps"
+                            icon="fa-map">
+                        </button>
+                    </div>
                     <div class="oe_title">
                         <h1>
                             <field name="name"/>
