@@ -99,6 +99,7 @@ License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl.html).
                             <field name="line_ids">
                                 <tree editable="botttom">
                                     <field name="sequence" invisible="1"/>
+                                    <field name="currency_id" invisible="1" />
                                     <field name="sequence_type"/>
                                     <field name="starting_point_id" attrs="{
                                         'invisible': [('sequence_type', '=', 'handling')],
@@ -112,6 +113,7 @@ License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl.html).
                                     <field name="distance" attrs="{
                                         'invisible': [('sequence_type', '=', 'handling')],
                                     }" sum="Total Distance"/>
+                                    <field name="cost" />
                                 </tree>
                             </field>
                         </page>
@@ -119,6 +121,7 @@ License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl.html).
                             <group>
                                 <field name="currency_id" groups="base.group_multi_currency"/>
                                 <newline/>
+                                <field name="toll_cost"/>
                                 <field name="hourly_cost"/>
                                 <field name="kilometer_cost"/>
                                 <field name="is_loop" invisible="1"/>

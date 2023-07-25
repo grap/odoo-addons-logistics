@@ -4,7 +4,7 @@
 
 import requests
 
-from odoo import _, fields, models
+from odoo import _, api, fields, models
 from odoo.exceptions import UserError
 
 from .res_partner import _JOINT_BUYING_PARTNER_CONTEXT
@@ -18,7 +18,12 @@ class JointBuyingTourLine(models.Model):
     sequence = fields.Integer()
 
     sequence_type = fields.Selection(
-        selection=[("journey", "Journey"), ("handling", "Handling")], required=True
+        selection=[
+            ("journey", "Journey"),
+            ("handling", "Handling"),
+            ("pause", "Pause"),
+        ],
+        required=True,
     )
 
     tour_id = fields.Many2one(
@@ -36,6 +41,23 @@ class JointBuyingTourLine(models.Model):
     arrival_point_id = fields.Many2one(
         comodel_name="res.partner", context=_JOINT_BUYING_PARTNER_CONTEXT
     )
+
+    currency_id = fields.Many2one(
+        comodel_name="res.currency", related="tour_id.carrier_id.currency_id"
+    )
+
+    cost = fields.Monetary(
+        compute="_compute_cost", store=True, currency_field="currency_id"
+    )
+
+    @api.depends(
+        "tour_id.hourly_cost", "tour_id.kilometer_cost", "duration", "distance"
+    )
+    def _compute_cost(self):
+        for line in self:
+            line.cost = (line.duration * line.tour_id.hourly_cost) + (
+                line.distance * line.tour_id.kilometer_cost
+            )
 
     def _estimate_route_project_osrm(self):
         self.ensure_one()

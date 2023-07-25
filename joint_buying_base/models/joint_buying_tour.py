@@ -72,6 +72,8 @@ class JointBuyingTour(models.Model):
 
     kilometer_cost = fields.Monetary(currency_field="currency_id")
 
+    toll_cost = fields.Monetary(currency_field="currency_id")
+
     cost = fields.Monetary(
         compute="_compute_cost", store=True, currency_field="currency_id"
     )
@@ -100,12 +102,10 @@ class JointBuyingTour(models.Model):
             if tour.type_id:
                 tour.name += f" - {tour.type_id.name}"
 
-    @api.depends("hourly_cost", "kilometer_cost", "duration", "distance")
+    @api.depends("line_ids.cost", "toll_cost")
     def _compute_cost(self):
         for tour in self:
-            tour.cost = (tour.duration * tour.hourly_cost) + (
-                tour.distance * tour.kilometer_cost
-            )
+            tour.cost = sum(tour.mapped("line_ids.cost")) + tour.toll_cost
 
     @api.depends("line_ids")
     def _compute_stop_qty(self):
