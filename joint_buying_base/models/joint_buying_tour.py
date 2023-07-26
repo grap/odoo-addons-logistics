@@ -213,9 +213,9 @@ class JointBuyingTour(models.Model):
             description = ""
             for i, line in enumerate(tour.line_ids):
                 if line.sequence_type == "journey":
-                    line_name = _(
-                        f"Journey from {line.starting_point_id.name}"
-                        f" to {line.arrival_point_id.name}"
+                    line_name = _("Journey from %s to %s") % (
+                        line.starting_point_id.name,
+                        line.arrival_point_id.name,
                     )
                 elif line.sequence_type == "pause":
                     line_name = f"<span style='color: green'><b>{_('Pause')}</b></span>"
