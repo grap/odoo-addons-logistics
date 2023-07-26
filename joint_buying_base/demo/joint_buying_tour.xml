@@ -151,7 +151,7 @@
     <!-- Tournée Lyon - Savoie -->
     <record id="tour_lyon_savoie_1" model="joint.buying.tour">
         <field name="name">Lyon - Romagnieu</field>
-        <field name="type_id" ref="type_savoie_paire"/>
+        <field name="type_id" ref="type_lyon_savoie"/>
         <field name="carrier_id" ref="carrier_coolivri_grap"/>
         <field name="start_date" eval="(DateTime.today() + relativedelta(day=18)).strftime('%Y-%m-%d 07:00')"/>
         <field name="end_date" eval="(DateTime.today() + relativedelta(day=18)).strftime('%Y-%m-%d 09:00')"/>

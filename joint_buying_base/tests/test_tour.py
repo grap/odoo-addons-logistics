@@ -66,6 +66,8 @@ class TestModule(TransactionCase):
         self.assertAlmostEqual(tour.duration, 70 / 60)
 
     def _assert_not_very_differrent(self, value_1, value_2):
+        if value_1 == 0 or value_2 == 0:
+            return self.assertEqual(value_1, value_2)
         ratio = (value_2 - value_1) / value_1
         self.assertTrue(ratio < 0.1, f"{value_1} is too different than {value_2}")
 

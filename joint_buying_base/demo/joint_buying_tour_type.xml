@@ -16,6 +16,11 @@
         <field name="carrier_id" ref="carrier_coolivri_grap"/>
     </record>
 
+    <record id="type_lyon_savoie" model="joint.buying.tour.type">
+        <field name="name">Lyon Savoie</field>
+        <field name="carrier_id" ref="carrier_coolivri_grap"/>
+    </record>
+
     <record id="type_savoie_paire" model="joint.buying.tour.type">
         <field name="name">Savoie Paire</field>
         <field name="carrier_id" ref="carrier_coolivri_savoie"/>
