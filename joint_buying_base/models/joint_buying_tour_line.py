@@ -52,18 +52,21 @@ class JointBuyingTourLine(models.Model):
         comodel_name="res.currency", related="tour_id.carrier_id.currency_id"
     )
 
-    cost = fields.Monetary(
-        compute="_compute_cost", store=True, currency_field="currency_id"
+    salary_cost = fields.Monetary(
+        compute="_compute_costs", store=True, currency_field="currency_id"
+    )
+
+    vehicle_cost = fields.Monetary(
+        compute="_compute_costs", store=True, currency_field="currency_id"
     )
 
     @api.depends(
         "tour_id.hourly_cost", "tour_id.kilometer_cost", "duration", "distance"
     )
-    def _compute_cost(self):
+    def _compute_costs(self):
         for line in self:
-            line.cost = (line.duration * line.tour_id.hourly_cost) + (
-                line.distance * line.tour_id.kilometer_cost
-            )
+            line.salary_cost = line.duration * line.tour_id.hourly_cost
+            line.vehicle_cost = +line.distance * line.tour_id.kilometer_cost
 
     def _estimate_route_project_osrm(self):
         self.ensure_one()
