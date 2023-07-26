@@ -1,0 +1,11 @@
+/* ****************************************************
+**************************************************** */
+
+.fc-day-grid-event .o_fields .o_field_type_id {
+    font-weight: bold;
+}
+
+
+.fc-day-grid-event .o_fields .o_field_summary {
+    white-space: normal;
+}
