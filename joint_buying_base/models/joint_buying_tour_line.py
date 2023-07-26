@@ -9,6 +9,12 @@ from odoo.exceptions import UserError
 
 from .res_partner import _JOINT_BUYING_PARTNER_CONTEXT
 
+_TOUR_LINE_SEQUENCE_TYPES = [
+    ("journey", "Journey"),
+    ("handling", "Handling"),
+    ("pause", "Pause"),
+]
+
 
 class JointBuyingTourLine(models.Model):
     _name = "joint.buying.tour.line"
@@ -18,11 +24,7 @@ class JointBuyingTourLine(models.Model):
     sequence = fields.Integer()
 
     sequence_type = fields.Selection(
-        selection=[
-            ("journey", "Journey"),
-            ("handling", "Handling"),
-            ("pause", "Pause"),
-        ],
+        selection=_TOUR_LINE_SEQUENCE_TYPES,
         required=True,
     )
 

@@ -4,6 +4,7 @@
 
 from odoo import fields, models
 
+from ..models.joint_buying_tour_line import _TOUR_LINE_SEQUENCE_TYPES
 from ..models.res_partner import _JOINT_BUYING_PARTNER_CONTEXT
 
 
@@ -14,9 +15,7 @@ class JointBuyingWizardSetTourLine(models.TransientModel):
 
     sequence = fields.Integer(default=1000)
 
-    sequence_type = fields.Selection(
-        selection=[("journey", "Journey"), ("handling", "Handling")], required=True
-    )
+    sequence_type = fields.Selection(selection=_TOUR_LINE_SEQUENCE_TYPES, required=True)
 
     wizard_id = fields.Many2one(
         comodel_name="joint.buying.wizard.set.tour", ondelete="cascade", required=True

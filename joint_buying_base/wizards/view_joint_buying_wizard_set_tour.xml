@@ -21,12 +21,12 @@ License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl.html).
                         <field name="sequence" widget="handle"/>
                         <field name="sequence_type"/>
                         <field name="point_id" attrs="{
-                            'invisible': [('sequence_type', '=', 'handling')],
-                            'required=': [('sequence_type', '=', 'journey')],
+                            'invisible': [('sequence_type', '!=', 'journey')],
+                            'required': [('sequence_type', '=', 'journey')],
                         }"/>
                         <field name="duration" widget="float_time"/>
                         <field name="distance" attrs="{
-                            'invisible': [('sequence_type', '=', 'handling')],
+                            'invisible': [('sequence_type', '!=', 'journey')],
                         }"/>
                     </tree>
                 </field>

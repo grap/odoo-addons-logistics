@@ -97,22 +97,18 @@ License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl.html).
                     <notebook colspan="4">
                         <page name="lines" string="Steps">
                             <field name="line_ids">
-                                <tree editable="botttom">
+                                <tree>
                                     <field name="sequence" invisible="1"/>
                                     <field name="currency_id" invisible="1" />
                                     <field name="sequence_type"/>
-                                    <field name="starting_point_id" attrs="{
-                                        'invisible': [('sequence_type', '=', 'handling')],
-                                        'required': [('sequence_type', '=', 'journey')],
-                                    }"/>
-                                    <field name="arrival_point_id" attrs="{
-                                        'invisible': [('sequence_type', '=', 'handling')],
-                                        'required': [('sequence_type', '=', 'journey')],
-                                    }"/>
+                                    <field name="starting_point_id"
+                                        attrs="{'invisible': [('sequence_type', '!=', 'journey')]}"/>
+                                    <field name="arrival_point_id"
+                                        attrs="{'invisible': [('sequence_type', '!=', 'journey')]}"/>
                                     <field name="duration" widget="float_time" sum="Total Duration"/>
-                                    <field name="distance" attrs="{
-                                        'invisible': [('sequence_type', '=', 'handling')],
-                                    }" sum="Total Distance"/>
+                                    <field name="distance"
+                                        attrs="{'invisible': [('sequence_type', '!=', 'journey')]}"
+                                        sum="Total Distance"/>
                                     <field name="cost" />
                                 </tree>
                             </field>
