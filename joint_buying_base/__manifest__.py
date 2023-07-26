@@ -17,10 +17,11 @@
         "res_company_active",
         "web_notify",
         "web_view_leaflet_map_partner",
+        "web_widget_bokeh_chart",
         # GRAP
         "name_search_reset_res_partner",
     ],
-    "external_dependencies": {"python": ["openupgradelib", "geopy"]},
+    "external_dependencies": {"python": ["openupgradelib", "geopy", "bokeh", "pandas"]},
     "data": [
         "security/ir_module_category.xml",
         "security/res_groups.xml",
