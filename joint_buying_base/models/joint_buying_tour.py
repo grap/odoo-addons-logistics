@@ -1,8 +1,14 @@
 # Copyright (C) 2021-Today: GRAP (http://www.grap.coop)
 # @author: Sylvain LE GAL (https://twitter.com/legalsylvain)
 # License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl.html).
-
 from datetime import timedelta
+from math import pi
+
+import pandas as pd
+from bokeh.embed import components
+from bokeh.palettes import Category20c
+from bokeh.plotting import figure
+from bokeh.transform import cumsum
 
 from odoo import _, api, fields, models
 
@@ -90,6 +96,8 @@ class JointBuyingTour(models.Model):
         comodel_name="res.currency", related="carrier_id.currency_id"
     )
 
+    cost_chart = fields.Text(compute="_compute_cost_chart")
+
     @api.onchange("type_id")
     def _onchange_type_id(self):
         if self.type_id and self.type_id.carrier_id:
@@ -124,6 +132,48 @@ class JointBuyingTour(models.Model):
     def _compute_vehicle_cost(self):
         for tour in self:
             tour.vehicle_cost = sum(tour.mapped("line_ids.vehicle_cost"))
+
+    @api.depends("vehicle_cost", "salary_cost", "toll_cost")
+    def _compute_cost_chart(self):
+        for rec in self:
+            x = {
+                _("Salary"): rec.salary_cost,
+                _("Vehicle"): rec.vehicle_cost,
+                _("Toll"): rec.toll_cost,
+            }
+            data = (
+                pd.Series(x)
+                .reset_index(name="value")
+                .rename(columns={"index": "cost_type"})
+            )
+            data["angle"] = data["value"] / data["value"].sum() * 2 * pi
+            data["color"] = Category20c[len(x)]
+
+            p = figure(
+                height=300,
+                width=300,
+                toolbar_location=None,
+                tools="hover",
+                tooltips="@cost_type: @value",
+            )
+
+            p.wedge(
+                x=0,
+                y=1,
+                radius=0.4,
+                start_angle=cumsum("angle", include_zero=True),
+                end_angle=cumsum("angle"),
+                line_color="white",
+                fill_color="color",
+                source=data,
+            )
+
+            p.axis.axis_label = None
+            p.axis.visible = False
+            p.grid.grid_line_color = None
+
+            script, div = components(p)
+            rec.cost_chart = f"{div}{script}"
 
     @api.depends("line_ids")
     def _compute_stop_qty(self):

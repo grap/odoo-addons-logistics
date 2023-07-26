@@ -121,18 +121,23 @@ There may be traffic jams, delays, unforeseen events, etc...
                             </field>
                         </page>
                         <page name="extra_informations" string="Economic Informations">
-                            <group>
-                                <group string="Settings">
+                            <group col="6">
+                                <group string="Settings" colspan="2">
                                     <field name="currency_id" groups="base.group_multi_currency"/>
                                     <newline/>
                                     <field name="hourly_cost"/>
                                     <field name="kilometer_cost"/>
                                     <field name="is_loop" invisible="1"/>
                                 </group>
-                                <group string="Cost allocation">
+                                <group string="Cost allocation" colspan="2">
                                     <field name="toll_cost"/>
                                     <field name="salary_cost"/>
                                     <field name="vehicle_cost"/>
+                                </group>
+                                <group colspan="2">
+                                    <div>
+                                        <field name="cost_chart" widget="bokeh_chart" nolabel="1"/>
+                                    </div>
                                 </group>
                             </group>
                         </page>
