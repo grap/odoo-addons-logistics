@@ -21,6 +21,12 @@ class TestModule(TransactionCase):
         self.tour_lyon_savoie = self.env.ref("joint_buying_base.tour_lyon_savoie_1")
 
     # Test Section
+    def _assert_not_very_differrent(self, value_1, value_2):
+        if value_1 == 0 or value_2 == 0:
+            return self.assertEqual(value_1, value_2)
+        ratio = (value_2 - value_1) / value_1
+        self.assertTrue(ratio < 0.1, f"{value_1} is too different than {value_2}")
+
     def test_101_set_tour_via_wizard(self):
         tour = self.JointBuyingTour.create(
             {
@@ -65,12 +71,6 @@ class TestModule(TransactionCase):
         self.assertEqual(tour.stop_qty, 1)
         self.assertAlmostEqual(tour.duration, 70 / 60)
 
-    def _assert_not_very_differrent(self, value_1, value_2):
-        if value_1 == 0 or value_2 == 0:
-            return self.assertEqual(value_1, value_2)
-        ratio = (value_2 - value_1) / value_1
-        self.assertTrue(ratio < 0.1, f"{value_1} is too different than {value_2}")
-
     def test_102_estimate_route(self):
         self.tour_lyon_savoie.line_ids.filtered(
             lambda x: x.sequence_type == "journey"
@@ -88,3 +88,8 @@ class TestModule(TransactionCase):
         self._assert_not_very_differrent(
             self.tour_lyon_savoie.duration, (55 + 55 + 105) / 60
         )
+
+    def test_103_check_description(self):
+        self.assertIn("Journey", self.tour_lyon_savoie.description)
+        self.assertIn("Truck loading", self.tour_lyon_savoie.description)
+        self.assertIn("Truck unloading", self.tour_lyon_savoie.description)
