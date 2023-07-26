@@ -78,6 +78,14 @@ class JointBuyingTour(models.Model):
         compute="_compute_cost", store=True, currency_field="currency_id"
     )
 
+    salary_cost = fields.Monetary(
+        compute="_compute_salary_cost", store=True, currency_field="currency_id"
+    )
+
+    vehicle_cost = fields.Monetary(
+        compute="_compute_vehicle_cost", store=True, currency_field="currency_id"
+    )
+
     currency_id = fields.Many2one(
         comodel_name="res.currency", related="carrier_id.currency_id"
     )
@@ -102,10 +110,20 @@ class JointBuyingTour(models.Model):
             if tour.type_id:
                 tour.name += f" - {tour.type_id.name}"
 
-    @api.depends("line_ids.cost", "toll_cost")
+    @api.depends("salary_cost", "toll_cost", "vehicle_cost")
     def _compute_cost(self):
         for tour in self:
-            tour.cost = sum(tour.mapped("line_ids.cost")) + tour.toll_cost
+            tour.cost = tour.salary_cost + tour.toll_cost + tour.vehicle_cost
+
+    @api.depends("line_ids.salary_cost")
+    def _compute_salary_cost(self):
+        for tour in self:
+            tour.salary_cost = sum(tour.mapped("line_ids.salary_cost"))
+
+    @api.depends("line_ids.vehicle_cost")
+    def _compute_vehicle_cost(self):
+        for tour in self:
+            tour.vehicle_cost = sum(tour.mapped("line_ids.vehicle_cost"))
 
     @api.depends("line_ids")
     def _compute_stop_qty(self):
