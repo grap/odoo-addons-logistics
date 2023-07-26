@@ -6,8 +6,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Odoo Server 12.0\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2023-07-07 23:17+0000\n"
-"PO-Revision-Date: 2023-07-07 23:17+0000\n"
+"POT-Creation-Date: 2023-07-26 19:52+0000\n"
+"PO-Revision-Date: 2023-07-26 19:52+0000\n"
 "Last-Translator: <>\n"
 "Language-Team: \n"
 "MIME-Version: 1.0\n"
@@ -16,7 +16,7 @@ msgstr ""
 "Plural-Forms: \n"
 
 #. module: joint_buying_base
-#: code:addons/joint_buying_base/models/joint_buying_tour.py:153
+#: code:addons/joint_buying_base/models/joint_buying_tour.py:270
 #, python-format
 msgid "%s (copy)"
 msgstr "%s (copie)"
@@ -85,6 +85,11 @@ msgid "All Contacts"
 msgstr "Tous les contacts"
 
 #. module: joint_buying_base
+#: model:ir.model.fields,field_description:joint_buying_base.field_joint_buying_tour_line__arrival_hour
+msgid "Arrival Hour"
+msgstr "Heure de début"
+
+#. module: joint_buying_base
 #: model:ir.model.fields,field_description:joint_buying_base.field_joint_buying_tour__arrival_point_id
 #: model:ir.model.fields,field_description:joint_buying_base.field_joint_buying_tour_line__arrival_point_id
 msgid "Arrival Point"
@@ -110,9 +115,10 @@ msgid "Bakery"
 msgstr "Boulangerie"
 
 #. module: joint_buying_base
-#: model:ir.model.fields,field_description:joint_buying_base.field_joint_buying_tour__calendar_description
-msgid "Calendar Description"
-msgstr "Description dans le calendrier"
+#: code:addons/joint_buying_base/models/joint_buying_tour_line.py:88
+#, python-format
+msgid "Calling 'router.project-osrm.org' returned the following error Status Code : %s Reason : %s"
+msgstr "L'appel de 'router.project-osrm.org' a retourné l'erreur suivante : Statut : %s ; Raison : %s"
 
 #. module: joint_buying_base
 #: model_terms:ir.ui.view,arch_db:joint_buying_base.view_joint_buying_wizard_set_tour_form
@@ -130,6 +136,11 @@ msgstr "Transporteur"
 #: model:ir.ui.menu,name:joint_buying_base.menu_joint_buying_carrier
 msgid "Carriers"
 msgstr "Transporteurs"
+
+#. module: joint_buying_base
+#: model_terms:ir.ui.view,arch_db:joint_buying_base.view_joint_buying_tour_form
+msgid "Chart"
+msgstr "Graphique"
 
 #. module: joint_buying_base
 #: model:ir.model.fields,help:joint_buying_base.field_res_partner__is_joint_buying_stage
@@ -229,6 +240,16 @@ msgid "Cost"
 msgstr "Coût"
 
 #. module: joint_buying_base
+#: model:ir.model.fields,field_description:joint_buying_base.field_joint_buying_tour__cost_chart
+msgid "Cost Chart"
+msgstr "Graphique des coûts"
+
+#. module: joint_buying_base
+#: model_terms:ir.ui.view,arch_db:joint_buying_base.view_joint_buying_tour_form
+msgid "Cost allocation"
+msgstr "Répartition des coûts"
+
+#. module: joint_buying_base
 #: model_terms:ir.ui.view,arch_db:joint_buying_base.view_res_partner_form
 msgid "Country"
 msgstr "Pays"
@@ -256,6 +277,7 @@ msgstr "Créé le"
 #. module: joint_buying_base
 #: model:ir.model.fields,field_description:joint_buying_base.field_joint_buying_carrier__currency_id
 #: model:ir.model.fields,field_description:joint_buying_base.field_joint_buying_tour__currency_id
+#: model:ir.model.fields,field_description:joint_buying_base.field_joint_buying_tour_line__currency_id
 msgid "Currency"
 msgstr "Devise"
 
@@ -263,6 +285,12 @@ msgstr "Devise"
 #: model:res.partner.category,name:joint_buying_base.partner_category_delicatessen
 msgid "Delicatessen"
 msgstr "Charcuterie"
+
+#. module: joint_buying_base
+#: model:ir.model.fields,field_description:joint_buying_base.field_joint_buying_tour__description
+#: model_terms:ir.ui.view,arch_db:joint_buying_base.view_joint_buying_tour_form
+msgid "Description"
+msgstr ""
 
 #. module: joint_buying_base
 #: model:ir.model.fields,field_description:joint_buying_base.field_joint_buying_carrier__display_name
@@ -289,6 +317,11 @@ msgstr ""
 #: model:ir.model.fields,field_description:joint_buying_base.field_joint_buying_wizard_set_tour_line__duration
 msgid "Duration"
 msgstr "Durée"
+
+#. module: joint_buying_base
+#: model_terms:ir.ui.view,arch_db:joint_buying_base.view_joint_buying_tour_form
+msgid "Economic Informations"
+msgstr "Informations économiques"
 
 #. module: joint_buying_base
 #: model:ir.model.fields,field_description:joint_buying_base.field_joint_buying_tour__end_date
@@ -533,6 +566,12 @@ msgid "Journey"
 msgstr "Trajet"
 
 #. module: joint_buying_base
+#: code:addons/joint_buying_base/models/joint_buying_tour.py:216
+#, python-format
+msgid "Journey from %s to %s"
+msgstr "Trajet de %s à %s"
+
+#. module: joint_buying_base
 #: model:ir.ui.menu,name:joint_buying_base.menu_journey
 msgid "Journeys"
 msgstr "Trajets"
@@ -703,6 +742,12 @@ msgid "Partner Tags"
 msgstr "Étiquettes du partenaire"
 
 #. module: joint_buying_base
+#: selection:joint.buying.tour.line,sequence_type:0
+#: selection:joint.buying.wizard.set.tour.line,sequence_type:0
+msgid "Pause"
+msgstr ""
+
+#. module: joint_buying_base
 #: model:ir.model.fields,field_description:joint_buying_base.field_joint_buying_carrier__payload
 msgid "Payload"
 msgstr "Charge utile"
@@ -743,6 +788,25 @@ msgid "Responsible User"
 msgstr "Responsable"
 
 #. module: joint_buying_base
+#: model_terms:ir.ui.view,arch_db:joint_buying_base.view_joint_buying_tour_form
+msgid "Route information is given as an indication only!<br/>\n"
+"There may be traffic jams, delays, unforeseen events, etc..."
+msgstr "Les prévisions de trajets sont données à titre indicatif seulement ! <br/>\n"
+" Il peut y avoir des bouchons, des retards, des imprévus, etc..."
+
+#. module: joint_buying_base
+#: code:addons/joint_buying_base/models/joint_buying_tour.py:140
+#, python-format
+msgid "Salary"
+msgstr "Salaire"
+
+#. module: joint_buying_base
+#: model:ir.model.fields,field_description:joint_buying_base.field_joint_buying_tour__salary_cost
+#: model:ir.model.fields,field_description:joint_buying_base.field_joint_buying_tour_line__salary_cost
+msgid "Salary Cost"
+msgstr "Coût des salaires"
+
+#. module: joint_buying_base
 #: model:ir.model.fields,field_description:joint_buying_base.field_joint_buying_tour_line__sequence
 #: model:ir.model.fields,field_description:joint_buying_base.field_joint_buying_wizard_set_tour_line__sequence
 msgid "Sequence"
@@ -763,6 +827,7 @@ msgstr "Configurer la tournée"
 #. module: joint_buying_base
 #: model:ir.actions.act_window,name:joint_buying_base.action_res_config_settings
 #: model:ir.ui.menu,name:joint_buying_base.menu_res_config_settings
+#: model_terms:ir.ui.view,arch_db:joint_buying_base.view_joint_buying_tour_form
 #: model_terms:ir.ui.view,arch_db:joint_buying_base.view_res_partner_form
 msgid "Settings"
 msgstr "Configuration"
@@ -782,6 +847,11 @@ msgstr "Etapes"
 #: model:ir.model.fields,field_description:joint_buying_base.field_joint_buying_tour__start_date
 msgid "Start Date"
 msgstr "Date de début"
+
+#. module: joint_buying_base
+#: model:ir.model.fields,field_description:joint_buying_base.field_joint_buying_tour_line__start_hour
+msgid "Start Hour"
+msgstr "Heure de début"
 
 #. module: joint_buying_base
 #: model:ir.model.fields,field_description:joint_buying_base.field_joint_buying_tour__starting_point_id
@@ -847,6 +917,11 @@ msgid "Subscribed Companies"
 msgstr "Sociétés abonnées"
 
 #. module: joint_buying_base
+#: model:ir.model.fields,field_description:joint_buying_base.field_joint_buying_tour__summary
+msgid "Summary"
+msgstr "Résumé"
+
+#. module: joint_buying_base
 #: model_terms:ir.ui.view,arch_db:joint_buying_base.view_res_partner_form
 msgid "Supplier"
 msgstr "Fournisseur"
@@ -865,9 +940,9 @@ msgid "Suppliers (Editable View)"
 msgstr "Fournisseurs (Vue éditable)"
 
 #. module: joint_buying_base
-#: model_terms:ir.ui.view,arch_db:joint_buying_base.view_joint_buying_tour_form
-msgid "Technical Informations"
-msgstr "Informations techniques"
+#: model:ir.model,name:joint_buying_base.model_ir_config_parameter
+msgid "System Parameter"
+msgstr "Paramètre système"
 
 #. module: joint_buying_base
 #: model:ir.model.fields,help:joint_buying_base.field_res_partner__joint_buying_is_mine_pivot
@@ -881,6 +956,17 @@ msgstr "Cette case est cochée si la société actuelle de l'utilisateur est la 
 #: selection:joint.buying.tour.type,activity_state:0
 msgid "Today"
 msgstr "Aujourd'hui"
+
+#. module: joint_buying_base
+#: code:addons/joint_buying_base/models/joint_buying_tour.py:142
+#, python-format
+msgid "Toll"
+msgstr "Péage"
+
+#. module: joint_buying_base
+#: model:ir.model.fields,field_description:joint_buying_base.field_joint_buying_tour__toll_cost
+msgid "Toll Cost"
+msgstr "Coût des péages"
 
 #. module: joint_buying_base
 #: model_terms:ir.ui.view,arch_db:joint_buying_base.view_joint_buying_tour_form
@@ -910,7 +996,7 @@ msgstr "Types de tournées"
 #: model:ir.actions.act_window,name:joint_buying_base.action_joint_buying_tour_all
 #: model:ir.ui.menu,name:joint_buying_base.menu_joint_buying_tour_all
 msgid "Tours"
-msgstr "Tournées"
+msgstr "Visites"
 
 #. module: joint_buying_base
 #: model:ir.model.fields,field_description:joint_buying_base.field_joint_buying_tour__type_id
@@ -918,7 +1004,14 @@ msgid "Type"
 msgstr ""
 
 #. module: joint_buying_base
-#: code:addons/joint_buying_base/models/joint_buying_tour_line.py:68
+#: code:addons/joint_buying_base/models/joint_buying_tour_line.py:121
+#, python-format
+msgid "Unable to estimate a route because the following stages has no defined geographic coordinates. <br/>- %s"
+msgstr "Impossible d'estimer le trajet car la ou les étapes suivantes n'ont pas de"
+" coordonnées géographiques définies. . <br/>- %s"
+
+#. module: joint_buying_base
+#: code:addons/joint_buying_base/models/joint_buying_tour_line.py:85
 #, python-format
 msgid "Unable to reach the service 'router.project-osrm.org'."
 msgstr "Impossible d'accéder au service 'router.project-osrm.org'."
@@ -951,6 +1044,18 @@ msgstr "Utilisateurs"
 #: model:res.partner.category,name:joint_buying_base.partner_category_vegetable
 msgid "Vegetable"
 msgstr "Légumes"
+
+#. module: joint_buying_base
+#: code:addons/joint_buying_base/models/joint_buying_tour.py:141
+#, python-format
+msgid "Vehicle"
+msgstr "Véhicule"
+
+#. module: joint_buying_base
+#: model:ir.model.fields,field_description:joint_buying_base.field_joint_buying_tour__vehicle_cost
+#: model:ir.model.fields,field_description:joint_buying_base.field_joint_buying_tour_line__vehicle_cost
+msgid "Vehicle Cost"
+msgstr "Coût du véhicule"
 
 #. module: joint_buying_base
 #: model:ir.model.fields,field_description:joint_buying_base.field_joint_buying_wizard_set_tour_line__wizard_id

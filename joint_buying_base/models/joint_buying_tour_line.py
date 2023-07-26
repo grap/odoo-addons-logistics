@@ -87,9 +87,10 @@ class JointBuyingTourLine(models.Model):
             raise UserError(
                 _(
                     "Calling 'router.project-osrm.org' returned the following error"
-                    f" Status Code : {response.status_code}"
-                    f" Reason : {response.reason}"
+                    " Status Code : %s"
+                    " Reason : %s"
                 )
+                % (response.status_code, response.reason)
             )
         result = response.json().get("routes")[0]
         return {
@@ -120,7 +121,8 @@ class JointBuyingTourLine(models.Model):
                 message=_(
                     "Unable to estimate a route because the following stages"
                     " has no defined geographic coordinates. <br/>"
-                    f"- {'<br/>- '.join([x.name for x in no_coordinate_partners])}"
-                ),
+                    "- %s"
+                )
+                % ("<br/>- ".join([x.name for x in no_coordinate_partners])),
                 sticky=True,
             )
