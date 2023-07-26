@@ -17,9 +17,7 @@ class JointBuyingTour(models.Model):
 
     name = fields.Char(compute="_compute_name", store=True)
 
-    calendar_description = fields.Char(
-        compute="_compute_calendar_description", store=True
-    )
+    summary = fields.Text(compute="_compute_summary", store=True)
 
     distance = fields.Float(
         compute="_compute_distance",
@@ -115,13 +113,27 @@ class JointBuyingTour(models.Model):
                 len(tour.line_ids.filtered(lambda x: x.sequence_type == "journey")) - 1,
             )
 
-    @api.depends("carrier_id.name", "stop_qty")
-    def _compute_calendar_description(self):
+    @api.depends("line_ids.starting_point_id", "line_ids.arrival_point_id")
+    def _compute_summary(self):
         for tour in self:
-            tour.calendar_description = "(%s - %d Stop)" % (
-                tour.carrier_id.name,
-                tour.stop_qty,
-            )
+            codes = []
+            for line in tour.line_ids.filtered(lambda x: x.sequence_type == "journey"):
+                if not codes:
+                    codes = [
+                        line.starting_point_id.joint_buying_company_id
+                        and line.starting_point_id.joint_buying_company_id.code
+                        or line.starting_point_id.name,
+                        line.arrival_point_id.joint_buying_company_id
+                        and line.arrival_point_id.joint_buying_company_id.code
+                        or line.arrival_point_id.name,
+                    ]
+                else:
+                    codes.append(
+                        line.arrival_point_id.joint_buying_company_id
+                        and line.arrival_point_id.joint_buying_company_id.code
+                        or line.arrival_point_id.name,
+                    )
+            tour.summary = f"{' -> '.join(codes)}"
 
     @api.depends("starting_point_id", "arrival_point_id")
     def _compute_is_loop(self):

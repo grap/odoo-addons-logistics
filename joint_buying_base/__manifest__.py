@@ -37,6 +37,7 @@
         "views/view_joint_buying_tour_type.xml",
         "views/view_joint_buying_tour.xml",
         "wizards/view_joint_buying_wizard_set_tour.xml",
+        "views/templates.xml",
     ],
     "demo": [
         "demo/res_company.xml",

@@ -29,9 +29,9 @@ License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl.html).
     <record id="view_joint_buying_tour_calendar" model="ir.ui.view">
         <field name="model">joint.buying.tour</field>
         <field name="arch" type="xml">
-            <calendar date_start="start_date" date_stop="end_date" color="carrier_id">
-                <field name="name"/>
-                <field name="calendar_description"/>
+            <calendar date_start="start_date" date_stop="end_date" color="type_id">
+                <field name="type_id"/>
+                <field name="summary"/>
             </calendar>
         </field>
     </record>
@@ -76,9 +76,8 @@ License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl.html).
                         </button>
                     </div>
                     <div class="oe_title">
-                        <h1>
-                            <field name="name"/>
-                        </h1>
+                        <h1><field name="name"/></h1>
+                        <h2><field name="summary"/></h2>
                     </div>
                     <group>
                         <group colspan="4" col="4">
