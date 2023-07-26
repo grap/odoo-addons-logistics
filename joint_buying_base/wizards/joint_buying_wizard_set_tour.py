@@ -87,6 +87,6 @@ class JointBuyingWizardSetTour(models.TransientModel):
             if wizard_line.point_id:
                 current_starting_point = wizard_line.point_id
         if line_vals:
-            return self.tour_id.write({"line_ids": line_vals})
-        else:
-            return True
+            self.tour_id.write({"line_ids": line_vals})
+            self.tour_id.recompute_start_hours()
+        return True

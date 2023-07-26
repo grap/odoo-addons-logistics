@@ -36,6 +36,10 @@ class JointBuyingTourLine(models.Model):
 
     distance = fields.Float()
 
+    start_hour = fields.Float()
+
+    arrival_hour = fields.Float()
+
     starting_point_id = fields.Many2one(
         comodel_name="res.partner", context=_JOINT_BUYING_PARTNER_CONTEXT
     )

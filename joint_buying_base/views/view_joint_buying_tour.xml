@@ -98,6 +98,8 @@ License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl.html).
                             <field name="line_ids">
                                 <tree>
                                     <field name="sequence" invisible="1"/>
+                                    <field name="start_hour" widget="float_time"/>
+                                    <field name="arrival_hour" widget="float_time"/>
                                     <field name="currency_id" invisible="1" />
                                     <field name="sequence_type"/>
                                     <field name="starting_point_id"
