@@ -19,6 +19,8 @@ class JointBuyingTour(models.Model):
 
     summary = fields.Text(compute="_compute_summary", store=True)
 
+    description = fields.Html(compute="_compute_description")
+
     distance = fields.Float(
         compute="_compute_distance",
         store=True,
@@ -134,6 +136,34 @@ class JointBuyingTour(models.Model):
                         or line.arrival_point_id.name,
                     )
             tour.summary = f"{' -> '.join(codes)}"
+
+    def _compute_description(self):
+        def _float_to_strtime(float_value):
+            return f"{int(float_value):02d}:{int(60 * (float_value % 1)):02d}"
+
+        for tour in self:
+            description = ""
+            for i, line in enumerate(tour.line_ids):
+                if line.sequence_type == "journey":
+                    line_name = _(
+                        f"Journey from {line.starting_point_id.name}"
+                        f" to {line.arrival_point_id.name}"
+                    )
+                elif line.sequence_type == "pause":
+                    line_name = f"<span style='color: green'><b>{_('Pause')}</b></span>"
+                else:
+                    if i == 0:
+                        line_name = f"<i>{_('Truck loading')}</i>"
+                    elif i == len(tour.line_ids) - 1:
+                        line_name = f"<i>{_('Truck unloading')}</i>"
+                    else:
+                        line_name = f"<i>{_('Delivery and pick-up')}</i>"
+                description += (
+                    f"<b>{_float_to_strtime(line.start_hour)} - "
+                    f"{_float_to_strtime(line.arrival_hour)}</b> : {line_name}"
+                    "<br/>"
+                )
+        tour.description = description
 
     @api.depends("starting_point_id", "arrival_point_id")
     def _compute_is_loop(self):

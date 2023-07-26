@@ -94,6 +94,13 @@ License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl.html).
                         </group>
                     </group>
                     <notebook colspan="4">
+                        <page name="description" string="Description">
+                            <p class="alert alert-warning" role="alert">
+Route information is given as an indication only!<br/>
+There may be traffic jams, delays, unforeseen events, etc...
+                            </p>
+                            <field name="description" widget="html" />
+                        </page>
                         <page name="lines" string="Steps">
                             <field name="line_ids">
                                 <tree>
