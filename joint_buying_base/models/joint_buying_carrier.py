@@ -26,5 +26,10 @@ class JointBuyingCarrier(models.Model):
     kilometer_cost = fields.Monetary(currency_field="currency_id")
 
     currency_id = fields.Many2one(
-        comodel_name="res.currency", required=True, currency_field="currency_id"
+        comodel_name="res.currency",
+        required=True,
+        default=lambda x: x._default_currency_id(),
     )
+
+    def _default_currency_id(self):
+        return self.env.ref("base.EUR")

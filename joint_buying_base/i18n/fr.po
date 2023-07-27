@@ -6,8 +6,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Odoo Server 12.0\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2023-07-26 19:52+0000\n"
-"PO-Revision-Date: 2023-07-26 19:52+0000\n"
+"POT-Creation-Date: 2023-07-27 09:31+0000\n"
+"PO-Revision-Date: 2023-07-27 09:31+0000\n"
 "Last-Translator: <>\n"
 "Language-Team: \n"
 "MIME-Version: 1.0\n"
@@ -27,9 +27,33 @@ msgid "<b>Company Address:</b>"
 msgstr "<b>Adresse de la société:</b>"
 
 #. module: joint_buying_base
+#: code:addons/joint_buying_base/models/joint_buying_tour.py:228
+#, python-format
+msgid "<i>Delivery and pick-up</i>"
+msgstr "<i>Livraison et retrait</i>"
+
+#. module: joint_buying_base
+#: code:addons/joint_buying_base/models/joint_buying_tour.py:224
+#, python-format
+msgid "<i>Truck loading</i>"
+msgstr "<i>Chargement du camion</i>"
+
+#. module: joint_buying_base
+#: code:addons/joint_buying_base/models/joint_buying_tour.py:226
+#, python-format
+msgid "<i>Truck unloading</i>"
+msgstr "<i>Déchargement du camion</i>"
+
+#. module: joint_buying_base
 #: model_terms:ir.ui.view,arch_db:joint_buying_base.view_res_partner_form
 msgid "<span class=\"oe_inline\"> ( On  </span>"
 msgstr "<span class=\"oe_inline\"> ( Dans </span>"
+
+#. module: joint_buying_base
+#: code:addons/joint_buying_base/models/joint_buying_tour.py:221
+#, python-format
+msgid "<span style='color: green'><b>Pause</b></span>"
+msgstr ""
 
 #. module: joint_buying_base
 #: model_terms:ir.ui.view,arch_db:joint_buying_base.view_res_partner_form
@@ -136,11 +160,6 @@ msgstr "Transporteur"
 #: model:ir.ui.menu,name:joint_buying_base.menu_joint_buying_carrier
 msgid "Carriers"
 msgstr "Transporteurs"
-
-#. module: joint_buying_base
-#: model_terms:ir.ui.view,arch_db:joint_buying_base.view_joint_buying_tour_form
-msgid "Chart"
-msgstr "Graphique"
 
 #. module: joint_buying_base
 #: model:ir.model.fields,help:joint_buying_base.field_res_partner__is_joint_buying_stage
@@ -1007,8 +1026,7 @@ msgstr ""
 #: code:addons/joint_buying_base/models/joint_buying_tour_line.py:121
 #, python-format
 msgid "Unable to estimate a route because the following stages has no defined geographic coordinates. <br/>- %s"
-msgstr "Impossible d'estimer le trajet car la ou les étapes suivantes n'ont pas de"
-" coordonnées géographiques définies. . <br/>- %s"
+msgstr "Impossible d'estimer le trajet car la ou les étapes suivantes n'ont pas de coordonnées géographiques définies. . <br/>- %s"
 
 #. module: joint_buying_base
 #: code:addons/joint_buying_base/models/joint_buying_tour_line.py:85
