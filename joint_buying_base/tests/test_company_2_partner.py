@@ -16,7 +16,7 @@ class TestModule(TransactionCase):
         self.suffixParameter = self.env.ref("joint_buying_base.parameter_group_name")
 
     # Test Section
-    def test_01_write_company_to_partner_info(self):
+    def test_001_write_company_to_partner_info(self):
         company_name = "Demo Company for Joint Buying"
         new_company = self.ResCompany.create({"name": company_name})
 
@@ -26,7 +26,7 @@ class TestModule(TransactionCase):
             "Create a company should create a related joint buying partner",
         )
 
-    def test_02_write_company_to_partner_info(self):
+    def test_002_write_company_to_partner_info(self):
         company_email = "etouais@monpetit.pote"
         self.company_3PP.write({"email": company_email})
 
@@ -36,11 +36,11 @@ class TestModule(TransactionCase):
             "Update company should update related joint buying partner",
         )
 
-    def test_03_write_joint_buying_partner(self):
+    def test_003_write_joint_buying_partner(self):
         with self.assertRaises(AccessError):
             self.company_3PP.joint_buying_partner_id.email = "nonnon@non.non"
 
-    def test_04_change_config_parameter(self):
+    def test_004_change_config_parameter(self):
         self.suffixParameter.value = "NEW SUFFIX"
 
         for company in self.ResCompany.search([]):
