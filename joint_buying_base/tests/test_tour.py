@@ -4,11 +4,12 @@
 
 from odoo import fields
 from odoo.tests import tagged
-from odoo.tests.common import TransactionCase
+
+from .test_abstract import TestAbstract
 
 
 @tagged("post_install", "-at_install")
-class TestModule(TransactionCase):
+class TestModule(TestAbstract):
     def setUp(self):
         super().setUp()
         self.JointBuyingTour = self.env["joint.buying.tour"]
