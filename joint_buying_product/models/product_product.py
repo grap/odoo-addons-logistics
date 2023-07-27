@@ -26,7 +26,7 @@ class ProductProduct(models.Model):
         "joint.buying.check.access.mixin",
     ]
 
-    _check_write_access_company_field_id = (
+    _check_access_company_field_id = (
         "joint_buying_partner_id.joint_buying_pivot_company_id"
     )
 

@@ -20,7 +20,7 @@ class JointBuyingPurchaseOrderGrouped(models.Model):
     _inherit = ["joint.buying.check.access.mixin", "mail.thread", "mail.activity.mixin"]
     _order = "end_date desc, supplier_id"
 
-    _check_write_access_company_field_id = "pivot_company_id"
+    _check_access_company_field_id = "pivot_company_id"
 
     _STATE_SELECTION = [
         ("futur", "Futur"),
