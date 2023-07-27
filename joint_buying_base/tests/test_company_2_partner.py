@@ -4,11 +4,12 @@
 
 from odoo.exceptions import AccessError
 from odoo.tests import tagged
-from odoo.tests.common import TransactionCase
+
+from .test_abstract import TestAbstract
 
 
 @tagged("post_install", "-at_install")
-class TestModule(TransactionCase):
+class TestModule(TestAbstract):
     def setUp(self):
         super().setUp()
         self.company_3PP = self.env.ref("joint_buying_base.company_3PP")
