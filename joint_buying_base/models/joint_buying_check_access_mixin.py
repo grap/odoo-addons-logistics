@@ -10,9 +10,9 @@ class JointBuyingCheckAccessMixin(models.AbstractModel):
     _name = "joint.buying.check.access.mixin"
     _description = "Joint Buying Check Access Mixin"
 
-    _check_write_access_company_field_id = False
+    _check_access_company_field_id = False
 
-    _check_write_access_fields_no_check = []
+    _check_access_write_fields_no_check = []
 
     @api.model
     def create(self, vals):
@@ -30,10 +30,7 @@ class JointBuyingCheckAccessMixin(models.AbstractModel):
             # and if we are in a local context, no check.
             return res
 
-        if (
-            res.mapped(self._check_write_access_company_field_id)
-            != self.env.user.company_id
-        ):
+        if res.mapped(self._check_access_company_field_id) != self.env.user.company_id:
             raise AccessError(
                 _(
                     "You can not create this item because"
@@ -52,7 +49,7 @@ class JointBuyingCheckAccessMixin(models.AbstractModel):
             # A manager has no contrains
             return super().write(vals)
 
-        if not (set(vals.keys()) - set(self._check_write_access_fields_no_check)):
+        if not (set(vals.keys()) - set(self._check_access_write_fields_no_check)):
             # Updated fields are all unprotected
             return super().write(vals)
 
@@ -64,7 +61,7 @@ class JointBuyingCheckAccessMixin(models.AbstractModel):
 
         for item in items:
             if (
-                item.mapped(self._check_write_access_company_field_id)
+                item.mapped(self._check_access_company_field_id)
                 != self.env.user.company_id
             ):
                 raise AccessError(
@@ -93,7 +90,7 @@ class JointBuyingCheckAccessMixin(models.AbstractModel):
 
         for item in items:
             if (
-                item.mapped(self._check_write_access_company_field_id)
+                item.mapped(self._check_access_company_field_id)
                 != self.env.user.company_id
             ):
                 raise AccessError(
