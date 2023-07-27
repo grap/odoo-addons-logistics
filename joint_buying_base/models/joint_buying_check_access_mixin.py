@@ -10,6 +10,10 @@ class JointBuyingCheckAccessMixin(models.AbstractModel):
     _name = "joint.buying.check.access.mixin"
     _description = "Joint Buying Check Access Mixin"
 
+    _check_access_can_create = False
+
+    _check_access_can_unlink = False
+
     _check_access_company_field_id = False
 
     _check_access_write_fields_no_check = []
@@ -29,6 +33,11 @@ class JointBuyingCheckAccessMixin(models.AbstractModel):
             # if it's a mixed model (global / local) like product and partner
             # and if we are in a local context, no check.
             return res
+
+        if not self._check_access_can_create:
+            raise AccessError(
+                _("You can not create this item. Please ask to the logistic Manager.")
+            )
 
         if res.mapped(self._check_access_company_field_id) != self.env.user.company_id:
             raise AccessError(
@@ -88,6 +97,14 @@ class JointBuyingCheckAccessMixin(models.AbstractModel):
         else:
             items = self
 
+        if not items:
+            return super().unlink()
+
+        if not self._check_access_can_unlink:
+            raise AccessError(
+                _("You can not unlink the items. Please ask to the logistic Manager.")
+            )
+
         for item in items:
             if (
                 item.mapped(self._check_access_company_field_id)
@@ -99,4 +116,5 @@ class JointBuyingCheckAccessMixin(models.AbstractModel):
                         " you are not responsible for it"
                     )
                 )
+
         return super().unlink()
