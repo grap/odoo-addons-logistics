@@ -218,14 +218,14 @@ class JointBuyingTour(models.Model):
                         line.arrival_point_id.name,
                     )
                 elif line.sequence_type == "pause":
-                    line_name = f"<span style='color: green'><b>{_('Pause')}</b></span>"
+                    line_name = _("<span style='color: green'><b>Pause</b></span>")
                 else:
                     if i == 0:
-                        line_name = f"<i>{_('Truck loading')}</i>"
+                        line_name = _("<i>Truck loading</i>")
                     elif i == len(tour.line_ids) - 1:
-                        line_name = f"<i>{_('Truck unloading')}</i>"
+                        line_name = _("<i>Truck unloading</i>")
                     else:
-                        line_name = f"<i>{_('Delivery and pick-up')}</i>"
+                        line_name = _("<i>Delivery and pick-up</i>")
                 description += (
                     f"<b>{_float_to_strtime(line.start_hour)} - "
                     f"{_float_to_strtime(line.arrival_hour)}</b> : {line_name}"
