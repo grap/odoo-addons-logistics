@@ -65,10 +65,9 @@ class JointBuyingWizardSetTour(models.TransientModel):
         self.ensure_one()
         self.tour_id.line_ids.unlink()
         current_starting_point = self.starting_point_id
-        i = 0
         line_vals = []
-        for wizard_line in self.line_ids:
-            i += 1
+        for i, wizard_line in enumerate(self.line_ids):
+
             line_vals.append(
                 (
                     0,
