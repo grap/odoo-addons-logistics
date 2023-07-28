@@ -82,6 +82,10 @@ class ResPartner(models.Model):
 
     joint_buying_commission_rate = fields.Float(string="Joint Buying Commission Rate")
 
+    joint_buying_display_name_step = fields.Char(
+        compute="_compute_joint_buying_display_name_step"
+    )
+
     # Onchange section
     @api.onchange("joint_buying_pivot_company_id")
     def onchange_joint_buying_pivot_company_id(self):
@@ -147,6 +151,27 @@ class ResPartner(models.Model):
             return companies.ids
 
     # Compute Section
+    def _compute_joint_buying_display_name_step(self):
+        if self.env.context.get("active_model") != "joint.buying.tour":
+            for partner in self:
+                partner.joint_buying_display_name_step = partner.display_name
+            return
+
+        tour = self.env["joint.buying.tour"].browse(self.env.context.get("active_id"))
+        for partner in self:
+            step_list = []
+            for i, line in enumerate(
+                tour.line_ids.filtered(lambda x: x.sequence_type == "journey")
+            ):
+                if line.starting_point_id == partner:
+                    step_list.append(i + 1)
+                if line.arrival_point_id == partner:
+                    step_list.append(i + 2)
+            suffix = ", ".join([str(x) for x in set(step_list)])
+            partner.joint_buying_display_name_step = (
+                f"{partner.display_name} ({suffix})"
+            )
+
     def _compute_joint_buying_is_mine_pivot(self):
         current_company = self.env.user.company_id
         for partner in self:
