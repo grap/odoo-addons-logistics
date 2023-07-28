@@ -12,7 +12,7 @@ from .test_abstract import TestAbstract
 class TestModule(TestAbstract):
     def setUp(self):
         super().setUp()
-        self.user_3PP = self.env.ref("joint_buying_base.user_joint_buying_user")
+        self.user_3PP = self.env.ref("joint_buying_base.user_joint_buying_user_3PP")
         self.company_CHE = self.env.ref("joint_buying_base.company_CHE")
         self.company_3PP = self.env.ref("joint_buying_base.company_3PP")
 
