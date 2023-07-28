@@ -6,7 +6,8 @@
         <field name="users" eval="[
             (4, ref('base.user_root')),
             (4, ref('base.user_admin')),
-            (4, ref('joint_buying_base.user_joint_buying_user')),
+            (4, ref('joint_buying_base.user_joint_buying_user_3PP')),
+            (4, ref('joint_buying_base.user_joint_buying_user_LSE')),
             (4, ref('joint_buying_base.user_joint_buying_manager')),
         ]"/>
     </record>
