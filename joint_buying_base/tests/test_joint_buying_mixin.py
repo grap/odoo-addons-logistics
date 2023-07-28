@@ -11,7 +11,7 @@ from .test_abstract import TestAbstract
 class TestModule(TestAbstract):
     def setUp(self):
         super().setUp()
-        self.user_3PP = self.env.ref("joint_buying_base.user_joint_buying_user")
+        self.user_3PP = self.env.ref("joint_buying_base.user_joint_buying_user_3PP")
         self.joint_buying_supplier = self.env.ref(
             "joint_buying_base.supplier_fumet_dombes"
         )
