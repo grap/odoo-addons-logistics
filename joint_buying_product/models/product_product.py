@@ -30,10 +30,6 @@ class ProductProduct(models.Model):
 
     _check_access_can_unlink = True
 
-    _check_access_company_field_id = (
-        "joint_buying_partner_id.joint_buying_pivot_company_id"
-    )
-
     is_joint_buying = fields.Boolean(
         string="For Joint Buying",
         related="product_tmpl_id.is_joint_buying",
@@ -93,6 +89,12 @@ class ProductProduct(models.Model):
     joint_buying_is_sold = fields.Boolean(
         compute="_compute_joint_buying_is_sold",
     )
+
+    @api.multi
+    def _joint_buying_check_access(self):
+        return set(
+            self.mapped("joint_buying_partner_id.joint_buying_pivot_company_id").ids
+        ) == {self.env.user.company_id.id}
 
     # Default Section
     def _default_joint_is_new(self):
