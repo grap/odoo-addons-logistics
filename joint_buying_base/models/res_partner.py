@@ -23,8 +23,6 @@ class ResPartner(models.Model):
         ("not_applicable", "Not Applicable"),
     ]
 
-    _check_access_company_field_id = "joint_buying_pivot_company_id"
-
     _check_access_write_fields_no_check = ["joint_buying_is_subscribed"]
 
     joint_buying_subscribed_company_ids = fields.Many2many(
@@ -85,6 +83,12 @@ class ResPartner(models.Model):
     joint_buying_display_name_step = fields.Char(
         compute="_compute_joint_buying_display_name_step"
     )
+
+    @api.multi
+    def _joint_buying_check_access(self):
+        return set(self.mapped("joint_buying_pivot_company_id").ids) == {
+            self.env.user.company_id.id
+        }
 
     # Onchange section
     @api.onchange("joint_buying_pivot_company_id")

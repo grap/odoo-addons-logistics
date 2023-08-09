@@ -18,6 +18,13 @@ class JointBuyingCheckAccessMixin(models.AbstractModel):
 
     _check_access_write_fields_no_check = []
 
+    @api.multi
+    def _joint_buying_check_access(self):
+        """Overload this function in each model
+        Should return False if the access if forbidden
+        """
+        raise NotImplementedError()
+
     @api.model
     def create(self, vals):
         res = super().create(vals)
@@ -39,7 +46,7 @@ class JointBuyingCheckAccessMixin(models.AbstractModel):
                 _("You can not create this item. Please ask to the logistic Manager.")
             )
 
-        if res.mapped(self._check_access_company_field_id) != self.env.user.company_id:
+        if not res._joint_buying_check_access():
             raise AccessError(
                 _(
                     "You can not create this item because"
@@ -68,17 +75,13 @@ class JointBuyingCheckAccessMixin(models.AbstractModel):
         else:
             items = self
 
-        for item in items:
-            if (
-                item.mapped(self._check_access_company_field_id)
-                != self.env.user.company_id
-            ):
-                raise AccessError(
-                    _(
-                        "You can not update this item because"
-                        " you are not responsible for it"
-                    )
+        if not items._joint_buying_check_access():
+            raise AccessError(
+                _(
+                    "You can not update this item because"
+                    " you are not responsible for it"
                 )
+            )
         return super().write(vals)
 
     @api.multi
@@ -105,16 +108,12 @@ class JointBuyingCheckAccessMixin(models.AbstractModel):
                 _("You can not unlink the items. Please ask to the logistic Manager.")
             )
 
-        for item in items:
-            if (
-                item.mapped(self._check_access_company_field_id)
-                != self.env.user.company_id
-            ):
-                raise AccessError(
-                    _(
-                        "You can not unlink this item because"
-                        " you are not responsible for it"
-                    )
+        if not items._joint_buying_check_access():
+            raise AccessError(
+                _(
+                    "You can not unlink this item because"
+                    " you are not responsible for it"
                 )
+            )
 
         return super().unlink()
