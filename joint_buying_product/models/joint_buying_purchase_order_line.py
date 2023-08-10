@@ -88,6 +88,7 @@ class JointBuyingPurchaseOrderLine(models.Model):
         required=True,
         context=_JOINT_BUYING_PRODUCT_CONTEXT,
         readonly=True,
+        index=True,
     )
 
     local_product_id = fields.Many2one(

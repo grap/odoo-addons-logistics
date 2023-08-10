@@ -26,3 +26,22 @@ def migrate(env, version):
             WHERE jbpol.order_id = jbpo.id;
             """,
         )
+
+    if not openupgrade.column_exists(env.cr, "product_product", "joint_buying_is_sold"):
+        openupgrade.logged_query(
+            env.cr,
+            """
+            ALTER TABLE product_product
+            ADD COLUMN joint_buying_is_sold bool;
+            """,
+        )
+        openupgrade.logged_query(
+            env.cr,
+            """
+            UPDATE product_product
+            SET joint_buying_is_sold = true
+            WHERE id in (
+                select product_id from joint_buying_purchase_order_line
+            );
+            """,
+        )
