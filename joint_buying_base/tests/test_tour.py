@@ -94,3 +94,8 @@ class TestModule(TestAbstract):
         self.assertIn("Journey", self.tour_lyon_savoie.description)
         self.assertIn("Truck loading", self.tour_lyon_savoie.description)
         self.assertIn("Truck unloading", self.tour_lyon_savoie.description)
+
+    def test_104_check_cost_chart(self):
+        self.assertIn("Salary", self.tour_lyon_savoie.cost_chart)
+        self.assertIn("Vehicle", self.tour_lyon_savoie.cost_chart)
+        self.assertIn("Toll", self.tour_lyon_savoie.cost_chart)
