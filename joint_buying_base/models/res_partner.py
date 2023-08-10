@@ -86,9 +86,8 @@ class ResPartner(models.Model):
 
     @api.multi
     def _joint_buying_check_access(self):
-        return set(self.mapped("joint_buying_pivot_company_id").ids) == {
-            self.env.user.company_id.id
-        }
+        # We allow access to pivot company
+        return len(self.filtered(lambda x: x.joint_buying_is_mine_pivot)) == len(self)
 
     # Onchange section
     @api.onchange("joint_buying_pivot_company_id")

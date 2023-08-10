@@ -14,14 +14,12 @@ class JointBuyingCheckAccessMixin(models.AbstractModel):
 
     _check_access_can_unlink = False
 
-    _check_access_company_field_id = False
-
     _check_access_write_fields_no_check = []
 
     @api.multi
     def _joint_buying_check_access(self):
         """Overload this function in each model
-        Should return False if the access if forbidden
+        Should return False if the access is forbidden
         """
         raise NotImplementedError()
 
