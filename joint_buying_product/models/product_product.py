@@ -88,6 +88,7 @@ class ProductProduct(models.Model):
 
     joint_buying_is_sold = fields.Boolean(
         compute="_compute_joint_buying_is_sold",
+        store=True,
     )
 
     @api.multi
