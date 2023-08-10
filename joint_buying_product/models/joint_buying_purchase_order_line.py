@@ -15,8 +15,11 @@ from .product_product import _JOINT_BUYING_PRODUCT_CONTEXT
 
 class JointBuyingPurchaseOrderLine(models.Model):
     _name = "joint.buying.purchase.order.line"
+    _inherit = ["joint.buying.check.access.mixin"]
     _description = "Joint Buying Purchase Order"
     _order = "supplier_id, product_id"
+
+    _check_access_can_create = True
 
     _sql_constraints = [
         (
@@ -58,6 +61,13 @@ class JointBuyingPurchaseOrderLine(models.Model):
         index=True,
         store=True,
         context=_JOINT_BUYING_PARTNER_CONTEXT,
+    )
+
+    pivot_company_id = fields.Many2one(
+        comodel_name="res.company",
+        string="Pivot Company",
+        related="order_id.pivot_company_id",
+        store=True,
     )
 
     company_code = fields.Char(
@@ -158,6 +168,21 @@ class JointBuyingPurchaseOrderLine(models.Model):
 
     image_small = fields.Binary(related="product_id.image_small")
 
+    is_mine_customer = fields.Boolean(
+        compute="_compute_is_mine_customer", search="_search_is_mine_customer"
+    )
+
+    is_mine_pivot = fields.Boolean(
+        compute="_compute_is_mine_pivot", search="_search_is_mine_pivot"
+    )
+
+    @api.multi
+    def _joint_buying_check_access(self):
+        # We allow access to customer and to pivot company of the related supplier
+        return len(
+            self.filtered(lambda x: x.is_mine_customer or x.is_mine_pivot)
+        ) == len(self)
+
     # Constrain section
     @api.constrains("qty", "product_uom_package_qty", "uom_id")
     def check_qty_package(self):
@@ -176,6 +201,44 @@ class JointBuyingPurchaseOrderLine(models.Model):
                 )
 
     # Compute Section
+    def _compute_is_mine_customer(self):
+        current_partner = self.env.user.company_id.joint_buying_partner_id
+        for line in self:
+            line.is_mine_customer = line.customer_id == current_partner
+
+    def _search_is_mine_customer(self, operator, value):
+        current_partner = self.env.user.company_id.joint_buying_partner_id
+        if (operator == "=" and value) or (operator == "!=" and not value):
+            search_operator = "in"
+        else:
+            search_operator = "not in"
+        return [
+            (
+                "id",
+                search_operator,
+                self.search([("customer_id", "=", current_partner.id)]).ids,
+            )
+        ]
+
+    def _compute_is_mine_pivot(self):
+        current_company = self.env.user.company_id
+        for line in self:
+            line.is_mine_pivot = line.pivot_company_id == current_company
+
+    def _search_is_mine_pivot(self, operator, value):
+        current_company = self.env.user.company_id
+        if (operator == "=" and value) or (operator == "!=" and not value):
+            search_operator = "in"
+        else:
+            search_operator = "not in"
+        return [
+            (
+                "id",
+                search_operator,
+                self.search([("pivot_company_id", "=", current_company.id)]).ids,
+            )
+        ]
+
     @api.depends("product_id")
     def _compute_local_product_id(self):
         for line in self:

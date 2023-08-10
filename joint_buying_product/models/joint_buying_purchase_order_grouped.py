@@ -20,7 +20,7 @@ class JointBuyingPurchaseOrderGrouped(models.Model):
     _inherit = ["joint.buying.check.access.mixin", "mail.thread", "mail.activity.mixin"]
     _order = "end_date desc, supplier_id"
 
-    _check_access_company_field_id = "pivot_company_id"
+    _check_access_can_create = True
 
     _STATE_SELECTION = [
         ("futur", "Futur"),
@@ -139,7 +139,13 @@ class JointBuyingPurchaseOrderGrouped(models.Model):
         comodel_name="joint.buying.purchase.order", compute="_compute_current_order_id"
     )
 
-    is_mine = fields.Boolean(compute="_compute_is_mine", search="_search_is_mine")
+    is_mine_pivot = fields.Boolean(
+        compute="_compute_is_mine_pivot", search="_search_is_mine_pivot"
+    )
+
+    @api.multi
+    def _joint_buying_check_access(self):
+        return set(self.mapped("pivot_company_id").ids) == {self.env.user.company_id.id}
 
     # Constraint Section
     @api.constrains("start_date", "end_date", "deposit_date")
@@ -221,12 +227,14 @@ class JointBuyingPurchaseOrderGrouped(models.Model):
                 grouped_order.mapped("order_ids.total_weight")
             )
 
-    def _compute_is_mine(self):
+    def _compute_is_mine_pivot(self):
         current_company = self.env.user.company_id
         for grouped_order in self:
-            grouped_order.is_mine = grouped_order.pivot_company_id == current_company
+            grouped_order.is_mine_pivot = (
+                grouped_order.pivot_company_id == current_company
+            )
 
-    def _search_is_mine(self, operator, value):
+    def _search_is_mine_pivot(self, operator, value):
         current_company = self.env.user.company_id
         if (operator == "=" and value) or (operator == "!=" and not value):
             search_operator = "in"

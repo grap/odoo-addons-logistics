@@ -97,7 +97,9 @@ class JointBuyingWizardCreateOrder(models.TransientModel):
         return fields.datetime.now()
 
     def _default_line_ids(self):
-        partner = self.env["res.partner"].browse(self.env.context.get("active_id"))
+        partner = (
+            self.env["res.partner"].sudo().browse(self.env.context.get("active_id"))
+        )
         line_vals = []
         for partner in partner.mapped(
             "joint_buying_subscribed_company_ids.joint_buying_partner_id"
