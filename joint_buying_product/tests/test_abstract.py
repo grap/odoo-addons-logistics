@@ -57,20 +57,18 @@ class TestAbstract(TransactionCase):
             "joint_buying_product.product_LSE_patatoe_agila"
         )
 
-    def _create_order_grouped_salaison_devidal_by_wizard(self):
-        # configure subscription
-        self.salaison_devidal.joint_buying_subscribed_company_ids = [
-            (6, 0, [self.company_ELD.id, self.company_3PP.id, self.company_CHE.id])
-        ]
-
+    def _create_order_grouped_salaison_devidal_by_wizard(self, user=False):
         # Use Wizard to create grouped order
         start_date = fields.datetime.now() + timedelta(days=1)
         end_date = fields.datetime.now() + timedelta(days=7)
         deposit_date = fields.datetime.now() + timedelta(days=14)
 
-        wizard = self.JointBuyingWizardCreateOrder.with_context(
-            active_id=self.salaison_devidal.id
-        ).create(
+        if user:
+            WizardObj = self.JointBuyingWizardCreateOrder.sudo(user=user)
+        else:
+            WizardObj = self.JointBuyingWizardCreateOrder
+
+        wizard = WizardObj.with_context(active_id=self.salaison_devidal.id).create(
             {
                 "start_date": start_date,
                 "end_date": end_date,

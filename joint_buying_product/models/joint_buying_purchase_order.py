@@ -14,8 +14,10 @@ from odoo.addons.joint_buying_base.models.res_partner import (
 class JointBuyingPurchaseOrder(models.Model):
     _name = "joint.buying.purchase.order"
     _description = "Joint Buying Purchase Order"
-    _inherit = ["mail.thread", "mail.activity.mixin"]
+    _inherit = ["joint.buying.check.access.mixin", "mail.thread", "mail.activity.mixin"]
     _order = "end_date desc, supplier_id, customer_id"
+
+    _check_access_can_create = True
 
     _PURCHASE_STATE = [
         ("draft", "Draft"),
@@ -39,7 +41,9 @@ class JointBuyingPurchaseOrder(models.Model):
         )
     ]
 
-    name = fields.Char(string="Number", compute="_compute_name", store=True)
+    name = fields.Char(
+        string="Number", compute="_compute_name", store=True, compute_sudo=True
+    )
 
     grouped_order_id = fields.Many2one(
         comodel_name="joint.buying.purchase.order.grouped",
@@ -150,11 +154,23 @@ class JointBuyingPurchaseOrder(models.Model):
     is_mine_customer = fields.Boolean(
         compute="_compute_is_mine_customer", search="_search_is_mine_customer"
     )
+
     is_mine_supplier = fields.Boolean(
         compute="_compute_is_mine_supplier", search="_search_is_mine_supplier"
     )
 
+    is_mine_pivot = fields.Boolean(
+        compute="_compute_is_mine_pivot", search="_search_is_mine_pivot"
+    )
+
     has_image = fields.Boolean(compute="_compute_has_image")
+
+    @api.multi
+    def _joint_buying_check_access(self):
+        # We allow access to customer and to pivot company of the related supplier
+        return len(
+            self.filtered(lambda x: x.is_mine_customer or x.is_mine_pivot)
+        ) == len(self)
 
     # Compute Section
     @api.depends("line_ids.product_id.image")
@@ -201,11 +217,6 @@ class JointBuyingPurchaseOrder(models.Model):
         for order in self:
             order.is_mine_customer = order.customer_id == current_partner
 
-    def _compute_is_mine_supplier(self):
-        current_partner = self.env.user.company_id.joint_buying_partner_id
-        for order in self:
-            order.is_mine_supplier = order.supplier_id == current_partner
-
     def _search_is_mine_customer(self, operator, value):
         current_partner = self.env.user.company_id.joint_buying_partner_id
         if (operator == "=" and value) or (operator == "!=" and not value):
@@ -220,6 +231,11 @@ class JointBuyingPurchaseOrder(models.Model):
             )
         ]
 
+    def _compute_is_mine_supplier(self):
+        current_partner = self.env.user.company_id.joint_buying_partner_id
+        for order in self:
+            order.is_mine_supplier = order.supplier_id == current_partner
+
     def _search_is_mine_supplier(self, operator, value):
         current_partner = self.env.user.company_id.joint_buying_partner_id
         if (operator == "=" and value) or (operator == "!=" and not value):
@@ -231,6 +247,25 @@ class JointBuyingPurchaseOrder(models.Model):
                 "id",
                 search_operator,
                 self.search([("supplier_id", "=", current_partner.id)]).ids,
+            )
+        ]
+
+    def _compute_is_mine_pivot(self):
+        current_company = self.env.user.company_id
+        for order in self:
+            order.is_mine_pivot = order.pivot_company_id == current_company
+
+    def _search_is_mine_pivot(self, operator, value):
+        current_company = self.env.user.company_id
+        if (operator == "=" and value) or (operator == "!=" and not value):
+            search_operator = "in"
+        else:
+            search_operator = "not in"
+        return [
+            (
+                "id",
+                search_operator,
+                self.search([("pivot_company_id", "=", current_company.id)]).ids,
             )
         ]
 

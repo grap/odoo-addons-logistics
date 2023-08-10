@@ -120,15 +120,15 @@ class TestJointBuyingPurchaseOrder(TestAbstract):
         order_grouped.minimum_unit_amount = 150
         order_grouped.minimum_unit_weight = 14
 
-        # Case 1) company_ELD orders 24 units of rillette
+        # Case 1) company_LSE orders 24 units of rillette
         # Minimum amount is reached (24*8 > 150)
         # but not minimum weight (24*0.5 < 14)
-        order_ELD = order_grouped.order_ids.filtered(
-            lambda x: x.customer_id.joint_buying_company_id.code == "ELD"
+        order_LSE = order_grouped.order_ids.filtered(
+            lambda x: x.customer_id.joint_buying_company_id.code == "LSE"
         )
-        line_ELD_rillette = self.OrderLine.search(
+        line_LSE_rillette = self.OrderLine.search(
             [
-                ("order_id", "=", order_ELD.id),
+                ("order_id", "=", order_LSE.id),
                 (
                     "product_id",
                     "=",
@@ -137,18 +137,18 @@ class TestJointBuyingPurchaseOrder(TestAbstract):
             ]
         )
 
-        line_ELD_rillette.qty = 24.0
-        self.assertEqual(order_ELD.purchase_ok, "no_minimum_weight")
+        line_LSE_rillette.qty = 24.0
+        self.assertEqual(order_LSE.purchase_ok, "no_minimum_weight")
 
-        # Case 2) company_CHE orders 15 liters of olive oil
+        # Case 2) company_CDA orders 15 liters of olive oil
         # Minimum weight is reached (15*0.950 > 14)
         # but not minimum amount (15*8 < 150)
-        order_CHE = order_grouped.order_ids.filtered(
-            lambda x: x.customer_id.joint_buying_company_id.code == "CHE"
+        order_CDA = order_grouped.order_ids.filtered(
+            lambda x: x.customer_id.joint_buying_company_id.code == "CDA"
         )
-        line_CHE_olive = self.OrderLine.search(
+        line_CDA_olive = self.OrderLine.search(
             [
-                ("order_id", "=", order_CHE.id),
+                ("order_id", "=", order_CDA.id),
                 (
                     "product_id",
                     "=",
@@ -157,8 +157,8 @@ class TestJointBuyingPurchaseOrder(TestAbstract):
             ]
         )
 
-        line_CHE_olive.qty = 15.0
-        self.assertEqual(order_CHE.purchase_ok, "no_minimum_amount")
+        line_CDA_olive.qty = 15.0
+        self.assertEqual(order_CDA.purchase_ok, "no_minimum_amount")
 
         # Case 3) company_3PP orders nothing
         order_3PP = order_grouped.order_ids.filtered(
@@ -214,8 +214,8 @@ class TestJointBuyingPurchaseOrder(TestAbstract):
         # They become done if purchase_ok = ok, skipped if null amount,
         # and stay draft if minimum amount or weight isn't reached
         self.assertEqual(order_main.purchase_state, "done")
-        self.assertEqual(order_ELD.purchase_state, "draft")
-        self.assertEqual(order_CHE.purchase_state, "draft")
+        self.assertEqual(order_LSE.purchase_state, "draft")
+        self.assertEqual(order_CDA.purchase_state, "draft")
         self.assertEqual(order_3PP.purchase_state, "skipped")
 
         # Generate report to make sure the syntax is correct
