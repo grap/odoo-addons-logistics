@@ -73,7 +73,7 @@ class JointBuyingCheckAccessMixin(models.AbstractModel):
         else:
             items = self
 
-        if not items._joint_buying_check_access():
+        if items and not items._joint_buying_check_access():
             raise AccessError(
                 _(
                     "You can not update this item because"
