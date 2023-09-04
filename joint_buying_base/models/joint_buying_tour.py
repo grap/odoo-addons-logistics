@@ -114,9 +114,13 @@ class JointBuyingTour(models.Model):
     @api.depends("start_date", "type_id")
     def _compute_name(self):
         for tour in self:
-            tour.name = f"{tour.start_date.strftime('%Y-%m-%d')}"
+            tour.name = ""
+            if tour.start_date:
+                tour.name = f"{tour.start_date.strftime('%Y-%m-%d')}"
             if tour.type_id:
                 tour.name += f" - {tour.type_id.name}"
+            if not tour.name:
+                tour.name = _("Draft Tour")
 
     @api.depends("salary_cost", "toll_cost", "vehicle_cost")
     def _compute_cost(self):
@@ -246,8 +250,11 @@ class JointBuyingTour(models.Model):
     @api.depends("line_ids.duration", "start_date")
     def _compute_end_fields(self):
         for tour in self:
-            tour.duration = sum(tour.mapped("line_ids.duration"))
-            tour.end_date = tour.start_date + timedelta(hours=tour.duration or 1)
+            if tour.start_date:
+                tour.duration = sum(tour.mapped("line_ids.duration"))
+                tour.end_date = tour.start_date + timedelta(hours=tour.duration or 1)
+            else:
+                tour.end_date = False
 
     @api.depends(
         "line_ids.starting_point_id", "line_ids.sequence", "line_ids.arrival_point_id"
