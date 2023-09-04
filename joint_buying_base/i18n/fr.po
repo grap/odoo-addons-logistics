@@ -6,8 +6,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Odoo Server 12.0\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2023-07-27 09:31+0000\n"
-"PO-Revision-Date: 2023-07-27 09:31+0000\n"
+"POT-Creation-Date: 2023-09-04 21:11+0000\n"
+"PO-Revision-Date: 2023-09-04 21:11+0000\n"
 "Last-Translator: <>\n"
 "Language-Team: \n"
 "MIME-Version: 1.0\n"
@@ -16,7 +16,7 @@ msgstr ""
 "Plural-Forms: \n"
 
 #. module: joint_buying_base
-#: code:addons/joint_buying_base/models/joint_buying_tour.py:270
+#: code:addons/joint_buying_base/models/joint_buying_tour.py:277
 #, python-format
 msgid "%s (copy)"
 msgstr "%s (copie)"
@@ -27,19 +27,19 @@ msgid "<b>Company Address:</b>"
 msgstr "<b>Adresse de la société:</b>"
 
 #. module: joint_buying_base
-#: code:addons/joint_buying_base/models/joint_buying_tour.py:228
+#: code:addons/joint_buying_base/models/joint_buying_tour.py:232
 #, python-format
 msgid "<i>Delivery and pick-up</i>"
 msgstr "<i>Livraison et retrait</i>"
 
 #. module: joint_buying_base
-#: code:addons/joint_buying_base/models/joint_buying_tour.py:224
+#: code:addons/joint_buying_base/models/joint_buying_tour.py:228
 #, python-format
 msgid "<i>Truck loading</i>"
 msgstr "<i>Chargement du camion</i>"
 
 #. module: joint_buying_base
-#: code:addons/joint_buying_base/models/joint_buying_tour.py:226
+#: code:addons/joint_buying_base/models/joint_buying_tour.py:230
 #, python-format
 msgid "<i>Truck unloading</i>"
 msgstr "<i>Déchargement du camion</i>"
@@ -50,7 +50,7 @@ msgid "<span class=\"oe_inline\"> ( On  </span>"
 msgstr "<span class=\"oe_inline\"> ( Dans </span>"
 
 #. module: joint_buying_base
-#: code:addons/joint_buying_base/models/joint_buying_tour.py:221
+#: code:addons/joint_buying_base/models/joint_buying_tour.py:225
 #, python-format
 msgid "<span style='color: green'><b>Pause</b></span>"
 msgstr ""
@@ -243,6 +243,11 @@ msgid "Configure"
 msgstr "Configurer"
 
 #. module: joint_buying_base
+#: model_terms:ir.ui.view,arch_db:joint_buying_base.view_joint_buying_tour_form
+msgid "Configure Steps"
+msgstr "Configurer les étapes"
+
+#. module: joint_buying_base
 #: model:ir.model,name:joint_buying_base.model_res_partner
 msgid "Contact"
 msgstr ""
@@ -328,6 +333,12 @@ msgstr "Nom affiché"
 #: model:ir.model.fields,field_description:joint_buying_base.field_joint_buying_tour_line__distance
 #: model:ir.model.fields,field_description:joint_buying_base.field_joint_buying_wizard_set_tour_line__distance
 msgid "Distance"
+msgstr ""
+
+#. module: joint_buying_base
+#: code:addons/joint_buying_base/models/joint_buying_tour.py:123
+#, python-format
+msgid "Draft Tour"
 msgstr ""
 
 #. module: joint_buying_base
@@ -519,6 +530,12 @@ msgid "Joint Buying Company"
 msgstr "Société Commande groupée"
 
 #. module: joint_buying_base
+#: model:ir.model.fields,field_description:joint_buying_base.field_res_partner__joint_buying_display_name_step
+#: model:ir.model.fields,field_description:joint_buying_base.field_res_users__joint_buying_display_name_step
+msgid "Joint Buying Display Name Step"
+msgstr ""
+
+#. module: joint_buying_base
 #: model:ir.model.fields,field_description:joint_buying_base.field_res_partner__joint_buying_global_partner_id
 #: model:ir.model.fields,field_description:joint_buying_base.field_res_users__joint_buying_global_partner_id
 msgid "Joint Buying Global Partner"
@@ -585,7 +602,7 @@ msgid "Journey"
 msgstr "Trajet"
 
 #. module: joint_buying_base
-#: code:addons/joint_buying_base/models/joint_buying_tour.py:216
+#: code:addons/joint_buying_base/models/joint_buying_tour.py:220
 #, python-format
 msgid "Journey from %s to %s"
 msgstr "Trajet de %s à %s"
@@ -814,7 +831,7 @@ msgstr "Les prévisions de trajets sont données à titre indicatif seulement ! 
 " Il peut y avoir des bouchons, des retards, des imprévus, etc..."
 
 #. module: joint_buying_base
-#: code:addons/joint_buying_base/models/joint_buying_tour.py:140
+#: code:addons/joint_buying_base/models/joint_buying_tour.py:144
 #, python-format
 msgid "Salary"
 msgstr "Salaire"
@@ -875,6 +892,7 @@ msgstr "Heure de début"
 #. module: joint_buying_base
 #: model:ir.model.fields,field_description:joint_buying_base.field_joint_buying_tour__starting_point_id
 #: model:ir.model.fields,field_description:joint_buying_base.field_joint_buying_tour_line__starting_point_id
+#: model:ir.model.fields,field_description:joint_buying_base.field_joint_buying_wizard_set_tour__starting_point_id
 msgid "Starting Point"
 msgstr "Lieu de départ"
 
@@ -897,7 +915,6 @@ msgstr "Statut basé sur les activités\n"
 "Planifiée : activités futures"
 
 #. module: joint_buying_base
-#: model:ir.model.fields,field_description:joint_buying_base.field_joint_buying_wizard_set_tour__starting_point_id
 #: model:ir.model.fields,field_description:joint_buying_base.field_joint_buying_wizard_set_tour_line__point_id
 msgid "Step"
 msgstr "Etape"
@@ -977,7 +994,7 @@ msgid "Today"
 msgstr "Aujourd'hui"
 
 #. module: joint_buying_base
-#: code:addons/joint_buying_base/models/joint_buying_tour.py:142
+#: code:addons/joint_buying_base/models/joint_buying_tour.py:146
 #, python-format
 msgid "Toll"
 msgstr "Péage"
@@ -1064,7 +1081,7 @@ msgid "Vegetable"
 msgstr "Légumes"
 
 #. module: joint_buying_base
-#: code:addons/joint_buying_base/models/joint_buying_tour.py:141
+#: code:addons/joint_buying_base/models/joint_buying_tour.py:145
 #, python-format
 msgid "Vehicle"
 msgstr "Véhicule"
@@ -1081,7 +1098,7 @@ msgid "Wizard"
 msgstr "Assistant"
 
 #. module: joint_buying_base
-#: code:addons/joint_buying_base/models/res_partner.py:134
+#: code:addons/joint_buying_base/models/res_partner.py:141
 #, python-format
 msgid "You can not create a customer joint buying partner. You should ask to you ERP manager to do it via the creation of a company."
 msgstr "Vous ne pouvez pas créer un client pour les commandes groupées. Vous devez demander au responsable de l'ERP de le faire, via la création d'une société."
@@ -1093,19 +1110,25 @@ msgid "You can not create an item for 'joint buying' that has a company field de
 msgstr "Vous ne pouvez pas créer un élément pour les 'commandes groupées' qui est une société définie."
 
 #. module: joint_buying_base
-#: code:addons/joint_buying_base/models/joint_buying_check_access_mixin.py:29
+#: code:addons/joint_buying_base/models/joint_buying_check_access_mixin.py:49
 #, python-format
 msgid "You can not create this item because you are not responsible for it"
 msgstr "Vous ne pouvez pas créer cet élément, car vous n'en êtes pas responsable."
 
 #. module: joint_buying_base
-#: code:addons/joint_buying_base/models/res_partner.py:216
+#: code:addons/joint_buying_base/models/joint_buying_check_access_mixin.py:44
+#, python-format
+msgid "You can not create this item. Please ask to the logistic Manager."
+msgstr "Vous ne pouvez pas créer cet élément. Veuillez demander au responsable logistique."
+
+#. module: joint_buying_base
+#: code:addons/joint_buying_base/models/res_partner.py:244
 #, python-format
 msgid "You can not delete this partner because it is related to a company for joint Buyings. Please archive it."
 msgstr "Vous ne pouvez pas supprimer ce contact, car il est lié à une société pour les commandes groupées. Vous pouvez simplement l'archiver."
 
 #. module: joint_buying_base
-#: code:addons/joint_buying_base/models/res_partner.py:119
+#: code:addons/joint_buying_base/models/res_partner.py:126
 #, python-format
 msgid "You can not link the supplier %s to the Joint Buying partner %s because you have other suppliers that are still related to him : \n"
 "\n"
@@ -1115,19 +1138,25 @@ msgstr "Vous ne pouvez pas lier le fournisseur %s au fournisseur de commandes gr
 " %s"
 
 #. module: joint_buying_base
-#: code:addons/joint_buying_base/models/joint_buying_check_access_mixin.py:80
+#: code:addons/joint_buying_base/models/joint_buying_check_access_mixin.py:106
+#, python-format
+msgid "You can not unlink the items. Please ask to the logistic Manager."
+msgstr "Vous ne pouvez pas supprimer ces éléments. Veuillez demander à votre reponsable logistique."
+
+#. module: joint_buying_base
+#: code:addons/joint_buying_base/models/joint_buying_check_access_mixin.py:111
 #, python-format
 msgid "You can not unlink this item because you are not responsible for it"
 msgstr "Vous ne pouvez pas supprimer cet élément, car vous n'en êtes pas responsable."
 
 #. module: joint_buying_base
-#: code:addons/joint_buying_base/models/joint_buying_check_access_mixin.py:58
+#: code:addons/joint_buying_base/models/joint_buying_check_access_mixin.py:78
 #, python-format
 msgid "You can not update this item because you are not responsible for it"
 msgstr "Vous ne pouvez pas mettre à jour cet élément, car vous n'en êtes pas responsable."
 
 #. module: joint_buying_base
-#: code:addons/joint_buying_base/models/res_partner.py:205
+#: code:addons/joint_buying_base/models/res_partner.py:233
 #, python-format
 msgid "You can not update this partner this way you should ask to your ERP Manager to update this field via the related company."
 msgstr "Vous ne pouvez pas mettre à jour ce contact de cette manière, vous devez demander au responsable de votre ERP de mettre à jour les données, via la société associée."

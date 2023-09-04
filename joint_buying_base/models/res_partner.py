@@ -81,7 +81,10 @@ class ResPartner(models.Model):
     joint_buying_commission_rate = fields.Float(string="Joint Buying Commission Rate")
 
     joint_buying_display_name_step = fields.Char(
-        compute="_compute_joint_buying_display_name_step"
+        compute="_compute_joint_buying_display_name_step",
+        help="Technical field, used to displayed name of the joint"
+        " buying partner with the number(s) of the step(s) as a prefix"
+        " in a context of displaying joint buying tour.",
     )
 
     @api.multi
