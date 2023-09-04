@@ -58,7 +58,7 @@ License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl.html).
         <field name="arch" type="xml">
             <form>
                 <header>
-                     <button type="action" class="oe_highlight" string="Configure"
+                     <button type="action" class="oe_highlight" string="Configure Steps"
                             name="%(joint_buying_base.action_tour_2_wizard_set_tour)d"
                             attrs="{'invisible': [('stop_qty', '!=', 0)]}"/>
                      <button type="action" string="Configure"

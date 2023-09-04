@@ -21,7 +21,7 @@ class JointBuyingWizardSetTour(models.TransientModel):
 
     starting_point_id = fields.Many2one(
         required=True,
-        string="Step",
+        string="Starting Point",
         comodel_name="res.partner",
         context=_JOINT_BUYING_PARTNER_CONTEXT,
         domain="[('is_joint_buying_stage', '=', True)]",
