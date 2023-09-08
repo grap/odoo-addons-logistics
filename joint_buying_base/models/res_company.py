@@ -114,6 +114,13 @@ class ResCompany(models.Model):
             self.update_joint_buying_partners()
         return res
 
+    def geo_localize(self):
+        """overload the function to update partner_latitude and
+        partner_longitude that are related fields"""
+        res = super().geo_localize()
+        self.update_joint_buying_partners()
+        return res
+
     @api.multi
     def update_joint_buying_partners(self):
         for company in self:
