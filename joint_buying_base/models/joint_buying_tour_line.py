@@ -2,11 +2,18 @@
 # @author: Sylvain LE GAL (https://twitter.com/legalsylvain)
 # License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl.html).
 
-from geopy.distance import geodesic
+import requests
 
-from odoo import api, fields, models
+from odoo import _, api, fields, models
+from odoo.exceptions import UserError
 
 from .res_partner import _JOINT_BUYING_PARTNER_CONTEXT
+
+_TOUR_LINE_SEQUENCE_TYPES = [
+    ("journey", "Journey"),
+    ("handling", "Handling"),
+    ("pause", "Pause"),
+]
 
 
 class JointBuyingTourLine(models.Model):
@@ -16,56 +23,106 @@ class JointBuyingTourLine(models.Model):
 
     sequence = fields.Integer()
 
-    distance = fields.Float(
-        compute="_compute_distance",
-        store=True,
-        help="Distance as the crow flies, in kilometer",
+    sequence_type = fields.Selection(
+        selection=_TOUR_LINE_SEQUENCE_TYPES,
+        required=True,
     )
 
     tour_id = fields.Many2one(
         comodel_name="joint.buying.tour", required=True, ondelete="cascade"
     )
 
+    duration = fields.Float()
+
+    distance = fields.Float()
+
+    start_hour = fields.Float()
+
+    arrival_hour = fields.Float()
+
     starting_point_id = fields.Many2one(
-        comodel_name="res.partner", context=_JOINT_BUYING_PARTNER_CONTEXT, required=True
+        comodel_name="res.partner", context=_JOINT_BUYING_PARTNER_CONTEXT
     )
 
     arrival_point_id = fields.Many2one(
-        comodel_name="res.partner", context=_JOINT_BUYING_PARTNER_CONTEXT, required=True
+        comodel_name="res.partner", context=_JOINT_BUYING_PARTNER_CONTEXT
     )
 
-    # @api.depends(
-    #     "tour_id.starting_point_id",
-    #     "tour_id.line_ids.sequence",
-    #     "tour_id.line_ids.arrival_point_id",
-    # )
-    # def _compute_starting_point_id(self):
-    #     # This check prevent recompute on the fly,
-    #     # when editing a tour, because the recompute is partial.
-    #     # only the edited line, and so it is not possible to computed
-    #     # the starting_point, based on the arrival of the previous line
-    #     if len(self) == 1 and isinstance(self.id, models.NewId):
-    #         return
-    #     previous_point = self.mapped("tour_id").starting_point_id
-    #     for line in self.sorted("sequence"):
-    #         line.starting_point_id = previous_point.id
-    #         previous_point = line.arrival_point_id
+    currency_id = fields.Many2one(
+        comodel_name="res.currency", related="tour_id.carrier_id.currency_id"
+    )
+
+    salary_cost = fields.Monetary(
+        compute="_compute_costs", store=True, currency_field="currency_id"
+    )
+
+    vehicle_cost = fields.Monetary(
+        compute="_compute_costs", store=True, currency_field="currency_id"
+    )
 
     @api.depends(
-        "starting_point_id.partner_latitude",
-        "starting_point_id.partner_longitude",
-        "arrival_point_id.partner_latitude",
-        "arrival_point_id.partner_longitude",
+        "tour_id.hourly_cost", "tour_id.kilometer_cost", "duration", "distance"
     )
-    def _compute_distance(self):
+    def _compute_costs(self):
         for line in self:
-            C1 = (
-                line.starting_point_id.partner_latitude,
-                line.starting_point_id.partner_longitude,
+            line.salary_cost = line.duration * line.tour_id.hourly_cost
+            line.vehicle_cost = +line.distance * line.tour_id.kilometer_cost
+
+    def _estimate_route_project_osrm(self):
+        self.ensure_one()
+        url = (
+            "http://router.project-osrm.org/route/v1/car/"
+            f"{self.starting_point_id.partner_longitude}"
+            f",{self.starting_point_id.partner_latitude}"
+            ";"
+            f"{self.arrival_point_id.partner_longitude}"
+            f",{self.arrival_point_id.partner_latitude}"
+            "?alternatives=false&overview=false"
+        )
+        try:
+            response = requests.get(url)
+        except requests.exceptions.ConnectionError:
+            raise UserError(_("Unable to reach the service 'router.project-osrm.org'."))
+        if response.status_code != 200:
+            raise UserError(
+                _(
+                    "Calling 'router.project-osrm.org' returned the following error"
+                    " Status Code : %s"
+                    " Reason : %s"
+                )
+                % (response.status_code, response.reason)
             )
-            C2 = (
-                line.arrival_point_id.partner_latitude,
-                line.arrival_point_id.partner_longitude,
+        result = response.json().get("routes")[0]
+        return {
+            "distance": result.get("distance") / 1000,
+            "duration": result.get("duration") / 3600,
+        }
+
+    def estimate_route(self):
+        no_coordinate_partners = self.env["res.partner"]
+        for line in self.filtered(lambda x: x.sequence_type == "journey"):
+            if (
+                not line.starting_point_id.partner_longitude
+                or not line.starting_point_id.partner_latitude
+            ):
+                no_coordinate_partners |= line.starting_point_id
+                continue
+            if (
+                not line.arrival_point_id.partner_longitude
+                or not line.arrival_point_id.partner_latitude
+            ):
+                no_coordinate_partners |= line.arrival_point_id
+                continue
+
+            line.write(line._estimate_route_project_osrm())
+
+        if no_coordinate_partners:
+            self.env.user.notify_warning(
+                message=_(
+                    "Unable to estimate a route because the following stages"
+                    " has no defined geographic coordinates. <br/>"
+                    "- %s"
+                )
+                % ("<br/>- ".join([x.name for x in no_coordinate_partners])),
+                sticky=True,
             )
-            if C1 != (0, 0) and C2 != (0, 0):
-                line.distance = geodesic(C1, C2).km

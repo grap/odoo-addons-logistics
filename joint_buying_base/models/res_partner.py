@@ -23,9 +23,7 @@ class ResPartner(models.Model):
         ("not_applicable", "Not Applicable"),
     ]
 
-    _check_write_access_company_field_id = "joint_buying_pivot_company_id"
-
-    _check_write_access_fields_no_check = ["joint_buying_is_subscribed"]
+    _check_access_write_fields_no_check = ["joint_buying_is_subscribed"]
 
     joint_buying_subscribed_company_ids = fields.Many2many(
         string="Subscribed Companies",
@@ -81,6 +79,18 @@ class ResPartner(models.Model):
     )
 
     joint_buying_commission_rate = fields.Float(string="Joint Buying Commission Rate")
+
+    joint_buying_display_name_step = fields.Char(
+        compute="_compute_joint_buying_display_name_step",
+        help="Technical field, used to displayed name of the joint"
+        " buying partner with the number(s) of the step(s) as a prefix"
+        " in a context of displaying joint buying tour.",
+    )
+
+    @api.multi
+    def _joint_buying_check_access(self):
+        # We allow access to pivot company
+        return len(self.filtered(lambda x: x.joint_buying_is_mine_pivot)) == len(self)
 
     # Onchange section
     @api.onchange("joint_buying_pivot_company_id")
@@ -147,6 +157,27 @@ class ResPartner(models.Model):
             return companies.ids
 
     # Compute Section
+    def _compute_joint_buying_display_name_step(self):
+        if self.env.context.get("active_model") != "joint.buying.tour":
+            for partner in self:
+                partner.joint_buying_display_name_step = partner.display_name
+            return
+
+        tour = self.env["joint.buying.tour"].browse(self.env.context.get("active_id"))
+        for partner in self:
+            step_list = []
+            for i, line in enumerate(
+                tour.line_ids.filtered(lambda x: x.sequence_type == "journey")
+            ):
+                if line.starting_point_id == partner:
+                    step_list.append(i + 1)
+                if line.arrival_point_id == partner:
+                    step_list.append(i + 2)
+            suffix = ", ".join([str(x) for x in set(step_list)])
+            partner.joint_buying_display_name_step = (
+                f"{partner.display_name} ({suffix})"
+            )
+
     def _compute_joint_buying_is_mine_pivot(self):
         current_company = self.env.user.company_id
         for partner in self:

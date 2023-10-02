@@ -2,7 +2,7 @@
 # @author: Sylvain LE GAL (https://twitter.com/legalsylvain)
 # License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl.html).
 
-from odoo import _, api, fields, models
+from odoo import api, fields, models
 
 from odoo.addons.base.models.res_partner import ADDRESS_FIELDS
 
@@ -46,11 +46,30 @@ class ResCompany(models.Model):
         store=True,
     )
 
+    def _get_company_fields_for_joint_buying_partner(self):
+        """Return the company fields that raise the update
+        of the related joint buying partner"""
+        return ADDRESS_FIELDS + (
+            "name",
+            "active",
+            "email",
+            "phone",
+            "website",
+            "partner_latitude",
+            "partner_longitude",
+            "logo",
+            "vat",
+        )
+
     def _prepare_joint_buying_partner_vals(self):
         self.ensure_one()
-        sanitized_name = self.name.replace("|", "")
+        icp = self.env["ir.config_parameter"].sudo()
+        group_name = icp.get_param("joint_buying_base.group_name", "")
+        suffix = group_name and ("(" + group_name + ")") or ""
+        sanitized_name = self.name.replace("|", "").strip()
         vals = {
-            "name": _("{} (Joint Buyings)").format(sanitized_name),
+            "name": f"{sanitized_name} {suffix}",
+            "active": self.active,
             "is_joint_buying": True,
             "is_joint_buying_stage": True,
             "joint_buying_company_id": self.id,
@@ -60,6 +79,10 @@ class ResCompany(models.Model):
             "email": self.email,
             "phone": self.phone,
             "website": self.website,
+            "partner_latitude": self.partner_latitude,
+            "partner_longitude": self.partner_longitude,
+            "vat": self.vat,
+            "image": self.logo,
         }
         for field_name in ADDRESS_FIELDS:
             value = getattr(self, field_name)
@@ -76,6 +99,7 @@ class ResCompany(models.Model):
         ).create(res._prepare_joint_buying_partner_vals())
         return res
 
+    @api.multi
     def write(self, vals):
         # Technical Note: we add context key here
         # to avoid error when recomputing related / computed values
@@ -85,10 +109,21 @@ class ResCompany(models.Model):
                 write_joint_buying_partner=True, no_check_joint_buying=True
             ),
         ).write(vals)
-        for company in self:
-            partner_vals = company._prepare_joint_buying_partner_vals()
-            if list(set(vals.keys()) & set(partner_vals)):
-                company.joint_buying_partner_id.with_context(
-                    write_joint_buying_partner=True
-                ).write(partner_vals)
+        partner_fields = self._get_company_fields_for_joint_buying_partner()
+        if list(set(vals.keys()) & set(partner_fields)):
+            self.update_joint_buying_partners()
         return res
+
+    def geo_localize(self):
+        """overload the function to update partner_latitude and
+        partner_longitude that are related fields"""
+        res = super().geo_localize()
+        self.update_joint_buying_partners()
+        return res
+
+    @api.multi
+    def update_joint_buying_partners(self):
+        for company in self:
+            company.joint_buying_partner_id.with_context(
+                write_joint_buying_partner=True
+            ).write(company._prepare_joint_buying_partner_vals())

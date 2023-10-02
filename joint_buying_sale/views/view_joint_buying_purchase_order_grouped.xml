@@ -16,14 +16,14 @@ License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl.html).
                     type="action" class="btn-primary"
                     attrs="{'invisible': ['|', '|',
                         ('state', 'not in', ['closed', 'deposited']),
-                        ('is_mine', '=', False),
+                        ('is_mine_pivot', '=', False),
                         ('supplier_company_id', '=', False),
                     ]}"
                     />
             </button>
 
             <xpath expr="//field[@name='order_ids']/tree/button[@name='button_see_order']" position="after">
-                <field name="sale_order_id" attrs="{'invisible':[('parent.is_mine', '=', False)]}"/>
+                <field name="sale_order_id" attrs="{'invisible':[('parent.is_mine_pivot', '=', False)]}"/>
             </xpath>
         </field>
     </record>

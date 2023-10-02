@@ -19,4 +19,17 @@ class JointBuyingCarrier(models.Model):
         comodel_name="joint.buying.tour", inverse_name="carrier_id"
     )
 
-    payload = fields.Integer(string="Payload")
+    payload = fields.Integer()
+
+    hourly_cost = fields.Monetary(currency_field="currency_id")
+
+    kilometer_cost = fields.Monetary(currency_field="currency_id")
+
+    currency_id = fields.Many2one(
+        comodel_name="res.currency",
+        required=True,
+        default=lambda x: x._default_currency_id(),
+    )
+
+    def _default_currency_id(self):
+        return self.env.ref("base.EUR")

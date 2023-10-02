@@ -54,6 +54,11 @@
         <field name="supplier" eval="True"/>
         <field name="company_id" eval="False"/>
         <field name="joint_buying_pivot_company_id" ref="joint_buying_base.company_CDA"/>
+        <field name="joint_buying_subscribed_company_ids" eval="[
+            (4, ref('joint_buying_base.company_LSE')),
+            (4, ref('joint_buying_base.company_3PP')),
+            (4, ref('joint_buying_base.company_CDA')),
+        ]"/>
         <field name="category_id" eval="[
             (4, ref('joint_buying_base.partner_category_delicatessen')),
         ]"/>
@@ -108,6 +113,8 @@
         <field name="customer" eval="False"/>
         <field name="supplier" eval="False"/>
         <field name="company_id" eval="False"/>
+        <field name="partner_latitude">45.56650356987968</field>
+        <field name="partner_longitude">5.637343182496801</field>
     </record>
 
     <record id="supplier_ELD_at_3PP" model="res.partner">

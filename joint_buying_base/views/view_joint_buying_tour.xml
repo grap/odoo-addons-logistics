@@ -29,9 +29,9 @@ License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl.html).
     <record id="view_joint_buying_tour_calendar" model="ir.ui.view">
         <field name="model">joint.buying.tour</field>
         <field name="arch" type="xml">
-            <calendar date_start="start_date" date_stop="end_date" color="carrier_id">
-                <field name="name"/>
-                <field name="calendar_description"/>
+            <calendar date_start="start_date" date_stop="end_date" color="type_id">
+                <field name="type_id"/>
+                <field name="summary"/>
             </calendar>
         </field>
     </record>
@@ -58,45 +58,88 @@ License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl.html).
         <field name="arch" type="xml">
             <form>
                 <header>
-                    <button type="action" class="oe_stat_button" string="Configure"
-                            name="%(joint_buying_base.action_tour_2_wizard_set_tour)d"/>
+                     <button type="action" class="oe_highlight" string="Configure Steps"
+                            name="%(joint_buying_base.action_tour_2_wizard_set_tour)d"
+                            attrs="{'invisible': [('stop_qty', '!=', 0)]}"/>
+                     <button type="action" string="Configure"
+                            name="%(joint_buying_base.action_tour_2_wizard_set_tour)d"
+                            attrs="{'invisible': [('stop_qty', '=', 0)]}"/>
+                    <button type="object" name="estimate_route" string="Estimate Route"/>
                 </header>
                 <sheet>
-                    <div class="oe_button_box" name="button_box" />
+                    <div class="oe_button_box" name="button_box">
+                        <button
+                            class="oe_stat_button" string="Steps"
+                            type="object"
+                            name="see_steps"
+                            icon="fa-map">
+                        </button>
+                    </div>
                     <div class="oe_title">
-                        <h1>
-                            <field name="name"/>
-                        </h1>
+                        <h1><field name="name"/></h1>
+                        <h2><field name="summary"/></h2>
                     </div>
                     <group>
                         <group colspan="4" col="4">
                             <field name="start_date"/>
                             <field name="end_date"/>
+                            <field name="type_id"/>
+                            <field name="carrier_id"/>
                             <field name="starting_point_id"/>
                             <field name="arrival_point_id" attrs="{'invisible': [('is_loop', '=', True)]}"/>
-                            <newline/>
-                            <field name="carrier_id"/>
-                        </group>
-                        <group colspan="4" col="4">
-                            <label for="distance"/>
-                            <div class="o_row">
-                                <field name="distance"/>
-                                <span>km</span>
-                            </div>
+                            <field name="duration" widget="float_time"/>
+                            <field name="distance"/>
                             <field name="stop_qty"/>
-                            <field name="is_loop" invisible="1"/>
+                            <field name="cost"/>
                         </group>
                     </group>
                     <notebook colspan="4">
+                        <page name="description" string="Description">
+                            <p class="alert alert-warning" role="alert">
+Route information is given as an indication only!<br/>
+There may be traffic jams, delays, unforeseen events, etc...
+                            </p>
+                            <field name="description" widget="html" />
+                        </page>
                         <page name="lines" string="Steps">
                             <field name="line_ids">
-                                <tree editable="botttom">
-                                    <field name="sequence" widget="handle"/>
-                                    <field name="starting_point_id"/>
-                                    <field name="arrival_point_id"/>
-                                    <field name="distance"/>
+                                <tree>
+                                    <field name="sequence" invisible="1"/>
+                                    <field name="start_hour" widget="float_time"/>
+                                    <field name="arrival_hour" widget="float_time"/>
+                                    <field name="currency_id" invisible="1" />
+                                    <field name="sequence_type"/>
+                                    <field name="starting_point_id"
+                                        attrs="{'invisible': [('sequence_type', '!=', 'journey')]}"/>
+                                    <field name="arrival_point_id"
+                                        attrs="{'invisible': [('sequence_type', '!=', 'journey')]}"/>
+                                    <field name="duration" widget="float_time" sum="Total Duration"/>
+                                    <field name="distance"
+                                        attrs="{'invisible': [('sequence_type', '!=', 'journey')]}"
+                                        sum="Total Distance"/>
                                 </tree>
                             </field>
+                        </page>
+                        <page name="extra_informations" string="Economic Informations">
+                            <group col="6">
+                                <group string="Settings" colspan="2">
+                                    <field name="currency_id" groups="base.group_multi_currency"/>
+                                    <newline/>
+                                    <field name="hourly_cost"/>
+                                    <field name="kilometer_cost"/>
+                                    <field name="is_loop" invisible="1"/>
+                                </group>
+                                <group string="Cost allocation" colspan="2">
+                                    <field name="toll_cost"/>
+                                    <field name="salary_cost"/>
+                                    <field name="vehicle_cost"/>
+                                </group>
+                                <group colspan="2">
+                                    <div>
+                                        <field name="cost_chart" widget="bokeh_chart" nolabel="1"/>
+                                    </div>
+                                </group>
+                            </group>
                         </page>
                     </notebook>
                 </sheet>
@@ -119,9 +162,9 @@ License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl.html).
 
     <menuitem id="menu_joint_buying_tour_all"
         name="Tours"
-        parent="menu_root"
+        parent="menu_journey"
         action="action_joint_buying_tour_all"
-        sequence="30"
+        sequence="10"
     />
 
 </odoo>

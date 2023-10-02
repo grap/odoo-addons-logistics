@@ -3,7 +3,7 @@
 # License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl.html).
 {
     "name": "Joint Buying - Base",
-    "version": "12.0.3.0.6",
+    "version": "12.0.4.0.0",
     "category": "GRAP - Logistics",
     "author": "GRAP,La Jardinière,Hashbang",
     "website": "https://github.com/grap/odoo-addons-logistics",
@@ -12,17 +12,22 @@
         "base",
         "mail",
         # OCA
-        "base_geolocalize_openstreetmap",
+        "base_geolocalize_company",
         "res_company_code",
+        "res_company_active",
+        "web_notify",
+        "web_view_leaflet_map_partner",
+        "web_widget_bokeh_chart",
         # GRAP
         "name_search_reset_res_partner",
     ],
-    "external_dependencies": {"python": ["openupgradelib", "geopy"]},
+    "external_dependencies": {"python": ["openupgradelib", "geopy", "bokeh", "pandas"]},
     "data": [
         "security/ir_module_category.xml",
         "security/res_groups.xml",
         "security/ir.model.access.csv",
         "security/ir_rule.xml",
+        "data/ir_config_parameter.xml",
         "views/menu.xml",
         "views/view_res_company.xml",
         "views/view_res_partner.xml",
@@ -30,8 +35,10 @@
         "views/view_res_users.xml",
         "views/view_res_config_settings.xml",
         "views/view_joint_buying_carrier.xml",
+        "views/view_joint_buying_tour_type.xml",
         "views/view_joint_buying_tour.xml",
         "wizards/view_joint_buying_wizard_set_tour.xml",
+        "views/templates.xml",
     ],
     "demo": [
         "demo/res_company.xml",
@@ -39,6 +46,7 @@
         "demo/res_partner_category.xml",
         "demo/res_partner.xml",
         "demo/joint_buying_carrier.xml",
+        "demo/joint_buying_tour_type.xml",
         "demo/joint_buying_tour.xml",
     ],
     "post_init_hook": "_create_joint_buying_partner_for_companies",

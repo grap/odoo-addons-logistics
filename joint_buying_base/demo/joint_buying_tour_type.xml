@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+    Copyright (C) 2023 - Today: GRAP (http://www.grap.coop)
+    @author: Sylvain LE GAL (https://twitter.com/legalsylvain)
+    License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl.html).
+-->
+<odoo>
+
+    <record id="type_lyon_drome" model="joint.buying.tour.type">
+        <field name="name">Lyon Drôme</field>
+        <field name="carrier_id" ref="carrier_coolivri_grap"/>
+    </record>
+
+    <record id="type_lyon_loire" model="joint.buying.tour.type">
+        <field name="name">Lyon Loire</field>
+        <field name="carrier_id" ref="carrier_coolivri_grap"/>
+    </record>
+
+    <record id="type_lyon_savoie" model="joint.buying.tour.type">
+        <field name="name">Lyon Savoie</field>
+        <field name="carrier_id" ref="carrier_coolivri_grap"/>
+    </record>
+
+    <record id="type_savoie_paire" model="joint.buying.tour.type">
+        <field name="name">Savoie Paire</field>
+        <field name="carrier_id" ref="carrier_coolivri_savoie"/>
+    </record>
+
+    <record id="type_savoie_impaire" model="joint.buying.tour.type">
+        <field name="name">Savoie Impaire</field>
+        <field name="carrier_id" ref="carrier_coolivri_savoie"/>
+    </record>
+
+</odoo>

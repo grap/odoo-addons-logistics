@@ -4,6 +4,8 @@
 
 from odoo import api, fields, models
 
+from ..models.res_partner import _JOINT_BUYING_PARTNER_CONTEXT
+
 
 class JointBuyingWizardSetTour(models.TransientModel):
     _name = "joint.buying.wizard.set.tour"
@@ -17,6 +19,15 @@ class JointBuyingWizardSetTour(models.TransientModel):
         ondelete="cascade",
     )
 
+    starting_point_id = fields.Many2one(
+        required=True,
+        string="Starting Point",
+        comodel_name="res.partner",
+        context=_JOINT_BUYING_PARTNER_CONTEXT,
+        domain="[('is_joint_buying_stage', '=', True)]",
+        default=lambda x: x._default_starting_point_id(),
+    )
+
     line_ids = fields.One2many(
         comodel_name="joint.buying.wizard.set.tour.line",
         required=True,
@@ -27,21 +38,54 @@ class JointBuyingWizardSetTour(models.TransientModel):
     def _default_tour_id(self):
         return self.env.context.get("active_id")
 
+    def _default_starting_point_id(self):
+        tour = self.env["joint.buying.tour"].browse(self.env.context.get("active_id"))
+        journey_lines = tour.line_ids.filtered(lambda x: x.sequence_type == "journey")
+        if journey_lines:
+            return journey_lines[0].starting_point_id
+
     def _default_line_ids(self):
         tour = self.env["joint.buying.tour"].browse(self.env.context.get("active_id"))
         line_vals = []
         if not tour.line_ids:
             return []
-        else:
-            line_vals.append(
-                (0, 0, {"point_id": tour.line_ids[0].starting_point_id.id})
-            )
         for line in tour.line_ids:
-            line_vals.append((0, 0, {"point_id": line.arrival_point_id.id}))
+            _vals = {
+                "sequence": line.sequence,
+                "sequence_type": line.sequence_type,
+                "point_id": line.arrival_point_id.id,
+                "duration": line.duration,
+                "distance": line.distance,
+            }
+            line_vals.append((0, 0, _vals))
         return line_vals
 
     @api.multi
     def set_tour(self):
         self.ensure_one()
-        self.tour_id.change_tour_lines(self.line_ids)
+        self.tour_id.line_ids.unlink()
+        current_starting_point = self.starting_point_id
+        line_vals = []
+        for i, wizard_line in enumerate(self.line_ids):
+
+            line_vals.append(
+                (
+                    0,
+                    0,
+                    {
+                        "tour_id": self.tour_id.id,
+                        "sequence": i,
+                        "sequence_type": wizard_line.sequence_type,
+                        "starting_point_id": current_starting_point.id,
+                        "arrival_point_id": wizard_line.point_id.id,
+                        "duration": wizard_line.duration,
+                        "distance": wizard_line.distance,
+                    },
+                )
+            )
+            if wizard_line.point_id:
+                current_starting_point = wizard_line.point_id
+        if line_vals:
+            self.tour_id.write({"line_ids": line_vals})
+            self.tour_id.recompute_start_hours()
         return True

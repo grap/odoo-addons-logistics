@@ -47,6 +47,9 @@ License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl.html).
                                 <field name="payload"/>
                                 <span>kg</span>
                             </div>
+                            <field name="hourly_cost"/>
+                            <field name="kilometer_cost"/>
+                            <field name="currency_id" groups="base.group_multi_currency"/>
                         </group>
                         <group/>
                     </group>
