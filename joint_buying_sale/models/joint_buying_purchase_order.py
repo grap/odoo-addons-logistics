@@ -32,6 +32,8 @@ class JointBuyingPurchaseOrder(models.Model):
             "partner_id": partner.id,
             "company_id": self.env.user.company_id.id,
             "pricelist_id": partner.property_product_pricelist.id,
+            "payment_term_id": partner.property_payment_term_id
+            and partner.property_payment_term_id.id,
             "fiscal_position_id": partner.property_account_position_id
             and partner.property_account_position_id.id,
             "commitment_date": self.grouped_order_id.deposit_date,
