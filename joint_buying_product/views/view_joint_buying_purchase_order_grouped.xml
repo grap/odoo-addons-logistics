@@ -48,6 +48,7 @@ License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl.html).
                 <field name="total_weight" sum="Total Brut Weight"/>
                 <field name="amount_untaxed" sum="Total Amount Untaxed"/>
                 <field name="pivot_company_id"/>
+                <field name="deposit_partner_id"/>
                 <field name="state" invisible="1"/>
                 <field name="current_order_id" invisible="1"/>
                 <button name="see_current_order" type="object"
