@@ -327,7 +327,7 @@ class JointBuyingPurchaseOrderGrouped(models.Model):
         frequencies = self.env["joint.buying.frequency"].search(
             [("frequency", "!=", 0), ("next_start_date", "<", now)]
         )
-        for frequency in frequencies:
+        for frequency in frequencies.filtered(lambda x: x.partner_id.active):
             # Create Grouped order
             wizard = (
                 self.env["joint.buying.wizard.create.order"]
