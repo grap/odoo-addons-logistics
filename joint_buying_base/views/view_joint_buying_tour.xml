@@ -29,8 +29,8 @@ License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl.html).
     <record id="view_joint_buying_tour_calendar" model="ir.ui.view">
         <field name="model">joint.buying.tour</field>
         <field name="arch" type="xml">
-            <calendar date_start="start_date" date_stop="end_date" color="type_id">
-                <field name="type_id"/>
+            <calendar date_start="start_date" date_stop="end_date" color="carrier_id">
+                <field name="carrier_id"/>
                 <field name="summary"/>
             </calendar>
         </field>
