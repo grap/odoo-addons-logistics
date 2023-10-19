@@ -63,6 +63,7 @@ class JointBuyingWizardSetTour(models.TransientModel):
     @api.multi
     def set_tour(self):
         self.ensure_one()
+        # TODO - Optimize. do not delete lines, if lines are the same
         self.tour_id.line_ids.unlink()
         current_starting_point = self.starting_point_id
         line_vals = []
@@ -87,5 +88,4 @@ class JointBuyingWizardSetTour(models.TransientModel):
                 current_starting_point = wizard_line.point_id
         if line_vals:
             self.tour_id.write({"line_ids": line_vals})
-            self.tour_id.recompute_start_hours()
         return True

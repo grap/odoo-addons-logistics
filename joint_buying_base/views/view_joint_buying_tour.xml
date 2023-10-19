@@ -105,7 +105,9 @@ There may be traffic jams, delays, unforeseen events, etc...
                             <field name="line_ids">
                                 <tree>
                                     <field name="sequence" invisible="1"/>
+                                    <field name="start_date" invisible="1"/>
                                     <field name="start_hour" widget="float_time"/>
+                                    <field name="arrival_date" invisible="1"/>
                                     <field name="arrival_hour" widget="float_time"/>
                                     <field name="currency_id" invisible="1" />
                                     <field name="sequence_type"/>
