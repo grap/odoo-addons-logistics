@@ -9,6 +9,7 @@ from bokeh.embed import components
 from bokeh.palettes import Category20c
 from bokeh.plotting import figure
 from bokeh.transform import cumsum
+from dateutil.relativedelta import relativedelta
 
 from odoo import _, api, fields, models
 
@@ -280,27 +281,26 @@ class JointBuyingTour(models.Model):
     @api.multi
     def write(self, vals):
         res = super().write(vals)
-        if "start_date" in vals:
-            self.recompute_start_hours()
+        if {"start_date", "line_ids"}.intersection(vals.keys()):
+            self.recompute_dates()
         return res
 
     def estimate_route(self):
-        self.mapped("line_ids").estimate_route()
-        self.recompute_start_hours()
+        self.mapped("line_ids")._estimate_route()
+        self.recompute_dates()
 
-    def recompute_start_hours(self):
-        def _time_to_float(time):
-            return time.hour + time.minute / 60
-
+    def recompute_dates(self):
         for tour in self:
-            if not tour.line_ids:
-                continue
-            date_tz = fields.Datetime.context_timestamp(self, tour.start_date)
-            start_hour = _time_to_float(date_tz.time())
+            start_date = tour.start_date
             for line in tour.line_ids:
-                line.start_hour = start_hour
-                line.arrival_hour = start_hour + line.duration
-                start_hour += line.duration
+                arrival_date = start_date + relativedelta(hours=line.duration)
+                line.write(
+                    {
+                        "start_date": start_date,
+                        "arrival_date": arrival_date,
+                    }
+                )
+                start_date = arrival_date
 
     def see_steps(self):
         self.ensure_one()

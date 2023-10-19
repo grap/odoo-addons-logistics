@@ -270,4 +270,14 @@
         <field name="duration" eval="40/60"/>
     </record>
 
+
+    <function model="joint.buying.tour" name="recompute_dates">
+        <value eval="[
+            ref('joint_buying_base.tour_lyon_loire_1'),
+            ref('joint_buying_base.tour_lyon_drome_1'),
+            ref('joint_buying_base.tour_lyon_savoie_1'),
+            ref('joint_buying_base.tour_savoie_1'),
+        ]"/>
+    </function> -->
+
 </odoo>
