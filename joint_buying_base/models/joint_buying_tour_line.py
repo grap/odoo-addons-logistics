@@ -36,9 +36,13 @@ class JointBuyingTourLine(models.Model):
 
     distance = fields.Float()
 
-    start_hour = fields.Float()
+    start_date = fields.Datetime()
 
-    arrival_hour = fields.Float()
+    arrival_date = fields.Datetime()
+
+    start_hour = fields.Float(compute="_compute_hours")
+
+    arrival_hour = fields.Float(compute="_compute_hours")
 
     starting_point_id = fields.Many2one(
         comodel_name="res.partner", context=_JOINT_BUYING_PARTNER_CONTEXT
@@ -59,6 +63,20 @@ class JointBuyingTourLine(models.Model):
     vehicle_cost = fields.Monetary(
         compute="_compute_costs", store=True, currency_field="currency_id"
     )
+
+    @api.depends("start_date", "arrival_date")
+    def _compute_hours(self):
+        for line in self:
+            start_date = fields.Datetime.context_timestamp(self, line.start_date)
+            arrival_date = fields.Datetime.context_timestamp(self, line.arrival_date)
+            line.start_hour = (
+                start_date.hour + start_date.minute / 60 + start_date.second / 3600
+            )
+            line.arrival_hour = (
+                arrival_date.hour
+                + arrival_date.minute / 60
+                + arrival_date.second / 3600
+            )
 
     @api.depends(
         "tour_id.hourly_cost", "tour_id.kilometer_cost", "duration", "distance"
@@ -98,7 +116,7 @@ class JointBuyingTourLine(models.Model):
             "duration": result.get("duration") / 3600,
         }
 
-    def estimate_route(self):
+    def _estimate_route(self):
         no_coordinate_partners = self.env["res.partner"]
         for line in self.filtered(lambda x: x.sequence_type == "journey"):
             if (
