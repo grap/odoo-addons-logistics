@@ -96,6 +96,8 @@
         <field name="joint_buying_pivot_company_id" ref="joint_buying_base.company_LSE"/>
         <field name="joint_buying_subscribed_company_ids" eval="[
             (4, ref('joint_buying_base.company_LSE')),
+            (4, ref('joint_buying_base.company_VEV')),
+            (4, ref('joint_buying_base.company_CDA')),
         ]"/>
         <field name="category_id" eval="[
             (4, ref('joint_buying_base.partner_category_vegetable')),
