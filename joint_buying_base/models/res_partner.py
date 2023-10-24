@@ -65,6 +65,11 @@ class ResPartner(models.Model):
         help="Check this box if that address can be a step of a tour",
     )
 
+    joint_buying_code = fields.Char(
+        help="Code diplayed for tour",
+        compute="_compute_joint_buying_code",
+    )
+
     joint_buying_description = fields.Html(string="Complete Description")
 
     joint_buying_is_mine_pivot = fields.Boolean(
@@ -157,6 +162,13 @@ class ResPartner(models.Model):
             return companies.ids
 
     # Compute Section
+    def _compute_joint_buying_code(self):
+        for partner in self:
+            if partner.joint_buying_company_id:
+                partner.joint_buying_code = partner.joint_buying_company_id.sudo().code
+            else:
+                partner.joint_buying_code = partner.name
+
     def _compute_joint_buying_display_name_step(self):
         if self.env.context.get("active_model") != "joint.buying.tour":
             for partner in self:
