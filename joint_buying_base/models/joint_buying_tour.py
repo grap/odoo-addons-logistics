@@ -195,19 +195,11 @@ class JointBuyingTour(models.Model):
             for line in tour.line_ids.filtered(lambda x: x.sequence_type == "journey"):
                 if not codes:
                     codes = [
-                        line.starting_point_id.joint_buying_company_id
-                        and line.starting_point_id.joint_buying_company_id.code
-                        or line.starting_point_id.name,
-                        line.arrival_point_id.joint_buying_company_id
-                        and line.arrival_point_id.joint_buying_company_id.code
-                        or line.arrival_point_id.name,
+                        line.starting_point_id.joint_buying_code,
+                        line.arrival_point_id.joint_buying_code,
                     ]
                 else:
-                    codes.append(
-                        line.arrival_point_id.joint_buying_company_id
-                        and line.arrival_point_id.joint_buying_company_id.code
-                        or line.arrival_point_id.name,
-                    )
+                    codes.append(line.arrival_point_id.joint_buying_code)
             tour.summary = f"{' -> '.join(codes)}"
 
     def _compute_description(self):
