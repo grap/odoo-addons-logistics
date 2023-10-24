@@ -1,0 +1,112 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+Copyright (C) 2021 - Today: GRAP (http://www.grap.coop)
+@author: Sylvain LE GAL (https://twitter.com/legalsylvain)
+License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl.html).
+-->
+<odoo>
+
+    <record id="view_joint_buying_transport_request_search" model="ir.ui.view">
+        <field name="model">joint.buying.transport.request</field>
+        <field name="arch" type="xml">
+            <search>
+                <field name="origin_partner_id"/>
+                <field name="destination_partner_id"/>
+                <field name="order_id"/>
+                <field name="state"/>
+            </search>
+        </field>
+    </record>
+
+    <record id="view_joint_buying_transport_request_tree" model="ir.ui.view">
+        <field name="model">joint.buying.transport.request</field>
+        <field name="arch" type="xml">
+            <tree decoration-muted="amount_untaxed == 0 and total_weight == 0" decoration-info="state == 'to_compute'">
+                <field name="start_date"/>
+                <field name="origin_partner_id"/>
+                <field name="destination_partner_id"/>
+                <field name="amount_untaxed"/>
+                <field name="total_weight"/>
+                <field name="order_id"/>
+                <field name="arrival_date"/>
+                <field name="state"/>
+            </tree>
+        </field>
+    </record>
+
+    <record id="view_joint_buying_transport_request_form" model="ir.ui.view">
+        <field name="model">joint.buying.transport.request</field>
+        <field name="arch" type="xml">
+            <form>
+                <header />
+                <sheet>
+                    <div class="oe_button_box" name="button_box">
+                    </div>
+                    <div class="oe_title">
+                        <h1>
+                            <field name="name"/>
+                        </h1>
+                    </div>
+                    <group col="4">
+                        <field name="order_id" attrs="{'invisible': [('order_id', '=', False)]}"/>
+                        <newline />
+                        <field name="manual_start_date"
+                            attrs="{'required': [('order_id', '=', False)]}"
+                            />
+                        <field name="arrival_date"/>
+                        <field name="manual_origin_partner_id"
+                            attrs="{'required': [('order_id', '=', False)]}"
+                            />
+                        <field name="manual_destination_partner_id"
+                            attrs="{'required': [('order_id', '=', False)]}"
+                            />
+                        <field name="manual_total_weight"
+                            attrs="{'required': [('order_id', '=', False)]}"
+                            />
+                        <field name="manual_amount_untaxed"
+                            attrs="{'required': [('order_id', '=', False)]}"
+                            />
+                    </group>
+                    <notebook>
+                        <page string="Tour Detail">
+                                <field name="tour_line_ids">
+                                    <tree>
+                                        <field name="start_date"/>
+                                        <field name="arrival_date"/>
+                                        <field name="arrival_point_id"/>
+                                        <field name="distance" sum="Total"/>
+                                    </tree>
+                                </field>
+                        </page>
+                        <page string="Technical Information">
+                            <group>
+                                <field name="start_date"/>
+                                <field name="origin_partner_id"/>
+                                <field name="destination_partner_id"/>
+                                <field name="total_weight"/>
+                                <field name="amount_untaxed"/>
+                            </group>
+                        </page>
+                    </notebook>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+    <record id="action_joint_buying_transport_request" model="ir.actions.act_window">
+        <field name="name">Transport Requests</field>
+        <field name="type">ir.actions.act_window</field>
+        <field name="res_model">joint.buying.transport.request</field>
+        <field name="view_type">form</field>
+        <field name="view_mode">tree,form</field>
+    </record>
+
+    <menuitem id="menu_joint_buying_transport_request"
+        name="Transport Requests"
+        parent="joint_buying_product.menu_transport"
+        action="action_joint_buying_transport_request"
+        sequence="1"
+        groups="joint_buying_base.group_joint_buying_user"
+    />
+
+</odoo>

@@ -387,6 +387,7 @@ class JointBuyingPurchaseOrderGrouped(models.Model):
                 grouped_order.with_context(update_state_value=True).write(
                     {"state": correct_state}
                 )
+                grouped_order.mapped("order_ids")._hook_state_changed()
                 if correct_state == "closed":
                     grouped_order.mapped("order_ids").correct_purchase_state()
 

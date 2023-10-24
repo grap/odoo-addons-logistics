@@ -95,6 +95,12 @@ class JointBuyingPurchaseOrder(models.Model):
         selection=_PURCHASE_STATE, required=True, default="draft", track_visibility=True
     )
 
+    request_id = fields.Many2one(
+        comodel_name="joint.buying.transport.request",
+        string="Transport Request",
+        readonly=True,
+    )
+
     pivot_company_id = fields.Many2one(
         comodel_name="res.company",
         string="Pivot Company",
@@ -293,6 +299,39 @@ class JointBuyingPurchaseOrder(models.Model):
             vals = OrderLine._prepare_line_vals(product)
             res["line_ids"].append((0, 0, vals))
         return res
+
+    def _hook_state_changed(self):
+        # Create transport requests:
+        # - if not exists,
+        # - if state != closed / deposited
+        # - if deposit place != customer_id
+        orders_request_to_create = self.filtered(
+            lambda x: x.state not in ["closed", "deposited"]
+            and not x.request_id
+            and x.deposit_partner_id != x.customer_id
+        )
+        if orders_request_to_create:
+            vals_list = [{"order_id": x.id} for x in orders_request_to_create]
+            requests = self.env["joint.buying.transport.request"].create(vals_list)
+            for (order, request) in zip(orders_request_to_create, requests):
+                order.write({"request_id": request.id})
+
+        # Unlink transport request:
+        # - if exist
+        # - state == closed / deposited
+        # - is null (no weight and no amount untaxed)
+        orders_request_to_unlink = self.filtered(
+            lambda x: x.state in ["closed", "deposited"]
+            and not (x.total_weight or x.amount_untaxed)
+        )
+        if orders_request_to_unlink:
+            orders_request_to_unlink.mapped("request_id").unlink()
+
+    @api.model_create_multi
+    def create(self, vals_list):
+        orders = super().create(vals_list)
+        orders._hook_state_changed()
+        return orders
 
     def action_confirm_purchase(self):
         for order in self.filtered(lambda x: x.purchase_state == "draft"):
