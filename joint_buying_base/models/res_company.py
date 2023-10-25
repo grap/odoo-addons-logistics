@@ -46,6 +46,13 @@ class ResCompany(models.Model):
         store=True,
     )
 
+    joint_buying_is_durable_storage = fields.Boolean(
+        related="joint_buying_partner_id.joint_buying_is_durable_storage",
+        string="Durable Storage",
+        readonly=False,
+        store=True,
+    )
+
     def _get_company_fields_for_joint_buying_partner(self):
         """Return the company fields that raise the update
         of the related joint buying partner"""

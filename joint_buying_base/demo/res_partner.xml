@@ -112,6 +112,7 @@
         <field name="country_id" ref="base.fr"/>
         <field name="is_joint_buying" eval="True"/>
         <field name="is_joint_buying_stage" eval="True"/>
+        <field name="joint_buying_is_durable_storage" eval="True"/>
         <field name="customer" eval="False"/>
         <field name="supplier" eval="False"/>
         <field name="company_id" eval="False"/>
