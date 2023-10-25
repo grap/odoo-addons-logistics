@@ -24,6 +24,7 @@
         "security/ir.model.access.csv",
         "views/menu.xml",
         "wizards/joint_buying_wizard_create_order.xml",
+        "wizards/joint_buying_wizard_find_route.xml",
         "wizards/joint_buying_wizard_update_order_grouped.xml",
         "wizards/mail_compose_message_purchase_order_grouped.xml",
         "views/view_res_config_settings.xml",

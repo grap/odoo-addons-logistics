@@ -1,10 +1,19 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!--
-Copyright (C) 2021 - Today: GRAP (http://www.grap.coop)
+Copyright (C) 2023 - Today: GRAP (http://www.grap.coop)
 @author: Sylvain LE GAL (https://twitter.com/legalsylvain)
 License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl.html).
 -->
 <odoo>
+
+    <record id="action_request_2_wizard_find_route" model="ir.actions.act_window">
+        <field name="name">Find the Best Route</field>
+        <field name="type">ir.actions.act_window</field>
+        <field name="res_model">joint.buying.wizard.find.route</field>
+        <field name="view_type">form</field>
+        <field name="view_mode">form</field>
+        <field name="target">new</field>
+    </record>
 
     <record id="view_joint_buying_transport_request_search" model="ir.ui.view">
         <field name="model">joint.buying.transport.request</field>
@@ -38,7 +47,19 @@ License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl.html).
         <field name="model">joint.buying.transport.request</field>
         <field name="arch" type="xml">
             <form>
-                <header />
+                <header>
+                    <button type="action" string="Find the Best Route" class="oe_highlight"
+                            attrs="{'invisible': [('state', '=', 'computed')]}"
+                            name="%(joint_buying_product.action_request_2_wizard_find_route)d"
+                            groups="joint_buying_base.group_joint_buying_manager"
+                        />
+                    <button type="action" string="Find the Best Route"
+                            attrs="{'invisible': [('state', '=', 'to_compute')]}"
+                            name="%(joint_buying_product.action_request_2_wizard_find_route)d"
+                            groups="joint_buying_base.group_joint_buying_manager"
+                        />
+                    <field name="state" widget="statusbar"/>
+                </header>
                 <sheet>
                     <div class="oe_button_box" name="button_box">
                     </div>
