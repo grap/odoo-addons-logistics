@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+Copyright (C) 2022 - Today: GRAP (http://www.grap.coop)
+@author: Sylvain LE GAL (https://twitter.com/legalsylvain)
+License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl.html).
+-->
+<odoo>
+    <record id="view_joint_buying_wizard_find_route_form" model="ir.ui.view">
+        <field name="model">joint.buying.wizard.find.route</field>
+        <field name="arch" type="xml">
+            <form>
+                <group col="4">
+                    <field name="transport_request_id"/>
+                    <field name="start_date"/>
+                    <field name="origin_partner_id"/>
+                    <field name="destination_partner_id"/>
+                </group>
+                <group>
+                    <field name="result"/>
+                </group>
+                <footer>
+                    <button name="button_apply"
+                            string="Apply"
+                            type="object"
+                            class="oe_highlight"/>
+                    or
+                    <button string="Cancel" class="oe_link" special="cancel"/>
+                </footer>
+            </form>
+        </field>
+    </record>
+</odoo>
