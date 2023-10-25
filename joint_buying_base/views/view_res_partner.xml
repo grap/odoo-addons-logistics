@@ -64,6 +64,8 @@ License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl.html).
                                 <label for="supplier"/>
                                 <field name="is_joint_buying_stage"/>
                                 <label for="is_joint_buying_stage"/>
+                                <field name="joint_buying_is_durable_storage"/>
+                                <label for="joint_buying_is_durable_storage"/>
                             </div>
                         </div>
                     </div>

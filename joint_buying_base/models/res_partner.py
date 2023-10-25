@@ -65,6 +65,12 @@ class ResPartner(models.Model):
         help="Check this box if that address can be a step of a tour",
     )
 
+    joint_buying_is_durable_storage = fields.Boolean(
+        string="Durable Storage",
+        default=False,
+        help="Check this box if that address can store merchandise for a few days",
+    )
+
     joint_buying_code = fields.Char(
         help="Code diplayed for tour",
         compute="_compute_joint_buying_code",

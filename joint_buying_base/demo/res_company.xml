@@ -121,6 +121,7 @@
         <field name="partner_latitude">45.71355112210139</field>
         <field name="partner_longitude">4.819783362129657</field>
         <field name="logo" type="base64" file="joint_buying_base/static/img/company_LSE-logo.png"/>
+        <field name="joint_buying_is_durable_storage" eval="True"/>
     </record>
 
     <record id="company_PZI" model="res.company">
