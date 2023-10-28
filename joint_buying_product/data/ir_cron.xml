@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 
-<odoo><data noupdate="1">
+<odoo noupdate="1">
 
     <record id="cron_grouped_purchase_order_check_state" model="ir.cron">
         <field name="name">Joint Buying: Check Grouped Order state</field>
@@ -41,4 +41,4 @@
         <field name="active" eval="True"/>
     </record>
 
-</data></odoo>
+</odoo>
