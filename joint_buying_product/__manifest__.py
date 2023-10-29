@@ -20,6 +20,7 @@
         "product_uom_package",
     ],
     "pre_init_hook": "pre_init_product_db",
+    "external_dependencies": {"python": ["treelib"]},
     "data": [
         "security/ir.model.access.csv",
         "views/menu.xml",

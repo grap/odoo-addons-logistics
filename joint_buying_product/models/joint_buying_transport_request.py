@@ -100,7 +100,7 @@ class JointBuyingTransportRequest(models.Model):
 
     tour_line_ids = fields.Many2many(
         comodel_name="joint.buying.tour.line",
-        string="Route Lines",
+        string="Tour Lines",
     )
 
     arrival_date = fields.Datetime(string="Arrival Date", readonly=True)
