@@ -1,5 +1,5 @@
 # Do NOT update manually; changes here will be overwritten by Copier
-_commit: '9869590'
+_commit: a7bd24b
 _src_path: https://github.com/grap/oca-addons-repo-template-new.git
 ci: GitHub
 dependency_installation_mode: PIP

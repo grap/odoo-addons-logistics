@@ -46,14 +46,6 @@ repos:
       - id: oca-update-pre-commit-excluded-addons
       - id: oca-fix-manifest-website
         args: ["https://github.com/grap/odoo-addons-logistics"]
-      - id: oca-gen-addon-readme
-        args:
-          - --addons-dir=.
-          - --branch=12.0
-          - --org-name=grap
-          - --repo-name=odoo-addons-logistics
-          - --if-source-changed
-          - --no-gen-html
   - repo: https://github.com/OCA/odoo-pre-commit-hooks
     rev: v0.0.25
     hooks:
