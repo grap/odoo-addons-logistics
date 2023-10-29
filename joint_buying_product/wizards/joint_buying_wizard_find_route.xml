@@ -15,14 +15,29 @@ License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl.html).
                     <field name="origin_partner_id"/>
                     <field name="destination_partner_id"/>
                 </group>
-                <group>
-                    <field name="result"/>
-                </group>
+                <notebook>
+                    <page string="Tour Lines">
+                        <field name="tour_line_ids">
+                            <tree>
+                                <field name="start_date"/>
+                                <field name="arrival_date"/>
+                                <field name="arrival_point_id"/>
+                                <field name="distance"/>
+                            </tree>
+                        </field>
+                    </page>
+                    <page string="Technical Information">
+                        <field name="tree_text"/>
+                        <field name="is_different_simulation"/>
+                    </page>
+                </notebook>
                 <footer>
                     <button name="button_apply"
                             string="Apply"
                             type="object"
-                            class="oe_highlight"/>
+                            class="oe_highlight"
+                            attrs="{'invisible': [('is_different_simulation', '=', False)]}"
+                        />
                     or
                     <button string="Cancel" class="oe_link" special="cancel"/>
                 </footer>

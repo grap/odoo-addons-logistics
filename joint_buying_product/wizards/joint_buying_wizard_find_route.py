@@ -2,6 +2,11 @@
 # @author: Sylvain LE GAL (https://twitter.com/legalsylvain)
 # License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl.html).
 
+import datetime
+from types import SimpleNamespace
+
+from treelib import Tree
+
 from odoo import api, fields, models
 
 from odoo.addons.joint_buying_base.models.res_partner import (
@@ -12,6 +17,9 @@ from odoo.addons.joint_buying_base.models.res_partner import (
 class JointBuyingWizardFindRoute(models.TransientModel):
     _name = "joint.buying.wizard.find.route"
     _description = "Joint Buying Wizard Find Route"
+
+    # 30 Days
+    _MAX_TRANSPORT_DURATION = 30
 
     transport_request_id = fields.Many2one(
         string="Transport Request",
@@ -41,7 +49,17 @@ class JointBuyingWizardFindRoute(models.TransientModel):
         readonly=True,
     )
 
-    simulation = fields.Text(
+    tour_line_ids = fields.Many2many(
+        comodel_name="joint.buying.tour.line",
+        string="Tour Lines",
+        compute="_compute_simulation",
+    )
+
+    tree_text = fields.Text(
+        compute="_compute_simulation",
+    )
+
+    is_different_simulation = fields.Boolean(
         compute="_compute_simulation",
     )
 
@@ -52,27 +70,165 @@ class JointBuyingWizardFindRoute(models.TransientModel):
     @api.depends("transport_request_id")
     def _compute_simulation(self):
         self.ensure_one()
-        self.compute_results(self)
+        results = self.compute_results(self.transport_request_id)
+        result = results.get(self.transport_request_id)
+        if result:
+            tree, self.tour_line_ids = result
+            self.tree_text = tree.show(stdout=False, line_type="ascii-em")
+            self.is_different_simulation = (
+                self.transport_request_id.tour_line_ids.ids != self.tour_line_ids.ids
+            )
 
     def compute_results(self, transport_requests):
         """Endtry point to compute the best way for a RecordSet of Transport Requests"""
-        sections = self.env["joint.buying.tour.line"].search_read(
-            domain=[
-                ("sequence_type", "=", "journey"),
-                ("start_date", ">=", min(transport_requests.mapped("start_date"))),
-            ],
-            fields=[
-                "starting_point_id",
-                "tour_id",
-                "distance",
-                "start_date",
-                "arrival_date",
-                "arrival_point_id",
+        results = {}
+        for transport_request in transport_requests:
+            tree = self._populate_tree(transport_request)
+            lines = self._extract_tour_lines_from_tree(tree, transport_request)
+            results[transport_request] = tree, lines
+
+        return results
+
+    @api.model
+    def _extract_tour_lines_from_tree(self, tree, transport_request):
+        # For the time being, there is only one valid way
+        destination_node = [
+            x
+            for x in tree.all_nodes()
+            if x.data.partner == transport_request.destination_partner_id
+        ]
+        if not destination_node:
+            return self.env["joint.buying.tour.line"]
+        destination_node = destination_node[0]
+
+        line_ids = []
+
+        for x in tree.rsearch(destination_node.identifier):
+            if tree[x].data.line:
+                line_ids.append(tree[x].data.line.id)
+
+        return self.env["joint.buying.tour.line"].search(
+            [("id", "in", line_ids)], order="start_date"
+        )
+
+    @api.model
+    def _populate_tree(self, transport_request):
+        # Get all the tours subsequent to the transport request for a given period of time
+        max_date = transport_request.start_date + datetime.timedelta(
+            days=self._MAX_TRANSPORT_DURATION
+        )
+        tours = self.env["joint.buying.tour"].search(
+            [
+                ("start_date", ">=", transport_request.start_date),
+                ("start_date", "<=", max_date),
             ],
             order="start_date",
         )
-        sections = sections
+
+        # Initialize Tree
+        tree = Tree()
+        self._create_initial_node(
+            tree,
+            transport_request.origin_partner_id,
+            transport_request.start_date,
+        )
+
+        # We go through all the tours, in ascending date order
+        for tour in tours:
+            # we select the places (nodes) where the merchandise can be
+            startable_nodes = [x for x in tree.all_nodes() if x.data.durable_storable]
+            for startable_node in startable_nodes:
+                for line in tour.line_ids.filtered(
+                    lambda x: x.sequence_type == "journey"
+                    and startable_node.data.date <= x.start_date
+                    and startable_node.data.partner == x.starting_point_id
+                ):
+                    found_lines = self._get_interesting_route(
+                        tour=tour,
+                        from_line=line,
+                        destination=transport_request.destination_partner_id,
+                        excludes=[x.data.partner for x in startable_nodes],
+                    )
+                    if found_lines:
+                        current_node = startable_node
+                        for found_line in found_lines:
+                            current_node = self._create_following_node(
+                                tree,
+                                current_node,
+                                found_line,
+                                transport_request.destination_partner_id,
+                            )
+
+                            # we've arrived at our destination!
+                            if (
+                                found_line.arrival_point_id
+                                == transport_request.destination_partner_id
+                            ):
+                                return tree
+
+        return tree
+
+    @api.model
+    def _create_initial_node(self, tree, partner, date):
+        durable_storable = True
+        return tree.create_node(
+            tag=f"{partner.joint_buying_code}-{date}-{durable_storable}",
+            data=SimpleNamespace(
+                partner=partner,
+                date=date,
+                durable_storable=durable_storable,
+                line=False,
+            ),
+        )
+
+    @api.model
+    def _create_following_node(self, tree, parent, line, destination):
+        partner = line.arrival_point_id
+        date = line.arrival_date
+        durable_storable = (
+            line.arrival_point_id == destination
+            or line.arrival_point_id.joint_buying_is_durable_storage
+        )
+        return tree.create_node(
+            parent=parent,
+            tag=f"{partner.joint_buying_code}-{date}-{durable_storable}-{line.id}",
+            data=SimpleNamespace(
+                partner=partner, date=date, durable_storable=durable_storable, line=line
+            ),
+        )
+
+    @api.model
+    def _get_interesting_route(self, tour, from_line, destination, excludes):
+        # we try to go the destination
+        available_lines = [
+            x
+            for x in tour.line_ids.filtered(
+                lambda x: x.start_date >= from_line.start_date
+                and x.sequence_type == "journey"
+            )
+        ]
+
+        # The destination is present in the available lines, directly return
+        if destination in [x.arrival_point_id for x in available_lines]:
+            return available_lines
+
+        # We start from the end, and we remove uninteresting lines
+        # If an arrival is interesting, we keep all the journey
+        # from the from_line to the arrival
+        available_lines.reverse()
+
+        result = []
+        to_select = False
+        for line in available_lines:
+            if to_select or (
+                line.arrival_point_id.joint_buying_is_durable_storage
+                and line.arrival_point_id not in excludes
+            ):
+                result.append(line)
+                to_select = True
+        result.reverse()
+        return result
 
     def button_apply(self):
         self.ensure_one()
-        raise NotImplementedError()
+        self.transport_request_id._set_tour_lines(self.tour_line_ids)
