@@ -19,7 +19,7 @@ _TOUR_LINE_SEQUENCE_TYPES = [
 class JointBuyingTourLine(models.Model):
     _name = "joint.buying.tour.line"
     _description = "Joint Buying Tour Lines"
-    _order = "sequence"
+    _order = "start_date, sequence"
 
     sequence = fields.Integer()
 
