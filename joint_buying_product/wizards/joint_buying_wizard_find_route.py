@@ -122,20 +122,45 @@ class JointBuyingWizardFindRoute(models.TransientModel):
 
     @api.model
     def _create_following_node(self, tree, parent, line, destination):
+
         partner = line.arrival_point_id
         date = line.arrival_date
         best_main_node = (
             line.arrival_point_id == destination
             or line.arrival_point_id.joint_buying_is_durable_storage
         )
-        return tree.create_node(
+        new_node = tree.create_node(
             parent=parent,
             tag=f"{partner.joint_buying_code}-{date}-{line.id}"
-            f"-{best_main_node and '-BEST_MAIN_NODE'}",
+            f"{best_main_node and '-BEST_MAIN_NODE' or ''}",
             data=SimpleNamespace(
                 partner=partner, date=date, best_main_node=best_main_node, line=line
             ),
         )
+
+        best_nodes = [
+            x
+            for x in tree.all_nodes()
+            if x.data.best_main_node and x.data.partner == line.arrival_point_id
+        ]
+
+        if len(best_nodes) > 1:
+            the_best_node = self._get_best_node(best_nodes)
+            for node in best_nodes:
+                if node == the_best_node:
+                    continue
+                node.tag = node.tag.replace("-BEST_MAIN_NODE", "")
+                node.data.best_main_node = False
+
+        return new_node
+
+    @api.model
+    def _get_best_node(self, nodes):
+        best_node = nodes[0]
+        for node in nodes[1:]:
+            if node.data.date < best_node.data.date:
+                best_node = node
+        return best_node
 
     @api.model
     def _get_startable_nodes(self, tree):
@@ -209,7 +234,12 @@ class JointBuyingWizardFindRoute(models.TransientModel):
                         tour=tour,
                         from_line=line,
                         destination=transport_request.destination_partner_id,
-                        excludes=[x.data.partner for x in startable_nodes],
+                        # We don't want to target origin
+                        # you don't want to go round and round in the same place.
+                        excludes=[
+                            transport_request.origin_partner_id,
+                            startable_node.data.partner,
+                        ],
                     )
                     if found_lines:
                         current_node = startable_node

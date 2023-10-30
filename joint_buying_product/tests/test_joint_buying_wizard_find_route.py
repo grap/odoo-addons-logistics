@@ -8,7 +8,7 @@ from odoo.tests import tagged
 from .test_abstract import TestAbstract
 
 
-@tagged("post_install", "-at_install")
+@tagged("post_install", "-at_install", "find_route")
 class TestJointBuyingWizardFindRoute(TestAbstract):
     def setUp(self):
         super().setUp()
@@ -51,6 +51,18 @@ class TestJointBuyingWizardFindRoute(TestAbstract):
         """Use case: No route available"""
         self._verify_tour_lines_computation(
             "joint_buying_product.request_vev_fumet_dombes_week_1", [], "not_computable"
+        )
+
+    def test_24_transport_request_vev_che_week_2(self):
+        """Complex case: a later start arrives earlier"""
+        self._verify_tour_lines_computation(
+            "joint_buying_product.request_vev_che_week_2",
+            [
+                "joint_buying_base.tour_lyon_loire_3_line_2",
+                "joint_buying_base.tour_lyon_drome_2_line_2",
+                "joint_buying_base.tour_lyon_drome_2_line_4",
+            ],
+            "computed",
         )
 
     def _verify_tour_lines_computation(
