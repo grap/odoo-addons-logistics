@@ -101,6 +101,11 @@ class JointBuyingPurchaseOrder(models.Model):
         readonly=True,
     )
 
+    request_arrival_date = fields.Datetime(
+        string="Final Delivery Date",
+        related="request_id.arrival_date",
+    )
+
     pivot_company_id = fields.Many2one(
         comodel_name="res.company",
         string="Pivot Company",
