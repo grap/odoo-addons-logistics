@@ -1,0 +1,184 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+    Copyright (C) 2023 - Today: GRAP (http://www.grap.coop)
+    @author: Sylvain LE GAL (https://twitter.com/legalsylvain)
+    License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl.html).
+-->
+<odoo>
+
+    <record id="grouped_order_ronzon_past" model="joint.buying.purchase.order.grouped">
+        <field name="supplier_id" ref="joint_buying_base.supplier_benoit_ronzon"/>
+        <field name="pivot_company_id" ref="joint_buying_base.company_LSE"/>
+        <field name="deposit_partner_id" model="res.partner" eval="obj().env.ref('joint_buying_base.company_1GG').joint_buying_partner_id.id"/>
+        <field name="start_date" eval="(DateTime.today() + timedelta(days=-9)).strftime('%Y-%m-%d 08:00')"/>
+        <field name="end_date" eval="(DateTime.today() + timedelta(days=-3)).strftime('%Y-%m-%d 20:00')"/>
+        <field name="deposit_date" eval="(DateTime.today() + timedelta(days=-1)).strftime('%Y-%m-%d 08:00')"/>
+    </record>
+
+    <!--                        -->
+    <!-- Order 1GG              -->
+    <!--                        -->
+
+    <record id="order_ronzon_1GG_past" model="joint.buying.purchase.order">
+        <field name="grouped_order_id" ref="joint_buying_product.grouped_order_ronzon_past"/>
+        <field name="customer_id" model="res.partner" eval="obj().env.ref('joint_buying_base.company_1GG').joint_buying_partner_id.id"/>
+    </record>
+
+    <record id="line_ronzon_1GG_past_1" model="joint.buying.purchase.order.line">
+        <field name="order_id" ref="joint_buying_product.order_ronzon_1GG_past"/>
+        <field name="product_id" ref="joint_buying_product.product_ronzon_patatoe_agila"/>
+        <field name="qty">220.0</field>
+        <field name="product_uom_package_qty">10.0</field>
+        <field name="product_weight">0.0</field>
+        <field name="price_unit">1.40</field>
+        <field name="uom_id" ref="uom.product_uom_kgm"/>
+        <field name="product_uom_id" ref="uom.product_uom_kgm"/>
+        <field name="product_uom_po_id" ref="uom.product_uom_kgm"/>
+    </record>
+
+    <record id="line_ronzon_1GG_past_2" model="joint.buying.purchase.order.line">
+        <field name="order_id" ref="joint_buying_product.order_ronzon_1GG_past"/>
+        <field name="product_id" ref="joint_buying_product.product_ronzon_patatoe_charlotte"/>
+        <field name="qty">190.0</field>
+        <field name="product_uom_package_qty">10.0</field>
+        <field name="product_weight">0.0</field>
+        <field name="price_unit">1.55</field>
+        <field name="uom_id" ref="uom.product_uom_kgm"/>
+        <field name="product_uom_id" ref="uom.product_uom_kgm"/>
+        <field name="product_uom_po_id" ref="uom.product_uom_kgm"/>
+    </record>
+
+    <!--                        -->
+    <!-- Order LSE              -->
+    <!--                        -->
+
+    <record id="order_ronzon_LSE_past" model="joint.buying.purchase.order">
+        <field name="grouped_order_id" ref="joint_buying_product.grouped_order_ronzon_past"/>
+        <field name="customer_id" model="res.partner" eval="obj().env.ref('joint_buying_base.company_LSE').joint_buying_partner_id.id"/>
+    </record>
+
+    <record id="line_ronzon_LSE_past_1" model="joint.buying.purchase.order.line">
+        <field name="order_id" ref="joint_buying_product.order_ronzon_LSE_past"/>
+        <field name="product_id" ref="joint_buying_product.product_ronzon_patatoe_agila"/>
+        <field name="qty">200.0</field>
+        <field name="product_uom_package_qty">10.0</field>
+        <field name="product_weight">0.0</field>
+        <field name="price_unit">1.40</field>
+        <field name="uom_id" ref="uom.product_uom_kgm"/>
+        <field name="product_uom_id" ref="uom.product_uom_kgm"/>
+        <field name="product_uom_po_id" ref="uom.product_uom_kgm"/>
+    </record>
+
+    <record id="line_ronzon_LSE_past_2" model="joint.buying.purchase.order.line">
+        <field name="order_id" ref="joint_buying_product.order_ronzon_LSE_past"/>
+        <field name="product_id" ref="joint_buying_product.product_ronzon_patatoe_charlotte"/>
+        <field name="qty">150.0</field>
+        <field name="product_uom_package_qty">10.0</field>
+        <field name="product_weight">0.0</field>
+        <field name="price_unit">1.55</field>
+        <field name="uom_id" ref="uom.product_uom_kgm"/>
+        <field name="product_uom_id" ref="uom.product_uom_kgm"/>
+        <field name="product_uom_po_id" ref="uom.product_uom_kgm"/>
+    </record>
+
+    <!--                        -->
+    <!-- Order VEV              -->
+    <!--                        -->
+
+    <record id="order_ronzon_VEV_past" model="joint.buying.purchase.order">
+        <field name="grouped_order_id" ref="joint_buying_product.grouped_order_ronzon_past"/>
+        <field name="customer_id" model="res.partner" eval="obj().env.ref('joint_buying_base.company_VEV').joint_buying_partner_id.id"/>
+    </record>
+
+    <record id="line_ronzon_VEV_past_1" model="joint.buying.purchase.order.line">
+        <field name="order_id" ref="joint_buying_product.order_ronzon_VEV_past"/>
+        <field name="product_id" ref="joint_buying_product.product_ronzon_patatoe_agila"/>
+        <field name="qty">80.0</field>
+        <field name="product_uom_package_qty">10.0</field>
+        <field name="product_weight">0.0</field>
+        <field name="price_unit">1.40</field>
+        <field name="uom_id" ref="uom.product_uom_kgm"/>
+        <field name="product_uom_id" ref="uom.product_uom_kgm"/>
+        <field name="product_uom_po_id" ref="uom.product_uom_kgm"/>
+    </record>
+
+    <record id="line_ronzon_VEV_past_2" model="joint.buying.purchase.order.line">
+        <field name="order_id" ref="joint_buying_product.order_ronzon_VEV_past"/>
+        <field name="product_id" ref="joint_buying_product.product_ronzon_patatoe_charlotte"/>
+        <field name="qty">60.0</field>
+        <field name="product_uom_package_qty">10.0</field>
+        <field name="product_weight">0.0</field>
+        <field name="price_unit">1.55</field>
+        <field name="uom_id" ref="uom.product_uom_kgm"/>
+        <field name="product_uom_id" ref="uom.product_uom_kgm"/>
+        <field name="product_uom_po_id" ref="uom.product_uom_kgm"/>
+    </record>
+
+    <!--                        -->
+    <!-- Order CDA              -->
+    <!--                        -->
+
+    <record id="order_ronzon_CDA_past" model="joint.buying.purchase.order">
+        <field name="grouped_order_id" ref="joint_buying_product.grouped_order_ronzon_past"/>
+        <field name="customer_id" model="res.partner" eval="obj().env.ref('joint_buying_base.company_CDA').joint_buying_partner_id.id"/>
+    </record>
+
+    <record id="line_ronzon_CDA_past_1" model="joint.buying.purchase.order.line">
+        <field name="order_id" ref="joint_buying_product.order_ronzon_CDA_past"/>
+        <field name="product_id" ref="joint_buying_product.product_ronzon_patatoe_agila"/>
+        <field name="qty">0.0</field>
+        <field name="product_uom_package_qty">10.0</field>
+        <field name="product_weight">0.0</field>
+        <field name="price_unit">1.40</field>
+        <field name="uom_id" ref="uom.product_uom_kgm"/>
+        <field name="product_uom_id" ref="uom.product_uom_kgm"/>
+        <field name="product_uom_po_id" ref="uom.product_uom_kgm"/>
+    </record>
+
+    <record id="line_ronzon_CDA_past_2" model="joint.buying.purchase.order.line">
+        <field name="order_id" ref="joint_buying_product.order_ronzon_CDA_past"/>
+        <field name="product_id" ref="joint_buying_product.product_ronzon_patatoe_charlotte"/>
+        <field name="qty">0.0</field>
+        <field name="product_uom_package_qty">10.0</field>
+        <field name="product_weight">0.0</field>
+        <field name="price_unit">1.55</field>
+        <field name="uom_id" ref="uom.product_uom_kgm"/>
+        <field name="product_uom_id" ref="uom.product_uom_kgm"/>
+        <field name="product_uom_po_id" ref="uom.product_uom_kgm"/>
+    </record>
+
+    <!--                        -->
+    <!-- Actions                -->
+    <!--                        -->
+
+    <function model="joint.buying.purchase.order" name="action_confirm_purchase">
+        <value eval="[
+            ref('joint_buying_product.order_ronzon_1GG_past'),
+            ref('joint_buying_product.order_ronzon_LSE_past'),
+            ref('joint_buying_product.order_ronzon_VEV_past'),
+        ]"/>
+    </function>
+
+    <function model="joint.buying.purchase.order" name="action_skip_purchase">
+        <value eval="[
+            ref('joint_buying_product.order_ronzon_CDA_past'),
+        ]"/>
+    </function>
+
+    <function model="joint.buying.purchase.order" name="_hook_state_changed">
+        <value eval="[
+            ref('joint_buying_product.order_ronzon_1GG_past'),
+            ref('joint_buying_product.order_ronzon_LSE_past'),
+            ref('joint_buying_product.order_ronzon_VEV_past'),
+            ref('joint_buying_product.order_ronzon_CDA_past'),
+        ]"/>
+    </function>
+
+    <function model="joint.buying.transport.request" name="button_compute_tour">
+        <value model="res.partner" eval="[
+            obj().env.ref('joint_buying_product.order_ronzon_LSE_past').request_id.id,
+            obj().env.ref('joint_buying_product.order_ronzon_VEV_past').request_id.id,
+        ]"/>
+    </function>
+
+</odoo>
