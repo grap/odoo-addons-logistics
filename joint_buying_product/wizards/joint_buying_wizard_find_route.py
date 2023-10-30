@@ -27,6 +27,7 @@ class JointBuyingWizardFindRoute(models.TransientModel):
         default=lambda x: x._default_transport_reqquest_id(),
         readonly=True,
         required=True,
+        ondelete="cascade",
     )
 
     start_date = fields.Datetime(
@@ -63,10 +64,15 @@ class JointBuyingWizardFindRoute(models.TransientModel):
         compute="_compute_simulation",
     )
 
+    # #################
     # Default Section
+    # #################
     def _default_transport_reqquest_id(self):
         return self.env.context.get("active_id")
 
+    # #################
+    # Compute Section
+    # #################
     @api.depends("transport_request_id")
     def _compute_simulation(self):
         self.ensure_one()
@@ -84,33 +90,89 @@ class JointBuyingWizardFindRoute(models.TransientModel):
         results = {}
         for transport_request in transport_requests:
             tree = self._populate_tree(transport_request)
-            lines = self._extract_tour_lines_from_tree(tree, transport_request)
-            results[transport_request] = tree, lines
+
+            nodes = self.get_nodes_optimal_road(
+                tree, transport_request.destination_partner_id
+            )
+            tour_lines = self.env["joint.buying.tour.line"]
+            for node in [x for x in nodes if x.data.line]:
+                tour_lines |= node.data.line
+            results[transport_request] = tree, tour_lines
 
         return results
 
+    # #################
+    # UI Section
+    # #################
+    def button_apply(self):
+        self.ensure_one()
+        self.transport_request_id._set_tour_lines(self.tour_line_ids)
+
+    # #################
+    # Treelib Tools Section
+    # #################
     @api.model
-    def _extract_tour_lines_from_tree(self, tree, transport_request):
-        # For the time being, there is only one valid way
-        destination_node = [
-            x
-            for x in tree.all_nodes()
-            if x.data.partner == transport_request.destination_partner_id
-        ]
-        if not destination_node:
-            return self.env["joint.buying.tour.line"]
-        destination_node = destination_node[0]
-
-        line_ids = []
-
-        for x in tree.rsearch(destination_node.identifier):
-            if tree[x].data.line:
-                line_ids.append(tree[x].data.line.id)
-
-        return self.env["joint.buying.tour.line"].search(
-            [("id", "in", line_ids)], order="start_date"
+    def _create_initial_node(self, tree, partner, date):
+        return tree.create_node(
+            tag=f"{partner.joint_buying_code}-{date}-0-BEST_MAIN_NODE",
+            data=SimpleNamespace(
+                partner=partner, date=date, best_main_node=True, line=False
+            ),
         )
 
+    @api.model
+    def _create_following_node(self, tree, parent, line, destination):
+        partner = line.arrival_point_id
+        date = line.arrival_date
+        best_main_node = (
+            line.arrival_point_id == destination
+            or line.arrival_point_id.joint_buying_is_durable_storage
+        )
+        return tree.create_node(
+            parent=parent,
+            tag=f"{partner.joint_buying_code}-{date}-{line.id}"
+            f"-{best_main_node and '-BEST_MAIN_NODE'}",
+            data=SimpleNamespace(
+                partner=partner, date=date, best_main_node=best_main_node, line=line
+            ),
+        )
+
+    @api.model
+    def _get_startable_nodes(self, tree):
+        """
+        A (BEST)
+        |======== B
+        |         |===== C (BEST)
+        |=============== C
+                         |============ D (BEST)
+        return : [A, C, D]
+        """
+        return [x for x in tree.all_nodes() if x.data.best_main_node]
+
+    @api.model
+    def get_nodes_optimal_road(self, tree, destination_partner_id):
+        """
+        A
+        |== B
+        |   |== C
+        |========== D
+        - If the destination is C, return [A, B, C]
+        - If the destination is D, return [A, D]
+        """
+        destination_nodes = [
+            x for x in tree.all_nodes() if x.data.partner == destination_partner_id
+        ]
+        if not destination_nodes:
+            return []
+        destination_node = destination_nodes[0]
+
+        result = [tree[x] for x in tree.rsearch(destination_node.identifier)]
+        result.reverse()
+        return result
+
+    # #################
+    # Tree creation / Update Section
+    # #################
     @api.model
     def _populate_tree(self, transport_request):
         # Get all the tours subsequent to the transport request for a given period of time
@@ -136,7 +198,7 @@ class JointBuyingWizardFindRoute(models.TransientModel):
         # We go through all the tours, in ascending date order
         for tour in tours:
             # we select the places (nodes) where the merchandise can be
-            startable_nodes = [x for x in tree.all_nodes() if x.data.durable_storable]
+            startable_nodes = self._get_startable_nodes(tree)
             for startable_node in startable_nodes:
                 for line in tour.line_ids.filtered(
                     lambda x: x.sequence_type == "journey"
@@ -169,35 +231,6 @@ class JointBuyingWizardFindRoute(models.TransientModel):
         return tree
 
     @api.model
-    def _create_initial_node(self, tree, partner, date):
-        durable_storable = True
-        return tree.create_node(
-            tag=f"{partner.joint_buying_code}-{date}-{durable_storable}",
-            data=SimpleNamespace(
-                partner=partner,
-                date=date,
-                durable_storable=durable_storable,
-                line=False,
-            ),
-        )
-
-    @api.model
-    def _create_following_node(self, tree, parent, line, destination):
-        partner = line.arrival_point_id
-        date = line.arrival_date
-        durable_storable = (
-            line.arrival_point_id == destination
-            or line.arrival_point_id.joint_buying_is_durable_storage
-        )
-        return tree.create_node(
-            parent=parent,
-            tag=f"{partner.joint_buying_code}-{date}-{durable_storable}-{line.id}",
-            data=SimpleNamespace(
-                partner=partner, date=date, durable_storable=durable_storable, line=line
-            ),
-        )
-
-    @api.model
     def _get_interesting_route(self, tour, from_line, destination, excludes):
         # we try to go the destination
         available_lines = [
@@ -228,7 +261,3 @@ class JointBuyingWizardFindRoute(models.TransientModel):
                 to_select = True
         result.reverse()
         return result
-
-    def button_apply(self):
-        self.ensure_one()
-        self.transport_request_id._set_tour_lines(self.tour_line_ids)
