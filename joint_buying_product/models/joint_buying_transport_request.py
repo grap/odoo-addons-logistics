@@ -169,3 +169,9 @@ class JointBuyingTransportRequest(models.Model):
                 "arrival_date": False,
             }
         self.write(vals)
+
+    def button_compute_tour(self):
+        Wizard = self.env["joint.buying.wizard.find.route"]
+        results = Wizard.compute_tours(self)
+        for request in self:
+            request._set_tour_lines(results[request][1])
