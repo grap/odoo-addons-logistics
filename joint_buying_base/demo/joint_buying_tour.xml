@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!--
-    Copyright (C) 2021 - Today: GRAP (http://www.grap.coop)
+    Copyright (C) 2021 - Todays: GRAP (http://www.grap.coop)
     @author: Sylvain LE GAL (https://twitter.com/legalsylvain)
     License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl.html).
 -->
@@ -14,7 +14,7 @@
         <field name="name">Lyon - Loire</field>
         <field name="type_id" ref="type_lyon_loire"/>
         <field name="carrier_id" ref="carrier_coolivri_grap"/>
-        <field name="start_date" eval="(DateTime.today() + relativedelta(day=10)).strftime('%Y-%m-%d 07:00')"/>
+        <field name="start_date" eval="(DateTime.today() + timedelta(days=1)).strftime('%Y-%m-%d 07:00')"/>
     </record>
 
     <record id="tour_lyon_loire_1_line_1" model="joint.buying.tour.line">
@@ -83,7 +83,7 @@
         <field name="name">Lyon - Loire</field>
         <field name="type_id" ref="type_lyon_loire"/>
         <field name="carrier_id" ref="carrier_coolivri_grap"/>
-        <field name="start_date" eval="(DateTime.today() + relativedelta(day=24)).strftime('%Y-%m-%d 07:00')"/>
+        <field name="start_date" eval="(DateTime.today() + timedelta(days=8)).strftime('%Y-%m-%d 07:00')"/>
     </record>
 
     <record id="tour_lyon_loire_2_line_1" model="joint.buying.tour.line">
@@ -144,6 +144,35 @@
         <field name="duration" eval="30/60"/>
     </record>
 
+
+    <!--                        -->
+    <!-- Tournée Lyon - Loire 3 -->
+    <!--                        -->
+
+    <record id="tour_lyon_loire_3" model="joint.buying.tour">
+        <field name="name">Lyon - Loire</field>
+        <field name="type_id" ref="type_lyon_loire"/>
+        <field name="carrier_id" ref="carrier_coolivri_grap"/>
+        <field name="start_date" eval="(DateTime.today() + timedelta(days=8)).strftime('%Y-%m-%d 07:30')"/>
+    </record>
+
+    <record id="tour_lyon_loire_3_line_1" model="joint.buying.tour.line">
+        <field name="sequence">1</field>
+        <field name="sequence_type">handling</field>
+        <field name="tour_id" ref="tour_lyon_loire_3"/>
+        <field name="duration" eval="10/60"/>
+    </record>
+
+    <record id="tour_lyon_loire_3_line_2" model="joint.buying.tour.line">
+        <field name="sequence">2</field>
+        <field name="sequence_type">journey</field>
+        <field name="duration" eval="55/60"/>
+        <field name="distance">56</field>
+        <field name="tour_id" ref="tour_lyon_loire_3"/>
+        <field name="starting_point_id" model="res.partner" eval="obj().env.ref('joint_buying_base.company_VEV').joint_buying_partner_id.id"/>
+        <field name="arrival_point_id" model="res.partner" eval="obj().env.ref('joint_buying_base.company_LSE').joint_buying_partner_id.id"/>
+    </record>
+
     <!--                        -->
     <!-- Tournée Lyon - Drôme 1 -->
     <!--                        -->
@@ -152,7 +181,7 @@
         <field name="name">Lyon - Drôme</field>
         <field name="type_id" ref="type_lyon_drome"/>
         <field name="carrier_id" ref="carrier_coolivri_grap"/>
-        <field name="start_date" eval="(DateTime.today() + relativedelta(day=15)).strftime('%Y-%m-%d 07:00')"/>
+        <field name="start_date" eval="(DateTime.today() + timedelta(days=2)).strftime('%Y-%m-%d 07:00')"/>
     </record>
 
     <record id="tour_lyon_drome_1_line_1" model="joint.buying.tour.line">
@@ -238,7 +267,7 @@
         <field name="name">Lyon - Drôme</field>
         <field name="type_id" ref="type_lyon_drome"/>
         <field name="carrier_id" ref="carrier_coolivri_grap"/>
-        <field name="start_date" eval="(DateTime.today() + relativedelta(day=29)).strftime('%Y-%m-%d 07:00')"/>
+        <field name="start_date" eval="(DateTime.today() + timedelta(days=9)).strftime('%Y-%m-%d 07:00')"/>
     </record>
 
     <record id="tour_lyon_drome_2_line_1" model="joint.buying.tour.line">
@@ -324,7 +353,7 @@
         <field name="name">Lyon - Romagnieu</field>
         <field name="type_id" ref="type_lyon_savoie"/>
         <field name="carrier_id" ref="carrier_coolivri_grap"/>
-        <field name="start_date" eval="(DateTime.today() + relativedelta(day=18)).strftime('%Y-%m-%d 07:00')"/>
+        <field name="start_date" eval="(DateTime.today() + timedelta(days=3)).strftime('%Y-%m-%d 07:00')"/>
     </record>
 
     <record id="tour_lyon_savoie_1_line_1" model="joint.buying.tour.line">
@@ -376,7 +405,7 @@
         <field name="name">Romagnieu - Savoie</field>
         <field name="type_id" ref="type_savoie_paire"/>
         <field name="carrier_id" ref="carrier_coolivri_savoie"/>
-        <field name="start_date" eval="(DateTime.today() + relativedelta(day=20)).strftime('%Y-%m-%d 07:00')"/>
+        <field name="start_date" eval="(DateTime.today() + timedelta(days=4)).strftime('%Y-%m-%d 07:00')"/>
     </record>
 
     <record id="tours_savoie_1_line_1" model="joint.buying.tour.line">
@@ -459,6 +488,7 @@
         <value eval="[
             ref('joint_buying_base.tour_lyon_loire_1'),
             ref('joint_buying_base.tour_lyon_loire_2'),
+            ref('joint_buying_base.tour_lyon_loire_3'),
             ref('joint_buying_base.tour_lyon_drome_1'),
             ref('joint_buying_base.tour_lyon_drome_2'),
             ref('joint_buying_base.tour_lyon_savoie_1'),
