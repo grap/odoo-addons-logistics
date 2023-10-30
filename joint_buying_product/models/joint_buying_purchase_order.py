@@ -303,10 +303,13 @@ class JointBuyingPurchaseOrder(models.Model):
     def _hook_state_changed(self):
         # Create transport requests:
         # - if not exists,
-        # - if state != closed / deposited
+        # - if state != closed / deposited or is not null
         # - if deposit place != customer_id
         orders_request_to_create = self.filtered(
-            lambda x: x.state not in ["closed", "deposited"]
+            lambda x: (
+                x.state not in ["closed", "deposited"]
+                or (x.total_weight or x.amount_untaxed)
+            )
             and not x.request_id
             and x.deposit_partner_id != x.customer_id
         )
