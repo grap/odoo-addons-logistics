@@ -13,16 +13,18 @@ class TestJointBuyingWizardFindRoute(TestAbstract):
     def setUp(self):
         super().setUp()
 
-    def test_20_transport_request_vev_cda(self):
+    def test_20_transport_request_vev_cda_week_1(self):
+        """simplest case: direct route"""
         self._verify_tour_lines_computation(
-            "joint_buying_product.request_vev_cda",
+            "joint_buying_product.request_vev_cda_week_1",
             ["joint_buying_base.tour_lyon_loire_1_line_4"],
             "computed",
         )
 
-    def test_21_transport_request_vev_che(self):
+    def test_21_transport_request_vev_che_week_1(self):
+        """Classic case: 1 change"""
         self._verify_tour_lines_computation(
-            "joint_buying_product.request_vev_che",
+            "joint_buying_product.request_vev_che_week_1",
             [
                 "joint_buying_base.tour_lyon_loire_1_line_4",
                 "joint_buying_base.tour_lyon_loire_1_line_6",
@@ -32,9 +34,10 @@ class TestJointBuyingWizardFindRoute(TestAbstract):
             "computed",
         )
 
-    def test_22_transport_request_vev_edc(self):
+    def test_22_transport_request_vev_edc_1(self):
+        """Classic case: 2 change"""
         self._verify_tour_lines_computation(
-            "joint_buying_product.request_vev_edc",
+            "joint_buying_product.request_vev_edc_week_1",
             [
                 "joint_buying_base.tour_lyon_loire_1_line_4",
                 "joint_buying_base.tour_lyon_loire_1_line_6",
@@ -44,9 +47,10 @@ class TestJointBuyingWizardFindRoute(TestAbstract):
             "computed",
         )
 
-    def test_23_transport_request_vev_fumet(self):
+    def test_23_transport_request_vev_fumet_week_1(self):
+        """Use case: No route available"""
         self._verify_tour_lines_computation(
-            "joint_buying_product.request_vev_fumet_dombes", [], "not_computable"
+            "joint_buying_product.request_vev_fumet_dombes_week_1", [], "not_computable"
         )
 
     def _verify_tour_lines_computation(

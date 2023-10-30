@@ -2,34 +2,34 @@
 
 <odoo>
 
-    <record id="request_vev_cda" model="joint.buying.transport.request">
+    <record id="request_vev_cda_week_1" model="joint.buying.transport.request">
         <field name="manual_origin_partner_id" model="res.partner" eval="obj().env.ref('joint_buying_base.company_VEV').joint_buying_partner_id.id"/>
         <field name="manual_destination_partner_id" model="res.partner" eval="obj().env.ref('joint_buying_base.company_CDA').joint_buying_partner_id.id"/>
-        <field name="manual_start_date" eval="(DateTime.today() + relativedelta(day=8)).strftime('%Y-%m-%d 07:00')"/>
+        <field name="manual_start_date" eval="(DateTime.today() + timedelta(days=0)).strftime('%Y-%m-%d 07:00')"/>
         <field name="manual_amount_untaxed">200</field>
         <field name="manual_total_weight">50</field>
     </record>
 
-    <record id="request_vev_che" model="joint.buying.transport.request">
+    <record id="request_vev_che_week_1" model="joint.buying.transport.request">
         <field name="manual_origin_partner_id" model="res.partner" eval="obj().env.ref('joint_buying_base.company_VEV').joint_buying_partner_id.id"/>
         <field name="manual_destination_partner_id" model="res.partner" eval="obj().env.ref('joint_buying_base.company_CHE').joint_buying_partner_id.id"/>
-        <field name="manual_start_date" eval="(DateTime.today() + relativedelta(day=8)).strftime('%Y-%m-%d 08:00')"/>
+        <field name="manual_start_date" eval="(DateTime.today() + timedelta(days=0)).strftime('%Y-%m-%d 08:00')"/>
         <field name="manual_amount_untaxed">100</field>
         <field name="manual_total_weight">20</field>
     </record>
 
-    <record id="request_vev_edc" model="joint.buying.transport.request">
+    <record id="request_vev_edc_week_1" model="joint.buying.transport.request">
         <field name="manual_origin_partner_id" model="res.partner" eval="obj().env.ref('joint_buying_base.company_VEV').joint_buying_partner_id.id"/>
         <field name="manual_destination_partner_id" model="res.partner" eval="obj().env.ref('joint_buying_base.company_EDC').joint_buying_partner_id.id"/>
-        <field name="manual_start_date" eval="(DateTime.today() + relativedelta(day=8)).strftime('%Y-%m-%d 09:00')"/>
+        <field name="manual_start_date" eval="(DateTime.today() + timedelta(days=0)).strftime('%Y-%m-%d 09:00')"/>
         <field name="manual_amount_untaxed">300</field>
         <field name="manual_total_weight">70</field>
     </record>
 
-    <record id="request_vev_fumet_dombes" model="joint.buying.transport.request">
+    <record id="request_vev_fumet_dombes_week_1" model="joint.buying.transport.request">
         <field name="manual_origin_partner_id" model="res.partner" eval="obj().env.ref('joint_buying_base.company_VEV').joint_buying_partner_id.id"/>
         <field name="manual_destination_partner_id" ref="joint_buying_base.supplier_fumet_dombes"/>
-        <field name="manual_start_date" eval="(DateTime.today() + relativedelta(day=8)).strftime('%Y-%m-%d 10:00')"/>
+        <field name="manual_start_date" eval="(DateTime.today() + timedelta(days=0)).strftime('%Y-%m-%d 10:00')"/>
         <field name="manual_amount_untaxed">111</field>
         <field name="manual_total_weight">66</field>
     </record>
