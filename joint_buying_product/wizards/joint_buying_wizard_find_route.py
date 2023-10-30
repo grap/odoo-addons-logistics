@@ -76,7 +76,7 @@ class JointBuyingWizardFindRoute(models.TransientModel):
     @api.depends("transport_request_id")
     def _compute_simulation(self):
         self.ensure_one()
-        results = self.compute_results(self.transport_request_id)
+        results = self.compute_tours(self.transport_request_id)
         result = results.get(self.transport_request_id)
         if result:
             tree, self.tour_line_ids = result
@@ -85,7 +85,8 @@ class JointBuyingWizardFindRoute(models.TransientModel):
                 self.transport_request_id.tour_line_ids.ids != self.tour_line_ids.ids
             )
 
-    def compute_results(self, transport_requests):
+    @api.model
+    def compute_tours(self, transport_requests):
         """Endtry point to compute the best way for a RecordSet of Transport Requests"""
         results = {}
         for transport_request in transport_requests:

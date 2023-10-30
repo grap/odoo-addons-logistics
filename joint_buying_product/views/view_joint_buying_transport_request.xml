@@ -48,16 +48,23 @@ License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl.html).
         <field name="arch" type="xml">
             <form>
                 <header>
-                    <button type="action" string="Find the Best Route" class="oe_highlight"
+                    <button string="Compute Route" name="button_compute_tour" icon="fa-map-signs" type="object" class="oe_highlight"
+                            attrs="{'invisible': [('state', '=', 'computed')]}"
+                    />
+                    <button string="Compute Route" name="button_compute_tour" icon="fa-map-signs" type="object"
+                            attrs="{'invisible': [('state', '!=', 'computed')]}"
+                    />
+                    <button type="action" string="Find the Best Route (Wizard)" class="oe_highlight"
                             attrs="{'invisible': [('state', '=', 'computed')]}"
                             name="%(joint_buying_product.action_request_2_wizard_find_route)d"
                             groups="joint_buying_base.group_joint_buying_manager"
                         />
-                    <button type="action" string="Find the Best Route"
-                            attrs="{'invisible': [('state', '=', 'to_compute')]}"
+                    <button type="action" string="Find the Best Route (Wizard)"
+                            attrs="{'invisible': [('state', '!=', 'computed')]}"
                             name="%(joint_buying_product.action_request_2_wizard_find_route)d"
                             groups="joint_buying_base.group_joint_buying_manager"
                         />
+
                     <field name="state" widget="statusbar"/>
                 </header>
                 <sheet>
