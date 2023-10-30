@@ -205,6 +205,7 @@ License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl.html).
                                     <field name="amount_untaxed" sum="Total Amount Untaxed"  attrs="{'invisible': [('amount_untaxed', '=', 0)]}"/>
                                     <field name="purchase_ok"/>
                                     <field name="purchase_state"/>
+                                    <field name="request_arrival_date"/>
                                     <button type="object" name="button_reopen_order" string="Re-Open" attrs="{
                                 'column_invisible': ['|',
                                     ('parent.is_mine_pivot', '=', False),

@@ -116,6 +116,7 @@ License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl.html).
                             <field name="start_date"/>
                             <field name="end_date"/>
                             <field name="deposit_date"/>
+                            <field name="request_arrival_date"/>
                             <label for="total_weight"/>
                             <div class="o_row">
                                 <field name="total_weight"/>
