@@ -7,6 +7,59 @@
 <odoo>
 
     <!--                        -->
+    <!-- Tournée Lyon 1         -->
+    <!--                        -->
+
+    <record id="tour_lyon_1" model="joint.buying.tour">
+        <field name="name">Lyon</field>
+        <field name="type_id" ref="type_lyon"/>
+        <field name="carrier_id" ref="carrier_coolivri_grap"/>
+        <field name="start_date" eval="(DateTime.today() + timedelta(days=0)).strftime('%Y-%m-%d 10:00')"/>
+    </record>
+
+    <record id="tour_lyon_1_line_1" model="joint.buying.tour.line">
+        <field name="sequence">1</field>
+        <field name="sequence_type">handling</field>
+        <field name="tour_id" ref="tour_lyon_1"/>
+        <field name="duration" eval="20/60"/>
+    </record>
+
+    <record id="tour_lyon_1_line_2" model="joint.buying.tour.line">
+        <field name="sequence">2</field>
+        <field name="sequence_type">journey</field>
+        <field name="duration" eval="17/60"/>
+        <field name="distance">11</field>
+        <field name="tour_id" ref="tour_lyon_1"/>
+        <field name="starting_point_id" model="res.partner" eval="obj().env.ref('joint_buying_base.company_LSE').joint_buying_partner_id.id"/>
+        <field name="arrival_point_id" model="res.partner" eval="obj().env.ref('joint_buying_base.company_1GG').joint_buying_partner_id.id"/>
+    </record>
+
+    <record id="tour_lyon_1_line_3" model="joint.buying.tour.line">
+        <field name="sequence">3</field>
+        <field name="sequence_type">handling</field>
+        <field name="tour_id" ref="tour_lyon_1"/>
+        <field name="duration" eval="10/60"/>
+    </record>s
+
+    <record id="tour_lyon_1_line_4" model="joint.buying.tour.line">
+        <field name="sequence">4</field>
+        <field name="sequence_type">journey</field>
+        <field name="duration" eval="16/60"/>
+        <field name="distance">11</field>
+        <field name="tour_id" ref="tour_lyon_1"/>
+        <field name="starting_point_id" model="res.partner" eval="obj().env.ref('joint_buying_base.company_1GG').joint_buying_partner_id.id"/>
+        <field name="arrival_point_id" model="res.partner" eval="obj().env.ref('joint_buying_base.company_LSE').joint_buying_partner_id.id"/>
+    </record>
+
+    <record id="tour_lyon_1_line_5" model="joint.buying.tour.line">
+        <field name="sequence">5</field>
+        <field name="sequence_type">handling</field>
+        <field name="tour_id" ref="tour_lyon_1"/>
+        <field name="duration" eval="10/60"/>
+    </record>
+
+
+    <!--                        -->
     <!-- Tournée Lyon - Loire 1 -->
     <!--                        -->
 
@@ -486,6 +539,7 @@
 
     <function model="joint.buying.tour" name="recompute_dates">
         <value eval="[
+            ref('joint_buying_base.tour_lyon_1'),
             ref('joint_buying_base.tour_lyon_loire_1'),
             ref('joint_buying_base.tour_lyon_loire_2'),
             ref('joint_buying_base.tour_lyon_loire_3'),

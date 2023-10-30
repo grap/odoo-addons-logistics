@@ -6,6 +6,12 @@
 -->
 <odoo>
 
+    <record id="type_lyon" model="joint.buying.tour.type">
+        <field name="name">Lyon</field>
+        <field name="carrier_id" ref="carrier_coolivri_grap"/>
+    </record>
+
+
     <record id="type_lyon_drome" model="joint.buying.tour.type">
         <field name="name">Lyon Drôme</field>
         <field name="carrier_id" ref="carrier_coolivri_grap"/>
