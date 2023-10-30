@@ -55,6 +55,7 @@
         "demo/res_partner.xml",
         "demo/joint_buying_frequency.xml",
         "demo/joint_buying_transport_request.xml",
+        "demo/joint_buying_purchase_order_grouped.xml",
         "demo/ir_cron.xml",
     ],
     "installable": True,
