@@ -34,4 +34,12 @@
         <field name="manual_total_weight">66</field>
     </record>
 
+    <record id="request_vev_che_week_2" model="joint.buying.transport.request">
+        <field name="manual_origin_partner_id" model="res.partner" eval="obj().env.ref('joint_buying_base.company_VEV').joint_buying_partner_id.id"/>
+        <field name="manual_destination_partner_id" model="res.partner" eval="obj().env.ref('joint_buying_base.company_CHE').joint_buying_partner_id.id"/>
+        <field name="manual_start_date" eval="(DateTime.today() + timedelta(days=8)).strftime('%Y-%m-%d 07:00')"/>
+        <field name="manual_amount_untaxed">222</field>
+        <field name="manual_total_weight">33</field>
+    </record>
+
 </odoo>
