@@ -401,6 +401,16 @@ class JointBuyingPurchaseOrder(models.Model):
                         pass
 
     @api.multi
+    def button_see_request(self):
+        self.ensure_one()
+        xml_action = "joint_buying_product.action_joint_buying_transport_request"
+        xml_view = "joint_buying_product.view_joint_buying_transport_request_form"
+        action = self.env.ref(xml_action).read()[0]
+        action["views"] = [(self.env.ref(xml_view).id, "form")]
+        action["res_id"] = self.request_id.id
+        return action
+
+    @api.multi
     def get_url_purchase_order(self):
         self.ensure_one()
         base_url = self.env["ir.config_parameter"].sudo().get_param("web.base.url")
