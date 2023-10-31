@@ -79,20 +79,20 @@ License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl.html).
                         <field name="order_id" attrs="{'invisible': [('order_id', '=', False)]}"/>
                         <newline />
                         <field name="manual_start_date"
-                            attrs="{'required': [('order_id', '=', False)]}"
+                            attrs="{'required': [('order_id', '=', False)], 'invisible': [('order_id', '!=', False)]}"
                             />
                         <field name="arrival_date"/>
                         <field name="manual_origin_partner_id"
-                            attrs="{'required': [('order_id', '=', False)]}"
+                            attrs="{'required': [('order_id', '=', False)], 'invisible': [('order_id', '!=', False)]}"
                             />
                         <field name="manual_destination_partner_id"
-                            attrs="{'required': [('order_id', '=', False)]}"
+                            attrs="{'required': [('order_id', '=', False)], 'invisible': [('order_id', '!=', False)]}"
                             />
                         <field name="manual_total_weight"
-                            attrs="{'required': [('order_id', '=', False)]}"
+                            attrs="{'required': [('order_id', '=', False)], 'invisible': [('order_id', '!=', False)]}"
                             />
                         <field name="manual_amount_untaxed"
-                            attrs="{'required': [('order_id', '=', False)]}"
+                            attrs="{'required': [('order_id', '=', False)], 'invisible': [('order_id', '!=', False)]}"
                             />
                     </group>
                     <notebook>
