@@ -212,9 +212,9 @@
 
     <function model="joint.buying.transport.request" name="button_compute_tour">
         <value model="res.partner" eval="[
-            obj().env.ref('joint_buying_product.order_ronzon_ELD_past').request_id.id,
-            obj().env.ref('joint_buying_product.order_ronzon_LSE_past').request_id.id,
-            obj().env.ref('joint_buying_product.order_ronzon_VEV_past').request_id.id,
+            obj().env.ref('joint_buying_product.order_ronzon_ELD_past').transport_request_id.id,
+            obj().env.ref('joint_buying_product.order_ronzon_LSE_past').transport_request_id.id,
+            obj().env.ref('joint_buying_product.order_ronzon_VEV_past').transport_request_id.id,
         ]"/>
     </function>
 

@@ -95,7 +95,7 @@ class JointBuyingPurchaseOrder(models.Model):
         selection=_PURCHASE_STATE, required=True, default="draft", track_visibility=True
     )
 
-    request_id = fields.Many2one(
+    transport_request_id = fields.Many2one(
         comodel_name="joint.buying.transport.request",
         string="Transport Request",
         readonly=True,
@@ -103,7 +103,7 @@ class JointBuyingPurchaseOrder(models.Model):
 
     request_arrival_date = fields.Datetime(
         string="Final Delivery Date",
-        related="request_id.arrival_date",
+        related="transport_request_id.arrival_date",
     )
 
     pivot_company_id = fields.Many2one(
@@ -315,14 +315,14 @@ class JointBuyingPurchaseOrder(models.Model):
                 x.state not in ["closed", "deposited"]
                 or (x.total_weight or x.amount_untaxed)
             )
-            and not x.request_id
+            and not x.transport_request_id
             and x.deposit_partner_id != x.customer_id
         )
         if orders_request_to_create:
             vals_list = [{"order_id": x.id} for x in orders_request_to_create]
             requests = self.env["joint.buying.transport.request"].create(vals_list)
             for (order, request) in zip(orders_request_to_create, requests):
-                order.write({"request_id": request.id})
+                order.write({"transport_request_id": request.id})
 
         # Unlink transport request:
         # - if exist
@@ -333,7 +333,7 @@ class JointBuyingPurchaseOrder(models.Model):
             and not (x.total_weight or x.amount_untaxed)
         )
         if orders_request_to_unlink:
-            orders_request_to_unlink.mapped("request_id").unlink()
+            orders_request_to_unlink.mapped("transport_request_id").unlink()
 
     @api.model_create_multi
     def create(self, vals_list):
@@ -407,7 +407,7 @@ class JointBuyingPurchaseOrder(models.Model):
         xml_view = "joint_buying_product.view_joint_buying_transport_request_form"
         action = self.env.ref(xml_action).read()[0]
         action["views"] = [(self.env.ref(xml_view).id, "form")]
-        action["res_id"] = self.request_id.id
+        action["res_id"] = self.transport_request_id.id
         return action
 
     @api.multi
