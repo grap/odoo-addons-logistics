@@ -16,6 +16,40 @@
     </record>
 
     <!--                        -->
+    <!-- Order ELD              -->
+    <!--                        -->
+
+    <record id="order_ronzon_ELD_past" model="joint.buying.purchase.order">
+        <field name="grouped_order_id" ref="joint_buying_product.grouped_order_ronzon_past"/>
+        <field name="customer_id" model="res.partner" eval="obj().env.ref('joint_buying_base.company_ELD').joint_buying_partner_id.id"/>
+    </record>
+
+    <record id="line_ronzon_ELD_past_1" model="joint.buying.purchase.order.line">
+        <field name="order_id" ref="joint_buying_product.order_ronzon_ELD_past"/>
+        <field name="product_id" ref="joint_buying_product.product_ronzon_patatoe_agila"/>
+        <field name="qty">10.0</field>
+        <field name="product_uom_package_qty">10.0</field>
+        <field name="product_weight">0.0</field>
+        <field name="price_unit">1.40</field>
+        <field name="uom_id" ref="uom.product_uom_kgm"/>
+        <field name="product_uom_id" ref="uom.product_uom_kgm"/>
+        <field name="product_uom_po_id" ref="uom.product_uom_kgm"/>
+    </record>
+
+    <record id="line_ronzon_ELD_past_2" model="joint.buying.purchase.order.line">
+        <field name="order_id" ref="joint_buying_product.order_ronzon_ELD_past"/>
+        <field name="product_id" ref="joint_buying_product.product_ronzon_patatoe_charlotte"/>
+        <field name="qty">20.0</field>
+        <field name="product_uom_package_qty">10.0</field>
+        <field name="product_weight">0.0</field>
+        <field name="price_unit">1.55</field>
+        <field name="uom_id" ref="uom.product_uom_kgm"/>
+        <field name="product_uom_id" ref="uom.product_uom_kgm"/>
+        <field name="product_uom_po_id" ref="uom.product_uom_kgm"/>
+    </record>
+
+
+    <!--                        -->
     <!-- Order 1GG              -->
     <!--                        -->
 
@@ -153,6 +187,7 @@
 
     <function model="joint.buying.purchase.order" name="action_confirm_purchase">
         <value eval="[
+            ref('joint_buying_product.order_ronzon_ELD_past'),
             ref('joint_buying_product.order_ronzon_1GG_past'),
             ref('joint_buying_product.order_ronzon_LSE_past'),
             ref('joint_buying_product.order_ronzon_VEV_past'),
@@ -167,6 +202,7 @@
 
     <function model="joint.buying.purchase.order" name="_hook_state_changed">
         <value eval="[
+            ref('joint_buying_product.order_ronzon_ELD_past'),
             ref('joint_buying_product.order_ronzon_1GG_past'),
             ref('joint_buying_product.order_ronzon_LSE_past'),
             ref('joint_buying_product.order_ronzon_VEV_past'),
@@ -176,6 +212,7 @@
 
     <function model="joint.buying.transport.request" name="button_compute_tour">
         <value model="res.partner" eval="[
+            obj().env.ref('joint_buying_product.order_ronzon_ELD_past').request_id.id,
             obj().env.ref('joint_buying_product.order_ronzon_LSE_past').request_id.id,
             obj().env.ref('joint_buying_product.order_ronzon_VEV_past').request_id.id,
         ]"/>
