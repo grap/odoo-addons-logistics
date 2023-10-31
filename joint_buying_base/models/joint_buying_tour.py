@@ -305,3 +305,10 @@ class JointBuyingTour(models.Model):
         action["view_mode"] = "leaflet_map,tree,form"
         action["domain"] = [("id", "in", steps.ids)]
         return action
+
+    @api.multi
+    def display_time(self, time):
+        return (
+            f"{str(int(time)).rjust(2, '0')}"
+            f":{str(int((time % 1) * 60)).rjust(2, '0')}"
+        )

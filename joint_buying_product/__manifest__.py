@@ -41,6 +41,7 @@
         "views/view_joint_buying_transport_request_line.xml",
         "views/view_res_partner.xml",
         "reports/report_joint_buying_purchase_order_grouped.xml",
+        "reports/report_joint_buying_tour.xml",
         "reports/report.xml",
         "data/ir_cron.xml",
         "data/ir_config_parameter.xml",

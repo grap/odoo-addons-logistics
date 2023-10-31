@@ -10,9 +10,10 @@ from odoo.addons import decimal_precision as dp
 class JointBuyingTourLine(models.Model):
     _inherit = "joint.buying.tour.line"
 
-    transport_request_ids = fields.Many2many(
-        comodel_name="joint.buying.transport.request",
-        string="Transport Requests",
+    transport_request_line_ids = fields.One2many(
+        comodel_name="joint.buying.transport.request.line",
+        string="Transport Lines",
+        inverse_name="tour_line_id",
     )
 
     load = fields.Float(

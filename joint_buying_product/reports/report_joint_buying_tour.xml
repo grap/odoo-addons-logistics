@@ -1,0 +1,197 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <template id="report_joint_buying_tour_document_request_lines">
+        <t t-foreach="request_lines" t-as="request_line">
+            <tr>
+                <td>
+                    <div style="background-color:#FFA;">
+                        <h5>
+                            <t>
+                                <span t-esc="request_line.request_id.order_id.supplier_id.name"/>
+                            </t>
+                            <span style="font-weight:bold">
+                                - For <t t-esc="request_line.request_id.destination_partner_id.joint_buying_code" />
+                            </span>
+                            <span style="color:#888;"
+                                t-if="request_line.request_id.order_id and request_line.request_id.order_id.supplier_id != request_line.request_id.origin_partner_id">
+                                (From <t t-esc="request_line.request_id.origin_partner_id.joint_buying_code" />)
+                            </span>
+                            <span style="color:#888;" id="total_weight">
+                                <t t-esc="request_line.request_id.total_weight" /> kg
+                            </span>
+                        </h5>
+                    </div>
+                    <span style="margin:0px;font-size: 12px;line-height:12px;" >
+                        <t t-set="all_infos" t-value="request_line.get_report_information()" />
+                        <t t-foreach="all_infos.keys()" t-as="key">
+                            <span t-if="all_infos[key]" style="display: block; clear:both;">
+                                <t t-foreach="all_infos[key]" t-as="line_info">
+                                    <span t-esc="line_info[0].name"/>
+                                    <span style="color:#888;" t-esc="' (' + line_info[1] + ') '" />
+                                </t>
+                            </span>
+                        </t>
+                    </span>
+                </td>
+            </tr>
+        </t>
+    </template>
+
+    <template id="report_joint_buying_tour_document">
+        <t t-call="web.internal_layout">
+            <t t-set="doc" t-value="doc.with_context(lang=doc.starting_point_id.lang)" />
+            <!--                             -->
+            <!-- Summary                     -->
+            <!--                             -->
+            <div class="page">
+                <h2>
+                    <span>Tour # </span>
+                    <span t-field="doc.name"/>
+                </h2>
+
+                <div class="row mt32 mb32" id="informations">
+                    <div class="col-auto mw-100 mb-2">
+                        <strong>Starting Point</strong>
+                        <p class="m-0" t-field="doc.starting_point_id.name"/>
+                    </div>
+                    <div class="col-auto mw-100 mb-2">
+                        <strong>Start Date</strong>
+                        <p class="m-0" t-field="doc.start_date"/>
+                    </div>
+                    <div class="col-auto mw-100 mb-2">
+                        <strong>Duration</strong>
+                        <p class="m-0" t-esc="doc.display_time(doc.duration)"/>
+                    </div>
+                    <div class="col-auto mw-100 mb-2">
+                        <strong>Distance</strong>
+                        <p class="m-0" t-field="doc.distance"/>
+                    </div>
+                    <div class="col-auto mw-100 mb-2">
+                        <strong>Payload (kg)</strong>
+                        <p class="m-0" t-esc="doc.carrier_id.payload"/>
+                    </div>
+                </div>
+
+                <table class="table table-sm o_main_table">
+                    <thead>
+                        <tr>
+                            <th class="text-center">Time</th>
+                            <th class="text-left">Description</th>
+                            <th class="text-center">Load</th>
+                            <th class="text-center">Duration</th>
+                            <th class="text-right">Distance</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <t t-foreach="doc.line_ids" t-as="line">
+                            <tr>
+                                <td class="text-center">
+                                    <span t-esc="doc.display_time(line.start_hour)"/> - <span t-esc="doc.display_time(line.arrival_hour)"/>
+                                </td>
+                                <td class="text-left">
+                                    <t t-if="line.sequence_type == 'journey'">
+                                        Journey to <span t-field="line.arrival_point_id.name"/>
+                                    </t>
+                                    <t t-elif="line.sequence_type =='handling'">
+                                        Handling
+                                    </t>
+                                    <t t-else="">
+                                        Pause
+                                    </t>
+                                </td>
+                                <td class="text-center">
+                                    <t t-if="line.sequence_type == 'journey'">
+                                        <t t-if="doc.carrier_id.payload != 0 and line.load > doc.carrier_id.payload">
+                                            <span style="text-decoration: underline;color:red;" t-esc="round(line.load)"/> kg
+                                            <span style="color:#888;">
+                                            (+<t t-esc="round((line.load - doc.carrier_id.payload) / doc.carrier_id.payload * 100)"/> %)
+                                            </span>
+                                        </t>
+                                        <t t-else="">
+                                            <span t-esc="round(line.load)"/> kg
+                                        </t>
+                                    </t>
+                                </td>
+                                <td class="text-center">
+                                    <span t-esc="doc.display_time(line.duration)"/>
+                                </td>
+                                <td class="text-right">
+                                    <t t-if="line.sequence_type == 'journey'">
+                                        <span t-esc="round(line.distance, 1)"/> km
+                                    </t>
+                                </td>
+                            </tr>
+                        </t>
+                    </tbody>
+                </table>
+            </div>
+
+
+            <h3>
+                0 / <span t-esc="doc.stop_qty + 1" /> -
+                <span t-field="doc.starting_point_id.name"/>
+            </h3>
+
+            <!--                             -->
+            <!-- Detail for each line        -->
+            <!--                             -->
+            <t t-set="i" t-value="0"/>
+
+            <t t-foreach="doc.line_ids" t-as="tour_line">
+                <div class="page">
+                    <t t-if="tour_line.sequence_type == 'journey'">
+                        <t t-set="i" t-value="i+1"/>
+                        <!--                             -->
+                        <!-- LOADING PART                -->
+                        <!--                             -->
+
+                        <t t-set="request_lines" t-value="tour_line.mapped('transport_request_line_ids').filtered(lambda x: x.start_action_type == 'loading').sorted(key=lambda r: (r.request_id.destination_partner_id.joint_buying_code, r.request_id.origin_partner_id.joint_buying_code))" />
+
+                        <t t-if="request_lines">
+
+                            <table class="table table-sm o_main_table">
+                                <tbody>
+                                    <tr style="background-color:#EEE">
+                                        <th class="text-center" colspan="2"><h4>Loading</h4></th>
+                                    </tr>
+                                    <t t-call="joint_buying_product.report_joint_buying_tour_document_request_lines" />
+                                </tbody>
+                            </table>
+                        </t>
+
+                        <h3>
+                            <span t-esc="i" /> / <span t-esc="doc.stop_qty + 1" /> -
+                            <span t-field="tour_line.arrival_point_id.name"/>
+                        </h3>
+
+                        <!--                             -->
+                        <!-- UNLOADING PART              -->
+                        <!--                             -->
+
+                        <t t-set="request_lines" t-value="tour_line.mapped('transport_request_line_ids').filtered(lambda x: x.arrival_action_type == 'unloading').sorted(key=lambda r: (r.request_id.destination_partner_id.joint_buying_code, r.request_id.origin_partner_id.joint_buying_code))" />
+
+                        <t t-if="request_lines">
+                            <table class="table table-sm o_main_table">
+                                <tbody>
+                                    <tr style="background-color:#EEE">
+                                        <th class="text-center" colspan="2"><h4>Unloading</h4></th>
+                                    </tr>
+                                    <t t-call="joint_buying_product.report_joint_buying_tour_document_request_lines" />
+                                </tbody>
+                            </table>
+                         </t>
+                    </t>
+                </div>
+            </t>
+        </t>
+    </template>
+
+    <template id="report_joint_buying_tour">
+        <t t-call="web.html_container">
+            <t t-foreach="docs" t-as="doc">
+                <t t-call="joint_buying_product.report_joint_buying_tour_document" t-lang="doc.starting_point_id.lang"/>
+            </t>
+        </t>
+    </template>
+
+</odoo>

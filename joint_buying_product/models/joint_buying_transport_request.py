@@ -1,4 +1,4 @@
-# Copyright (C) 2021-Today: GRAP (http://www.grap.coop)
+# Copyright (C) 2023-Today: GRAP (http://www.grap.coop)
 # @author: Sylvain LE GAL (https://twitter.com/legalsylvain)
 # License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl.html).
 
@@ -106,7 +106,8 @@ class JointBuyingTransportRequest(models.Model):
 
     arrival_date = fields.Datetime(string="Arrival Date", readonly=True)
 
-    # Compute Section
+    manual_description = fields.Html()
+
     @api.depends("origin_partner_id", "destination_partner_id", "start_date")
     def _compute_name(self):
         for request in self:
