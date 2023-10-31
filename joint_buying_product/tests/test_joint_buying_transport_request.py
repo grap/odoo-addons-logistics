@@ -25,8 +25,8 @@ class TestJointBuyingTransportRequest(TestAbstract):
         CDA_order = self._get_order_benoit_ronzon("CDA")
 
         # It should generate transport request for CDA and VEV
-        self.assertTrue(CDA_order.request_id)
-        self.assertTrue(VEV_order.request_id)
+        self.assertTrue(CDA_order.transport_request_id)
+        self.assertTrue(VEV_order.transport_request_id)
 
         # It should not create a transport request for LSE
-        self.assertFalse(LSE_order.request_id)
+        self.assertFalse(LSE_order.transport_request_id)
