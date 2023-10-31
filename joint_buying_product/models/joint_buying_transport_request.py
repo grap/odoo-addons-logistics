@@ -98,9 +98,10 @@ class JointBuyingTransportRequest(models.Model):
         digits=dp.get_precision("Stock Weight"),
     )
 
-    tour_line_ids = fields.Many2many(
-        comodel_name="joint.buying.tour.line",
-        string="Tour Lines",
+    line_ids = fields.One2many(
+        comodel_name="joint.buying.transport.request.line",
+        string="Transport Lines",
+        inverse_name="request_id",
     )
 
     arrival_date = fields.Datetime(string="Arrival Date", readonly=True)
@@ -150,23 +151,49 @@ class JointBuyingTransportRequest(models.Model):
         for request in self.filtered(lambda x: not x.manual_total_weight):
             request.total_weight = request.order_id.total_weight
 
-    def _set_tour_lines(self, tour_line_ids):
+    def _set_tour_lines(self, tour_lines):
         self.ensure_one()
         # If lines are valid
         if (
-            tour_line_ids
-            and tour_line_ids[-1].arrival_point_id == self.destination_partner_id
+            tour_lines
+            and tour_lines[-1].arrival_point_id == self.destination_partner_id
         ):
+            line_vals = []
+            previous_tour_id = False
+            for i, tour_line in enumerate(tour_lines):
+                # Compute if it is a loading at the beginning of the tour line
+                if previous_tour_id != tour_line.tour_id.id:
+                    start_action_type = "loading"
+                else:
+                    start_action_type = "no"
+                previous_tour_id = tour_line.tour_id.id
+
+                # Compute if it is an unloading at the end of the tour line
+                if i < len(tour_lines) - 1:
+                    if tour_line.tour_id != tour_lines[i + 1].tour_id:
+                        arrival_action_type = "unloading"
+                    else:
+                        arrival_action_type = "no"
+                else:
+                    arrival_action_type = "unloading"
+                line_vals.append(
+                    {
+                        "start_action_type": start_action_type,
+                        "arrival_action_type": arrival_action_type,
+                        "tour_line_id": tour_line.id,
+                    }
+                )
+
             vals = {
-                "arrival_date": max(tour_line_ids.mapped("arrival_date")),
-                "tour_line_ids": [(6, 0, tour_line_ids.ids)],
+                "arrival_date": max(tour_lines.mapped("arrival_date")),
                 "state": "computed",
+                "line_ids": [(5,)] + [(0, 0, x) for x in line_vals],
             }
         else:
             vals = {
-                "tour_line_ids": [],
-                "state": "not_computable",
                 "arrival_date": False,
+                "state": "not_computable",
+                "line_ids": [(5,)],
             }
         self.write(vals)
 

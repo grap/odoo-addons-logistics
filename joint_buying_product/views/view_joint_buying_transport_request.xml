@@ -96,10 +96,13 @@ License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl.html).
                             />
                     </group>
                     <notebook>
-                        <page string="Tour Detail">
-                                <field name="tour_line_ids">
+                        <page string="Transport Lines">
+                                <field name="line_ids">
                                     <tree>
+                                        <field name="start_action_type"/>
                                         <field name="start_date"/>
+                                        <field name="starting_point_id"/>
+                                        <field name="arrival_action_type"/>
                                         <field name="arrival_date"/>
                                         <field name="arrival_point_id"/>
                                         <field name="distance" sum="Total"/>
