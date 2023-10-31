@@ -80,5 +80,7 @@ class TestJointBuyingWizardFindRoute(TestAbstract):
         for line_xml_id in tour_line_xml_ids:
             tour_line_ids.append(self.env.ref(line_xml_id).id)
 
-        self.assertEqual(transport_request.tour_line_ids.ids, tour_line_ids)
+        self.assertEqual(
+            transport_request.mapped("line_ids.tour_line_id").ids, tour_line_ids
+        )
         self.assertEqual(transport_request.state, expected_state)

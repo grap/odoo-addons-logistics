@@ -82,7 +82,8 @@ class JointBuyingWizardFindRoute(models.TransientModel):
             tree, self.tour_line_ids = result
             self.tree_text = tree.show(stdout=False, line_type="ascii-em")
             self.is_different_simulation = (
-                self.transport_request_id.tour_line_ids.ids != self.tour_line_ids.ids
+                self.mapped("transport_request_id.line_ids.tour_line_id").ids
+                != self.tour_line_ids.ids
             )
 
     @api.model
