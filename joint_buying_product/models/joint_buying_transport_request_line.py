@@ -1,4 +1,4 @@
-# Copyright (C) 2021-Today: GRAP (http://www.grap.coop)
+# Copyright (C) 2023-Today: GRAP (http://www.grap.coop)
 # @author: Sylvain LE GAL (https://twitter.com/legalsylvain)
 # License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl.html).
 
@@ -57,3 +57,15 @@ class JointBuyingTransportRequestLine(models.Model):
     )
 
     distance = fields.Float(related="tour_line_id.distance")
+
+    def get_report_information(self):
+        self.ensure_one()
+        if self.request_id.order_id:
+            order_lines = self.mapped("request_id.order_id.line_ids").filtered(
+                lambda x: x.qty != 0
+            )
+            return {
+                "all": [
+                    (x.product_id, f"{x.qty} x {x.uom_id.name}") for x in order_lines
+                ]
+            }
