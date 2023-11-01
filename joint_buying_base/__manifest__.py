@@ -37,6 +37,7 @@
         "views/view_joint_buying_carrier.xml",
         "views/view_joint_buying_tour_type.xml",
         "views/view_joint_buying_tour.xml",
+        "views/view_joint_buying_tour_line.xml",
         "wizards/view_joint_buying_wizard_set_tour.xml",
         "views/templates.xml",
     ],
