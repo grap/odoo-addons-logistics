@@ -4,6 +4,8 @@
 
 from odoo import fields, models
 
+from odoo.addons import decimal_precision as dp
+
 
 class JointBuyingTourLine(models.Model):
     _inherit = "joint.buying.tour.line"
@@ -12,3 +14,14 @@ class JointBuyingTourLine(models.Model):
         comodel_name="joint.buying.transport.request",
         string="Transport Requests",
     )
+
+    load = fields.Float(
+        compute="_compute_load",
+        digits=dp.get_precision("Stock Weight"),
+    )
+
+    def _compute_load(self):
+        for tour_line in self:
+            tour_line.load = sum(
+                tour_line.mapped("transport_request_line_ids.request_id.total_weight")
+            )
