@@ -1,0 +1,1 @@
+from . import joint_buying_transport_request_line

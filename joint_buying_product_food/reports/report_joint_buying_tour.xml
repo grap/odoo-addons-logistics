@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+Copyright (C) 2023 - Today: GRAP (http://www.grap.coop)
+@author: Sylvain LE GAL (https://twitter.com/legalsylvain)
+License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl.html).
+-->
+<odoo>
+
+    <template id="report_joint_buying_tour_document_request_lines" inherit_id="joint_buying_product.report_joint_buying_tour_document_request_lines">
+
+        <xpath expr="//t[@t-as='line_info']" position="before">
+            <span t-if="all_infos[key] and key == 'normal'" style="float:left;">
+                <img style="width:32px;height:32px;"
+                t-att-src="'/joint_buying_product_food/static/description/normal.png'"/>
+            </span>
+
+            <span t-if="all_infos[key] and key == 'cool'" style="float:left;">
+                <img style="width:32px;height:32px;"
+                t-att-src="'/joint_buying_product_food/static/description/cool.png'"/>
+            </span>
+
+            <span t-if="all_infos[key] and key == 'frozen'" style="float:left;">
+                <img style="width:32px;height:32px;"
+                t-att-src="'/joint_buying_product_food/static/description/frozen.png'"/>
+            </span>
+        </xpath>
+
+    </template>
+
+</odoo>
