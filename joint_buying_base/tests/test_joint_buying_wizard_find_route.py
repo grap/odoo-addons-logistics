@@ -16,7 +16,7 @@ class TestJointBuyingWizardFindRoute(TestAbstract):
     def test_20_transport_request_vev_cda_week_1(self):
         """simplest case: direct route"""
         self._verify_tour_lines_computation(
-            "joint_buying_product.request_vev_cda_week_1",
+            "joint_buying_base.request_vev_cda_week_1",
             ["joint_buying_base.tour_lyon_loire_1_line_4"],
             "computed",
         )
@@ -24,7 +24,7 @@ class TestJointBuyingWizardFindRoute(TestAbstract):
     def test_21_transport_request_vev_che_week_1(self):
         """Classic case: 1 change"""
         self._verify_tour_lines_computation(
-            "joint_buying_product.request_vev_che_week_1",
+            "joint_buying_base.request_vev_che_week_1",
             [
                 "joint_buying_base.tour_lyon_loire_1_line_4",
                 "joint_buying_base.tour_lyon_loire_1_line_6",
@@ -37,7 +37,7 @@ class TestJointBuyingWizardFindRoute(TestAbstract):
     def test_22_transport_request_vev_edc_1(self):
         """Classic case: 2 change"""
         self._verify_tour_lines_computation(
-            "joint_buying_product.request_vev_edc_week_1",
+            "joint_buying_base.request_vev_edc_week_1",
             [
                 "joint_buying_base.tour_lyon_loire_1_line_4",
                 "joint_buying_base.tour_lyon_loire_1_line_6",
@@ -50,13 +50,13 @@ class TestJointBuyingWizardFindRoute(TestAbstract):
     def test_23_transport_request_vev_fumet_week_1(self):
         """Use case: No route available"""
         self._verify_tour_lines_computation(
-            "joint_buying_product.request_vev_fumet_dombes_week_1", [], "not_computable"
+            "joint_buying_base.request_vev_fumet_dombes_week_1", [], "not_computable"
         )
 
     def test_24_transport_request_vev_che_week_2(self):
         """Complex case: a later start arrives earlier"""
         self._verify_tour_lines_computation(
-            "joint_buying_product.request_vev_che_week_2",
+            "joint_buying_base.request_vev_che_week_2",
             [
                 "joint_buying_base.tour_lyon_loire_3_line_2",
                 "joint_buying_base.tour_lyon_drome_2_line_2",

@@ -7,7 +7,7 @@
 <odoo>
 
     <record id="supplier_demo_joint_buying" model="res.partner">
-        <field name="name">Joint Buying Supplier for Your Company / Demo User</field>
+        <field name="name">Joint Buying Supplier for Your Company</field>
         <field name="street">street</field>
         <field name="street2">street 2</field>
         <field name="city">City</field>

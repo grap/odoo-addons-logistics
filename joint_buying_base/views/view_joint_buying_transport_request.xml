@@ -21,7 +21,6 @@ License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl.html).
             <search>
                 <field name="origin_partner_id"/>
                 <field name="destination_partner_id"/>
-                <field name="order_id"/>
                 <field name="state"/>
             </search>
         </field>
@@ -36,7 +35,6 @@ License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl.html).
                 <field name="destination_partner_id"/>
                 <field name="amount_untaxed"/>
                 <field name="total_weight"/>
-                <field name="order_id"/>
                 <field name="arrival_date"/>
                 <field name="state"/>
             </tree>
@@ -56,12 +54,12 @@ License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl.html).
                     />
                     <button type="action" string="Find the Best Route (Wizard)" class="oe_highlight"
                             attrs="{'invisible': [('state', '=', 'computed')]}"
-                            name="%(joint_buying_product.action_request_2_wizard_find_route)d"
+                            name="%(joint_buying_base.action_request_2_wizard_find_route)d"
                             groups="joint_buying_base.group_joint_buying_manager"
                         />
                     <button type="action" string="Find the Best Route (Wizard)"
                             attrs="{'invisible': [('state', '!=', 'computed')]}"
-                            name="%(joint_buying_product.action_request_2_wizard_find_route)d"
+                            name="%(joint_buying_base.action_request_2_wizard_find_route)d"
                             groups="joint_buying_base.group_joint_buying_manager"
                         />
 
@@ -76,24 +74,12 @@ License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl.html).
                         </h1>
                     </div>
                     <group col="4">
-                        <field name="order_id" attrs="{'invisible': [('order_id', '=', False)]}"/>
-                        <newline />
-                        <field name="manual_start_date"
-                            attrs="{'required': [('order_id', '=', False)], 'invisible': [('order_id', '!=', False)]}"
-                            />
+                        <field name="manual_start_date"/>
                         <field name="arrival_date"/>
-                        <field name="manual_origin_partner_id"
-                            attrs="{'required': [('order_id', '=', False)], 'invisible': [('order_id', '!=', False)]}"
-                            />
-                        <field name="manual_destination_partner_id"
-                            attrs="{'required': [('order_id', '=', False)], 'invisible': [('order_id', '!=', False)]}"
-                            />
-                        <field name="manual_total_weight"
-                            attrs="{'required': [('order_id', '=', False)], 'invisible': [('order_id', '!=', False)]}"
-                            />
-                        <field name="manual_amount_untaxed"
-                            attrs="{'required': [('order_id', '=', False)], 'invisible': [('order_id', '!=', False)]}"
-                            />
+                        <field name="manual_origin_partner_id"/>
+                        <field name="manual_destination_partner_id"/>
+                        <field name="manual_total_weight"/>
+                        <field name="manual_amount_untaxed"/>
                     </group>
                     <notebook>
                         <page string="Transport Lines">
@@ -134,7 +120,7 @@ License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl.html).
 
     <menuitem id="menu_joint_buying_transport_request"
         name="Transport Requests"
-        parent="joint_buying_product.menu_transport"
+        parent="joint_buying_base.menu_transport"
         action="action_joint_buying_transport_request"
         sequence="1"
         groups="joint_buying_base.group_joint_buying_user"

@@ -154,8 +154,8 @@
                                     <tr style="background-color:#EEE">
                                         <th class="text-center" colspan="2"><h4>Loading</h4></th>
                                     </tr>
-                                    <t t-call="joint_buying_product.report_joint_buying_tour_document_request_lines" />
-                                </tbody>
+<!--                                     <t t-call="joint_buying_base.report_joint_buying_tour_document_request_lines" />
+ -->                                </tbody>
                             </table>
                         </t>
 
@@ -176,8 +176,8 @@
                                     <tr style="background-color:#EEE">
                                         <th class="text-center" colspan="2"><h4>Unloading</h4></th>
                                     </tr>
-                                    <t t-call="joint_buying_product.report_joint_buying_tour_document_request_lines" />
-                                </tbody>
+<!--                                     <t t-call="joint_buying_base.report_joint_buying_tour_document_request_lines" />
+ -->                                </tbody>
                             </table>
                          </t>
                     </t>
@@ -189,7 +189,7 @@
     <template id="report_joint_buying_tour">
         <t t-call="web.html_container">
             <t t-foreach="docs" t-as="doc">
-                <t t-call="joint_buying_product.report_joint_buying_tour_document" t-lang="doc.starting_point_id.lang"/>
+                <t t-call="joint_buying_base.report_joint_buying_tour_document" t-lang="doc.starting_point_id.lang"/>
             </t>
         </t>
     </template>

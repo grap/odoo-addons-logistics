@@ -7,6 +7,8 @@ import requests
 from odoo import _, api, fields, models
 from odoo.exceptions import UserError
 
+from odoo.addons import decimal_precision as dp
+
 from .res_partner import _JOINT_BUYING_PARTNER_CONTEXT
 
 _TOUR_LINE_SEQUENCE_TYPES = [
@@ -64,6 +66,17 @@ class JointBuyingTourLine(models.Model):
         compute="_compute_costs", store=True, currency_field="currency_id"
     )
 
+    transport_request_line_ids = fields.One2many(
+        comodel_name="joint.buying.transport.request.line",
+        string="Transport Lines",
+        inverse_name="tour_line_id",
+    )
+
+    load = fields.Float(
+        compute="_compute_load",
+        digits=dp.get_precision("Stock Weight"),
+    )
+
     @api.depends("start_date", "arrival_date")
     def _compute_hours(self):
         for line in self:
@@ -85,6 +98,12 @@ class JointBuyingTourLine(models.Model):
         for line in self:
             line.salary_cost = line.duration * line.tour_id.hourly_cost
             line.vehicle_cost = +line.distance * line.tour_id.kilometer_cost
+
+    def _compute_load(self):
+        for tour_line in self:
+            tour_line.load = sum(
+                tour_line.mapped("transport_request_line_ids.request_id.total_weight")
+            )
 
     def _estimate_route_project_osrm(self):
         self.ensure_one()

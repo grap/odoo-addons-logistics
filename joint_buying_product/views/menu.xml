@@ -12,11 +12,4 @@ License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl.html).
         sequence="1"
     />
 
-    <menuitem id="menu_transport"
-        name="Transports"
-        parent="joint_buying_base.menu_root"
-        sequence="10"
-    />
-
-
 </odoo>

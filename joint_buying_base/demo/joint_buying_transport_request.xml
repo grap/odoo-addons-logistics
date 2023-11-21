@@ -42,4 +42,14 @@
         <field name="manual_total_weight">33</field>
     </record>
 
+    <function model="joint.buying.transport.request" name="button_compute_tour">
+        <value eval="[
+            ref('joint_buying_base.request_vev_cda_week_1'),
+            ref('joint_buying_base.request_vev_che_week_1'),
+            ref('joint_buying_base.request_vev_edc_week_1'),
+            ref('joint_buying_base.request_vev_fumet_dombes_week_1'),
+            ref('joint_buying_base.request_vev_che_week_2'),
+        ]"/>
+    </function>
+
 </odoo>

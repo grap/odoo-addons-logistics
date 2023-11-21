@@ -9,9 +9,7 @@ from treelib import Tree
 
 from odoo import api, fields, models
 
-from odoo.addons.joint_buying_base.models.res_partner import (
-    _JOINT_BUYING_PARTNER_CONTEXT,
-)
+from ..models.res_partner import _JOINT_BUYING_PARTNER_CONTEXT
 
 
 class JointBuyingWizardFindRoute(models.TransientModel):
