@@ -404,7 +404,7 @@ class JointBuyingPurchaseOrder(models.Model):
     def button_see_request(self):
         self.ensure_one()
         xml_action = "joint_buying_product.action_joint_buying_transport_request"
-        xml_view = "joint_buying_product.view_joint_buying_transport_request_form"
+        xml_view = "joint_buying_base.view_joint_buying_transport_request_form"
         action = self.env.ref(xml_action).read()[0]
         action["views"] = [(self.env.ref(xml_view).id, "form")]
         action["res_id"] = self.transport_request_id.id
