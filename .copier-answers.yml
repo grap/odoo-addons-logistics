@@ -2,7 +2,6 @@
 _commit: a7bd24b
 _src_path: https://github.com/grap/oca-addons-repo-template-new.git
 ci: GitHub
-dependency_installation_mode: PIP
 generate_requirements_txt: true
 github_check_license: true
 github_ci_extra_env: {}
@@ -42,6 +41,4 @@ repo_description: '
 repo_name: Main repository for GRAP Logistics modules
 repo_slug: odoo-addons-logistics
 repo_website: https://github.com/grap/odoo-addons-logistics
-travis_apt_packages: []
-travis_apt_sources: []
 
