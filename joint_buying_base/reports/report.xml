@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <report
+        id="action_report_joint_buying_tour"
+        string="Tour"
+        model="joint.buying.tour"
+        report_type="qweb-pdf"
+        file="joint_buying_base.report_joint_buying_tour"
+        name="joint_buying_base.report_joint_buying_tour"
+        print_report_name="('Tour %s' % (object.name)).replace('/', '_')"
+    />
+
+</odoo>

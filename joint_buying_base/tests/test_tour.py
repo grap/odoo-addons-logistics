@@ -20,6 +20,9 @@ class TestModule(TestAbstract):
             "joint_buying_base.company_3PP"
         ).joint_buying_partner_id
         self.tour_lyon_savoie = self.env.ref("joint_buying_base.tour_lyon_savoie_1")
+        self.tour_report = self.env.ref(
+            "joint_buying_base.action_report_joint_buying_tour"
+        )
 
     # Test Section
     def _assert_not_very_differrent(self, value_1, value_2):
@@ -99,3 +102,8 @@ class TestModule(TestAbstract):
         self.assertIn("Salary", self.tour_lyon_savoie.cost_chart)
         self.assertIn("Vehicle", self.tour_lyon_savoie.cost_chart)
         self.assertIn("Toll", self.tour_lyon_savoie.cost_chart)
+
+    def test_110_report(self):
+        # Generate report to make sure the syntax is correct
+        tours = self.JointBuyingTour.search([])
+        self.tour_report.render_qweb_html(tours.ids)

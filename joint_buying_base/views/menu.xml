@@ -12,6 +12,12 @@ License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl.html).
         groups="group_joint_buying_user"
     />
 
+    <menuitem id="menu_transport"
+        name="Transports"
+        parent="menu_root"
+        sequence="10"
+    />
+
     <menuitem id="menu_pivot"
         name="Pivot Role"
         parent="menu_root"
