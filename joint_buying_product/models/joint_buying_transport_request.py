@@ -8,12 +8,20 @@ from odoo import fields, models
 class JointBuyingTransportRequest(models.Model):
     _inherit = "joint.buying.transport.request"
 
+    request_type = fields.Selection(
+        selection_add=[("joint_buying", "Joint Buying Grouped Order")]
+    )
+
     order_id = fields.Many2one(
         comodel_name="joint.buying.purchase.order",
         string="Order",
-        readonly=True,
         ondelete="cascade",
     )
+
+    def _get_depends_request_type(self):
+        res = super()._get_depends_request_type()
+        res.append("order_id")
+        return res
 
     def _get_depends_start_date(self):
         res = super()._get_depends_start_date()
@@ -39,6 +47,23 @@ class JointBuyingTransportRequest(models.Model):
         res = super()._get_depends_total_weight()
         res.append("order_id.total_weight")
         return res
+
+    def _get_depends_description(self):
+        res = super()._get_depends_description()
+        res += [
+            "order_id.line_ids.product_id",
+            "order_id.line_ids.qty",
+            "order_id.line_ids.uom_id.name",
+        ]
+        return res
+
+    def _compute_request_type(self):
+        super(
+            JointBuyingTransportRequest, self.filtered(lambda x: not x.order_id)
+        )._compute_request_type()
+
+        for request in self.filtered(lambda x: x.order_id):
+            request.request_type = "joint_buying"
 
     def _compute_start_date(self):
         super(
@@ -72,10 +97,36 @@ class JointBuyingTransportRequest(models.Model):
         for request in self.filtered(lambda x: x.order_id):
             request.amount_untaxed = request.order_id.amount_untaxed
 
-    def _compute_weight(self):
+    def _compute_total_weight(self):
         super(
             JointBuyingTransportRequest, self.filtered(lambda x: not x.order_id)
-        )._compute_weight()
+        )._compute_total_weight()
 
         for request in self.filtered(lambda x: x.order_id):
             request.total_weight = request.order_id.total_weight
+
+    def _compute_description(self):
+        super(
+            JointBuyingTransportRequest, self.filtered(lambda x: not x.order_id)
+        )._compute_description()
+
+        for request in self.filtered(lambda x: x.order_id):
+            description = ""
+            for line in request.order_id.line_ids:
+                description += (
+                    f"{line.product_id.name}"
+                    "<span style='color:#888;'>"
+                    f" ({line.qty} x {line.uom_id.name}) "
+                    "</span>"
+                )
+            request.description = description
+
+    def _compute_can_change(self):
+        super(
+            JointBuyingTransportRequest, self.filtered(lambda x: not x.order_id)
+        )._compute_can_change()
+
+        for request in self.filtered(lambda x: x.order_id):
+            request.can_change_date = False
+            request.can_change_extra_data = False
+            request.can_change_partners = False

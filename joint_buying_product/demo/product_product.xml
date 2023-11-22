@@ -133,6 +133,7 @@
         <field name="company_id" ref="joint_buying_base.company_ELD"/>
         <field name="name">Orangette Sachet 200gr</field>
         <field name="price">12</field>
+        <field name="weight">0.210</field>
     </record>
 
     <record id="product_ELD_gingembrettes" model="product.product">
@@ -142,6 +143,7 @@
         <field name="company_id" ref="joint_buying_base.company_ELD"/>
         <field name="name">Gingembrette Sachet 200gr</field>
         <field name="price">10</field>
+        <field name="weight">0.210</field>
     </record>
 
     <function model="product.product" name="create_joint_buying_product">
