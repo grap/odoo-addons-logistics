@@ -38,7 +38,7 @@
     </template>
 
     <template id="report_joint_buying_tour_document">
-        <t t-call="web.internal_layout">
+        <t t-call="web.external_layout">
             <t t-set="doc" t-value="doc.with_context(lang=doc.starting_point_id.lang)" />
             <!--                             -->
             <!-- Summary                     -->
