@@ -8,6 +8,9 @@
         <field name="manual_start_date" eval="(DateTime.today() + timedelta(days=0)).strftime('%Y-%m-%d 07:00')"/>
         <field name="manual_amount_untaxed">200</field>
         <field name="manual_total_weight">50</field>
+        <field name="manual_description"><![CDATA[
+            Some Products with a long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long text...
+        ]]></field>
     </record>
 
     <record id="request_vev_che_week_1" model="joint.buying.transport.request">
@@ -16,6 +19,9 @@
         <field name="manual_start_date" eval="(DateTime.today() + timedelta(days=0)).strftime('%Y-%m-%d 08:00')"/>
         <field name="manual_amount_untaxed">100</field>
         <field name="manual_total_weight">20</field>
+        <field name="manual_description"><![CDATA[
+            Some Text for products from <b>VEV</b> to <i>CHE</i>
+        ]]></field>
     </record>
 
     <record id="request_vev_edc_week_1" model="joint.buying.transport.request">
@@ -24,6 +30,9 @@
         <field name="manual_start_date" eval="(DateTime.today() + timedelta(days=0)).strftime('%Y-%m-%d 09:00')"/>
         <field name="manual_amount_untaxed">300</field>
         <field name="manual_total_weight">70</field>
+        <field name="manual_description"><![CDATA[
+            Manual Description : VEV -> EDC
+        ]]></field>
     </record>
 
     <record id="request_vev_fumet_dombes_week_1" model="joint.buying.transport.request">
@@ -32,6 +41,9 @@
         <field name="manual_start_date" eval="(DateTime.today() + timedelta(days=0)).strftime('%Y-%m-%d 10:00')"/>
         <field name="manual_amount_untaxed">111</field>
         <field name="manual_total_weight">66</field>
+        <field name="manual_description"><![CDATA[
+            Manual Description : VEV -> Fumet des dombes
+        ]]></field>
     </record>
 
     <record id="request_vev_che_week_2" model="joint.buying.transport.request">
@@ -40,6 +52,9 @@
         <field name="manual_start_date" eval="(DateTime.today() + timedelta(days=8)).strftime('%Y-%m-%d 07:00')"/>
         <field name="manual_amount_untaxed">222</field>
         <field name="manual_total_weight">33</field>
+        <field name="manual_description"><![CDATA[
+            Manual Description : VEV -> CHE (Second part, empire strikes back.)
+        ]]></field>
     </record>
 
     <function model="joint.buying.transport.request" name="button_compute_tour">

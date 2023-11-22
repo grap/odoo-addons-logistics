@@ -12,7 +12,6 @@ from .test_abstract import TestAbstract
 class TestModule(TestAbstract):
     def setUp(self):
         super().setUp()
-        self.company_3PP = self.env.ref("joint_buying_base.company_3PP")
         self.ResCompany = self.env["res.company"]
         self.suffixParameter = self.env.ref("joint_buying_base.parameter_group_name")
 

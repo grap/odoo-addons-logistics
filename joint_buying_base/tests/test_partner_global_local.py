@@ -10,11 +10,6 @@ from .test_abstract import TestAbstract
 
 @tagged("post_install", "-at_install")
 class TestModule(TestAbstract):
-    def setUp(self):
-        super().setUp()
-        self.company_ELD = self.env.ref("joint_buying_base.company_ELD")
-        self.company_CHE = self.env.ref("joint_buying_base.company_CHE")
-        self.company_3PP = self.env.ref("joint_buying_base.company_3PP")
 
     # Test Section
     def test_601_double_link_supplier_to_joint_buying_partner(self):

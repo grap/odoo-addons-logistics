@@ -10,9 +10,6 @@ from .test_abstract import TestAbstract
 
 @tagged("post_install", "-at_install", "find_route")
 class TestJointBuyingWizardFindRoute(TestAbstract):
-    def setUp(self):
-        super().setUp()
-
     def test_20_transport_request_vev_cda_week_1(self):
         """simplest case: direct route"""
         self._verify_tour_lines_computation(
