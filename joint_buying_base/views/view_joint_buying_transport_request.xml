@@ -36,6 +36,7 @@ License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl.html).
                 <field name="amount_untaxed"/>
                 <field name="total_weight"/>
                 <field name="arrival_date"/>
+                <field name="request_type"/>
                 <field name="state"/>
             </tree>
         </field>
@@ -73,13 +74,58 @@ License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl.html).
                             <field name="name"/>
                         </h1>
                     </div>
-                    <group col="4">
-                        <field name="manual_start_date"/>
-                        <field name="arrival_date"/>
-                        <field name="manual_origin_partner_id"/>
-                        <field name="manual_destination_partner_id"/>
-                        <field name="manual_total_weight"/>
-                        <field name="manual_amount_untaxed"/>
+                    <group colspan="4">
+                        <group>
+                            <field name="manual_start_date" attrs="{
+                                'invisible': [('can_change_date', '=', False)],
+                                'required': [('can_change_date', '=', True)],
+                                }"/>
+                            <field name="start_date" attrs="{
+                                'invisible': [('can_change_date', '=', True)],
+                                }"/>
+
+                            <field name="manual_origin_partner_id"  attrs="{
+                                'invisible': [('can_change_partners', '=', False)],
+                                'required': [('can_change_partners', '=', True)],
+                                }"/>
+                            <field name="origin_partner_id" attrs="{
+                                'invisible': [('can_change_partners', '=', True)],
+                                }"/>
+                            <field name="manual_total_weight" attrs="{
+                                'invisible': [('can_change_extra_data', '=', False)],
+                                'required': [('can_change_extra_data', '=', True)],
+                                }"/>
+                            <field name="total_weight" attrs="{
+                                'invisible': [('can_change_extra_data', '=', True)],
+                                }"/>
+                        </group>
+                        <group>
+                            <field name="arrival_date"/>
+                            <field name="manual_destination_partner_id" attrs="{
+                                'invisible': [('can_change_partners', '=', False)],
+                                'required': [('can_change_partners', '=', True)],
+                                }"/>
+                            <field name="destination_partner_id" attrs="{
+                                'invisible': [('can_change_partners', '=', True)],
+                                }"/>
+                            <field name="manual_amount_untaxed" attrs="{
+                                'invisible': [('can_change_extra_data', '=', False)],
+                                'required': [('can_change_extra_data', '=', True)],
+                                }"/>
+                            <field name="amount_untaxed" attrs="{
+                                'invisible': [('can_change_extra_data', '=', True)],
+                                }"/>
+                        </group>
+                        <group colspan="4">
+                            <field name="manual_description" widget="html" attrs="{
+                                'invisible': [('can_change_extra_data', '=', False)],
+                                'required': [('can_change_extra_data', '=', True)],
+                                }"/>
+                            <field name="description" widget="html" attrs="{
+                                'invisible': [('can_change_extra_data', '=', True)],
+                                }"/>
+
+                        </group>
                     </group>
                     <notebook>
                         <page string="Transport Lines">
@@ -95,13 +141,11 @@ License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl.html).
                                     </tree>
                                 </field>
                         </page>
-                        <page string="Technical Information">
+                        <page string="Technical Fields">
                             <group>
-                                <field name="start_date"/>
-                                <field name="origin_partner_id"/>
-                                <field name="destination_partner_id"/>
-                                <field name="total_weight"/>
-                                <field name="amount_untaxed"/>
+                                <field name="can_change_date" />
+                                <field name="can_change_extra_data" />
+                                <field name="can_change_partners" />
                             </group>
                         </page>
                     </notebook>

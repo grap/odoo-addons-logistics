@@ -91,7 +91,10 @@ class JointBuyingPurchaseOrderGrouped(models.Model):
     deposit_date = fields.Datetime(index=True, string="Deposit Date", required=True)
 
     order_ids = fields.One2many(
-        "joint.buying.purchase.order", inverse_name="grouped_order_id", readonly=True
+        "joint.buying.purchase.order",
+        inverse_name="grouped_order_id",
+        readonly=True,
+        copy=True,
     )
 
     order_qty = fields.Integer(

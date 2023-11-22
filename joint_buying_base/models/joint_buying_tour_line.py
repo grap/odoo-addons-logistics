@@ -163,3 +163,33 @@ class JointBuyingTourLine(models.Model):
                 % ("<br/>- ".join([x.name for x in no_coordinate_partners])),
                 sticky=True,
             )
+
+    def get_report_request_lines(self, action_type):
+        """Return a a dict {key: value}
+        where value are a list of transport.request.line,
+        and key is a dict of caracteristics that describe the type of request lines
+        """
+        self.ensure_one()
+        if action_type == "loading":
+
+            def line_filter(x):
+                return x.start_action_type == action_type
+
+        else:
+
+            def line_filter(x):
+                return x.arrival_action_type == action_type
+
+        return [
+            {
+                "key": {"action_type": action_type},
+                "request_lines": self.mapped("transport_request_line_ids")
+                .filtered(line_filter)
+                .sorted(
+                    key=lambda r: (
+                        r.request_id.destination_partner_id.joint_buying_code,
+                        r.request_id.origin_partner_id.joint_buying_code,
+                    )
+                ),
+            }
+        ]

@@ -15,6 +15,12 @@ class JointBuyingTransportRequest(models.Model):
 
     name = fields.Char(readonly=True, compute="_compute_name", store=True)
 
+    request_type = fields.Selection(
+        selection=[("manual", "Manual")],
+        required=True,
+        compute="_compute_request_type",
+    )
+
     state = fields.Selection(
         selection=[
             ("to_compute", "To Compute"),
@@ -85,9 +91,10 @@ class JointBuyingTransportRequest(models.Model):
 
     total_weight = fields.Float(
         string="Weight",
-        compute="_compute_weight",
+        compute="_compute_total_weight",
         store=True,
         digits=dp.get_precision("Stock Weight"),
+        compute_sudo=True,
     )
 
     line_ids = fields.One2many(
@@ -99,6 +106,17 @@ class JointBuyingTransportRequest(models.Model):
     arrival_date = fields.Datetime(string="Arrival Date", readonly=True)
 
     manual_description = fields.Html()
+
+    description = fields.Html(compute="_compute_description")
+
+    can_change_date = fields.Boolean(compute="_compute_can_change")
+
+    can_change_extra_data = fields.Boolean(compute="_compute_can_change")
+
+    can_change_partners = fields.Boolean(compute="_compute_can_change")
+
+    def _get_depends_request_type(self):
+        return []
 
     def _get_depends_start_date(self):
         return ["manual_start_date"]
@@ -115,6 +133,12 @@ class JointBuyingTransportRequest(models.Model):
     def _get_depends_total_weight(self):
         return ["manual_total_weight"]
 
+    def _get_depends_description(self):
+        return ["manual_description"]
+
+    def _get_depends_can_change(self):
+        return []
+
     @api.depends("origin_partner_id", "destination_partner_id", "start_date")
     def _compute_name(self):
         for request in self:
@@ -123,6 +147,11 @@ class JointBuyingTransportRequest(models.Model):
                 f" -> {request.destination_partner_id.joint_buying_code}"
                 f" ({request.start_date})"
             )
+
+    @api.depends(lambda x: x._get_depends_request_type())
+    def _compute_request_type(self):
+        for request in self:
+            request.request_type = "manual"
 
     @api.depends(lambda x: x._get_depends_start_date())
     def _compute_start_date(self):
@@ -145,9 +174,21 @@ class JointBuyingTransportRequest(models.Model):
             request.amount_untaxed = request.manual_amount_untaxed
 
     @api.depends(lambda x: x._get_depends_total_weight())
-    def _compute_weight(self):
+    def _compute_total_weight(self):
         for request in self:
             request.total_weight = request.manual_total_weight
+
+    @api.depends(lambda x: x._get_depends_description())
+    def _compute_description(self):
+        for request in self:
+            request.description = request.manual_description
+
+    @api.depends(lambda x: x._get_depends_can_change())
+    def _compute_can_change(self):
+        for request in self:
+            request.can_change_date = True
+            request.can_change_extra_data = True
+            request.can_change_partners = True
 
     def _set_tour_lines(self, tour_lines):
         self.ensure_one()

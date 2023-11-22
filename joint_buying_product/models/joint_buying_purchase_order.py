@@ -97,8 +97,16 @@ class JointBuyingPurchaseOrder(models.Model):
 
     transport_request_id = fields.Many2one(
         comodel_name="joint.buying.transport.request",
-        string="Transport Request",
-        readonly=True,
+        compute="_compute_transport_request_id",
+    )
+
+    transport_request_ids = fields.One2many(
+        string="Transport Requests",
+        comodel_name="joint.buying.transport.request",
+        inverse_name="order_id",
+        help="Technical field, used to know if the joint buying purchase order"
+        " has a related joint buying transport request created."
+        " It can contain only 0 or one transport request.",
     )
 
     request_arrival_date = fields.Datetime(
@@ -141,7 +149,9 @@ class JointBuyingPurchaseOrder(models.Model):
     )
 
     line_ids = fields.One2many(
-        "joint.buying.purchase.order.line", inverse_name="order_id"
+        "joint.buying.purchase.order.line",
+        inverse_name="order_id",
+        copy=True,
     )
 
     line_qty = fields.Integer(
@@ -184,6 +194,13 @@ class JointBuyingPurchaseOrder(models.Model):
         ) == len(self)
 
     # Compute Section
+    @api.depends("transport_request_ids")
+    def _compute_transport_request_id(self):
+        for order in self:
+            order.transport_request_id = (
+                order.transport_request_ids and order.transport_request_ids[0] or False
+            )
+
     @api.depends("line_ids.product_id.image")
     def _compute_has_image(self):
         for order in self:
@@ -306,10 +323,17 @@ class JointBuyingPurchaseOrder(models.Model):
         return res
 
     def _hook_state_changed(self):
-        # Create transport requests:
-        # - if not exists,
-        # - if state != closed / deposited or is not null
-        # - if deposit place != customer_id
+        """
+        Create transport requests:
+        - if not exists,
+        - if state != closed / deposited or is not null
+        - if deposit place != customer_id
+
+        Unlink transport requests:
+        - if exists
+        - state == closed / deposited
+        - is null (no weight and no amount untaxed)
+        """
         orders_request_to_create = self.filtered(
             lambda x: (
                 x.state not in ["closed", "deposited"]
@@ -320,20 +344,16 @@ class JointBuyingPurchaseOrder(models.Model):
         )
         if orders_request_to_create:
             vals_list = [{"order_id": x.id} for x in orders_request_to_create]
-            requests = self.env["joint.buying.transport.request"].create(vals_list)
-            for (order, request) in zip(orders_request_to_create, requests):
-                order.write({"transport_request_id": request.id})
+            self.env["joint.buying.transport.request"].create(vals_list)
+            # for (order, request) in zip(orders_request_to_create, requests):
+            #     order.write({"transport_request_id": request.id})
 
-        # Unlink transport request:
-        # - if exist
-        # - state == closed / deposited
-        # - is null (no weight and no amount untaxed)
         orders_request_to_unlink = self.filtered(
             lambda x: x.state in ["closed", "deposited"]
             and not (x.total_weight or x.amount_untaxed)
         )
         if orders_request_to_unlink:
-            orders_request_to_unlink.mapped("transport_request_id").unlink()
+            orders_request_to_unlink.mapped("transport_request_ids").unlink()
 
     @api.model_create_multi
     def create(self, vals_list):
@@ -403,7 +423,7 @@ class JointBuyingPurchaseOrder(models.Model):
     @api.multi
     def button_see_request(self):
         self.ensure_one()
-        xml_action = "joint_buying_product.action_joint_buying_transport_request"
+        xml_action = "joint_buying_base.action_joint_buying_transport_request"
         xml_view = "joint_buying_base.view_joint_buying_transport_request_form"
         action = self.env.ref(xml_action).read()[0]
         action["views"] = [(self.env.ref(xml_view).id, "form")]
