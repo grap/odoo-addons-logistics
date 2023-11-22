@@ -6,7 +6,7 @@ License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl.html).
 -->
 <odoo>
 
-    <template id="report_joint_buying_tour_document_request_lines" inherit_id="joint_buying_base.report_joint_buying_tour_document_request_lines">
+<!--     <template id="report_joint_buying_tour_document_request_lines" inherit_id="joint_buying_base.report_joint_buying_tour_document_request_lines">
 
         <xpath expr="//t[@t-as='line_info']" position="before">
             <span t-if="all_infos[key] and key == 'normal'" style="float:left;">
@@ -25,6 +25,6 @@ License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl.html).
             </span>
         </xpath>
 
-    </template>
+    </template> -->
 
 </odoo>
