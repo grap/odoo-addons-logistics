@@ -78,7 +78,6 @@
                             <th class="text-center">Time</th>
                             <th class="text-left">Description</th>
                             <th class="text-center">Load</th>
-                            <th class="text-center">Duration</th>
                             <th class="text-right">Distance</th>
                         </tr>
                     </thead>
@@ -111,9 +110,6 @@
                                             <span t-esc="round(line.load)"/> kg
                                         </t>
                                     </t>
-                                </td>
-                                <td class="text-center">
-                                    <span t-esc="doc.display_time(line.duration)"/>
                                 </td>
                                 <td class="text-right">
                                     <t t-if="line.sequence_type == 'journey'">
