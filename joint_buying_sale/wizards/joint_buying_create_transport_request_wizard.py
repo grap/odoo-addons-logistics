@@ -16,6 +16,7 @@ class JointBuyingCreateTransportRequestWizard(models.TransientModel):
 
     start_date = fields.Datetime(
         string="Availability Date",
+        required=True,
     )
 
     sale_order_id = fields.Many2one(
@@ -65,17 +66,19 @@ class JointBuyingCreateTransportRequestWizard(models.TransientModel):
     def create_transport_request(self):
         self.ensure_one()
 
-        if self.sale_order_id.joint_buying_has_transport_request:
+        if self.sale_order_id.joint_buying_transport_request_id:
             raise UserError(_("There is already a transport demand for this sale."))
 
         if self.product_ids.filtered(lambda x: x.weight == 0):
             raise UserError(_("Please set a weight for all products."))
 
+        self.sale_order_id.recalculate_weight()
+
         request_vals = {
-            "manual_origin_partner_id": self.origin_partner_id.id,
-            "manual_destination_partner_id": self.destination_partner_id.id,
             "sale_order_id": self.sale_order_id.id,
             "manual_start_date": self.start_date,
+            "manual_origin_partner_id": self.origin_partner_id.id,
+            "manual_destination_partner_id": self.destination_partner_id.id,
         }
 
         self.env["joint.buying.transport.request"].create(request_vals)

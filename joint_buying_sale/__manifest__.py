@@ -10,6 +10,8 @@
     "license": "AGPL-3",
     "depends": [
         "sale",
+        # OCA
+        "sale_order_weight",
         # GRAP
         "joint_buying_product",
     ],
@@ -20,6 +22,10 @@
         "views/view_joint_buying_purchase_order_grouped.xml",
         "views/view_joint_buying_transport_request.xml",
         "views/view_sale_order.xml",
+    ],
+    "demo": [
+        "demo/sale_order.xml",
+        "demo/joint_buying_transport_request.xml",
     ],
     "installable": True,
     "auto_install": True,

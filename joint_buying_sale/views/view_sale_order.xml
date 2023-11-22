@@ -10,22 +10,19 @@ License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl.html).
         <field name="model">sale.order</field>
         <field name="inherit_id" ref="sale.view_order_form"/>
         <field name="arch" type="xml">
-            <button name="action_unlock" position="after">
-                <button name="%(joint_buying_sale.action_wizard_create_transport_request)d" string="Generate Transport Request"
-                    type="action" class="btn-primary"
-                    attrs="{'invisible': [
-                        ('joint_buying_has_transport_request', '=', True),
-                    ]}"
-
-                    groups="joint_buying_base.group_joint_buying_user"
-                    />
-            </button>
             <field name="payment_term_id" position="after">
-                <field name="joint_buying_has_transport_request" invisible="1"
-                    groups="joint_buying_base.group_joint_buying_user"/>
+                <field name="joint_buying_transport_request_id"
+                    groups="joint_buying_base.group_joint_buying_user"
+                    attrs="{'invisible': [('joint_buying_transport_request_id', '=', False)]}"
+                    />
+                <button type="action"
+                    name="%(joint_buying_sale.action_wizard_create_transport_request)d"
+                    string="Generate Transport Request"
+                    groups="joint_buying_base.group_joint_buying_user"
+                    attrs="{'invisible': [('joint_buying_transport_request_id', '!=', False)]}"
+                    icon="fa-cogs" class="oe_inline oe_link"/>
+
             </field>
         </field>
     </record>
-
-
 </odoo>

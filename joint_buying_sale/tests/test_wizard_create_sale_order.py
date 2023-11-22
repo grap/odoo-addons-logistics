@@ -9,7 +9,7 @@ from odoo.exceptions import UserError, ValidationError
 from odoo.tests.common import TransactionCase
 
 
-class TestModule(TransactionCase):
+class TestWizardCreateSaleOrder(TransactionCase):
     def setUp(self):
         super().setUp()
         self.GroupedOrder = self.env["joint.buying.purchase.order.grouped"]

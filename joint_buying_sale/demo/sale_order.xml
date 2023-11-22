@@ -1,0 +1,73 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+Copyright (C) 2023 - Today: GRAP (http://www.grap.coop)
+@author: Sylvain LE GAL (https://twitter.com/legalsylvain)
+License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl.html).
+-->
+<odoo>
+
+    <!-- First Sale Order-->
+    <record id="sale_order_1" model="sale.order">
+        <field name="partner_id" ref="base.res_partner_2"/>
+        <field name="partner_invoice_id" ref="base.res_partner_2"/>
+        <field name="partner_shipping_id" ref="base.res_partner_2"/>
+        <field name="user_id" ref="base.user_admin"/>
+        <field name="company_id" ref="joint_buying_base.company_ELD"/>
+        <field name="pricelist_id" ref="product.list0"/>
+        <field name="team_id" ref="sales_team.team_sales_department"/>
+        <field name="date_order" eval="(DateTime.today() - relativedelta(months=1)).strftime('%Y-%m-%d %H:%M')"/>
+    </record>
+
+    <record id="sale_order_1_line_1" model="sale.order.line">
+        <field name="order_id" ref="sale_order_1"/>
+        <field name="name">[ELD-ORANGETTE] Orangette Sachet 200gr</field>
+        <field name="product_id" ref="joint_buying_product.product_ELD_orangettes"/>
+        <field name="product_uom_qty">3</field>
+        <field name="product_uom" ref="uom.product_uom_unit"/>
+        <field name="price_unit">15.00</field>
+        <field name="unit_weight">0.210</field>
+    </record>
+
+    <record id="sale_order_1_line_2" model="sale.order.line">
+        <field name="order_id" ref="sale_order_1"/>
+        <field name="name">[ELD-GINGEMBRETTE] Gingembrette Sachet 200gr</field>
+        <field name="product_id" ref="joint_buying_product.product_ELD_gingembrettes"/>
+        <field name="product_uom_qty">5</field>
+        <field name="product_uom" ref="uom.product_uom_unit"/>
+        <field name="price_unit">12.00</field>
+        <field name="unit_weight">0.210</field>
+    </record>
+
+    <!-- Second Sale Order-->
+    <record id="sale_order_2" model="sale.order">
+        <field name="partner_id" ref="base.res_partner_3"/>
+        <field name="partner_invoice_id" ref="base.res_partner_3"/>
+        <field name="partner_shipping_id" ref="base.res_partner_3"/>
+        <field name="user_id" ref="base.user_admin"/>
+        <field name="company_id" ref="joint_buying_base.company_ELD"/>
+        <field name="pricelist_id" ref="product.list0"/>
+        <field name="team_id" ref="sales_team.team_sales_department"/>
+        <field name="date_order" eval="(DateTime.today() + relativedelta(days=5)).strftime('%Y-%m-%d %H:%M')"/>
+    </record>
+
+    <record id="sale_order_2_line_1" model="sale.order.line">
+        <field name="order_id" ref="sale_order_2"/>
+        <field name="name">[ELD-ORANGETTE] Orangette Sachet 200gr</field>
+        <field name="product_id" ref="joint_buying_product.product_ELD_orangettes"/>
+        <field name="product_uom_qty">20</field>
+        <field name="product_uom" ref="uom.product_uom_unit"/>
+        <field name="price_unit">100.00</field>
+        <field name="unit_weight">0.210</field>
+    </record>
+
+    <record id="sale_order_2_line_2" model="sale.order.line">
+        <field name="order_id" ref="sale_order_2"/>
+        <field name="name">[ELD-GINGEMBRETTE] Gingembrette Sachet 200gr</field>
+        <field name="product_id" ref="joint_buying_product.product_ELD_gingembrettes"/>
+        <field name="product_uom_qty">30</field>
+        <field name="product_uom" ref="uom.product_uom_unit"/>
+        <field name="price_unit">1000.00</field>
+        <field name="unit_weight">0.210</field>
+    </record>
+
+</odoo>
