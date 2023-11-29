@@ -101,6 +101,7 @@ class JointBuyingTransportRequest(models.Model):
         comodel_name="joint.buying.transport.request.line",
         string="Transport Lines",
         inverse_name="request_id",
+        readonly=True,
     )
 
     arrival_date = fields.Datetime(string="Arrival Date", readonly=True)
