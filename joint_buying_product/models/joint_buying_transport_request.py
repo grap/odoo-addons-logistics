@@ -57,6 +57,11 @@ class JointBuyingTransportRequest(models.Model):
         ]
         return res
 
+    def _get_depends_can_change(self):
+        res = super()._get_depends_can_change()
+        res += ["order_id"]
+        return res
+
     def _compute_request_type(self):
         super(
             JointBuyingTransportRequest, self.filtered(lambda x: not x.order_id)
