@@ -281,10 +281,23 @@ class JointBuyingTour(models.Model):
 
     @api.multi
     def write(self, vals):
+        min_date = min(self.mapped("start_date"))
         res = super().write(vals)
         if {"start_date", "line_ids"}.intersection(vals.keys()):
             self.recompute_dates()
+        min_date = min([min_date] + self.mapped("start_date"))
+        self._invalidate_transport_requests(min_date)
         return res
+
+    @api.multi
+    def unlink(self):
+        min_date = min(self.mapped("start_date"))
+        self._invalidate_transport_requests(min_date)
+        return super().unlink()
+
+    @api.model
+    def _invalidate_transport_requests(self, min_date):
+        pass
 
     def estimate_route(self):
         self.mapped("line_ids")._estimate_route()
