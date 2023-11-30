@@ -13,4 +13,10 @@ License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl.html).
         <field name="manual_start_date" eval="(DateTime.today() + timedelta(days=-15)).strftime('%Y-%m-%d 07:00')"/>
     </record>
 
+    <function model="joint.buying.transport.request" name="button_compute_tour">
+        <value eval="[
+            ref('joint_buying_sale.request_lse_cda_week_0'),
+        ]"/>
+    </function>
+
 </odoo>
