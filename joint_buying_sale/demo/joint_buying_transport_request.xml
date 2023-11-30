@@ -10,7 +10,7 @@ License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl.html).
         <field name="sale_order_id" ref="sale_order_1"/>
         <field name="manual_origin_partner_id" model="res.partner" eval="obj().env.ref('joint_buying_base.company_LSE').joint_buying_partner_id.id"/>
         <field name="manual_destination_partner_id" model="res.partner" eval="obj().env.ref('joint_buying_base.company_CDA').joint_buying_partner_id.id"/>
-        <field name="manual_start_date" eval="(DateTime.today() + timedelta(days=-15)).strftime('%Y-%m-%d 07:00')"/>
+        <field name="manual_availability_date" eval="(DateTime.today() + timedelta(days=-15)).strftime('%Y-%m-%d 07:00')"/>
     </record>
 
     <function model="joint.buying.transport.request" name="button_compute_tour">

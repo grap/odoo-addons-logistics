@@ -28,8 +28,8 @@ class JointBuyingWizardFindRoute(models.TransientModel):
         ondelete="cascade",
     )
 
-    start_date = fields.Datetime(
-        related="transport_request_id.start_date", readonly=True
+    availability_date = fields.Datetime(
+        related="transport_request_id.availability_date", readonly=True
     )
 
     origin_partner_id = fields.Many2one(
@@ -201,12 +201,12 @@ class JointBuyingWizardFindRoute(models.TransientModel):
     @api.model
     def _populate_tree(self, transport_request):
         # Get all the tours subsequent to the transport request for a given period of time
-        max_date = transport_request.start_date + datetime.timedelta(
+        max_date = transport_request.availability_date + datetime.timedelta(
             days=self._MAX_TRANSPORT_DURATION
         )
         tours = self.env["joint.buying.tour"].search(
             [
-                ("start_date", ">=", transport_request.start_date),
+                ("start_date", ">=", transport_request.availability_date),
                 ("start_date", "<=", max_date),
             ],
             order="start_date",
@@ -217,7 +217,7 @@ class JointBuyingWizardFindRoute(models.TransientModel):
         self._create_initial_node(
             tree,
             transport_request.origin_partner_id,
-            transport_request.start_date,
+            transport_request.availability_date,
         )
 
         # We go through all the tours, in ascending date order

@@ -32,13 +32,13 @@ class JointBuyingTransportRequest(models.Model):
         default="to_compute",
     )
 
-    manual_start_date = fields.Datetime(
-        string="Start Date (Manual)",
+    manual_availability_date = fields.Datetime(
+        string="Availability Date (Manual)",
     )
 
-    start_date = fields.Datetime(
-        string="Start Date",
-        compute="_compute_start_date",
+    availability_date = fields.Datetime(
+        string="Availability Date",
+        compute="_compute_availability_date",
         store=True,
     )
 
@@ -119,8 +119,8 @@ class JointBuyingTransportRequest(models.Model):
     def _get_depends_request_type(self):
         return ["state"]  # fake, to make dependency working
 
-    def _get_depends_start_date(self):
-        return ["manual_start_date"]
+    def _get_depends_availability_date(self):
+        return ["manual_availability_date"]
 
     def _get_depends_origin_partner_id(self):
         return ["manual_origin_partner_id"]
@@ -140,13 +140,13 @@ class JointBuyingTransportRequest(models.Model):
     def _get_depends_can_change(self):
         return ["state"]  # fake, to make dependency working
 
-    @api.depends("origin_partner_id", "destination_partner_id", "start_date")
+    @api.depends("origin_partner_id", "destination_partner_id", "availability_date")
     def _compute_name(self):
         for request in self:
             request.name = (
                 f"{request.origin_partner_id.joint_buying_code}"
                 f" -> {request.destination_partner_id.joint_buying_code}"
-                f" ({request.start_date})"
+                f" ({request.availability_date})"
             )
 
     @api.depends(lambda x: x._get_depends_request_type())
@@ -154,10 +154,10 @@ class JointBuyingTransportRequest(models.Model):
         for request in self:
             request.request_type = "manual"
 
-    @api.depends(lambda x: x._get_depends_start_date())
-    def _compute_start_date(self):
+    @api.depends(lambda x: x._get_depends_availability_date())
+    def _compute_availability_date(self):
         for request in self:
-            request.start_date = request.manual_start_date
+            request.availability_date = request.manual_availability_date
 
     @api.depends(lambda x: x._get_depends_origin_partner_id())
     def _compute_origin_partner_id(self):

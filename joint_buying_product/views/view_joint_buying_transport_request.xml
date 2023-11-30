@@ -10,7 +10,7 @@ License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl.html).
         <field name="model">joint.buying.transport.request</field>
         <field name="inherit_id" ref="joint_buying_base.view_joint_buying_transport_request_form"/>
         <field name="arch" type="xml">
-            <xpath expr="//field[@name='manual_start_date']/.." position="before">
+            <xpath expr="//field[@name='manual_availability_date']/.." position="before">
                 <group colspan="4">
                     <field name="order_id" attrs="{'invisible': [('order_id', '=', False)]}"/>
                 </group>
