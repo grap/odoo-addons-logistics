@@ -139,7 +139,7 @@
     <record id="line_ronzon_VEV_past_2" model="joint.buying.purchase.order.line">
         <field name="order_id" ref="joint_buying_product.order_ronzon_VEV_past"/>
         <field name="product_id" ref="joint_buying_product.product_ronzon_patatoe_charlotte"/>
-        <field name="qty">60.0</field>
+        <field name="qty">0.0</field>
         <field name="product_uom_package_qty">10.0</field>
         <field name="product_weight">0.0</field>
         <field name="price_unit">1.55</field>

@@ -117,7 +117,7 @@ class JointBuyingTransportRequest(models.Model):
 
         for request in self.filtered(lambda x: x.order_id):
             description = ""
-            for line in request.order_id.line_ids:
+            for line in request.order_id.line_ids.filtered(lambda x: x.qty != 0):
                 description += (
                     f"{line.product_id.name}"
                     "<span style='color:#888;'>"
