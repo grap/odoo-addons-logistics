@@ -99,6 +99,8 @@ class JointBuyingTour(models.Model):
 
     cost_chart = fields.Text(compute="_compute_cost_chart")
 
+    transport_request_qty = fields.Integer(compute="_compute_transport_request_qty")
+
     @api.onchange("type_id")
     def _onchange_type_id(self):
         if self.type_id and self.type_id.carrier_id:
@@ -122,6 +124,13 @@ class JointBuyingTour(models.Model):
                 tour.name += f" - {tour.type_id.name}"
             if not tour.name:
                 tour.name = _("Draft Tour")
+
+    @api.depends("line_ids.transport_request_line_ids.request_id")
+    def _compute_transport_request_qty(self):
+        for request in self:
+            request.transport_request_qty = len(
+                request.mapped("line_ids.transport_request_line_ids.request_id")
+            )
 
     @api.depends("salary_cost", "toll_cost", "vehicle_cost")
     def _compute_cost(self):
@@ -312,3 +321,13 @@ class JointBuyingTour(models.Model):
             f"{str(int(time)).rjust(2, '0')}"
             f":{str(int((time % 1) * 60)).rjust(2, '0')}"
         )
+
+    @api.multi
+    def button_see_transport_requests(self):
+        self.ensure_one()
+        res = self.env["ir.actions.act_window"].for_xml_id(
+            "joint_buying_base", "action_joint_buying_transport_request"
+        )
+        requests = self.mapped("line_ids.transport_request_line_ids.request_id")
+        res["domain"] = [("id", "in", requests.ids)]
+        return res
