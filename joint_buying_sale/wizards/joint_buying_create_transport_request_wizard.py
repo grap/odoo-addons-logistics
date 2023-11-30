@@ -14,7 +14,7 @@ class JointBuyingCreateTransportRequestWizard(models.TransientModel):
     _name = "joint.buying.create.transport.request.wizard"
     _description = "Joint Buying Wizard to create Transport Request From Sale Orders"
 
-    start_date = fields.Datetime(
+    availability_date = fields.Datetime(
         string="Availability Date",
         required=True,
     )
@@ -76,7 +76,7 @@ class JointBuyingCreateTransportRequestWizard(models.TransientModel):
 
         request_vals = {
             "sale_order_id": self.sale_order_id.id,
-            "manual_start_date": self.start_date,
+            "manual_availability_date": self.availability_date,
             "manual_origin_partner_id": self.origin_partner_id.id,
             "manual_destination_partner_id": self.destination_partner_id.id,
         }
