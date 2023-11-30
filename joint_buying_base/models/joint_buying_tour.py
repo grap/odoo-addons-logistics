@@ -297,7 +297,10 @@ class JointBuyingTour(models.Model):
 
     @api.model
     def _invalidate_transport_requests(self, min_date):
-        pass
+        requests = self.env["joint.buying.transport.request"].search(
+            [("state", "=", "computed"), ("arrival_date", ">", min_date)]
+        )
+        requests._invalidate()
 
     def estimate_route(self):
         self.mapped("line_ids")._estimate_route()
