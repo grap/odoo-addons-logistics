@@ -117,7 +117,7 @@ class JointBuyingTransportRequest(models.Model):
     can_change_partners = fields.Boolean(compute="_compute_can_change")
 
     def _get_depends_request_type(self):
-        return []
+        return ["state"]  # fake, to make dependency working
 
     def _get_depends_start_date(self):
         return ["manual_start_date"]
@@ -138,7 +138,7 @@ class JointBuyingTransportRequest(models.Model):
         return ["manual_description"]
 
     def _get_depends_can_change(self):
-        return []
+        return ["state"]  # fake, to make dependency working
 
     @api.depends("origin_partner_id", "destination_partner_id", "start_date")
     def _compute_name(self):
