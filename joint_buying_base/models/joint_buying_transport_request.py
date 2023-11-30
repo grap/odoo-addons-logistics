@@ -104,6 +104,8 @@ class JointBuyingTransportRequest(models.Model):
         readonly=True,
     )
 
+    start_date = fields.Datetime(string="Start Date", readonly=True)
+
     arrival_date = fields.Datetime(string="Arrival Date", readonly=True)
 
     manual_description = fields.Html()
@@ -224,18 +226,26 @@ class JointBuyingTransportRequest(models.Model):
                     }
                 )
 
-            vals = {
-                "arrival_date": max(tour_lines.mapped("arrival_date")),
-                "state": "computed",
-                "line_ids": [(5,)] + [(0, 0, x) for x in line_vals],
-            }
+            self.write(
+                {
+                    "start_date": max(tour_lines.mapped("start_date")),
+                    "arrival_date": max(tour_lines.mapped("arrival_date")),
+                    "state": "computed",
+                    "line_ids": [(5,)] + [(0, 0, x) for x in line_vals],
+                }
+            )
         else:
-            vals = {
+            self._invalidate()
+
+    def _invalidate(self):
+        self.write(
+            {
+                "start_date": False,
                 "arrival_date": False,
                 "state": "not_computable",
                 "line_ids": [(5,)],
             }
-        self.write(vals)
+        )
 
     def button_compute_tour(self):
         Wizard = self.env["joint.buying.wizard.find.route"]
