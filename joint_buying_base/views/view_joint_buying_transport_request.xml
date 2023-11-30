@@ -30,7 +30,7 @@ License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl.html).
         <field name="model">joint.buying.transport.request</field>
         <field name="arch" type="xml">
             <tree decoration-muted="amount_untaxed == 0 and total_weight == 0" decoration-info="state == 'to_compute'">
-                <field name="start_date"/>
+                <field name="availability_date"/>
                 <field name="origin_partner_id"/>
                 <field name="destination_partner_id"/>
                 <field name="amount_untaxed" sum="Total"/>
@@ -76,11 +76,11 @@ License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl.html).
                     </div>
                     <group colspan="4">
                         <group>
-                            <field name="manual_start_date" attrs="{
+                            <field name="manual_availability_date" attrs="{
                                 'invisible': [('can_change_date', '=', False)],
                                 'required': [('can_change_date', '=', True)],
                                 }"/>
-                            <field name="start_date" attrs="{
+                            <field name="availability_date" attrs="{
                                 'invisible': [('can_change_date', '=', True)],
                                 }"/>
 
