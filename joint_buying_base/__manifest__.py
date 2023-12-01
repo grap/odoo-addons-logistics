@@ -32,6 +32,7 @@
         "security/ir.model.access.csv",
         "security/ir_rule.xml",
         "data/ir_config_parameter.xml",
+        "data/ir_cron.xml",
         "views/menu.xml",
         "views/view_res_company.xml",
         "views/view_res_partner.xml",
