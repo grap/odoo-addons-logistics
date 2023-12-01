@@ -11,7 +11,21 @@ from .res_partner import _JOINT_BUYING_PARTNER_CONTEXT
 
 class JointBuyingTransportRequest(models.Model):
     _name = "joint.buying.transport.request"
+    _inherit = ["mail.thread", "mail.activity.mixin"]
     _description = "Joint Buying Transport Request"
+
+    _INVALIDATE_VALS = {
+        "start_date": False,
+        "arrival_date": False,
+        "state": "to_compute",
+        "line_ids": [(5,)],
+    }
+
+    _INVALIDATE_FIELDS = [
+        "manual_availability_date",
+        "manual_origin_partner_id",
+        "manual_destination_partner_id",
+    ]
 
     name = fields.Char(readonly=True, compute="_compute_name", store=True)
 
@@ -30,6 +44,7 @@ class JointBuyingTransportRequest(models.Model):
         required=True,
         readonly=True,
         default="to_compute",
+        track_visibility=True,
     )
 
     manual_availability_date = fields.Datetime(
@@ -40,6 +55,7 @@ class JointBuyingTransportRequest(models.Model):
         string="Availability Date",
         compute="_compute_availability_date",
         store=True,
+        track_visibility=True,
     )
 
     manual_origin_partner_id = fields.Many2one(
@@ -55,6 +71,7 @@ class JointBuyingTransportRequest(models.Model):
         string="Origin",
         store=True,
         context=_JOINT_BUYING_PARTNER_CONTEXT,
+        track_visibility=True,
     )
 
     manual_destination_partner_id = fields.Many2one(
@@ -70,6 +87,7 @@ class JointBuyingTransportRequest(models.Model):
         string="Destination",
         store=True,
         context=_JOINT_BUYING_PARTNER_CONTEXT,
+        track_visibility=True,
     )
 
     manual_amount_untaxed = fields.Float(
@@ -82,6 +100,7 @@ class JointBuyingTransportRequest(models.Model):
         compute="_compute_amount_untaxed",
         store=True,
         digits=dp.get_precision("Product Price"),
+        track_visibility=True,
     )
 
     manual_total_weight = fields.Float(
@@ -95,6 +114,7 @@ class JointBuyingTransportRequest(models.Model):
         store=True,
         digits=dp.get_precision("Stock Weight"),
         compute_sudo=True,
+        track_visibility=True,
     )
 
     line_ids = fields.One2many(
@@ -235,20 +255,22 @@ class JointBuyingTransportRequest(models.Model):
                 }
             )
         else:
-            self._invalidate()
+            vals = self._INVALIDATE_VALS.copy()
+            vals["state"] = "not_computable"
+            self.write(vals)
 
     def _invalidate(self):
-        self.write(
-            {
-                "start_date": False,
-                "arrival_date": False,
-                "state": "not_computable",
-                "line_ids": [(5,)],
-            }
-        )
+        self.write(self._INVALIDATE_VALS)
 
     def button_compute_tour(self):
         Wizard = self.env["joint.buying.wizard.find.route"]
         results = Wizard.compute_tours(self)
         for request in self:
             request._set_tour_lines(results[request][1])
+
+    def write(self, vals):
+        if "state" not in vals.keys() and set(vals.keys()).intersection(
+            self._INVALIDATE_FIELDS
+        ):
+            vals.update(self._INVALIDATE_VALS)
+        return super().write(vals)
