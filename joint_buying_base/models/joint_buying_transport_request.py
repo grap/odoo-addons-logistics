@@ -23,7 +23,7 @@ class JointBuyingTransportRequest(models.Model):
 
     _INVALIDATE_FIELDS = [
         "manual_availability_date",
-        "manual_origin_partner_id",
+        "manual_start_partner_id",
         "manual_destination_partner_id",
     ]
 
@@ -60,17 +60,17 @@ class JointBuyingTransportRequest(models.Model):
         track_visibility=True,
     )
 
-    manual_origin_partner_id = fields.Many2one(
+    manual_start_partner_id = fields.Many2one(
         comodel_name="res.partner",
-        string="Origin (Manual)",
+        string="Start Partner (Manual)",
         context=_JOINT_BUYING_PARTNER_CONTEXT,
         domain="[('is_joint_buying_stage', '=', True)]",
     )
 
-    origin_partner_id = fields.Many2one(
+    start_partner_id = fields.Many2one(
         comodel_name="res.partner",
-        compute="_compute_origin_partner_id",
-        string="Origin",
+        compute="_compute_start_partner_id",
+        string="Start Partner",
         store=True,
         context=_JOINT_BUYING_PARTNER_CONTEXT,
         track_visibility=True,
@@ -149,8 +149,8 @@ class JointBuyingTransportRequest(models.Model):
     def _get_depends_availability_date(self):
         return ["manual_availability_date"]
 
-    def _get_depends_origin_partner_id(self):
-        return ["manual_origin_partner_id"]
+    def _get_depends_start_partner_id(self):
+        return ["manual_start_partner_id"]
 
     def _get_depends_destination_partner_id(self):
         return ["manual_destination_partner_id"]
@@ -167,11 +167,11 @@ class JointBuyingTransportRequest(models.Model):
     def _get_depends_can_change(self):
         return ["state"]  # fake, to make dependency working
 
-    @api.depends("origin_partner_id", "destination_partner_id", "availability_date")
+    @api.depends("start_partner_id", "destination_partner_id", "availability_date")
     def _compute_name(self):
         for request in self:
             request.name = (
-                f"{request.origin_partner_id.joint_buying_code}"
+                f"{request.start_partner_id.joint_buying_code}"
                 f" -> {request.destination_partner_id.joint_buying_code}"
                 f" ({request.availability_date})"
             )
@@ -191,10 +191,10 @@ class JointBuyingTransportRequest(models.Model):
         for request in self:
             request.availability_date = request.manual_availability_date
 
-    @api.depends(lambda x: x._get_depends_origin_partner_id())
-    def _compute_origin_partner_id(self):
+    @api.depends(lambda x: x._get_depends_start_partner_id())
+    def _compute_start_partner_id(self):
         for request in self:
-            request.origin_partner_id = request.manual_origin_partner_id
+            request.start_partner_id = request.manual_start_partner_id
 
     @api.depends(lambda x: x._get_depends_destination_partner_id())
     def _compute_destination_partner_id(self):

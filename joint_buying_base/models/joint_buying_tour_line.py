@@ -188,7 +188,7 @@ class JointBuyingTourLine(models.Model):
                 .sorted(
                     key=lambda r: (
                         r.request_id.destination_partner_id.joint_buying_code,
-                        r.request_id.origin_partner_id.joint_buying_code,
+                        r.request_id.start_partner_id.joint_buying_code,
                     )
                 ),
             }

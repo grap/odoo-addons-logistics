@@ -23,7 +23,7 @@
                             For <t t-esc="request_line.request_id.destination_partner_id.joint_buying_code" />
                         </span>
                         <span style="color:#888;">
-                            - Origin <t t-esc="request_line.request_id.origin_partner_id.joint_buying_code" /> -
+                            - Origin <t t-esc="request_line.request_id.start_partner_id.joint_buying_code" /> -
                         </span>
                         <t t-esc="request_line.request_id.total_weight" /> kg
                     </span>
