@@ -140,6 +140,8 @@ class JointBuyingTransportRequest(models.Model):
 
     can_change_partners = fields.Boolean(compute="_compute_can_change")
 
+    tour_qty = fields.Integer(compute="_compute_tour_qty")
+
     def _get_depends_origin(self):
         return ["state"]  # fake, to make dependency working
 
@@ -175,6 +177,11 @@ class JointBuyingTransportRequest(models.Model):
                 f" -> {request.arrival_partner_id.joint_buying_code}"
                 f" ({request.availability_date})"
             )
+
+    @api.depends("line_ids.tour_line_id.tour_id")
+    def _compute_tour_qty(self):
+        for request in self:
+            request.tour_qty = len(request.mapped("line_ids.tour_line_id.tour_id"))
 
     @api.depends(lambda x: x._get_depends_origin())
     def _compute_origin(self):
@@ -281,3 +288,19 @@ class JointBuyingTransportRequest(models.Model):
         ):
             vals.update(self._INVALIDATE_VALS)
         return super().write(vals)
+
+    @api.multi
+    def button_see_tours(self):
+        self.ensure_one()
+        res = self.env["ir.actions.act_window"].for_xml_id(
+            "joint_buying_base", "action_joint_buying_tour_all"
+        )
+        tours = self.mapped("line_ids.tour_line_id.tour_id")
+        res.update(
+            {
+                "domain": [("id", "in", tours.ids)],
+                "view_mode": "tree,calendar,form",
+                "views": [(False, "tree"), (False, "calendar"), (False, "form")],
+            }
+        )
+        return res
