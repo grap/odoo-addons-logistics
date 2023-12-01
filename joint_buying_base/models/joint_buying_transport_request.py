@@ -2,7 +2,7 @@
 # @author: Sylvain LE GAL (https://twitter.com/legalsylvain)
 # License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl.html).
 
-from odoo import api, fields, models
+from odoo import _, api, fields, models
 
 from odoo.addons import decimal_precision as dp
 
@@ -27,13 +27,15 @@ class JointBuyingTransportRequest(models.Model):
         "manual_destination_partner_id",
     ]
 
-    name = fields.Char(readonly=True, compute="_compute_name", store=True)
+    name = fields.Char(compute="_compute_name", store=True)
 
     request_type = fields.Selection(
         selection=[("manual", "Manual")],
         required=True,
         compute="_compute_request_type",
     )
+
+    origin = fields.Char(compute="_compute_origin", store=True)
 
     state = fields.Selection(
         selection=[
@@ -138,6 +140,9 @@ class JointBuyingTransportRequest(models.Model):
 
     can_change_partners = fields.Boolean(compute="_compute_can_change")
 
+    def _get_depends_origin(self):
+        return ["state"]  # fake, to make dependency working
+
     def _get_depends_request_type(self):
         return ["state"]  # fake, to make dependency working
 
@@ -170,6 +175,11 @@ class JointBuyingTransportRequest(models.Model):
                 f" -> {request.destination_partner_id.joint_buying_code}"
                 f" ({request.availability_date})"
             )
+
+    @api.depends(lambda x: x._get_depends_origin())
+    def _compute_origin(self):
+        for request in self:
+            request.origin = _("Manual")
 
     @api.depends(lambda x: x._get_depends_request_type())
     def _compute_request_type(self):

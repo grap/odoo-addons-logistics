@@ -21,7 +21,9 @@ License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl.html).
             <search>
                 <field name="origin_partner_id"/>
                 <field name="destination_partner_id"/>
+                <field name="origin"/>
                 <field name="state"/>
+                <field name="request_type"/>
                 <filter name="filter_amount_positive" string="Positive Amount" domain="['|',
                     ('amount_untaxed','!=', 0),
                     ('total_weight','!=', 0),
@@ -41,10 +43,12 @@ License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl.html).
                 <field name="availability_date"/>
                 <field name="origin_partner_id"/>
                 <field name="destination_partner_id"/>
+                <field name="start_date"/>
+                <field name="arrival_date"/>
                 <field name="amount_untaxed" sum="Total"/>
                 <field name="total_weight" sum="Total"/>
-                <field name="arrival_date"/>
-                <field name="request_type"/>
+                <field name="request_type" invisible="1"/>
+                <field name="origin"/>
                 <field name="state"/>
             </tree>
         </field>
