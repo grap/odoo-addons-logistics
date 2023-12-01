@@ -2,6 +2,8 @@
 # @author: Sylvain LE GAL (https://twitter.com/legalsylvain)
 # License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl.html).
 
+from datetime import timedelta
+
 from odoo import _, api, fields, models
 
 from odoo.addons import decimal_precision as dp
@@ -141,6 +143,13 @@ class JointBuyingTransportRequest(models.Model):
     can_change_partners = fields.Boolean(compute="_compute_can_change")
 
     tour_qty = fields.Integer(compute="_compute_tour_qty")
+
+    def write(self, vals):
+        if "state" not in vals.keys() and set(vals.keys()).intersection(
+            self._INVALIDATE_FIELDS
+        ):
+            vals.update(self._INVALIDATE_VALS)
+        return super().write(vals)
 
     def _get_depends_origin(self):
         return ["state"]  # fake, to make dependency working
@@ -282,13 +291,6 @@ class JointBuyingTransportRequest(models.Model):
         for request in self:
             request._set_tour_lines(results[request][1])
 
-    def write(self, vals):
-        if "state" not in vals.keys() and set(vals.keys()).intersection(
-            self._INVALIDATE_FIELDS
-        ):
-            vals.update(self._INVALIDATE_VALS)
-        return super().write(vals)
-
     @api.multi
     def button_see_tours(self):
         self.ensure_one()
@@ -304,3 +306,15 @@ class JointBuyingTransportRequest(models.Model):
             }
         )
         return res
+
+    def cron_compute_tour(self, delay):
+        max_write_date = fields.datetime.now() - timedelta(minutes=delay)
+        requests = self.search(
+            [
+                ("state", "in", ["to_compute", "not_computable"]),
+                ("write_date", "<", max_write_date),
+            ],
+            order="write_date",
+            limit=1000,
+        )
+        requests.button_compute_tour()

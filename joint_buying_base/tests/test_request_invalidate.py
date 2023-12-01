@@ -17,7 +17,7 @@ class TestModule(TestAbstract):
         self.tour_lyon_loire_1 = self.env.ref("joint_buying_base.tour_lyon_loire_1")
         self.tour_lyon_loire_3 = self.env.ref("joint_buying_base.tour_lyon_loire_3")
 
-    def _test_01_change_tour_start_date_invalidate_requests(self):
+    def test_01_change_tour_start_date_invalidate_requests(self):
         initial_loire_1_request_qty = self.tour_lyon_loire_1.transport_request_qty
         initial_loire_3_request_qty = self.tour_lyon_loire_3.transport_request_qty
         loire_1_requests = self.tour_lyon_loire_1.mapped(
@@ -83,10 +83,25 @@ class TestModule(TestAbstract):
         )
         self.assertTrue(set(requests.mapped("state")), {"computed"})
 
-    def _test_10_change_request_invalidate_request(self):
+    def test_10_change_request_invalidate_request(self):
         # Ensure that initial data are correct
         self.assertEqual(self.request_vev_cda_week_1.state, "computed")
 
         # Change key fields should invalidate transport request
         self.request_vev_cda_week_1.manual_availability_date += timedelta(seconds=1)
         self.assertEqual(self.request_vev_cda_week_1.state, "to_compute")
+
+    def test_100_execute_cron(self):
+        # Ensure that initial data are correct
+        self.assertEqual(self.request_vev_cda_week_1.state, "computed")
+
+        self.request_vev_cda_week_1._invalidate()
+        self.assertEqual(self.request_vev_cda_week_1.state, "to_compute")
+
+        # Execute cron without changing delay should not recompute
+        self.request_vev_cda_week_1.cron_compute_tour(10)
+        self.assertEqual(self.request_vev_cda_week_1.state, "to_compute")
+
+        # Execute cron without changing delay should not recompute
+        self.request_vev_cda_week_1.cron_compute_tour(-1)
+        self.assertEqual(self.request_vev_cda_week_1.state, "computed")
