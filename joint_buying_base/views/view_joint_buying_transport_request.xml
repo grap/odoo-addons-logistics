@@ -29,7 +29,11 @@ License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl.html).
     <record id="view_joint_buying_transport_request_tree" model="ir.ui.view">
         <field name="model">joint.buying.transport.request</field>
         <field name="arch" type="xml">
-            <tree decoration-muted="amount_untaxed == 0 and total_weight == 0" decoration-info="state == 'to_compute'">
+            <tree
+                decoration-muted="amount_untaxed == 0 and total_weight == 0"
+                decoration-info="state == 'to_compute' and (amount_untaxed != 0 or total_weight != 0)"
+                decoration-danger="state == 'not_computable' and (amount_untaxed != 0 or total_weight != 0)"
+                >
                 <field name="availability_date"/>
                 <field name="origin_partner_id"/>
                 <field name="destination_partner_id"/>
