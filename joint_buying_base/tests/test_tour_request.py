@@ -4,15 +4,15 @@
 
 from datetime import timedelta
 
-from odoo.tests import tagged
-
 from .test_abstract import TestAbstract
 
 
-@tagged("post_install", "-at_install")
 class TestModule(TestAbstract):
     def setUp(self):
         super().setUp()
+        self.request_vev_cda_week_1 = self.env.ref(
+            "joint_buying_base.request_vev_cda_week_1"
+        )
         self.tour_lyon_loire_1 = self.env.ref("joint_buying_base.tour_lyon_loire_1")
         self.tour_lyon_loire_3 = self.env.ref("joint_buying_base.tour_lyon_loire_3")
 
@@ -31,9 +31,7 @@ class TestModule(TestAbstract):
         self.assertNotEqual(initial_loire_3_request_qty, 0)
 
         # Change date of tour should invalidate all related transport requests
-        self.tour_lyon_loire_1.start_date = (
-            self.tour_lyon_loire_1.start_date + timedelta(seconds=1)
-        )
+        self.tour_lyon_loire_1.start_date += timedelta(seconds=1)
         self.assertEqual(self.tour_lyon_loire_1.transport_request_qty, 0)
 
         # Change date of tour should invalidate all futur transport requests
@@ -57,3 +55,11 @@ class TestModule(TestAbstract):
         # Unlink a tour should invalidate all the futur transport requests
         self.tour_lyon_loire_1.unlink()
         self.assertEqual(self.tour_lyon_loire_3.transport_request_qty, 0)
+
+    def test_change_request_invalidate_request(self):
+        # Ensure that initial data are correct
+        self.assertEqual(self.request_vev_cda_week_1.state, "computed")
+
+        # Change key fields should invalidate transport request
+        self.request_vev_cda_week_1.manual_availability_date += timedelta(seconds=1)
+        self.assertEqual(self.request_vev_cda_week_1.state, "to_compute")
