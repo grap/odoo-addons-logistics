@@ -10,13 +10,14 @@ from .test_abstract import TestAbstract
 class TestModule(TestAbstract):
     def setUp(self):
         super().setUp()
+        self.WizardTour = self.env["joint.buying.wizard.set.tour"]
         self.request_vev_cda_week_1 = self.env.ref(
             "joint_buying_base.request_vev_cda_week_1"
         )
         self.tour_lyon_loire_1 = self.env.ref("joint_buying_base.tour_lyon_loire_1")
         self.tour_lyon_loire_3 = self.env.ref("joint_buying_base.tour_lyon_loire_3")
 
-    def test_change_tour_invalidate_requests(self):
+    def _test_01_change_tour_start_date_invalidate_requests(self):
         initial_loire_1_request_qty = self.tour_lyon_loire_1.transport_request_qty
         initial_loire_3_request_qty = self.tour_lyon_loire_3.transport_request_qty
         loire_1_requests = self.tour_lyon_loire_1.mapped(
@@ -56,7 +57,33 @@ class TestModule(TestAbstract):
         self.tour_lyon_loire_1.unlink()
         self.assertEqual(self.tour_lyon_loire_3.transport_request_qty, 0)
 
-    def test_change_request_invalidate_request(self):
+    def test_02_change_tour_line_ids_invalidate_requests(self):
+        # Ensure that initial data are correct
+        requests = self.tour_lyon_loire_1.mapped(
+            "line_ids.transport_request_line_ids.request_id"
+        )
+        initial_request_qty = len(requests)
+        self.assertNotEqual(initial_request_qty, 0)
+
+        # Change steps duration should unlink related transport requests
+        wizard = self.WizardTour.with_context(
+            active_id=self.tour_lyon_loire_1.id
+        ).create({})
+        wizard.line_ids.filtered(lambda x: x.sequence_type == "journey").write(
+            {"duration": 2}
+        )
+        wizard.set_tour()
+        self.assertEqual(self.tour_lyon_loire_1.transport_request_qty, 0)
+        self.assertTrue(set(requests.mapped("state")), {"to_compute"})
+
+        # Recompute requests must return to the original situation
+        requests.button_compute_tour()
+        self.assertEqual(
+            self.tour_lyon_loire_1.transport_request_qty, initial_request_qty
+        )
+        self.assertTrue(set(requests.mapped("state")), {"computed"})
+
+    def _test_10_change_request_invalidate_request(self):
         # Ensure that initial data are correct
         self.assertEqual(self.request_vev_cda_week_1.state, "computed")
 
