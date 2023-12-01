@@ -34,7 +34,7 @@ class JointBuyingCreateTransportRequestWizard(models.TransientModel):
         context=_JOINT_BUYING_PARTNER_CONTEXT,
     )
 
-    destination_partner_id = fields.Many2one(
+    arrival_partner_id = fields.Many2one(
         comodel_name="res.partner",
         string="Destination",
         required=True,
@@ -78,7 +78,7 @@ class JointBuyingCreateTransportRequestWizard(models.TransientModel):
             "sale_order_id": self.sale_order_id.id,
             "manual_availability_date": self.availability_date,
             "manual_start_partner_id": self.start_partner_id.id,
-            "manual_destination_partner_id": self.destination_partner_id.id,
+            "manual_arrival_partner_id": self.arrival_partner_id.id,
         }
 
         self.env["joint.buying.transport.request"].create(request_vals)

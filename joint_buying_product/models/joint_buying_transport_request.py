@@ -39,8 +39,8 @@ class JointBuyingTransportRequest(models.Model):
         res.append("order_id.deposit_partner_id")
         return res
 
-    def _get_depends_destination_partner_id(self):
-        res = super()._get_depends_destination_partner_id()
+    def _get_depends_arrival_partner_id(self):
+        res = super()._get_depends_arrival_partner_id()
         res.append("order_id.deposit_partner_id")
         return res
 
@@ -100,13 +100,13 @@ class JointBuyingTransportRequest(models.Model):
         for request in self.filtered(lambda x: x.order_id):
             request.start_partner_id = request.order_id.deposit_partner_id
 
-    def _compute_destination_partner_id(self):
+    def _compute_arrival_partner_id(self):
         super(
             JointBuyingTransportRequest, self.filtered(lambda x: not x.order_id)
-        )._compute_destination_partner_id()
+        )._compute_arrival_partner_id()
 
         for request in self.filtered(lambda x: x.order_id):
-            request.destination_partner_id = request.order_id.customer_id
+            request.arrival_partner_id = request.order_id.customer_id
 
     def _compute_amount_untaxed(self):
         super(

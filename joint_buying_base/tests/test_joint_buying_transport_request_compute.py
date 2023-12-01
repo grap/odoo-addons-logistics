@@ -19,7 +19,7 @@ class TestJointBuyingTransportRequest(TestAbstract):
         request = self.TransportRequest.create(
             {
                 "manual_start_partner_id": self.company_CDA.joint_buying_partner_id.id,
-                "manual_destination_partner_id": self.company_CHE.joint_buying_partner_id.id,
+                "manual_arrival_partner_id": self.company_CHE.joint_buying_partner_id.id,
                 "manual_description": "manual_description",
                 "manual_availability_date": datetime.today(),
                 "manual_amount_untaxed": 999,
