@@ -32,10 +32,10 @@ class JointBuyingWizardFindRoute(models.TransientModel):
         related="transport_request_id.availability_date", readonly=True
     )
 
-    origin_partner_id = fields.Many2one(
+    start_partner_id = fields.Many2one(
         comodel_name="res.partner",
         string="Origin",
-        related="transport_request_id.origin_partner_id",
+        related="transport_request_id.start_partner_id",
         context=_JOINT_BUYING_PARTNER_CONTEXT,
         readonly=True,
     )
@@ -216,7 +216,7 @@ class JointBuyingWizardFindRoute(models.TransientModel):
         tree = Tree()
         self._create_initial_node(
             tree,
-            transport_request.origin_partner_id,
+            transport_request.start_partner_id,
             transport_request.availability_date,
         )
 
@@ -237,7 +237,7 @@ class JointBuyingWizardFindRoute(models.TransientModel):
                         # We don't want to target origin
                         # you don't want to go round and round in the same place.
                         excludes=[
-                            transport_request.origin_partner_id,
+                            transport_request.start_partner_id,
                             startable_node.data.partner,
                         ],
                     )

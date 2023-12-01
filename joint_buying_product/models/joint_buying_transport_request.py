@@ -34,8 +34,8 @@ class JointBuyingTransportRequest(models.Model):
         res.append("order_id.deposit_date")
         return res
 
-    def _get_depends_origin_partner_id(self):
-        res = super()._get_depends_origin_partner_id()
+    def _get_depends_start_partner_id(self):
+        res = super()._get_depends_start_partner_id()
         res.append("order_id.deposit_partner_id")
         return res
 
@@ -92,13 +92,13 @@ class JointBuyingTransportRequest(models.Model):
         for request in self.filtered(lambda x: x.order_id):
             request.availability_date = request.order_id.deposit_date
 
-    def _compute_origin_partner_id(self):
+    def _compute_start_partner_id(self):
         super(
             JointBuyingTransportRequest, self.filtered(lambda x: not x.order_id)
-        )._compute_origin_partner_id()
+        )._compute_start_partner_id()
 
         for request in self.filtered(lambda x: x.order_id):
-            request.origin_partner_id = request.order_id.deposit_partner_id
+            request.start_partner_id = request.order_id.deposit_partner_id
 
     def _compute_destination_partner_id(self):
         super(

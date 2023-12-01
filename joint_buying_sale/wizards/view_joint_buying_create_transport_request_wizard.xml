@@ -12,7 +12,7 @@ License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl.html).
                 <group>
                     <field name="sale_order_id" />
                     <field name="availability_date" />
-                    <field name="origin_partner_id" />
+                    <field name="start_partner_id" />
                     <field name="destination_partner_id" />
                 </group>
                 <group string="List of Products">
