@@ -307,6 +307,8 @@ class JointBuyingPurchaseOrderGrouped(models.Model):
         res = super().write(vals)
         if not self.env.context.get("update_state_value"):
             self.update_state_value()
+        if {"deposit_date", "deposit_partner_id"}.intersection(set(vals.keys())):
+            self.mapped("order_ids.transport_request_id")._invalidate()
         return res
 
     @api.multi
