@@ -30,7 +30,7 @@ class TestWizardCreateTransportRequest(TransactionCase):
         wizard = self.Wizard.with_context(active_id=self.sale_order.id).create(
             {
                 "availability_date": datetime.now(),
-                "origin_partner_id": self.company_VEV.joint_buying_partner_id.id,
+                "start_partner_id": self.company_VEV.joint_buying_partner_id.id,
                 "destination_partner_id": self.company_CRB.joint_buying_partner_id.id,
             }
         )
