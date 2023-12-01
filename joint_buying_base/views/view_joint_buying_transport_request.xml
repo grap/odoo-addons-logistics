@@ -20,7 +20,7 @@ License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl.html).
         <field name="arch" type="xml">
             <search>
                 <field name="start_partner_id"/>
-                <field name="destination_partner_id"/>
+                <field name="arrival_partner_id"/>
                 <field name="origin"/>
                 <field name="state"/>
                 <field name="request_type"/>
@@ -42,7 +42,7 @@ License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl.html).
                 >
                 <field name="availability_date"/>
                 <field name="start_partner_id"/>
-                <field name="destination_partner_id"/>
+                <field name="arrival_partner_id"/>
                 <field name="start_date"/>
                 <field name="arrival_date"/>
                 <field name="amount_untaxed" sum="Total"/>
@@ -115,11 +115,11 @@ License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl.html).
                         </group>
                         <group>
                             <field name="arrival_date" attrs="{'invisible': [('arrival_date', '=', False)]}"/>
-                            <field name="manual_destination_partner_id" attrs="{
+                            <field name="manual_arrival_partner_id" attrs="{
                                 'invisible': [('can_change_partners', '=', False)],
                                 'required': [('can_change_partners', '=', True)],
                                 }"/>
-                            <field name="destination_partner_id" attrs="{
+                            <field name="arrival_partner_id" attrs="{
                                 'invisible': [('can_change_partners', '=', True)],
                                 }"/>
                             <field name="manual_amount_untaxed" attrs="{

@@ -20,7 +20,7 @@
                 <div t-att-style="line_style">
                     <span style="font-size:20px;">
                         <span style="font-weight:bold">
-                            For <t t-esc="request_line.request_id.destination_partner_id.joint_buying_code" />
+                            For <t t-esc="request_line.request_id.arrival_partner_id.joint_buying_code" />
                         </span>
                         <span style="color:#888;">
                             - Origin <t t-esc="request_line.request_id.start_partner_id.joint_buying_code" /> -

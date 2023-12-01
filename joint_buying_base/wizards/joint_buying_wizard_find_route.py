@@ -40,11 +40,11 @@ class JointBuyingWizardFindRoute(models.TransientModel):
         readonly=True,
     )
 
-    destination_partner_id = fields.Many2one(
+    arrival_partner_id = fields.Many2one(
         comodel_name="res.partner",
         string="Destination",
         context=_JOINT_BUYING_PARTNER_CONTEXT,
-        related="transport_request_id.destination_partner_id",
+        related="transport_request_id.arrival_partner_id",
         readonly=True,
     )
 
@@ -92,7 +92,7 @@ class JointBuyingWizardFindRoute(models.TransientModel):
             tree = self._populate_tree(transport_request)
 
             nodes = self.get_nodes_optimal_road(
-                tree, transport_request.destination_partner_id
+                tree, transport_request.arrival_partner_id
             )
             tour_lines = self.env["joint.buying.tour.line"]
             for node in [x for x in nodes if x.data.line]:
@@ -175,7 +175,7 @@ class JointBuyingWizardFindRoute(models.TransientModel):
         return [x for x in tree.all_nodes() if x.data.best_main_node]
 
     @api.model
-    def get_nodes_optimal_road(self, tree, destination_partner_id):
+    def get_nodes_optimal_road(self, tree, arrival_partner_id):
         """
         A
         |== B
@@ -185,7 +185,7 @@ class JointBuyingWizardFindRoute(models.TransientModel):
         - If the destination is D, return [A, D]
         """
         destination_nodes = [
-            x for x in tree.all_nodes() if x.data.partner == destination_partner_id
+            x for x in tree.all_nodes() if x.data.partner == arrival_partner_id
         ]
         if not destination_nodes:
             return []
@@ -233,7 +233,7 @@ class JointBuyingWizardFindRoute(models.TransientModel):
                     found_lines = self._get_interesting_route(
                         tour=tour,
                         from_line=line,
-                        destination=transport_request.destination_partner_id,
+                        destination=transport_request.arrival_partner_id,
                         # We don't want to target origin
                         # you don't want to go round and round in the same place.
                         excludes=[
@@ -248,13 +248,13 @@ class JointBuyingWizardFindRoute(models.TransientModel):
                                 tree,
                                 current_node,
                                 found_line,
-                                transport_request.destination_partner_id,
+                                transport_request.arrival_partner_id,
                             )
 
                             # we've arrived at our destination!
                             if (
                                 found_line.arrival_point_id
-                                == transport_request.destination_partner_id
+                                == transport_request.arrival_partner_id
                             ):
                                 return tree
 
