@@ -16,6 +16,7 @@ class JointBuyingTransportRequest(models.Model):
         comodel_name="joint.buying.purchase.order",
         string="Order",
         ondelete="cascade",
+        readonly=True,
     )
 
     def _get_depends_request_type(self):
