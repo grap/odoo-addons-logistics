@@ -15,6 +15,7 @@ class JointBuyingTransportRequest(models.Model):
         help="Sale order in the local database of the"
         " company that requires transport.",
         ondelete="cascade",
+        readonly=True,
     )
 
     def _get_depends_request_type(self):
