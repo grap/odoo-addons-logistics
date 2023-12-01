@@ -56,12 +56,12 @@ License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl.html).
                     <button type="action" string="Find the Best Route (Wizard)" class="oe_highlight"
                             attrs="{'invisible': [('state', '=', 'computed')]}"
                             name="%(joint_buying_base.action_request_2_wizard_find_route)d"
-                            groups="joint_buying_base.group_joint_buying_manager"
+                            groups="base.group_erp_manager"
                         />
                     <button type="action" string="Find the Best Route (Wizard)"
                             attrs="{'invisible': [('state', '!=', 'computed')]}"
                             name="%(joint_buying_base.action_request_2_wizard_find_route)d"
-                            groups="joint_buying_base.group_joint_buying_manager"
+                            groups="base.group_erp_manager"
                         />
 
                     <field name="state" widget="statusbar"/>
@@ -143,7 +143,7 @@ License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl.html).
                                     </tree>
                                 </field>
                         </page>
-                        <page string="Technical Fields">
+                        <page string="Technical Fields" groups="base.group_erp_manager">
                             <group>
                                 <field name="can_change_date" />
                                 <field name="can_change_extra_data" />
