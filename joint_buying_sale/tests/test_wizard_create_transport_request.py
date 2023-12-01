@@ -31,7 +31,7 @@ class TestWizardCreateTransportRequest(TransactionCase):
             {
                 "availability_date": datetime.now(),
                 "start_partner_id": self.company_VEV.joint_buying_partner_id.id,
-                "destination_partner_id": self.company_CRB.joint_buying_partner_id.id,
+                "arrival_partner_id": self.company_CRB.joint_buying_partner_id.id,
             }
         )
 
