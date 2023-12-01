@@ -19,6 +19,7 @@ class JointBuyingTransportRequestLine(models.Model):
 
     tour_line_id = fields.Many2one(
         comodel_name="joint.buying.tour.line",
+        ondelete="cascade",
         required=True,
     )
 
