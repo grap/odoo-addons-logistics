@@ -111,3 +111,12 @@ class JointBuyingTransportRequest(models.Model):
             request.can_change_date = True
             request.can_change_extra_data = False
             request.can_change_partners = True
+
+    def _get_report_tour_data_sale(self):
+        self.ensure_one()
+        res = []
+        for line in self.sudo().sale_order_id.order_line.filtered(
+            lambda x: x.display_type not in ["line_note", "line_section"]
+        ):
+            res.append(line._get_report_tour_data())
+        return res

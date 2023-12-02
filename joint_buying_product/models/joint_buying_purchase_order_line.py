@@ -330,3 +330,16 @@ class JointBuyingPurchaseOrderLine(models.Model):
             "total_weight": 0.0,
         }
         return res
+
+    def _get_report_tour_data(self):
+        self.ensure_one()
+        return {
+            "product_category": self.product_id._get_report_tour_category(),
+            "supplier_partner": self.order_id.supplier_id,
+            "description": (
+                f"{self.product_id.name}"
+                "<span style='color:#888;'>"
+                f" ({self.qty} x {self.uom_id.name}) "
+                "</span>"
+            ),
+        }

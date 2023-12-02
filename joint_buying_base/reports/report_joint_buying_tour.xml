@@ -2,36 +2,64 @@
 <odoo>
 
     <template id="report_joint_buying_tour_document_request_lines">
+        <t t-set="title_style" t-value=""/>
+        <t t-set="handling_sequence" t-value="'page-break-after:avoid'" />
 
+        <t t-foreach="data_list" t-as="data_item">
+            <!-- New STEP (HANDLING SEQUENCE) -->
+            <h3 t-if="data_item['handling_sequence'] != handling_sequence"
+                t-att-style="title_style"
+            >
+                <t t-set="handling_sequence" t-value="data_item['handling_sequence']" />
+                <t t-set="action_type" t-value="" />
+                <t t-set="product_category" t-value="" />
+                <span t-esc="handling_sequence" /> / <span t-esc="doc.stop_qty + 2" /> -
+                <span t-esc="data_item['handling_partner'].name"/>
+            </h3>
 
-        <t t-if="request_key['action_type'] == 'loading'">
-            <t t-set="line_style" t-value="'background-color:#FFA;'"/>
-        </t>
-        <t t-else="">
-            <t t-set="line_style" t-value="'background-color:#FAF;'"/>
-        </t>
-
-        <div t-if="request_lines" t-att-style="line_style">
-            <h4 class="text-center" t-if="request_key['action_type'] == 'loading'">Loading</h4>
-            <h4 class="text-center" t-if="request_key['action_type'] == 'unloading'">Unloading</h4>
-
-            <t t-foreach="request_lines" t-as="request_line">
-                <hr style="margin:0px;"/>
-                <div t-att-style="line_style">
-                    <span style="font-size:20px;">
-                        <span style="font-weight:bold">
-                            For <t t-esc="request_line.request_id.arrival_partner_id.joint_buying_code" />
-                        </span>
-                        <span style="color:#888;">
-                            - Origin <t t-esc="request_line.request_id.start_partner_id.joint_buying_code" /> -
-                        </span>
-                        <t t-esc="request_line.request_id.total_weight" /> kg
-                    </span>
-                    <span style="margin:0px;font-size: 12px;line-height:12px;"
-                        t-field="request_line.request_id.description" />
-                </div>
+            <t t-if="data_item['action_type'] == '2_loading'">
+                <t t-set="section_style" t-value="'background-color:#FFA;'"/>
+                <t t-set="header_style" t-value="'background-color:#FFA; font-size:20px;'"/>
+                <t t-set="item_style" t-value="'margin:0px;font-size: 12px;line-height:12px;'"/>
             </t>
-        </div>
+            <t t-else="">
+                <t t-set="section_style" t-value="'background-color:#FAF;'"/>
+                <t t-set="header_style" t-value="'background-color:#FAF; font-size:20px;'"/>
+                <t t-set="item_style" t-value="'margin:0px;font-size: 12px;line-height:12px;'"/>
+            </t>
+
+            <!-- New LOADING / CATEGORY -->
+            <h4
+                t-if="data_item['action_type'] != action_type or data_item['product_category'] != product_category"
+                t-att-style="section_style" class="text-center"
+                >
+                <t t-set="action_type" t-value="data_item['action_type']" />
+                <t t-set="request_id" t-value="" />
+                <t t-set="product_category" t-value="data_item['product_category']" />
+                <t t-if="action_type == '1_unloading'">Unloading</t>
+                <t t-if="action_type == '2_loading'">Loading</t>
+            </h4>
+
+            <!-- New REQUEST HEADER -->
+            <div t-if="data_item['request_id'] != request_id"
+                t-att-style="header_style">
+                <t t-set="request_id" t-value="data_item['request_id']" />
+                <span style="font-weight:bold">
+                    For <t t-esc="data_item['recipient_partner'].joint_buying_code" />
+                </span>
+                <span style="color:#888;">
+                    - Origin <t t-esc="data_item['origin_partner'].joint_buying_code" /> -
+                </span>
+                <t t-esc="data_item['weight']" /> kg
+                <t t-if="data_item['supplier_partner']">
+                    <span style="color:#888;">
+                    (<t t-esc="data_item['supplier_partner'].name" />)
+                    </span>
+                </t>
+            </div>
+            <!-- DESCRIPTION -->
+            <span t-att-style="item_style" t-raw="data_item['description']" />
+        </t>
 
     </template>
 
@@ -120,10 +148,7 @@
                 </table>
             </div>
 
-            <h3>
-                0 / <span t-esc="doc.stop_qty + 1" /> -
-                <span t-field="doc.starting_point_id.name"/>
-            </h3>
+
 
             <!--                             -->
             <!-- Detail for each line        -->
@@ -131,46 +156,9 @@
             <t t-set="i" t-value="0"/>
 
             <div class="page">
-            <t t-foreach="doc.line_ids.filtered(lambda x: x.sequence_type == 'journey')" t-as="tour_line">
 
-                <div style="page-break-before:avoid;">
-
-                    <!--                             -->
-                    <!-- LOADING PART                -->
-                    <!--                             -->
-                    <t t-set="i" t-value="i+1"/>
-                    <t t-set="loading_list" t-value="tour_line.get_report_request_lines('loading')" />
-
-                    <t t-foreach="loading_list" t-as="loading_item">
-                        <t t-set="request_key" t-value="loading_item['key']" />
-                        <t t-set="request_lines" t-value="loading_item['request_lines']" />
-                        <t t-call="joint_buying_base.report_joint_buying_tour_document_request_lines" />
-                    </t>
-
-                    <!--                             -->
-                    <!-- STEP PART                   -->
-                    <!--                             -->
-
-                </div>
-                    <div style="page-break-inside:avoid;">
-                        <h3>
-                            <span t-esc="i" /> / <span t-esc="doc.stop_qty + 1" /> -
-                            <span t-field="tour_line.arrival_point_id.name"/>
-                        </h3>
-
-                        <!--                             -->
-                        <!-- UNLOADING PART              -->
-                        <!--                             -->
-
-                        <t t-set="unloading_list" t-value="tour_line.get_report_request_lines('unloading')" />
-
-                        <t t-foreach="unloading_list" t-as="unloading_item">
-                            <t t-set="request_key" t-value="unloading_item['key']" />
-                            <t t-set="request_lines" t-value="unloading_item['request_lines']" />
-                            <t t-call="joint_buying_base.report_joint_buying_tour_document_request_lines" />
-                        </t>
-                    </div>
-                </t>
+                    <t t-set="data_list" t-value="doc.get_report_data()" />
+                    <t t-call="joint_buying_base.report_joint_buying_tour_document_request_lines" />
             </div>
         </t>
     </template>

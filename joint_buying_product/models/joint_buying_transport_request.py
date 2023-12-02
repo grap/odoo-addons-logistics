@@ -149,3 +149,10 @@ class JointBuyingTransportRequest(models.Model):
             request.can_change_date = False
             request.can_change_extra_data = False
             request.can_change_partners = False
+
+    def _get_report_tour_data_joint_buying(self):
+        self.ensure_one()
+        res = []
+        for line in self.order_id.line_ids.filtered(lambda x: x.qty != 0):
+            res.append(line._get_report_tour_data())
+        return res
