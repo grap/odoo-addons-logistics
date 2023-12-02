@@ -318,3 +318,29 @@ class JointBuyingTransportRequest(models.Model):
             limit=1000,
         )
         requests.button_compute_tour()
+
+    def _get_report_tour_data(self):
+        def _prepare_base_data(self):
+            return {
+                "request_id": self.id,
+                "recipient_partner": self.arrival_partner_id,
+                "origin_partner": self.start_partner_id,
+                "weight": self.total_weight,
+            }
+
+        self.ensure_one()
+        func = getattr(self, "_get_report_tour_data_%s" % self.request_type)
+        res = func()
+        for item in res:
+            item.update(_prepare_base_data(self))
+        return res
+
+    def _get_report_tour_data_manual(self):
+        self.ensure_one()
+        return [
+            {
+                "product_category": "",
+                "supplier_partner": False,
+                "description": self.description,
+            }
+        ]

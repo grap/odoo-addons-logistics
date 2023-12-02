@@ -347,3 +347,61 @@ class JointBuyingTour(models.Model):
         requests = self.mapped("line_ids.transport_request_line_ids.request_id")
         res["domain"] = [("id", "in", requests.ids)]
         return res
+
+    def get_report_data(self):
+        def key(item):
+            return (
+                str(item["handling_sequence"])
+                + "-"
+                + str(item["action_type"])
+                + "-"
+                + str(item["product_category"])
+                + "-"
+                + str(item["recipient_partner"])
+            )
+
+        def _prepare_base_data(transport_request_line):
+            return {
+                "request_line_id": transport_request_line.id,
+            }
+
+        self.ensure_one()
+        res = []
+        sequence = 0
+        for tour_line in self.line_ids.filtered(lambda x: x.sequence_type == "journey"):
+            sequence += 1
+            for transport_request_line in tour_line.transport_request_line_ids:
+                # Loading data
+                if transport_request_line.start_action_type == "loading":
+                    base_data = _prepare_base_data(transport_request_line)
+                    base_data.update(
+                        {
+                            "handling_sequence": sequence,
+                            "handling_partner": transport_request_line.starting_point_id,
+                            "action_type": "2_loading",
+                        }
+                    )
+                    lines_data = (
+                        transport_request_line.request_id._get_report_tour_data()
+                    )
+                    for line_data in lines_data:
+                        line_data.update(base_data)
+                        res.append(line_data)
+                if transport_request_line.arrival_action_type == "unloading":
+                    base_data = _prepare_base_data(transport_request_line)
+                    base_data.update(
+                        {
+                            "handling_sequence": sequence + 1,
+                            "handling_partner": transport_request_line.arrival_point_id,
+                            "action_type": "1_unloading",
+                        }
+                    )
+                    lines_data = (
+                        transport_request_line.request_id._get_report_tour_data()
+                    )
+                    for line_data in lines_data:
+                        line_data.update(base_data)
+                        res.append(line_data)
+
+        res = sorted(res, key=key)
+        return res
