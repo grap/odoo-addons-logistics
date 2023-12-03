@@ -10,3 +10,5 @@ from . import joint_buying_carrier
 from . import joint_buying_tour_type
 from . import joint_buying_tour
 from . import joint_buying_tour_line
+from . import joint_buying_transport_request
+from . import joint_buying_transport_request_line

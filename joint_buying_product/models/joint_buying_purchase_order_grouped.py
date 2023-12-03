@@ -91,7 +91,10 @@ class JointBuyingPurchaseOrderGrouped(models.Model):
     deposit_date = fields.Datetime(index=True, string="Deposit Date", required=True)
 
     order_ids = fields.One2many(
-        "joint.buying.purchase.order", inverse_name="grouped_order_id", readonly=True
+        "joint.buying.purchase.order",
+        inverse_name="grouped_order_id",
+        readonly=True,
+        copy=True,
     )
 
     order_qty = fields.Integer(
@@ -304,6 +307,8 @@ class JointBuyingPurchaseOrderGrouped(models.Model):
         res = super().write(vals)
         if not self.env.context.get("update_state_value"):
             self.update_state_value()
+        if {"deposit_date", "deposit_partner_id"}.intersection(set(vals.keys())):
+            self.mapped("order_ids.transport_request_id")._invalidate()
         return res
 
     @api.multi
@@ -387,6 +392,7 @@ class JointBuyingPurchaseOrderGrouped(models.Model):
                 grouped_order.with_context(update_state_value=True).write(
                     {"state": correct_state}
                 )
+                grouped_order.mapped("order_ids")._hook_state_changed()
                 if correct_state == "closed":
                     grouped_order.mapped("order_ids").correct_purchase_state()
 

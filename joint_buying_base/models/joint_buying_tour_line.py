@@ -7,6 +7,8 @@ import requests
 from odoo import _, api, fields, models
 from odoo.exceptions import UserError
 
+from odoo.addons import decimal_precision as dp
+
 from .res_partner import _JOINT_BUYING_PARTNER_CONTEXT
 
 _TOUR_LINE_SEQUENCE_TYPES = [
@@ -19,7 +21,7 @@ _TOUR_LINE_SEQUENCE_TYPES = [
 class JointBuyingTourLine(models.Model):
     _name = "joint.buying.tour.line"
     _description = "Joint Buying Tour Lines"
-    _order = "sequence"
+    _order = "start_date, sequence"
 
     sequence = fields.Integer()
 
@@ -36,9 +38,13 @@ class JointBuyingTourLine(models.Model):
 
     distance = fields.Float()
 
-    start_hour = fields.Float()
+    start_date = fields.Datetime()
 
-    arrival_hour = fields.Float()
+    arrival_date = fields.Datetime()
+
+    start_hour = fields.Float(compute="_compute_hours")
+
+    arrival_hour = fields.Float(compute="_compute_hours")
 
     starting_point_id = fields.Many2one(
         comodel_name="res.partner", context=_JOINT_BUYING_PARTNER_CONTEXT
@@ -60,6 +66,31 @@ class JointBuyingTourLine(models.Model):
         compute="_compute_costs", store=True, currency_field="currency_id"
     )
 
+    transport_request_line_ids = fields.One2many(
+        comodel_name="joint.buying.transport.request.line",
+        string="Transport Lines",
+        inverse_name="tour_line_id",
+    )
+
+    load = fields.Float(
+        compute="_compute_load",
+        digits=dp.get_precision("Stock Weight"),
+    )
+
+    @api.depends("start_date", "arrival_date")
+    def _compute_hours(self):
+        for line in self:
+            start_date = fields.Datetime.context_timestamp(self, line.start_date)
+            arrival_date = fields.Datetime.context_timestamp(self, line.arrival_date)
+            line.start_hour = (
+                start_date.hour + start_date.minute / 60 + start_date.second / 3600
+            )
+            line.arrival_hour = (
+                arrival_date.hour
+                + arrival_date.minute / 60
+                + arrival_date.second / 3600
+            )
+
     @api.depends(
         "tour_id.hourly_cost", "tour_id.kilometer_cost", "duration", "distance"
     )
@@ -67,6 +98,12 @@ class JointBuyingTourLine(models.Model):
         for line in self:
             line.salary_cost = line.duration * line.tour_id.hourly_cost
             line.vehicle_cost = +line.distance * line.tour_id.kilometer_cost
+
+    def _compute_load(self):
+        for tour_line in self:
+            tour_line.load = sum(
+                tour_line.mapped("transport_request_line_ids.request_id.total_weight")
+            )
 
     def _estimate_route_project_osrm(self):
         self.ensure_one()
@@ -98,7 +135,7 @@ class JointBuyingTourLine(models.Model):
             "duration": result.get("duration") / 3600,
         }
 
-    def estimate_route(self):
+    def _estimate_route(self):
         no_coordinate_partners = self.env["res.partner"]
         for line in self.filtered(lambda x: x.sequence_type == "journey"):
             if (
@@ -126,3 +163,33 @@ class JointBuyingTourLine(models.Model):
                 % ("<br/>- ".join([x.name for x in no_coordinate_partners])),
                 sticky=True,
             )
+
+    def get_report_request_lines(self, action_type):
+        """Return a a dict {key: value}
+        where value are a list of transport.request.line,
+        and key is a dict of caracteristics that describe the type of request lines
+        """
+        self.ensure_one()
+        if action_type == "loading":
+
+            def line_filter(x):
+                return x.start_action_type == action_type
+
+        else:
+
+            def line_filter(x):
+                return x.arrival_action_type == action_type
+
+        return [
+            {
+                "key": {"action_type": action_type},
+                "request_lines": self.mapped("transport_request_line_ids")
+                .filtered(line_filter)
+                .sorted(
+                    key=lambda r: (
+                        r.request_id.arrival_partner_id.joint_buying_code,
+                        r.request_id.start_partner_id.joint_buying_code,
+                    )
+                ),
+            }
+        ]

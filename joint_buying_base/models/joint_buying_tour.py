@@ -9,6 +9,7 @@ from bokeh.embed import components
 from bokeh.palettes import Category20c
 from bokeh.plotting import figure
 from bokeh.transform import cumsum
+from dateutil.relativedelta import relativedelta
 
 from odoo import _, api, fields, models
 
@@ -98,6 +99,8 @@ class JointBuyingTour(models.Model):
 
     cost_chart = fields.Text(compute="_compute_cost_chart")
 
+    transport_request_qty = fields.Integer(compute="_compute_transport_request_qty")
+
     @api.onchange("type_id")
     def _onchange_type_id(self):
         if self.type_id and self.type_id.carrier_id:
@@ -121,6 +124,13 @@ class JointBuyingTour(models.Model):
                 tour.name += f" - {tour.type_id.name}"
             if not tour.name:
                 tour.name = _("Draft Tour")
+
+    @api.depends("line_ids.transport_request_line_ids.request_id")
+    def _compute_transport_request_qty(self):
+        for request in self:
+            request.transport_request_qty = len(
+                request.mapped("line_ids.transport_request_line_ids.request_id")
+            )
 
     @api.depends("salary_cost", "toll_cost", "vehicle_cost")
     def _compute_cost(self):
@@ -194,19 +204,11 @@ class JointBuyingTour(models.Model):
             for line in tour.line_ids.filtered(lambda x: x.sequence_type == "journey"):
                 if not codes:
                     codes = [
-                        line.starting_point_id.joint_buying_company_id
-                        and line.starting_point_id.joint_buying_company_id.code
-                        or line.starting_point_id.name,
-                        line.arrival_point_id.joint_buying_company_id
-                        and line.arrival_point_id.joint_buying_company_id.code
-                        or line.arrival_point_id.name,
+                        line.starting_point_id.joint_buying_code,
+                        line.arrival_point_id.joint_buying_code,
                     ]
                 else:
-                    codes.append(
-                        line.arrival_point_id.joint_buying_company_id
-                        and line.arrival_point_id.joint_buying_company_id.code
-                        or line.arrival_point_id.name,
-                    )
+                    codes.append(line.arrival_point_id.joint_buying_code)
             tour.summary = f"{' -> '.join(codes)}"
 
     def _compute_description(self):
@@ -279,28 +281,43 @@ class JointBuyingTour(models.Model):
 
     @api.multi
     def write(self, vals):
+        min_date = min(self.mapped("start_date"))
         res = super().write(vals)
-        if "start_date" in vals:
-            self.recompute_start_hours()
+        if {"start_date", "line_ids"}.intersection(vals.keys()):
+            self.recompute_dates()
+        min_date = min([min_date] + self.mapped("start_date"))
+        self._invalidate_transport_requests(min_date)
         return res
 
+    @api.multi
+    def unlink(self):
+        min_date = min(self.mapped("start_date"))
+        self._invalidate_transport_requests(min_date)
+        return super().unlink()
+
+    @api.model
+    def _invalidate_transport_requests(self, min_date):
+        requests = self.env["joint.buying.transport.request"].search(
+            [("state", "=", "computed"), ("arrival_date", ">", min_date)]
+        )
+        requests._invalidate()
+
     def estimate_route(self):
-        self.mapped("line_ids").estimate_route()
-        self.recompute_start_hours()
+        self.mapped("line_ids")._estimate_route()
+        self.recompute_dates()
 
-    def recompute_start_hours(self):
-        def _time_to_float(time):
-            return time.hour + time.minute / 60
-
+    def recompute_dates(self):
         for tour in self:
-            if not tour.line_ids:
-                continue
-            date_tz = fields.Datetime.context_timestamp(self, tour.start_date)
-            start_hour = _time_to_float(date_tz.time())
+            start_date = tour.start_date
             for line in tour.line_ids:
-                line.start_hour = start_hour
-                line.arrival_hour = start_hour + line.duration
-                start_hour += line.duration
+                arrival_date = start_date + relativedelta(hours=line.duration)
+                line.write(
+                    {
+                        "start_date": start_date,
+                        "arrival_date": arrival_date,
+                    }
+                )
+                start_date = arrival_date
 
     def see_steps(self):
         self.ensure_one()
@@ -313,3 +330,83 @@ class JointBuyingTour(models.Model):
         action["view_mode"] = "leaflet_map,tree,form"
         action["domain"] = [("id", "in", steps.ids)]
         return action
+
+    @api.multi
+    def display_time(self, time):
+        return (
+            f"{str(int(time)).rjust(2, '0')}"
+            f":{str(int((time % 1) * 60)).rjust(2, '0')}"
+        )
+
+    @api.multi
+    def button_see_transport_requests(self):
+        self.ensure_one()
+        res = self.env["ir.actions.act_window"].for_xml_id(
+            "joint_buying_base", "action_joint_buying_transport_request"
+        )
+        requests = self.mapped("line_ids.transport_request_line_ids.request_id")
+        res["domain"] = [("id", "in", requests.ids)]
+        return res
+
+    def get_report_data(self):
+        def key(item):
+            return (
+                str(item["handling_sequence"])
+                + "-"
+                + str(item["action_type"])
+                + "-"
+                + str(item["product_category"])
+                + "-"
+                + str(item["recipient_partner"])
+            )
+
+        def _prepare_base_data(transport_request_line):
+            return {
+                "request_line_id": transport_request_line.id,
+            }
+
+        self.ensure_one()
+        res = []
+        sequence = 0
+        for tour_line in self.line_ids.filtered(lambda x: x.sequence_type == "journey"):
+            sequence += 1
+            for transport_request_line in tour_line.transport_request_line_ids:
+                # Loading data
+                if transport_request_line.start_action_type == "loading":
+                    base_data = _prepare_base_data(transport_request_line)
+                    base_data.update(
+                        {
+                            "handling_sequence": sequence,
+                            "handling_partner": transport_request_line.starting_point_id,
+                            "action_type": "2_loading",
+                        }
+                    )
+                    lines_data = (
+                        transport_request_line.request_id._get_report_tour_data()
+                    )
+                    for line_data in lines_data:
+                        line_data.update(base_data)
+                        res.append(line_data)
+                if transport_request_line.arrival_action_type == "unloading":
+                    base_data = _prepare_base_data(transport_request_line)
+                    base_data.update(
+                        {
+                            "handling_sequence": sequence + 1,
+                            "handling_partner": transport_request_line.arrival_point_id,
+                            "action_type": "1_unloading",
+                        }
+                    )
+                    lines_data = (
+                        transport_request_line.request_id._get_report_tour_data()
+                    )
+                    for line_data in lines_data:
+                        line_data.update(base_data)
+                        res.append(line_data)
+
+        res = sorted(res, key=key)
+        return res
+
+    def get_report_tour_category_url(self, category):
+        """Overload in other module, to return the path to an image
+        for the given category"""
+        return ""

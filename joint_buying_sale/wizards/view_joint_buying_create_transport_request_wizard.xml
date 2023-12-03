@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+Copyright (C) 2021 - Today: GRAP (http://www.grap.coop)
+@author: Sylvain LE GAL (https://twitter.com/legalsylvain)
+License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl.html).
+-->
+<odoo>
+    <record id="view_joint_buying_create_transport_request_wizard_form" model="ir.ui.view">
+        <field name="model">joint.buying.create.transport.request.wizard</field>
+        <field name="arch" type="xml">
+            <form>
+                <group>
+                    <field name="sale_order_id" />
+                    <field name="availability_date" />
+                    <field name="start_partner_id" />
+                    <field name="arrival_partner_id" />
+                </group>
+                <group string="List of Products">
+                    <field name="product_ids" nolabel="1">
+                        <tree editable="bottom" delete="false" create="false">
+                            <field name="name" readonly="1"/>
+                            <field name="weight" required="1"/>
+                        </tree>
+                    </field>
+                </group>
+                <footer>
+                    <button name="create_transport_request"
+                            string="Generate Transport Request"
+                            type="object"
+                            class="oe_highlight"/>
+                    or
+                    <button string="Cancel" class="oe_link" special="cancel"/>
+                </footer>
+            </form>
+        </field>
+    </record>
+
+    <record id="action_wizard_create_transport_request" model="ir.actions.act_window">
+        <field name="name">Generate Transport Request</field>
+        <field name="type">ir.actions.act_window</field>
+        <field name="res_model">joint.buying.create.transport.request.wizard</field>
+        <field name="view_type">form</field>
+        <field name="view_mode">form</field>
+        <field name="target">new</field>
+        <field name="binding_model_id" ref="sale.model_sale_order" />
+    </record>
+
+</odoo>

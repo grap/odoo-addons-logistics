@@ -242,3 +242,9 @@ class ProductProduct(models.Model):
                 }
             )
         return vals
+
+    def _get_report_tour_category(self):
+        """Overload in other module, to return category that
+        will impact order in the joint.buying.tour report"""
+        self.ensure_one()
+        return ""

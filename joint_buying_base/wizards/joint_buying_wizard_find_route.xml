@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+Copyright (C) 2022 - Today: GRAP (http://www.grap.coop)
+@author: Sylvain LE GAL (https://twitter.com/legalsylvain)
+License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl.html).
+-->
+<odoo>
+    <record id="view_joint_buying_wizard_find_route_form" model="ir.ui.view">
+        <field name="model">joint.buying.wizard.find.route</field>
+        <field name="arch" type="xml">
+            <form>
+                <group col="4">
+                    <field name="transport_request_id"/>
+                    <field name="availability_date"/>
+                    <field name="start_partner_id"/>
+                    <field name="arrival_partner_id"/>
+                </group>
+                <notebook>
+                    <page string="Tour Lines">
+                        <field name="tour_line_ids">
+                            <tree>
+                                <field name="start_date"/>
+                                <field name="starting_point_id"/>
+                                <field name="arrival_date"/>
+                                <field name="arrival_point_id"/>
+                                <field name="distance"/>
+                            </tree>
+                        </field>
+                    </page>
+                    <page string="Technical Information">
+                        <field name="tree_text"/>
+                        <field name="is_different_simulation"/>
+                    </page>
+                </notebook>
+                <footer>
+                    <button name="button_apply"
+                            string="Apply"
+                            type="object"
+                            class="oe_highlight"
+                            attrs="{'invisible': [('is_different_simulation', '=', False)]}"
+                        />
+                    or
+                    <button string="Cancel" class="oe_link" special="cancel"/>
+                </footer>
+            </form>
+        </field>
+    </record>
+</odoo>

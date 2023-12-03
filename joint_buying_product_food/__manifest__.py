@@ -13,7 +13,10 @@
         "joint_buying_product",
         "product_food",
     ],
-    "data": ["views/view_res_partner.xml", "views/view_product_product.xml"],
+    "data": [
+        "views/view_res_partner.xml",
+        "views/view_product_product.xml",
+    ],
     "installable": True,
     "auto_install": True,
 }

@@ -46,6 +46,13 @@ class ResCompany(models.Model):
         store=True,
     )
 
+    joint_buying_is_durable_storage = fields.Boolean(
+        related="joint_buying_partner_id.joint_buying_is_durable_storage",
+        string="Durable Storage",
+        readonly=False,
+        store=True,
+    )
+
     def _get_company_fields_for_joint_buying_partner(self):
         """Return the company fields that raise the update
         of the related joint buying partner"""
@@ -94,9 +101,21 @@ class ResCompany(models.Model):
     def create(self, vals):
         ResPartner = self.env["res.partner"]
         res = super().create(vals)
+        partner_vals = res._prepare_joint_buying_partner_vals()
+        # Handle relate fields, that are not correctly initialized
+        # at the creation.
+        if "is_joint_buying_customer" in vals:
+            partner_vals["customer"] = vals.get("is_joint_buying_customer")
+        if "is_joint_buying_supplier" in vals:
+            partner_vals["supplier"] = vals.get("is_joint_buying_supplier")
+        if "joint_buying_is_durable_storage" in vals:
+            partner_vals["joint_buying_is_durable_storage"] = vals.get(
+                "joint_buying_is_durable_storage"
+            )
+
         res.joint_buying_partner_id = ResPartner.with_context(
             write_joint_buying_partner=True, no_check_joint_buying=True
-        ).create(res._prepare_joint_buying_partner_vals())
+        ).create(partner_vals)
         return res
 
     @api.multi

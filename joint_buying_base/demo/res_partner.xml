@@ -7,7 +7,7 @@
 <odoo>
 
     <record id="supplier_demo_joint_buying" model="res.partner">
-        <field name="name">Joint Buying Supplier for Your Company / Demo User</field>
+        <field name="name">Joint Buying Supplier for Your Company</field>
         <field name="street">street</field>
         <field name="street2">street 2</field>
         <field name="city">City</field>
@@ -96,6 +96,8 @@
         <field name="joint_buying_pivot_company_id" ref="joint_buying_base.company_LSE"/>
         <field name="joint_buying_subscribed_company_ids" eval="[
             (4, ref('joint_buying_base.company_LSE')),
+            (4, ref('joint_buying_base.company_VEV')),
+            (4, ref('joint_buying_base.company_CDA')),
         ]"/>
         <field name="category_id" eval="[
             (4, ref('joint_buying_base.partner_category_vegetable')),
@@ -110,6 +112,7 @@
         <field name="country_id" ref="base.fr"/>
         <field name="is_joint_buying" eval="True"/>
         <field name="is_joint_buying_stage" eval="True"/>
+        <field name="joint_buying_is_durable_storage" eval="True"/>
         <field name="customer" eval="False"/>
         <field name="supplier" eval="False"/>
         <field name="company_id" eval="False"/>

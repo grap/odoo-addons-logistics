@@ -2,7 +2,7 @@
 # @author: Sylvain LE GAL (https://twitter.com/legalsylvain)
 # License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl.html).
 
-from datetime import timedelta
+from datetime import datetime, timedelta
 
 from odoo import fields
 from odoo.tests import tagged
@@ -83,7 +83,9 @@ class TestAbstract(TransactionCase):
         return order_grouped
 
     def _get_grouped_order_benoit_ronzon(self):
-        if not self.partner_supplier_benoit_ronzon.joint_buying_grouped_order_ids:
+        if not self.partner_supplier_benoit_ronzon.joint_buying_grouped_order_ids.filtered(
+            lambda x: x.deposit_date > datetime.now()
+        ):
             self.OrderGrouped.cron_create_purchase_order_grouped()
         return self.partner_supplier_benoit_ronzon.joint_buying_grouped_order_ids[0]
 

@@ -14,6 +14,14 @@ class TestAbstract(TransactionCase):
             mail_create_nosubscribe=True
         )
 
+        self.user_3PP = self.env.ref("joint_buying_base.user_joint_buying_user_3PP")
+
+        self.company_3PP = self.env.ref("joint_buying_base.company_3PP")
+        self.company_CDA = self.env.ref("joint_buying_base.company_CDA")
+        self.company_CHE = self.env.ref("joint_buying_base.company_CHE")
+        self.company_ELD = self.env.ref("joint_buying_base.company_ELD")
+        self.company_VEV = self.env.ref("joint_buying_base.company_VEV")
+
     # Custom Functions
     def _create_supplier(self, user=False, extra_vals=False):
         if not user:

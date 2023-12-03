@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+Copyright (C) 2023 - Today: GRAP (http://www.grap.coop)
+@author: Sylvain LE GAL (https://twitter.com/legalsylvain)
+License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl.html).
+-->
+<odoo>
+    <record id="view_joint_buying_tour_line_search" model="ir.ui.view">
+        <field name="model">joint.buying.tour.line</field>
+        <field name="arch" type="xml">
+            <search>
+                <field name="tour_id"/>
+                <field name="sequence_type"/>
+            </search>
+        </field>
+    </record>
+
+    <record id="view_joint_buying_tour_line_calendar" model="ir.ui.view">
+        <field name="model">joint.buying.tour.line</field>
+        <field name="arch" type="xml">
+            <calendar date_start="start_date" date_stop="arrival_date" color="sequence_type">
+                <field name="sequence_type"/>
+            </calendar>
+        </field>
+    </record>
+
+    <record id="view_joint_buying_tour_line_tree" model="ir.ui.view">
+        <field name="model">joint.buying.tour.line</field>
+        <field name="arch" type="xml">
+            <tree>
+                <field name="start_date"/>
+                <field name="arrival_hour" widget="float_time"/>
+                <field name="currency_id" invisible="1"/>
+                <field name="sequence_type"/>
+                <field name="starting_point_id" attrs="{'invisible': [('sequence_type', '!=', 'journey')]}"/>
+                <field name="arrival_point_id" attrs="{'invisible': [('sequence_type', '!=', 'journey')]}"/>
+                <field name="duration" widget="float_time" sum="Total Duration"/>
+                <field name="distance" attrs="{'invisible': [('sequence_type', '!=', 'journey')]}" sum="Total Distance"/>
+            </tree>
+        </field>
+    </record>
+
+</odoo>
