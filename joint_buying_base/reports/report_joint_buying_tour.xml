@@ -7,15 +7,19 @@
 
         <t t-foreach="data_list" t-as="data_item">
             <!-- New STEP (HANDLING SEQUENCE) -->
-            <h3 t-if="data_item['handling_sequence'] != handling_sequence"
+            <t t-if="data_item['handling_sequence'] != handling_sequence"
                 t-att-style="title_style"
             >
                 <t t-set="handling_sequence" t-value="data_item['handling_sequence']" />
                 <t t-set="action_type" t-value="" />
                 <t t-set="product_category" t-value="" />
-                <span t-esc="handling_sequence" /> / <span t-esc="doc.stop_qty + 2" /> -
-                <span t-esc="data_item['handling_partner'].name"/>
-            </h3>
+                <hr size="3"/>
+                <h3>
+                    <span t-esc="handling_sequence" /> / <span t-esc="doc.stop_qty + 2" /> -
+                    <span t-esc="data_item['handling_partner'].name"/>
+                </h3>
+                <hr size="3"/>
+            </t>
 
             <t t-if="data_item['action_type'] == '2_loading'">
                 <t t-set="section_style" t-value="'background-color:#FFA;'"/>
@@ -36,6 +40,9 @@
                 <t t-set="action_type" t-value="data_item['action_type']" />
                 <t t-set="request_id" t-value="" />
                 <t t-set="product_category" t-value="data_item['product_category']" />
+                <t t-if="product_category">
+                    <img style="width:32px;height:32px;" t-att-src="doc.get_report_tour_category_url(product_category)"/>
+                </t>
                 <t t-if="action_type == '1_unloading'">Unloading</t>
                 <t t-if="action_type == '2_loading'">Loading</t>
             </h4>
