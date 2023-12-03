@@ -405,3 +405,8 @@ class JointBuyingTour(models.Model):
 
         res = sorted(res, key=key)
         return res
+
+    def get_report_tour_category_url(self, category):
+        """Overload in other module, to return the path to an image
+        for the given category"""
+        return ""
