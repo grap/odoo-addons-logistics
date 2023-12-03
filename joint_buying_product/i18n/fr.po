@@ -499,11 +499,11 @@ msgid "Companies"
 msgstr "Sociétés"
 
 #. module: joint_buying_product
-#: code:addons/joint_buying_product/models/joint_buying_purchase_order_grouped.py:528
-#: code:addons/joint_buying_product/models/joint_buying_purchase_order_grouped.py:569
+#: code:addons/joint_buying_product/models/joint_buying_purchase_order_grouped.py:542
+#: code:addons/joint_buying_product/models/joint_buying_purchase_order_grouped.py:583
 #, python-format
 msgid "Compose Email"
-msgstr ""
+msgstr "Rédiger un courriel"
 
 #. module: joint_buying_product
 #: model:ir.model.fields,field_description:joint_buying_product.field_mail_compose_message_purchase_order_grouped__composer_id
@@ -729,6 +729,11 @@ msgid "Favorited By"
 msgstr "Préféré par"
 
 #. module: joint_buying_product
+#: model:ir.model.fields,field_description:joint_buying_product.field_joint_buying_purchase_order__request_arrival_date
+msgid "Final Delivery Date"
+msgstr "Date de livraison finale"
+
+#. module: joint_buying_product
 #: model:ir.model.fields,field_description:joint_buying_product.field_joint_buying_category__message_follower_ids
 #: model:ir.model.fields,field_description:joint_buying_product.field_joint_buying_purchase_order__message_follower_ids
 #: model:ir.model.fields,field_description:joint_buying_product.field_joint_buying_purchase_order_grouped__message_follower_ids
@@ -814,8 +819,8 @@ msgid "Gingembrette Sachet 200gr @ Three Peas"
 msgstr ""
 
 #. module: joint_buying_product
-#: code:addons/joint_buying_product/models/joint_buying_purchase_order_grouped.py:516
-#: code:addons/joint_buying_product/models/joint_buying_purchase_order_grouped.py:559
+#: code:addons/joint_buying_product/models/joint_buying_purchase_order_grouped.py:530
+#: code:addons/joint_buying_product/models/joint_buying_purchase_order_grouped.py:573
 #: model:ir.actions.report,name:joint_buying_product.action_report_joint_buying_purchase_order_grouped
 #: model:ir.model.fields,field_description:joint_buying_product.field_joint_buying_purchase_order__grouped_order_id
 #: model:ir.model.fields,field_description:joint_buying_product.field_mail_compose_message_purchase_order_grouped__grouped_order_id
@@ -946,7 +951,7 @@ msgid "Include products that have not been ordered."
 msgstr "Inclure les articles qui n'ont pas été commandés."
 
 #. module: joint_buying_product
-#: code:addons/joint_buying_product/models/joint_buying_purchase_order_grouped.py:151
+#: code:addons/joint_buying_product/models/joint_buying_purchase_order_grouped.py:160
 #, python-format
 msgid "Incorrect setting:\n"
 "\n"
@@ -981,14 +986,17 @@ msgid "Is Follower"
 msgstr "Est un abonné"
 
 #. module: joint_buying_product
-#: model:ir.model.fields,field_description:joint_buying_product.field_joint_buying_purchase_order_grouped__is_mine
-msgid "Is Mine"
-msgstr "Me concerne"
-
-#. module: joint_buying_product
 #: model:ir.model.fields,field_description:joint_buying_product.field_joint_buying_purchase_order__is_mine_customer
+#: model:ir.model.fields,field_description:joint_buying_product.field_joint_buying_purchase_order_line__is_mine_customer
 msgid "Is Mine Customer"
 msgstr "Me concerne en tant que client"
+
+#. module: joint_buying_product
+#: model:ir.model.fields,field_description:joint_buying_product.field_joint_buying_purchase_order__is_mine_pivot
+#: model:ir.model.fields,field_description:joint_buying_product.field_joint_buying_purchase_order_grouped__is_mine_pivot
+#: model:ir.model.fields,field_description:joint_buying_product.field_joint_buying_purchase_order_line__is_mine_pivot
+msgid "Is Mine Pivot"
+msgstr "Je suis pivot"
 
 #. module: joint_buying_product
 #: model:ir.model.fields,field_description:joint_buying_product.field_joint_buying_purchase_order__is_mine_supplier
@@ -1040,6 +1048,7 @@ msgstr "Partenaire global pour les commandes groupées"
 #: model:ir.model,name:joint_buying_product.model_joint_buying_purchase_order_grouped
 #: model:ir.model.fields,field_description:joint_buying_product.field_res_partner__joint_buying_grouped_order_ids
 #: model:ir.model.fields,field_description:joint_buying_product.field_res_users__joint_buying_grouped_order_ids
+#: selection:joint.buying.transport.request,request_type:0
 msgid "Joint Buying Grouped Order"
 msgstr "Commande groupée"
 
@@ -1106,6 +1115,11 @@ msgstr "Quantité d'article"
 #: model:ir.model,name:joint_buying_product.model_joint_buying_purchase_order_line
 msgid "Joint Buying Purchase Order"
 msgstr "Commande"
+
+#. module: joint_buying_product
+#: model:ir.model,name:joint_buying_product.model_joint_buying_transport_request
+msgid "Joint Buying Transport Request"
+msgstr "Demande de transport"
 
 #. module: joint_buying_product
 #: model:ir.model,name:joint_buying_product.model_joint_buying_wizard_create_order
@@ -1208,6 +1222,11 @@ msgid "List of Customers"
 msgstr "Liste des clients"
 
 #. module: joint_buying_product
+#: model:ir.model.fields,field_description:joint_buying_product.field_joint_buying_purchase_order_line__local_product_id
+msgid "Local Product"
+msgstr "Article local"
+
+#. module: joint_buying_product
 #: model:ir.model.fields,field_description:joint_buying_product.field_mail_compose_message_purchase_order_grouped__is_log
 msgid "Log an Internal Note"
 msgstr "Enregistrer une note interne"
@@ -1238,6 +1257,11 @@ msgstr "Mail envoyé"
 #: model:ir.model.fields,field_description:joint_buying_product.field_joint_buying_purchase_order_grouped__message_main_attachment_id
 msgid "Main Attachment"
 msgstr "Pièce jointe principale"
+
+#. module: joint_buying_product
+#: selection:joint.buying.transport.request,request_type:0
+msgid "Manual"
+msgstr "Manuel"
 
 #. module: joint_buying_product
 #: model:ir.model.fields,help:joint_buying_product.field_product_product__joint_buying_is_mine
@@ -1661,6 +1685,7 @@ msgstr ""
 
 #. module: joint_buying_product
 #: model:ir.model.fields,field_description:joint_buying_product.field_joint_buying_purchase_order_grouped__order_ids
+#: model:ir.model.fields,field_description:joint_buying_product.field_joint_buying_transport_request__order_id
 msgid "Order"
 msgstr "Commande"
 
@@ -1743,6 +1768,7 @@ msgstr "Commandes groupées en cours"
 #. module: joint_buying_product
 #: model:ir.model.fields,field_description:joint_buying_product.field_joint_buying_purchase_order__pivot_company_id
 #: model:ir.model.fields,field_description:joint_buying_product.field_joint_buying_purchase_order_grouped__pivot_company_id
+#: model:ir.model.fields,field_description:joint_buying_product.field_joint_buying_purchase_order_line__pivot_company_id
 #: model:ir.model.fields,field_description:joint_buying_product.field_joint_buying_wizard_create_order__pivot_company_id
 #: model_terms:ir.ui.view,arch_db:joint_buying_product.view_joint_buying_purchase_order_grouped_search
 #: model_terms:ir.ui.view,arch_db:joint_buying_product.view_joint_buying_purchase_order_search
@@ -1764,6 +1790,12 @@ msgstr "Prévu"
 #: model:product.product,name:joint_buying_product.product_ronzon_patatoe_agila
 #: model:product.template,name:joint_buying_product.product_ronzon_patatoe_agila_product_template
 msgid "Potatoes Agila (Bag of 10kg) (Global)"
+msgstr ""
+
+#. module: joint_buying_product
+#: model:product.product,name:joint_buying_product.product_LSE_patatoe_agila
+#: model:product.template,name:joint_buying_product.product_LSE_patatoe_agila_product_template
+msgid "Potatoes Agila (Bag of 10kg) @ Super Mall"
 msgstr ""
 
 #. module: joint_buying_product
@@ -1903,6 +1935,11 @@ msgid "Reply-To"
 msgstr "Répondre à"
 
 #. module: joint_buying_product
+#: model:ir.model.fields,field_description:joint_buying_product.field_joint_buying_transport_request__request_type
+msgid "Request Type"
+msgstr "Type de demande"
+
+#. module: joint_buying_product
 #: model_terms:ir.ui.view,arch_db:joint_buying_product.view_joint_buying_purchase_order_grouped_form
 msgid "Resend  to Supplier by Email"
 msgstr "Réenvoyer au fournisseur par email"
@@ -1923,6 +1960,11 @@ msgstr "Responsable"
 #: model:product.template,name:joint_buying_product.product_devidal_rillette_product_template
 msgid "Rillette (500gr) (Global)"
 msgstr ""
+
+#. module: joint_buying_product
+#: selection:joint.buying.transport.request,request_type:0
+msgid "Sale Order"
+msgstr "Commande de vente"
 
 #. module: joint_buying_product
 #: model:product.product,name:joint_buying_product.product_devidal_saucisson
@@ -2134,7 +2176,12 @@ msgid "Technical field, used to display matrix with web_widget_x2many_2d_matrix 
 msgstr "Champ technique, utilisé pour afficher la matrice de produit, via le module web_widget_x2many_2d_matrix."
 
 #. module: joint_buying_product
-#: code:addons/joint_buying_product/models/joint_buying_purchase_order_grouped.py:622
+#: model:ir.model.fields,help:joint_buying_product.field_joint_buying_purchase_order__transport_request_ids
+msgid "Technical field, used to know if the joint buying purchase order has a related joint buying transport request created. It can contain only 0 or one transport request."
+msgstr "Champ technique, utilisé pour savoir si la commande groupée a une demande de transport associée. Il peut seulement contenir 0 ou une demande de transport."
+
+#. module: joint_buying_product
+#: code:addons/joint_buying_product/models/joint_buying_purchase_order_grouped.py:636
 #, python-format
 msgid "The company '%s' has been subscribed to the supplier '%s'."
 msgstr "La société '%s' a été abonnée au fournisseur '%s'."
@@ -2152,7 +2199,7 @@ msgid "The start date must be less than the end date."
 msgstr "La date de début doit être inférieure à la date de fin."
 
 #. module: joint_buying_product
-#: code:addons/joint_buying_product/wizards/joint_buying_wizard_create_order.py:147
+#: code:addons/joint_buying_product/wizards/joint_buying_wizard_create_order.py:149
 #, python-format
 msgid "There are already one or more group orders open for this period. Are you sure you want to open another one ?<br/><br/> - %s"
 msgstr "Il y a déjà une ou plusieurs commandes groupées ouverte sur ces périodes. Etes vous sûr de vouloir ouvrir une autre commande groupée ?<br/><br/> - %s"
@@ -2192,6 +2239,7 @@ msgstr "Aujourd'hui"
 
 #. module: joint_buying_product
 #: model_terms:ir.ui.view,arch_db:joint_buying_product.report_joint_buying_purchase_order_grouped_document
+#: model_terms:ir.ui.view,arch_db:joint_buying_product.view_joint_buying_purchase_order_form
 msgid "Total"
 msgstr ""
 
@@ -2235,6 +2283,17 @@ msgid "Tracking values"
 msgstr "Suivi des valeurs"
 
 #. module: joint_buying_product
+#: model:ir.model.fields,field_description:joint_buying_product.field_joint_buying_purchase_order__transport_request_id
+#: model_terms:ir.ui.view,arch_db:joint_buying_product.view_joint_buying_purchase_order_form
+msgid "Transport Request"
+msgstr "Demande de transport"
+
+#. module: joint_buying_product
+#: model:ir.model.fields,field_description:joint_buying_product.field_joint_buying_purchase_order__transport_request_ids
+msgid "Transport Requests"
+msgstr "Demande de transport"
+
+#. module: joint_buying_product
 #: model:ir.model.fields,field_description:joint_buying_product.field_mail_compose_message_purchase_order_grouped__message_type
 msgid "Type"
 msgstr ""
@@ -2257,7 +2316,7 @@ msgid "Unavailable Product (450gr) (Global)"
 msgstr "Article indisponible (450gr) (Global)"
 
 #. module: joint_buying_product
-#: code:addons/joint_buying_product/models/product_product.py:168
+#: code:addons/joint_buying_product/models/product_product.py:175
 #, python-format
 msgid "Unimplemented Feature"
 msgstr "Fonctionnalité non implémentée"
@@ -2411,25 +2470,25 @@ msgid "Wizard"
 msgstr "Assistant"
 
 #. module: joint_buying_product
-#: code:addons/joint_buying_product/models/product_product.py:145
+#: code:addons/joint_buying_product/models/product_product.py:152
 #, python-format
 msgid "You can not change the value of the Joint buying partner."
 msgstr "Vous ne pouvez pas changer la valeur de partenaire de commande groupée"
 
 #. module: joint_buying_product
-#: code:addons/joint_buying_product/models/joint_buying_purchase_order.py:270
+#: code:addons/joint_buying_product/models/joint_buying_purchase_order.py:372
 #, python-format
 msgid "You can not confirm an order with null amount."
 msgstr "Vous ne pouvez pas confirmer une commande avec un montant nul."
 
 #. module: joint_buying_product
-#: code:addons/joint_buying_product/models/joint_buying_purchase_order.py:266
+#: code:addons/joint_buying_product/models/joint_buying_purchase_order.py:368
 #, python-format
 msgid "You can not confirm an order without any lines."
 msgstr "Vous ne pouvez pas confirmer une commande sans lignes."
 
 #. module: joint_buying_product
-#: code:addons/joint_buying_product/models/product_product.py:129
+#: code:addons/joint_buying_product/models/product_product.py:136
 #, python-format
 msgid "You can not create a Joint buying Product for this supplier. Please ask to the saler to do it by clicking on 'Offer For Joint Buying' on him product."
 msgstr "Vous ne pouvez pas créer un article pour ce fournisseur. Veuillez lui demander de le faire en cliquaunt sur le bouton 'proposer à la vente' sur sa fiche article"
@@ -2451,13 +2510,13 @@ msgid "You can not set a negative quantity in the 'Purchase Quantity' field !"
 msgstr "Vous ne pouvez pas saisir de quantité négative dans le champ 'quantité à commander' !"
 
 #. module: joint_buying_product
-#: code:addons/joint_buying_product/models/joint_buying_purchase_order.py:274
+#: code:addons/joint_buying_product/models/joint_buying_purchase_order.py:376
 #, python-format
 msgid "You cannot confirm an order for which you have not reached the minimum purchase amount."
 msgstr "Vous ne pouvez pas confirmer une commande pour laquelle le franco de port n'est pas atteint."
 
 #. module: joint_buying_product
-#: code:addons/joint_buying_product/models/joint_buying_purchase_order.py:281
+#: code:addons/joint_buying_product/models/joint_buying_purchase_order.py:383
 #, python-format
 msgid "You cannot confirm an order for which you have not reached the minimum weight."
 msgstr "Vous ne pouvez pas confirmer une commande pour laquelle le franco de port n'est pas atteint."
@@ -2475,12 +2534,13 @@ msgid "You have not reached the minimum amount."
 msgstr "Vous n'avez pas atteint le montant minimum."
 
 #. module: joint_buying_product
-#: code:addons/joint_buying_product/models/product_product.py:102
+#: code:addons/joint_buying_product/models/product_product.py:109
 #, python-format
 msgid "You should set a Joint Buying Supplier for Joint Buying Products"
 msgstr "Vous devriez définir un fournisseur pour ces articles de commandes groupées."
 
 #. module: joint_buying_product
+#: model:product.product,uom_name:joint_buying_product.product_LSE_patatoe_agila
 #: model:product.product,uom_name:joint_buying_product.product_PZI_orange_moro
 #: model:product.product,uom_name:joint_buying_product.product_PZI_orange_navelina
 #: model:product.product,uom_name:joint_buying_product.product_devidal_caillette
@@ -2494,6 +2554,7 @@ msgstr "Vous devriez définir un fournisseur pour ces articles de commandes grou
 #: model:product.product,weight_uom_name:joint_buying_product.product_3PP_orangettes
 #: model:product.product,weight_uom_name:joint_buying_product.product_ELD_gingembrettes
 #: model:product.product,weight_uom_name:joint_buying_product.product_ELD_orangettes
+#: model:product.product,weight_uom_name:joint_buying_product.product_LSE_patatoe_agila
 #: model:product.product,weight_uom_name:joint_buying_product.product_PZI_oil
 #: model:product.product,weight_uom_name:joint_buying_product.product_PZI_orange_moro
 #: model:product.product,weight_uom_name:joint_buying_product.product_PZI_orange_navelina
@@ -2510,6 +2571,7 @@ msgstr "Vous devriez définir un fournisseur pour ces articles de commandes grou
 #: model:product.product,weight_uom_name:joint_buying_product.product_ronzon_patatoe_agila
 #: model:product.product,weight_uom_name:joint_buying_product.product_ronzon_patatoe_cephora
 #: model:product.product,weight_uom_name:joint_buying_product.product_ronzon_patatoe_charlotte
+#: model:product.template,uom_name:joint_buying_product.product_LSE_patatoe_agila_product_template
 #: model:product.template,uom_name:joint_buying_product.product_PZI_orange_moro_product_template
 #: model:product.template,uom_name:joint_buying_product.product_PZI_orange_navelina_product_template
 #: model:product.template,uom_name:joint_buying_product.product_devidal_caillette_product_template
@@ -2523,6 +2585,7 @@ msgstr "Vous devriez définir un fournisseur pour ces articles de commandes grou
 #: model:product.template,weight_uom_name:joint_buying_product.product_3PP_orangettes_product_template
 #: model:product.template,weight_uom_name:joint_buying_product.product_ELD_gingembrettes_product_template
 #: model:product.template,weight_uom_name:joint_buying_product.product_ELD_orangettes_product_template
+#: model:product.template,weight_uom_name:joint_buying_product.product_LSE_patatoe_agila_product_template
 #: model:product.template,weight_uom_name:joint_buying_product.product_PZI_oil_product_template
 #: model:product.template,weight_uom_name:joint_buying_product.product_PZI_orange_moro_product_template
 #: model:product.template,weight_uom_name:joint_buying_product.product_PZI_orange_navelina_product_template
