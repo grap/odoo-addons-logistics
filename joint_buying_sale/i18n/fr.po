@@ -22,25 +22,39 @@ msgid "All the sale orders have still been created."
 msgstr "Tous les bons de commandes ont déjà été créé."
 
 #. module: joint_buying_sale
+#: model:ir.model.fields,field_description:joint_buying_sale.field_joint_buying_create_transport_request_wizard__availability_date
+msgid "Availability Date"
+msgstr "Date de disponibilité"
+
+#. module: joint_buying_sale
 #: model_terms:ir.ui.view,arch_db:joint_buying_sale.view_joint_buying_create_sale_order_wizard_form
+#: model_terms:ir.ui.view,arch_db:joint_buying_sale.view_joint_buying_create_transport_request_wizard_form
 msgid "Cancel"
 msgstr "Annuler"
 
 #. module: joint_buying_sale
 #: model:ir.model.fields,field_description:joint_buying_sale.field_joint_buying_create_sale_order_wizard__create_uid
 #: model:ir.model.fields,field_description:joint_buying_sale.field_joint_buying_create_sale_order_wizard_line__create_uid
+#: model:ir.model.fields,field_description:joint_buying_sale.field_joint_buying_create_transport_request_wizard__create_uid
 msgid "Created by"
 msgstr "Créé par"
 
 #. module: joint_buying_sale
 #: model:ir.model.fields,field_description:joint_buying_sale.field_joint_buying_create_sale_order_wizard__create_date
 #: model:ir.model.fields,field_description:joint_buying_sale.field_joint_buying_create_sale_order_wizard_line__create_date
+#: model:ir.model.fields,field_description:joint_buying_sale.field_joint_buying_create_transport_request_wizard__create_date
 msgid "Created on"
 msgstr "Créé le"
 
 #. module: joint_buying_sale
+#: model:ir.model.fields,field_description:joint_buying_sale.field_joint_buying_create_transport_request_wizard__arrival_partner_id
+msgid "Destination"
+msgstr ""
+
+#. module: joint_buying_sale
 #: model:ir.model.fields,field_description:joint_buying_sale.field_joint_buying_create_sale_order_wizard__display_name
 #: model:ir.model.fields,field_description:joint_buying_sale.field_joint_buying_create_sale_order_wizard_line__display_name
+#: model:ir.model.fields,field_description:joint_buying_sale.field_joint_buying_create_transport_request_wizard__display_name
 msgid "Display Name"
 msgstr "Nom affiché"
 
@@ -52,6 +66,13 @@ msgid "Generate Sale Orders"
 msgstr "Générer des bons de commande"
 
 #. module: joint_buying_sale
+#: model:ir.actions.act_window,name:joint_buying_sale.action_wizard_create_transport_request
+#: model_terms:ir.ui.view,arch_db:joint_buying_sale.view_joint_buying_create_transport_request_wizard_form
+#: model_terms:ir.ui.view,arch_db:joint_buying_sale.view_sale_order_form
+msgid "Generate Transport Request"
+msgstr "Générer une demande de transport"
+
+#. module: joint_buying_sale
 #: model:ir.model.fields,field_description:joint_buying_sale.field_joint_buying_create_sale_order_wizard__grouped_order_id
 msgid "Grouped Order"
 msgstr "Commande groupée"
@@ -59,6 +80,7 @@ msgstr "Commande groupée"
 #. module: joint_buying_sale
 #: model:ir.model.fields,field_description:joint_buying_sale.field_joint_buying_create_sale_order_wizard__id
 #: model:ir.model.fields,field_description:joint_buying_sale.field_joint_buying_create_sale_order_wizard_line__id
+#: model:ir.model.fields,field_description:joint_buying_sale.field_joint_buying_create_transport_request_wizard__id
 msgid "ID"
 msgstr ""
 
@@ -68,10 +90,26 @@ msgid "Joint Buying Customer"
 msgstr "Client de commande groupée"
 
 #. module: joint_buying_sale
+#: selection:joint.buying.transport.request,request_type:0
+msgid "Joint Buying Grouped Order"
+msgstr "Commande groupée"
+
+#. module: joint_buying_sale
 #: model:ir.model,name:joint_buying_sale.model_joint_buying_purchase_order
 #: model:ir.model,name:joint_buying_sale.model_joint_buying_purchase_order_line
 msgid "Joint Buying Purchase Order"
 msgstr "Commande"
+
+#. module: joint_buying_sale
+#: model:ir.model,name:joint_buying_sale.model_joint_buying_transport_request
+#: model:ir.model.fields,field_description:joint_buying_sale.field_sale_order__joint_buying_transport_request_id
+msgid "Joint Buying Transport Request"
+msgstr "Demande de transport"
+
+#. module: joint_buying_sale
+#: model:ir.model.fields,field_description:joint_buying_sale.field_sale_order__joint_buying_transport_request_ids
+msgid "Joint Buying Transport Requests"
+msgstr "Demandes de transport"
 
 #. module: joint_buying_sale
 #: model:ir.model,name:joint_buying_sale.model_joint_buying_create_sale_order_wizard_line
@@ -84,20 +122,28 @@ msgid "Joint Buying Wizard to create Sale Orders"
 msgstr "Assistant de création de bon de commande depuis les commandes groupées"
 
 #. module: joint_buying_sale
+#: model:ir.model,name:joint_buying_sale.model_joint_buying_create_transport_request_wizard
+msgid "Joint Buying Wizard to create Transport Request From Sale Orders"
+msgstr "Assistant pour créer des demandes de transport à partir de commandes de vente"
+
+#. module: joint_buying_sale
 #: model:ir.model.fields,field_description:joint_buying_sale.field_joint_buying_create_sale_order_wizard____last_update
 #: model:ir.model.fields,field_description:joint_buying_sale.field_joint_buying_create_sale_order_wizard_line____last_update
+#: model:ir.model.fields,field_description:joint_buying_sale.field_joint_buying_create_transport_request_wizard____last_update
 msgid "Last Modified on"
 msgstr "Dernière modification le"
 
 #. module: joint_buying_sale
 #: model:ir.model.fields,field_description:joint_buying_sale.field_joint_buying_create_sale_order_wizard__write_uid
 #: model:ir.model.fields,field_description:joint_buying_sale.field_joint_buying_create_sale_order_wizard_line__write_uid
+#: model:ir.model.fields,field_description:joint_buying_sale.field_joint_buying_create_transport_request_wizard__write_uid
 msgid "Last Updated by"
 msgstr "Dernière mise à jour par"
 
 #. module: joint_buying_sale
 #: model:ir.model.fields,field_description:joint_buying_sale.field_joint_buying_create_sale_order_wizard__write_date
 #: model:ir.model.fields,field_description:joint_buying_sale.field_joint_buying_create_sale_order_wizard_line__write_date
+#: model:ir.model.fields,field_description:joint_buying_sale.field_joint_buying_create_transport_request_wizard__write_date
 msgid "Last Updated on"
 msgstr "Dernière mise à jour le"
 
@@ -112,9 +158,19 @@ msgid "List of Customers"
 msgstr "Liste des clients"
 
 #. module: joint_buying_sale
+#: model_terms:ir.ui.view,arch_db:joint_buying_sale.view_joint_buying_create_transport_request_wizard_form
+msgid "List of Products"
+msgstr "Liste des articles"
+
+#. module: joint_buying_sale
 #: model:ir.model.fields,field_description:joint_buying_sale.field_joint_buying_create_sale_order_wizard_line__joint_buying_local_customer_id
 msgid "Local Customer"
 msgstr "Client local"
+
+#. module: joint_buying_sale
+#: selection:joint.buying.transport.request,request_type:0
+msgid "Manual"
+msgstr "Manuel"
 
 #. module: joint_buying_sale
 #: model:ir.model.fields,field_description:joint_buying_sale.field_joint_buying_create_sale_order_wizard_line__order_id
@@ -122,14 +178,54 @@ msgid "Order"
 msgstr "Commande"
 
 #. module: joint_buying_sale
+#: model:ir.model.fields,field_description:joint_buying_sale.field_joint_buying_create_transport_request_wizard__start_partner_id
+msgid "Origin"
+msgstr "Origine"
+
+#. module: joint_buying_sale
+#: code:addons/joint_buying_sale/wizards/joint_buying_create_transport_request_wizard.py:73
+#, python-format
+msgid "Please set a weight for all products."
+msgstr "Veuillez renseigner un poids brut pour tous les articles."
+
+#. module: joint_buying_sale
+#: model:ir.model.fields,field_description:joint_buying_sale.field_joint_buying_create_transport_request_wizard__product_ids
+msgid "Product"
+msgstr "Article"
+
+#. module: joint_buying_sale
 #: model:ir.model.fields,help:joint_buying_sale.field_joint_buying_purchase_order__sale_order_id
 msgid "Related sale order in the local database of the supplier for the related customer."
 msgstr "Bon de commande associé dans la base de données locale du fournisseur, pour le client associé."
 
 #. module: joint_buying_sale
+#: model:ir.model.fields,field_description:joint_buying_sale.field_joint_buying_transport_request__request_type
+msgid "Request Type"
+msgstr "Type de requête"
+
+#. module: joint_buying_sale
+#: model:ir.model,name:joint_buying_sale.model_sale_order
+#: model:ir.model.fields,field_description:joint_buying_sale.field_joint_buying_create_transport_request_wizard__sale_order_id
 #: model:ir.model.fields,field_description:joint_buying_sale.field_joint_buying_purchase_order__sale_order_id
+#: model:ir.model.fields,field_description:joint_buying_sale.field_joint_buying_transport_request__sale_order_id
+#: selection:joint.buying.transport.request,request_type:0
 msgid "Sale Order"
 msgstr "Bon de commande"
+
+#. module: joint_buying_sale
+#: model:ir.model.fields,help:joint_buying_sale.field_joint_buying_transport_request__sale_order_id
+msgid "Sale order in the local database of the company that requires transport."
+msgstr "Commande vente dans la base locale de la société qui requiert une demande de transport."
+
+#. module: joint_buying_sale
+#: model:ir.model,name:joint_buying_sale.model_sale_order_line
+msgid "Sales Order Line"
+msgstr "Ligne de bons de commande"
+
+#. module: joint_buying_sale
+#: model:ir.model.fields,help:joint_buying_sale.field_sale_order__joint_buying_transport_request_ids
+msgid "Technical field, used to know if the sale order has a related joint buying transport request created. It can contain only 0 or one transport request."
+msgstr "Champ technique, utilisé pour savoir si la commande de vente à une demande de transport associée. Il peut seulement contenir 0 ou une demande de transport."
 
 #. module: joint_buying_sale
 #: code:addons/joint_buying_sale/wizards/joint_buying_create_sale_order_wizard.py:41
@@ -138,12 +234,24 @@ msgid "There are no orders with valid amount."
 msgstr "Il ny'a pas de commande avec un montant valide."
 
 #. module: joint_buying_sale
+#: code:addons/joint_buying_sale/wizards/joint_buying_create_transport_request_wizard.py:62
+#, python-format
+msgid "There are no products to deliver."
+msgstr "Il n'y a aucun article livrable."
+
+#. module: joint_buying_sale
+#: code:addons/joint_buying_sale/wizards/joint_buying_create_transport_request_wizard.py:70
+#, python-format
+msgid "There is already a transport demand for this sale."
+msgstr "Il y a déjà une demande de transport pour cette vente."
+
+#. module: joint_buying_sale
 #: model:ir.model.fields,field_description:joint_buying_sale.field_joint_buying_create_sale_order_wizard_line__amount_untaxed
 msgid "Total Untaxed Amount"
 msgstr "Total HT"
 
 #. module: joint_buying_sale
-#: code:addons/joint_buying_sale/models/joint_buying_purchase_order_line.py:18
+#: code:addons/joint_buying_sale/models/joint_buying_purchase_order_line.py:19
 #, python-format
 msgid "Unable to find a local product for the global product '%s'."
 msgstr "Impossible de trouver un article local pour l'article de commande groupée '%s'"
@@ -161,6 +269,7 @@ msgstr "Vous devez créer un client dans votre base de données local de contact
 
 #. module: joint_buying_sale
 #: model_terms:ir.ui.view,arch_db:joint_buying_sale.view_joint_buying_create_sale_order_wizard_form
+#: model_terms:ir.ui.view,arch_db:joint_buying_sale.view_joint_buying_create_transport_request_wizard_form
 msgid "or"
 msgstr "ou"
 
