@@ -74,6 +74,7 @@ class JointBuyingCreateTransportRequestWizard(models.TransientModel):
 
         self.sale_order_id.recalculate_weight()
 
+        # Create new transport request
         request_vals = {
             "sale_order_id": self.sale_order_id.id,
             "manual_availability_date": self.availability_date,
@@ -81,4 +82,19 @@ class JointBuyingCreateTransportRequestWizard(models.TransientModel):
             "manual_arrival_partner_id": self.arrival_partner_id.id,
         }
 
-        self.env["joint.buying.transport.request"].create(request_vals)
+        request = self.env["joint.buying.transport.request"].create(request_vals)
+
+        # Try to find a route, if possible
+        request.button_compute_tour()
+
+        # Display the new created transport request
+        res = self.env["ir.actions.act_window"].for_xml_id(
+            "joint_buying_base", "action_joint_buying_transport_request"
+        )
+        res.update(
+            {
+                "views": [(False, "form"), (False, "tree")],
+                "res_id": request.id,
+            }
+        )
+        return res
