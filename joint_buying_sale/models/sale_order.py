@@ -24,9 +24,10 @@ class SaleOrder(models.Model):
 
     @api.depends("joint_buying_transport_request_ids")
     def _compute_joint_buying_transport_request_id(self):
-        for order in self.sudo():
+        for order in self:
+            sudo_order = order.sudo()
             order.joint_buying_transport_request_id = (
-                order.joint_buying_transport_request_ids
-                and order.joint_buying_transport_request_ids[0]
+                sudo_order.joint_buying_transport_request_ids
+                and sudo_order.joint_buying_transport_request_ids[0]
                 or False
             )
