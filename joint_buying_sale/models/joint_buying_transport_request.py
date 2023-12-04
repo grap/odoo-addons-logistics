@@ -93,6 +93,7 @@ class JointBuyingTransportRequest(models.Model):
             description = ""
             for line in request.sale_order_id.order_line.filtered(
                 lambda x: x.display_type not in ["line_note", "line_section"]
+                and x.product_id.type != "service"
             ):
                 description += (
                     f"{line.product_id.name}"
@@ -117,6 +118,7 @@ class JointBuyingTransportRequest(models.Model):
         res = []
         for line in self.sudo().sale_order_id.order_line.filtered(
             lambda x: x.display_type not in ["line_note", "line_section"]
+            and x.product_id.type != "service"
         ):
             res.append(line._get_report_tour_data())
         return res
