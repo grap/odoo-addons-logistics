@@ -11,6 +11,7 @@ class SaleOrder(models.Model):
     joint_buying_transport_request_id = fields.Many2one(
         comodel_name="joint.buying.transport.request",
         compute="_compute_joint_buying_transport_request_id",
+        compute_sudo=True,
     )
 
     joint_buying_transport_request_ids = fields.One2many(
