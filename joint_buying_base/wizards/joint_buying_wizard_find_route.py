@@ -17,7 +17,7 @@ class JointBuyingWizardFindRoute(models.TransientModel):
     _description = "Joint Buying Wizard Find Route"
 
     # 30 Days
-    _MAX_TRANSPORT_DURATION = 30
+    _MAX_TRANSPORT_DURATION = 8 * 7
 
     transport_request_id = fields.Many2one(
         string="Transport Request",

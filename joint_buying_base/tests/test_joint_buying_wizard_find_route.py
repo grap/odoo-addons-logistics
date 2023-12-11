@@ -2,6 +2,7 @@
 # @author: Sylvain LE GAL (https://twitter.com/legalsylvain)
 # License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl.html).
 
+from datetime import timedelta
 
 from odoo.tests import tagged
 
@@ -14,7 +15,9 @@ class TestJointBuyingWizardFindRoute(TestAbstract):
         """simplest case: direct route"""
         self._verify_tour_lines_computation(
             "joint_buying_base.request_vev_cda_week_1",
-            ["joint_buying_base.tour_lyon_loire_1_line_4"],
+            [
+                "joint_buying_base.tour_lyon_loire_1_line_4",  # VEV->CDA
+            ],
             "computed",
         )
 
@@ -23,10 +26,10 @@ class TestJointBuyingWizardFindRoute(TestAbstract):
         self._verify_tour_lines_computation(
             "joint_buying_base.request_vev_che_week_1",
             [
-                "joint_buying_base.tour_lyon_loire_1_line_4",
-                "joint_buying_base.tour_lyon_loire_1_line_6",
-                "joint_buying_base.tour_lyon_drome_1_line_2",
-                "joint_buying_base.tour_lyon_drome_1_line_4",
+                "joint_buying_base.tour_lyon_loire_1_line_4",  # VEV->CDA
+                "joint_buying_base.tour_lyon_loire_1_line_6",  # CDA->LSE
+                "joint_buying_base.tour_lyon_drome_1_line_2",  # LSE->C3P
+                "joint_buying_base.tour_lyon_drome_1_line_4",  # C3P->CHE
             ],
             "computed",
         )
@@ -36,10 +39,10 @@ class TestJointBuyingWizardFindRoute(TestAbstract):
         self._verify_tour_lines_computation(
             "joint_buying_base.request_vev_edc_week_1",
             [
-                "joint_buying_base.tour_lyon_loire_1_line_4",
-                "joint_buying_base.tour_lyon_loire_1_line_6",
-                "joint_buying_base.tour_lyon_savoie_1_line_2",
-                "joint_buying_base.tours_savoie_1_line_2",
+                "joint_buying_base.tour_lyon_loire_1_line_4",  # VEV->CDA
+                "joint_buying_base.tour_lyon_loire_1_line_6",  # CDA->LSE
+                "joint_buying_base.tour_lyon_savoie_1_line_2",  # LSE->Cognin
+                "joint_buying_base.tours_savoie_1_line_2",  # Cognin->EDC
             ],
             "computed",
         )
@@ -55,14 +58,14 @@ class TestJointBuyingWizardFindRoute(TestAbstract):
         self._verify_tour_lines_computation(
             "joint_buying_base.request_vev_che_week_2",
             [
-                "joint_buying_base.tour_lyon_loire_3_line_2",
-                "joint_buying_base.tour_lyon_drome_2_line_2",
-                "joint_buying_base.tour_lyon_drome_2_line_4",
+                "joint_buying_base.tour_lyon_loire_3_line_2",  # VEV->LSE
+                "joint_buying_base.tour_lyon_drome_2_line_2",  # LSE->C3P
+                "joint_buying_base.tour_lyon_drome_2_line_4",  # C3P->CHE
             ],
             "computed",
         )
 
-    def test_25_transport_request_vev_LSE_week_1(self):
+    def test_25_transport_request_vev_lse_week_1(self):
         """Complex case: product availability is after the truck has left,
         but before it passes through"""
         self._verify_tour_lines_computation(
@@ -72,6 +75,35 @@ class TestJointBuyingWizardFindRoute(TestAbstract):
                 "joint_buying_base.tour_lyon_loire_1_line_6",  # CDA->LSE
             ],
             "computed",
+        )
+
+    def test_26_transport_request_vev_cda_week_1(self):
+        """Simple case: Check maximum duration to deliver"""
+        request = self.env.ref("joint_buying_base.request_vev_lse_week_1")
+        tour = self.env.ref("joint_buying_base.tour_lyon_loire_1")
+        max_duration = self.env[
+            "joint.buying.wizard.find.route"
+        ]._MAX_TRANSPORT_DURATION
+
+        # Max duration - 1 should success
+        request.manual_availability_date = tour.start_date - timedelta(
+            days=max_duration - 1
+        )
+        self._verify_tour_lines_computation(
+            "joint_buying_base.request_vev_lse_week_1",
+            [
+                "joint_buying_base.tour_lyon_loire_1_line_4",  # VEV->CDA
+                "joint_buying_base.tour_lyon_loire_1_line_6",  # CDA->LSE
+            ],
+            "computed",
+        )
+
+        # Max duration + 1 should fail
+        request.manual_availability_date = tour.start_date - timedelta(
+            days=max_duration + 1
+        )
+        self._verify_tour_lines_computation(
+            "joint_buying_base.request_vev_lse_week_1", [], "not_computable"
         )
 
     def _verify_tour_lines_computation(
