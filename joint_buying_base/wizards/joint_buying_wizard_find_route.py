@@ -206,7 +206,7 @@ class JointBuyingWizardFindRoute(models.TransientModel):
         )
         tours = self.env["joint.buying.tour"].search(
             [
-                ("start_date", ">=", transport_request.availability_date),
+                ("end_date", ">=", transport_request.availability_date),
                 ("start_date", "<=", max_date),
             ],
             order="start_date",

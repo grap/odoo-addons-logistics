@@ -35,6 +35,18 @@
         ]]></field>
     </record>
 
+    <record id="request_vev_lse_week_1" model="joint.buying.transport.request">
+        <field name="manual_start_partner_id" model="res.partner" eval="obj().env.ref('joint_buying_base.company_VEV').joint_buying_partner_id.id"/>
+        <field name="manual_arrival_partner_id" model="res.partner" eval="obj().env.ref('joint_buying_base.company_LSE').joint_buying_partner_id.id"/>
+        <field name="manual_availability_date" eval="(DateTime.today() + timedelta(days=1)).strftime('%Y-%m-%d 07:01')"/>
+        <field name="manual_amount_untaxed">111</field>
+        <field name="manual_total_weight">22</field>
+        <field name="manual_description"><![CDATA[
+            Products that should be taken in VEV, because it is available after
+            the begining of the tour, but before the truck pass over VEV
+        ]]></field>
+    </record>
+
     <record id="request_vev_fumet_dombes_week_1" model="joint.buying.transport.request">
         <field name="manual_start_partner_id" model="res.partner" eval="obj().env.ref('joint_buying_base.company_VEV').joint_buying_partner_id.id"/>
         <field name="manual_arrival_partner_id" ref="joint_buying_base.supplier_fumet_dombes"/>

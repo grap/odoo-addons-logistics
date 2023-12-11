@@ -62,6 +62,18 @@ class TestJointBuyingWizardFindRoute(TestAbstract):
             "computed",
         )
 
+    def test_25_transport_request_vev_LSE_week_1(self):
+        """Complex case: product availability is after the truck has left,
+        but before it passes through"""
+        self._verify_tour_lines_computation(
+            "joint_buying_base.request_vev_lse_week_1",
+            [
+                "joint_buying_base.tour_lyon_loire_1_line_4",  # VEV->CDA
+                "joint_buying_base.tour_lyon_loire_1_line_6",  # CDA->LSE
+            ],
+            "computed",
+        )
+
     def _verify_tour_lines_computation(
         self, request_xml_id, tour_line_xml_ids, expected_state
     ):
