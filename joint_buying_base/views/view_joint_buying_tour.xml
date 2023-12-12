@@ -22,6 +22,7 @@ License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl.html).
                 <field name="name"/>
                 <field name="start_date"/>
                 <field name="carrier_id"/>
+                <field name="is_on_my_way"/>
             </search>
         </field>
     </record>
@@ -162,19 +163,36 @@ There may be traffic jams, delays, unforeseen events, etc...
         </field>
     </record>
 
+    <record id="action_joint_buying_tour_my" model="ir.actions.act_window">
+        <field name="name">My Tours</field>
+        <field name="type">ir.actions.act_window</field>
+        <field name="res_model">joint.buying.tour</field>
+        <field name="view_type">form</field>
+        <field name="view_mode">calendar,tree,form</field>
+        <field name="domain">[('is_on_my_way', '=', True)]</field>
+    </record>
+
+    <menuitem id="menu_joint_buying_tour_my"
+        name="My Tours"
+        parent="menu_tour"
+        action="action_joint_buying_tour_my"
+        sequence="10"
+    />
+
     <record id="action_joint_buying_tour_all" model="ir.actions.act_window">
-        <field name="name">Tours</field>
+        <field name="name">All Tours</field>
         <field name="type">ir.actions.act_window</field>
         <field name="res_model">joint.buying.tour</field>
         <field name="view_type">form</field>
         <field name="view_mode">calendar,tree,form</field>
     </record>
 
+
     <menuitem id="menu_joint_buying_tour_all"
-        name="Tours"
-        parent="menu_transport"
+        name="All Tours"
+        parent="menu_tour"
         action="action_joint_buying_tour_all"
-        sequence="10"
+        sequence="20"
     />
 
 </odoo>

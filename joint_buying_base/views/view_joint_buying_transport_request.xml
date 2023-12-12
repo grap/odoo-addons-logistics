@@ -201,9 +201,9 @@ License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl.html).
 
     <menuitem id="menu_joint_buying_transport_request"
         name="Transport Requests"
-        parent="joint_buying_base.menu_transport"
+        parent="joint_buying_base.menu_transport_main"
         action="action_joint_buying_transport_request"
-        sequence="100"
+        sequence="200"
         groups="joint_buying_base.group_joint_buying_user"
     />
 

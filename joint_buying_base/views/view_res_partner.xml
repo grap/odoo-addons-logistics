@@ -252,7 +252,7 @@ License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl.html).
 
     <menuitem id="menu_res_partner_stage"
         name="Stages"
-        parent="menu_transport"
+        parent="menu_transport_main"
         action="action_res_partner_stage"
         sequence="20"
     />
