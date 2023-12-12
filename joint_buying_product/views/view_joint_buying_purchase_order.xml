@@ -266,6 +266,27 @@ License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl.html).
         sequence="30"
     />
 
+    <record id="action_joint_buying_purchase_order_my" model="ir.actions.act_window">
+        <field name="name">My Orders</field>
+        <field name="type">ir.actions.act_window</field>
+        <field name="res_model">joint.buying.purchase.order</field>
+        <field name="view_type">form</field>
+        <field name="view_mode">tree,calendar,form</field>
+        <field name="domain">[("is_mine_customer", "=", True)]</field>
+        <field name="view_id" ref="view_joint_buying_purchase_order_placed_my_tree"/>
+        <field name="context">{
+            "joint_buying": 1,
+            "invisible_customer_id": 1,
+        }</field>
+    </record>
+
+    <menuitem id="menu_joint_buying_purchase_order_my"
+        name="My Orders"
+        parent="joint_buying_product.menu_joint_buying_purchase_order"
+        action="action_joint_buying_purchase_order_my"
+        sequence="40"
+    />
+
     <record id="action_joint_buying_purchase_order_all" model="ir.actions.act_window">
         <field name="name">All Orders</field>
         <field name="type">ir.actions.act_window</field>
