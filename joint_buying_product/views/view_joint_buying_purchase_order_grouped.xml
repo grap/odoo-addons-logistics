@@ -250,9 +250,9 @@ License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl.html).
 
     <menuitem id="menu_joint_buying_purchase_order_grouped_pending"
         name="Pending Grouped Orders"
-        parent="joint_buying_product.menu_order"
+        parent="joint_buying_product.menu_joint_buying_purchase_order_grouped"
         action="action_joint_buying_purchase_order_grouped_pending"
-        sequence="40"
+        sequence="10"
         groups="joint_buying_base.group_joint_buying_user"
     />
 
@@ -267,11 +267,11 @@ License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl.html).
         }</field>
     </record>
 
-    <menuitem id="menu_joint_buying_purchase_order_grouped"
+    <menuitem id="menu_joint_buying_purchase_order_grouped_all"
         name="All Grouped Orders"
-        parent="joint_buying_product.menu_order"
+        parent="joint_buying_product.menu_joint_buying_purchase_order_grouped"
         action="action_joint_buying_purchase_order_grouped_all"
-        sequence="50"
+        sequence="100"
         groups="joint_buying_base.group_joint_buying_user"
     />
 
