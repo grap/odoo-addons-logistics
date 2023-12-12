@@ -168,7 +168,7 @@ License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl.html).
 
     <menuitem id="menu_product_product"
         name="Products"
-        parent="joint_buying_base.menu_root"
+        parent="joint_buying_base.menu_catalog_main"
         action="action_product_product"
         sequence="20"
     />
