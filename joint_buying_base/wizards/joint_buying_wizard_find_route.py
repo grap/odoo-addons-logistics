@@ -16,9 +16,6 @@ class JointBuyingWizardFindRoute(models.TransientModel):
     _name = "joint.buying.wizard.find.route"
     _description = "Joint Buying Wizard Find Route"
 
-    # 30 Days
-    _MAX_TRANSPORT_DURATION = 8 * 7
-
     transport_request_id = fields.Many2one(
         string="Transport Request",
         comodel_name="joint.buying.transport.request",
@@ -201,8 +198,13 @@ class JointBuyingWizardFindRoute(models.TransientModel):
     @api.model
     def _populate_tree(self, transport_request):
         # Get all the tours subsequent to the transport request for a given period of time
+        max_duration = int(
+            self.env["ir.config_parameter"]
+            .sudo()
+            .get_param("joint_buying_base.tour_max_duration", 0)
+        )
         max_date = transport_request.availability_date + datetime.timedelta(
-            days=self._MAX_TRANSPORT_DURATION
+            days=max_duration
         )
         tours = self.env["joint.buying.tour"].search(
             [
