@@ -31,9 +31,10 @@ def migrate(env, version):
     partners.write({"joint_buying_is_durable_storage": True})
 
     # Create Transport Requests for recent joint buying purchase orders
-    min_deposit_date = datetime.today() + timedelta(
-        days=-env["joint.buying.wizard.find.route"]._MAX_TRANSPORT_DURATION
-    )
+    icp = env["ir.config_parameter"].sudo()
+    max_duration = int(icp.get_param("joint_buying_base.tour_max_duration", 0))
+
+    min_deposit_date = datetime.today() + timedelta(days=-max_duration)
     orders = (
         env["joint.buying.purchase.order.grouped"]
         .search([("deposit_date", ">", min_deposit_date.strftime("%Y-%m-%d %H:%M"))])
