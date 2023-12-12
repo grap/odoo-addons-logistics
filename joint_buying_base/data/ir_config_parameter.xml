@@ -11,4 +11,9 @@
         <field name="value">Your Group Name</field>
     </record>
 
+    <record id="parameter_tour_max_duration" model="ir.config_parameter">
+        <field name="key">joint_buying_base.tour_max_duration</field>
+        <field name="value">56</field>
+    </record>
+
 </odoo>

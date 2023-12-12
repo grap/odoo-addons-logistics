@@ -11,6 +11,13 @@ from .test_abstract import TestAbstract
 
 @tagged("post_install", "-at_install", "find_route")
 class TestJointBuyingWizardFindRoute(TestAbstract):
+    def setUp(self):
+        super().setUp()
+        self.IrConfigParameter = self.env["ir.config_parameter"].sudo()
+        self.max_duration = int(
+            self.IrConfigParameter.get_param("joint_buying_base.tour_max_duration", 0)
+        )
+
     def test_20_transport_request_vev_cda_week_1(self):
         """simplest case: direct route"""
         self._verify_tour_lines_computation(
@@ -81,13 +88,10 @@ class TestJointBuyingWizardFindRoute(TestAbstract):
         """Simple case: Check maximum duration to deliver"""
         request = self.env.ref("joint_buying_base.request_vev_lse_week_1")
         tour = self.env.ref("joint_buying_base.tour_lyon_loire_1")
-        max_duration = self.env[
-            "joint.buying.wizard.find.route"
-        ]._MAX_TRANSPORT_DURATION
 
         # Max duration - 1 should success
         request.manual_availability_date = tour.start_date - timedelta(
-            days=max_duration - 1
+            days=self.max_duration - 1
         )
         self._verify_tour_lines_computation(
             "joint_buying_base.request_vev_lse_week_1",
@@ -100,7 +104,7 @@ class TestJointBuyingWizardFindRoute(TestAbstract):
 
         # Max duration + 1 should fail
         request.manual_availability_date = tour.start_date - timedelta(
-            days=max_duration + 1
+            days=self.max_duration + 1
         )
         self._verify_tour_lines_computation(
             "joint_buying_base.request_vev_lse_week_1", [], "not_computable"
