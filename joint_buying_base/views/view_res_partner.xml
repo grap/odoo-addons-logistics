@@ -225,7 +225,7 @@ License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl.html).
 
     <menuitem id="menu_res_partner_supplier"
         name="Suppliers"
-        parent="menu_root"
+        parent="menu_catalog_main"
         action="action_res_partner_supplier"
         sequence="5"
     />
