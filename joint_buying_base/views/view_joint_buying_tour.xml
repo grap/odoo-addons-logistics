@@ -172,7 +172,7 @@ There may be traffic jams, delays, unforeseen events, etc...
 
     <menuitem id="menu_joint_buying_tour_all"
         name="Tours"
-        parent="menu_journey"
+        parent="menu_transport"
         action="action_joint_buying_tour_all"
         sequence="10"
     />
