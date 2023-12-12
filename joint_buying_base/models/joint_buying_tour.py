@@ -134,9 +134,9 @@ class JointBuyingTour(models.Model):
 
     @api.depends("line_ids.transport_request_line_ids.request_id")
     def _compute_transport_request_qty(self):
-        for request in self:
-            request.transport_request_qty = len(
-                request.mapped("line_ids.transport_request_line_ids.request_id")
+        for tour in self:
+            tour.transport_request_qty = len(
+                tour.mapped("line_ids.transport_request_line_ids.request_id")
             )
 
     @api.depends("salary_cost", "toll_cost", "vehicle_cost")
