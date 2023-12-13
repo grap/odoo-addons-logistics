@@ -1,13 +1,13 @@
 # Translation of Odoo Server.
 # This file contains the translation of the following modules:
-#	* joint_buying_product
+#   * joint_buying_product
 #
 msgid ""
 msgstr ""
 "Project-Id-Version: Odoo Server 12.0\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2022-08-02 15:41+0000\n"
-"PO-Revision-Date: 2022-08-02 15:41+0000\n"
+"POT-Creation-Date: 2023-12-13 20:31+0000\n"
+"PO-Revision-Date: 2023-12-13 20:31+0000\n"
 "Last-Translator: <>\n"
 "Language-Team: \n"
 "MIME-Version: 1.0\n"
@@ -351,7 +351,7 @@ msgstr "Contacts supplémentaires"
 
 #. module: joint_buying_product
 #: model:ir.actions.act_window,name:joint_buying_product.action_joint_buying_purchase_order_grouped_all
-#: model:ir.ui.menu,name:joint_buying_product.menu_joint_buying_purchase_order_grouped
+#: model:ir.ui.menu,name:joint_buying_product.menu_joint_buying_purchase_order_grouped_all
 msgid "All Grouped Orders"
 msgstr "Toutes les commandes groupées"
 
@@ -847,6 +847,7 @@ msgstr "La Commande groupée (Réf ${object.name}) vient de commencer"
 
 #. module: joint_buying_product
 #: model:ir.actions.act_window,name:joint_buying_product.action_res_partner_2_joint_buying_purchase_order_grouped
+#: model:ir.ui.menu,name:joint_buying_product.menu_joint_buying_purchase_order_grouped
 msgid "Grouped Orders"
 msgstr "Commandes groupées"
 
@@ -1334,7 +1335,7 @@ msgstr "Minima pour les commandes groupées ponctuelles"
 #: model_terms:ir.ui.view,arch_db:joint_buying_product.view_joint_buying_purchase_order_grouped_form
 #: model_terms:ir.ui.view,arch_db:joint_buying_product.view_joint_buying_wizard_create_order_form
 msgid "Minimum Amount"
-msgstr "Franco"
+msgstr "Montant minimal"
 
 #. module: joint_buying_product
 #: model:ir.model.fields,field_description:joint_buying_product.field_joint_buying_frequency__minimum_amount
@@ -1415,6 +1416,12 @@ msgstr "Statut de la Modération"
 #: model:ir.ui.menu,name:joint_buying_product.menu_joint_buying_purchase_order_grouped_my
 msgid "My Grouped Orders"
 msgstr "Mes commandes groupées"
+
+#. module: joint_buying_product
+#: model:ir.actions.act_window,name:joint_buying_product.action_joint_buying_purchase_order_my
+#: model:ir.ui.menu,name:joint_buying_product.menu_joint_buying_purchase_order_my
+msgid "My Orders"
+msgstr "Mes commandes"
 
 #. module: joint_buying_product
 #: model:ir.actions.act_window,name:joint_buying_product.action_joint_buying_purchase_order_to_place_my
@@ -1707,7 +1714,8 @@ msgstr "Ligne de commande"
 
 #. module: joint_buying_product
 #: model:ir.actions.act_window,name:joint_buying_product.action_order_grouped_2_order
-#: model:ir.ui.menu,name:joint_buying_product.menu_order
+#: model:ir.ui.menu,name:joint_buying_product.menu_joint_buying_purchase_order
+#: model:ir.ui.menu,name:joint_buying_product.menu_order_main
 #: model_terms:ir.ui.view,arch_db:joint_buying_product.view_joint_buying_purchase_order_grouped_form
 msgid "Orders"
 msgstr "Commandes"
