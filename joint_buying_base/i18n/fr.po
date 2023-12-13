@@ -6,8 +6,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Odoo Server 12.0\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2023-09-04 21:11+0000\n"
-"PO-Revision-Date: 2023-09-04 21:11+0000\n"
+"POT-Creation-Date: 2023-12-13 20:27+0000\n"
+"PO-Revision-Date: 2023-12-13 20:27+0000\n"
 "Last-Translator: <>\n"
 "Language-Team: \n"
 "MIME-Version: 1.0\n"
@@ -16,7 +16,7 @@ msgstr ""
 "Plural-Forms: \n"
 
 #. module: joint_buying_base
-#: code:addons/joint_buying_base/models/joint_buying_tour.py:279
+#: code:addons/joint_buying_base/models/joint_buying_tour.py:310
 #, python-format
 msgid "%s (copy)"
 msgstr "%s (copie)"
@@ -32,19 +32,19 @@ msgid "<b>Company Address:</b>"
 msgstr "<b>Adresse de la société:</b>"
 
 #. module: joint_buying_base
-#: code:addons/joint_buying_base/models/joint_buying_tour.py:234
+#: code:addons/joint_buying_base/models/joint_buying_tour.py:241
 #, python-format
 msgid "<i>Delivery and pick-up</i>"
 msgstr "<i>Livraison et retrait</i>"
 
 #. module: joint_buying_base
-#: code:addons/joint_buying_base/models/joint_buying_tour.py:230
+#: code:addons/joint_buying_base/models/joint_buying_tour.py:237
 #, python-format
 msgid "<i>Truck loading</i>"
 msgstr "<i>Chargement du camion</i>"
 
 #. module: joint_buying_base
-#: code:addons/joint_buying_base/models/joint_buying_tour.py:232
+#: code:addons/joint_buying_base/models/joint_buying_tour.py:239
 #, python-format
 msgid "<i>Truck unloading</i>"
 msgstr "<i>Déchargement du camion</i>"
@@ -65,7 +65,7 @@ msgid "<span class=\"oe_inline\"> ( On  </span>"
 msgstr "<span class=\"oe_inline\"> ( Dans </span>"
 
 #. module: joint_buying_base
-#: code:addons/joint_buying_base/models/joint_buying_tour.py:227
+#: code:addons/joint_buying_base/models/joint_buying_tour.py:234
 #, python-format
 msgid "<span style='color: green'><b>Pause</b></span>"
 msgstr ""
@@ -155,6 +155,12 @@ msgstr "Adresse"
 #: model:ir.ui.menu,name:joint_buying_base.menu_res_partner_all
 msgid "All Contacts"
 msgstr "Tous les contacts"
+
+#. module: joint_buying_base
+#: model:ir.actions.act_window,name:joint_buying_base.action_joint_buying_tour_all
+#: model:ir.ui.menu,name:joint_buying_base.menu_joint_buying_tour_all
+msgid "All Tours"
+msgstr "Toutes les tournées"
 
 #. module: joint_buying_base
 #: model_terms:ir.ui.view,arch_db:joint_buying_base.view_joint_buying_wizard_find_route_form
@@ -266,6 +272,11 @@ msgid "Carriers"
 msgstr "Transporteurs"
 
 #. module: joint_buying_base
+#: model:ir.ui.menu,name:joint_buying_base.menu_catalog_main
+msgid "Catalog"
+msgstr "Catalogue"
+
+#. module: joint_buying_base
 #: model:ir.model.fields,help:joint_buying_base.field_res_partner__is_joint_buying_stage
 #: model:ir.model.fields,help:joint_buying_base.field_res_users__is_joint_buying_stage
 msgid "Check this box if that address can be a step of a tour"
@@ -345,6 +356,7 @@ msgid "Complete Description"
 msgstr "Description complète"
 
 #. module: joint_buying_base
+#: model:ir.actions.server,name:joint_buying_base.action_server_module_immediate_install
 #: model_terms:ir.ui.view,arch_db:joint_buying_base.view_joint_buying_transport_request_form
 msgid "Compute Route"
 msgstr "Calculer l'itinéraire"
@@ -512,7 +524,7 @@ msgid "Distance"
 msgstr ""
 
 #. module: joint_buying_base
-#: code:addons/joint_buying_base/models/joint_buying_tour.py:126
+#: code:addons/joint_buying_base/models/joint_buying_tour.py:133
 #, python-format
 msgid "Draft Tour"
 msgstr "Tournée en brouillon"
@@ -684,6 +696,11 @@ msgid "Is Follower"
 msgstr "Est un abonné"
 
 #. module: joint_buying_base
+#: model:ir.model.fields,field_description:joint_buying_base.field_joint_buying_tour__is_on_my_way
+msgid "Is On My Way"
+msgstr "Passe par ici"
+
+#. module: joint_buying_base
 #: model:ir.model.fields,field_description:joint_buying_base.field_res_partner__is_joint_buying_stage
 #: model:ir.model.fields,field_description:joint_buying_base.field_res_users__is_joint_buying_stage
 msgid "Is Stage"
@@ -849,7 +866,7 @@ msgid "Journey"
 msgstr "Trajet"
 
 #. module: joint_buying_base
-#: code:addons/joint_buying_base/models/joint_buying_tour.py:222
+#: code:addons/joint_buying_base/models/joint_buying_tour.py:229
 #, python-format
 msgid "Journey from %s to %s"
 msgstr "Trajet de %s à %s"
@@ -858,11 +875,6 @@ msgstr "Trajet de %s à %s"
 #: model_terms:ir.ui.view,arch_db:joint_buying_base.report_joint_buying_tour_document
 msgid "Journey to"
 msgstr "Trajet vers"
-
-#. module: joint_buying_base
-#: model:ir.ui.menu,name:joint_buying_base.menu_journey
-msgid "Journeys"
-msgstr "Trajets"
 
 #. module: joint_buying_base
 #: model:ir.model.fields,field_description:joint_buying_base.field_joint_buying_carrier__kilometer_cost
@@ -978,6 +990,12 @@ msgstr ""
 #: model:ir.ui.menu,name:joint_buying_base.menu_res_partner_supplier_my
 msgid "My Suppliers"
 msgstr "Mes fournisseurs"
+
+#. module: joint_buying_base
+#: model:ir.actions.act_window,name:joint_buying_base.action_joint_buying_tour_my
+#: model:ir.ui.menu,name:joint_buying_base.menu_joint_buying_tour_my
+msgid "My Tours"
+msgstr "Mes tournées"
 
 #. module: joint_buying_base
 #: model:ir.model.fields,field_description:joint_buying_base.field_joint_buying_carrier__name
@@ -1157,7 +1175,7 @@ msgstr "Les prévisions de trajets sont données à titre indicatif seulement ! 
 " Il peut y avoir des bouchons, des retards, des imprévus, etc..."
 
 #. module: joint_buying_base
-#: code:addons/joint_buying_base/models/joint_buying_tour.py:154
+#: code:addons/joint_buying_base/models/joint_buying_tour.py:161
 #, python-format
 msgid "Salary"
 msgstr "Salaire"
@@ -1203,12 +1221,6 @@ msgstr "Configuration"
 #: selection:res.partner,joint_buying_commission_state:0
 msgid "Signed"
 msgstr "Signé"
-
-#. module: joint_buying_base
-#: model:ir.actions.act_window,name:joint_buying_base.action_res_partner_stage
-#: model:ir.ui.menu,name:joint_buying_base.menu_res_partner_stage
-msgid "Stages"
-msgstr "Etapes"
 
 #. module: joint_buying_base
 #: model:ir.model.fields,field_description:joint_buying_base.field_joint_buying_transport_request_line__start_action_type
@@ -1343,6 +1355,11 @@ msgid "Technical Information"
 msgstr "Informations techniques"
 
 #. module: joint_buying_base
+#: model:ir.model.fields,help:joint_buying_base.field_joint_buying_tour__is_on_my_way
+msgid "Technical field that indicates that the tour passes through the current company."
+msgstr "Champ technique qui indique que la tournée passe par la société en cours."
+
+#. module: joint_buying_base
 #: model:ir.model.fields,help:joint_buying_base.field_res_partner__joint_buying_display_name_step
 #: model:ir.model.fields,help:joint_buying_base.field_res_users__joint_buying_display_name_step
 msgid "Technical field, used to displayed name of the joint buying partner with the number(s) of the step(s) as a prefix in a context of displaying joint buying tour."
@@ -1373,7 +1390,7 @@ msgid "Today"
 msgstr "Aujourd'hui"
 
 #. module: joint_buying_base
-#: code:addons/joint_buying_base/models/joint_buying_tour.py:156
+#: code:addons/joint_buying_base/models/joint_buying_tour.py:163
 #, python-format
 msgid "Toll"
 msgstr "Péage"
@@ -1433,8 +1450,7 @@ msgid "Tour Types"
 msgstr "Types de tournées"
 
 #. module: joint_buying_base
-#: model:ir.actions.act_window,name:joint_buying_base.action_joint_buying_tour_all
-#: model:ir.ui.menu,name:joint_buying_base.menu_joint_buying_tour_all
+#: model:ir.ui.menu,name:joint_buying_base.menu_tour
 msgid "Tours"
 msgstr "Tournées"
 
@@ -1462,9 +1478,9 @@ msgid "Transport Requests"
 msgstr "Demandes de transport"
 
 #. module: joint_buying_base
-#: model:ir.ui.menu,name:joint_buying_base.menu_transport
+#: model:ir.ui.menu,name:joint_buying_base.menu_transport_main
 msgid "Transports"
-msgstr "Transports"
+msgstr ""
 
 #. module: joint_buying_base
 #: model:ir.model.fields,field_description:joint_buying_base.field_joint_buying_wizard_find_route__tree_text
@@ -1535,7 +1551,7 @@ msgid "Vegetable"
 msgstr "Légumes"
 
 #. module: joint_buying_base
-#: code:addons/joint_buying_base/models/joint_buying_tour.py:155
+#: code:addons/joint_buying_base/models/joint_buying_tour.py:162
 #, python-format
 msgid "Vehicle"
 msgstr "Véhicule"
