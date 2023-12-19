@@ -6,6 +6,15 @@ License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl.html).
 -->
 <odoo>
 
+    <record id="action_server_module_immediate_install" model="ir.actions.server">
+        <field name="name">Compute Route</field>
+        <field name="type">ir.actions.server</field>
+        <field name="model_id" ref="model_joint_buying_transport_request" />
+        <field name="binding_model_id" ref="model_joint_buying_transport_request" />
+        <field name="state">code</field>
+        <field name="code">records.button_compute_tour()</field>
+    </record>
+
     <record id="action_request_2_wizard_find_route" model="ir.actions.act_window">
         <field name="name">Find the Best Route</field>
         <field name="type">ir.actions.act_window</field>
@@ -192,9 +201,9 @@ License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl.html).
 
     <menuitem id="menu_joint_buying_transport_request"
         name="Transport Requests"
-        parent="joint_buying_base.menu_transport"
+        parent="joint_buying_base.menu_transport_main"
         action="action_joint_buying_transport_request"
-        sequence="1"
+        sequence="200"
         groups="joint_buying_base.group_joint_buying_user"
     />
 

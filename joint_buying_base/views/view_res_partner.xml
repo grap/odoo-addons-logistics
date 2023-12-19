@@ -225,36 +225,9 @@ License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl.html).
 
     <menuitem id="menu_res_partner_supplier"
         name="Suppliers"
-        parent="menu_root"
+        parent="menu_catalog_main"
         action="action_res_partner_supplier"
         sequence="5"
-    />
-
-
-    <record id="action_res_partner_stage" model="ir.actions.act_window">
-        <field name="name">Stages</field>
-        <field name="type">ir.actions.act_window</field>
-        <field name="res_model">res.partner</field>
-        <field name="view_mode">leaflet_map,tree,form</field>
-        <field name="search_view_id" ref="view_res_partner_joint_buying_search"></field>
-        <field name="domain">[('is_joint_buying_stage', '=', 1)]</field>
-        <field name="context">
-            {
-                "joint_buying": 1,
-                "default_customer": 0,
-                "default_supplier": 1,
-                "form_view_ref": "joint_buying_base.view_res_partner_form",
-                "tree_view_ref": "joint_buying_base.view_res_partner_tree",
-                "leaflet_map_view_ref": "joint_buying_base.view_res_partner_leaflet_map_from_tour",
-            }
-        </field>
-    </record>
-
-    <menuitem id="menu_res_partner_stage"
-        name="Stages"
-        parent="menu_journey"
-        action="action_res_partner_stage"
-        sequence="20"
     />
 
     <record id="action_res_partner_supplier_editable" model="ir.actions.act_window">

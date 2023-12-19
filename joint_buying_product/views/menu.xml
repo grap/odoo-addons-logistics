@@ -6,10 +6,22 @@ License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl.html).
 -->
 <odoo>
 
-    <menuitem id="menu_order"
+    <menuitem id="menu_order_main"
         name="Orders"
         parent="joint_buying_base.menu_root"
         sequence="1"
+    />
+
+    <menuitem id="menu_joint_buying_purchase_order"
+        name="Orders"
+        parent="joint_buying_product.menu_order_main"
+        sequence="10"
+    />
+
+    <menuitem id="menu_joint_buying_purchase_order_grouped"
+        name="Grouped Orders"
+        parent="joint_buying_product.menu_order_main"
+        sequence="100"
     />
 
 </odoo>

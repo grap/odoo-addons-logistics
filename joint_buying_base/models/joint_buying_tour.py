@@ -101,6 +101,13 @@ class JointBuyingTour(models.Model):
 
     transport_request_qty = fields.Integer(compute="_compute_transport_request_qty")
 
+    is_on_my_way = fields.Boolean(
+        compute="_compute_is_on_my_way",
+        search="_search_is_on_my_way",
+        help="Technical field that indicates that the tour"
+        " passes through the current company.",
+    )
+
     @api.onchange("type_id")
     def _onchange_type_id(self):
         if self.type_id and self.type_id.carrier_id:
@@ -127,9 +134,9 @@ class JointBuyingTour(models.Model):
 
     @api.depends("line_ids.transport_request_line_ids.request_id")
     def _compute_transport_request_qty(self):
-        for request in self:
-            request.transport_request_qty = len(
-                request.mapped("line_ids.transport_request_line_ids.request_id")
+        for tour in self:
+            tour.transport_request_qty = len(
+                tour.mapped("line_ids.transport_request_line_ids.request_id")
             )
 
     @api.depends("salary_cost", "toll_cost", "vehicle_cost")
@@ -270,6 +277,30 @@ class JointBuyingTour(models.Model):
                 continue
             tour.starting_point_id = journey_lines[0].starting_point_id
             tour.arrival_point_id = journey_lines[-1].arrival_point_id
+
+    @api.depends("line_ids.starting_point_id", "line_ids.arrival_point_id")
+    def _compute_is_on_my_way(self):
+        current_partner = self.env.user.company_id.joint_buying_partner_id
+        for tour in self:
+            tour.is_on_my_way = current_partner in self.mapped(
+                "line_ids.starting_point_id"
+            ) or current_partner in self.mapped("line_ids.arrival_point_id")
+
+    # Search Section
+    def _search_is_on_my_way(self, operator, value):
+        current_partner = self.env.user.company_id.joint_buying_partner_id
+        if (operator == "=" and value) or (operator == "!=" and not value):
+            search_operator = "in"
+        else:
+            search_operator = "not in"
+        tour_lines = self.env["joint.buying.tour.line"].search(
+            [
+                "|",
+                ("starting_point_id", "=", current_partner.id),
+                ("arrival_point_id", "=", current_partner.id),
+            ]
+        )
+        return [("id", search_operator, tour_lines.mapped("tour_id").ids)]
 
     # Overload Section
     @api.multi
