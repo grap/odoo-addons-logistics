@@ -55,10 +55,10 @@ class JointBuyingTransportRequest(models.Model):
     def _compute_origin(self):
         super(
             JointBuyingTransportRequest, self.filtered(lambda x: not x.sale_order_id)
-        )._compute_request_type()
+        )._compute_origin()
 
         for request in self.filtered(lambda x: x.sale_order_id):
-            request.origin = request.sale_order_id.name
+            request.origin = request.sale_order_id.sudo().name
 
     def _compute_request_type(self):
         super(
@@ -74,7 +74,7 @@ class JointBuyingTransportRequest(models.Model):
         )._compute_amount_untaxed()
 
         for request in self.filtered(lambda x: x.sale_order_id):
-            request.amount_untaxed = request.sale_order_id.amount_untaxed
+            request.amount_untaxed = request.sale_order_id.sudo().amount_untaxed
 
     def _compute_total_weight(self):
         super(
@@ -82,7 +82,7 @@ class JointBuyingTransportRequest(models.Model):
         )._compute_total_weight()
 
         for request in self.filtered(lambda x: x.sale_order_id):
-            request.total_weight = request.sale_order_id.total_ordered_weight
+            request.total_weight = request.sale_order_id.sudo().total_ordered_weight
 
     def _compute_description(self):
         super(
@@ -91,7 +91,7 @@ class JointBuyingTransportRequest(models.Model):
 
         for request in self.filtered(lambda x: x.sale_order_id):
             description = ""
-            for line in request.sale_order_id.order_line.filtered(
+            for line in request.sale_order_id.sudo().order_line.filtered(
                 lambda x: x.display_type not in ["line_note", "line_section"]
                 and x.product_id.type != "service"
             ):
@@ -116,7 +116,7 @@ class JointBuyingTransportRequest(models.Model):
     def _get_report_tour_data_sale(self):
         self.ensure_one()
         res = []
-        for line in self.sudo().sale_order_id.order_line.filtered(
+        for line in self.sale_order_id.sudo().order_line.filtered(
             lambda x: x.display_type not in ["line_note", "line_section"]
             and x.product_id.type != "service"
         ):
