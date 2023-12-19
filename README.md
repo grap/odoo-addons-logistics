@@ -33,7 +33,7 @@ Available addons
 addon | version | maintainers | summary
 --- | --- | --- | ---
 [joint_buying_account](joint_buying_account/) | 12.0.1.0.2 |  | Joint Buying - Account
-[joint_buying_base](joint_buying_base/) | 12.0.5.0.1 |  | Joint Buying - Base
+[joint_buying_base](joint_buying_base/) | 12.0.5.0.2 |  | Joint Buying - Base
 [joint_buying_product](joint_buying_product/) | 12.0.4.0.0 |  | Joint Buying - Products
 [joint_buying_product_food](joint_buying_product_food/) | 12.0.1.1.3 |  | Joint Buying - Products Food
 [joint_buying_product_label](joint_buying_product_label/) | 12.0.1.0.3 |  | Joint Buying - Product Labels
