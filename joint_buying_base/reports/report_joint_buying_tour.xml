@@ -15,7 +15,7 @@
                 <t t-set="product_category" t-value="" />
                 <hr size="3"/>
                 <h3>
-                    <span t-esc="handling_sequence" /> / <span t-esc="doc.stop_qty + 2" /> -
+                    <span t-esc="handling_sequence" /> / <span t-esc="data_item['handling_max_sequence']" /> -
                     <span t-esc="data_item['handling_partner'].name"/>
                 </h3>
                 <hr size="3"/>

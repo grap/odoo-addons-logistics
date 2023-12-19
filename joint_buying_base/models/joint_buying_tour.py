@@ -350,8 +350,9 @@ class JointBuyingTour(models.Model):
 
     def get_report_data(self):
         def key(item):
+            len_max_sequence = len(str(item["handling_max_sequence"]))
             return (
-                str(item["handling_sequence"])
+                str(item["handling_sequence"]).rjust(len_max_sequence, "0")
                 + "-"
                 + str(item["action_type"])
                 + "-"
@@ -360,20 +361,24 @@ class JointBuyingTour(models.Model):
                 + str(item["recipient_partner"])
             )
 
-        def _prepare_base_data(transport_request_line):
+        def _prepare_base_data(transport_request_line, max_sequence):
             return {
                 "request_line_id": transport_request_line.id,
+                "handling_max_sequence": max_sequence,
             }
 
         self.ensure_one()
         res = []
         sequence = 0
+        max_sequence = (
+            len(self.line_ids.filtered(lambda x: x.sequence_type == "journey")) + 1
+        )
         for tour_line in self.line_ids.filtered(lambda x: x.sequence_type == "journey"):
             sequence += 1
             for transport_request_line in tour_line.transport_request_line_ids:
                 # Loading data
                 if transport_request_line.start_action_type == "loading":
-                    base_data = _prepare_base_data(transport_request_line)
+                    base_data = _prepare_base_data(transport_request_line, max_sequence)
                     base_data.update(
                         {
                             "handling_sequence": sequence,
@@ -388,7 +393,7 @@ class JointBuyingTour(models.Model):
                         line_data.update(base_data)
                         res.append(line_data)
                 if transport_request_line.arrival_action_type == "unloading":
-                    base_data = _prepare_base_data(transport_request_line)
+                    base_data = _prepare_base_data(transport_request_line, max_sequence)
                     base_data.update(
                         {
                             "handling_sequence": sequence + 1,
