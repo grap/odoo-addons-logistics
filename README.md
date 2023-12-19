@@ -38,7 +38,7 @@ addon | version | maintainers | summary
 [joint_buying_product_food](joint_buying_product_food/) | 12.0.1.1.3 |  | Joint Buying - Products Food
 [joint_buying_product_label](joint_buying_product_label/) | 12.0.1.0.3 |  | Joint Buying - Product Labels
 [joint_buying_purchase](joint_buying_purchase/) | 12.0.1.0.2 |  | Joint Buying - Purchase
-[joint_buying_sale](joint_buying_sale/) | 12.0.1.1.7 |  | Joint Buying - Sale
+[joint_buying_sale](joint_buying_sale/) | 12.0.1.1.8 |  | Joint Buying - Sale
 [joint_buying_stock](joint_buying_stock/) | 12.0.1.0.2 |  | Joint Buying - Stock
 
 [//]: # (end addons)
