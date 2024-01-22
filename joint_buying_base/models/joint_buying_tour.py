@@ -24,7 +24,7 @@ class JointBuyingTour(models.Model):
 
     name = fields.Char(compute="_compute_name", store=True)
 
-    summary = fields.Text(compute="_compute_summary", store=True)
+    summary = fields.Text(compute="_compute_summary")
 
     description = fields.Html(compute="_compute_description")
 
