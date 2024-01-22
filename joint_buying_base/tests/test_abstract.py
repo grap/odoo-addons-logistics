@@ -10,6 +10,7 @@ from odoo.tests.common import TransactionCase
 class TestAbstract(TransactionCase):
     def setUp(self):
         super().setUp()
+        self.ResCompany = self.env["res.company"]
         self.ResPartner = self.env["res.partner"].with_context(
             mail_create_nosubscribe=True
         )
