@@ -108,6 +108,15 @@ class ResCompany(models.Model):
             partner_vals["customer"] = vals.get("is_joint_buying_customer")
         if "is_joint_buying_supplier" in vals:
             partner_vals["supplier"] = vals.get("is_joint_buying_supplier")
+            partner_vals["joint_buying_subscribed_company_ids"] = [
+                (
+                    6,
+                    False,
+                    ResPartner.with_context(
+                        joint_buying=True
+                    )._default_joint_buying_subscribed_company_ids(),
+                )
+            ]
         if "joint_buying_is_durable_storage" in vals:
             partner_vals["joint_buying_is_durable_storage"] = vals.get(
                 "joint_buying_is_durable_storage"
