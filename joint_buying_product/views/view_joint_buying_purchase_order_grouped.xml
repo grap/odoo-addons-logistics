@@ -7,7 +7,7 @@ License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl.html).
 <odoo>
 
     <record id="action_order_grouped_2_wizard_update_order_grouped" model="ir.actions.act_window">
-        <field name="name">Update Values</field>
+        <field name="name">Update Order Quantities</field>
         <field name="type">ir.actions.act_window</field>
         <field name="res_model">joint.buying.wizard.update.order.grouped</field>
         <field name="view_type">form</field>
@@ -118,7 +118,7 @@ License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl.html).
             <form>
                 <header>
 
-                <button type="action" string="Update Values"
+                <button type="action" string="Update Order Quantities"
                         name="%(joint_buying_product.action_order_grouped_2_wizard_update_order_grouped)d"
                         groups="joint_buying_base.group_joint_buying_user"
                         attrs="{'invisible': ['|', ('is_mine_pivot', '=', False), ('state', '=', 'deposited')]}"/>

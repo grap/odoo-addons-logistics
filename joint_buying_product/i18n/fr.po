@@ -2424,8 +2424,8 @@ msgstr "Mettre à jour la liste des articles"
 #. module: joint_buying_product
 #: model:ir.actions.act_window,name:joint_buying_product.action_order_grouped_2_wizard_update_order_grouped
 #: model_terms:ir.ui.view,arch_db:joint_buying_product.view_joint_buying_purchase_order_grouped_form
-msgid "Update Values"
-msgstr "Mettre à jour les valeurs"
+msgid "Update Order Quantities"
+msgstr "Mettre à jour les quantités commandées"
 
 #. module: joint_buying_product
 #: model:ir.model.fields,field_description:joint_buying_product.field_joint_buying_wizard_create_order__use_joint_buying_category
