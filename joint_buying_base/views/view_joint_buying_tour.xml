@@ -145,11 +145,6 @@ There may be traffic jams, delays, unforeseen events, etc...
                                     <field name="salary_cost"/>
                                     <field name="vehicle_cost"/>
                                 </group>
-                                <group colspan="2">
-                                    <div>
-                                        <field name="cost_chart" widget="bokeh_chart" nolabel="1"/>
-                                    </div>
-                                </group>
                             </group>
                         </page>
                     </notebook>
