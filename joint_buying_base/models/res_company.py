@@ -66,6 +66,7 @@ class ResCompany(models.Model):
             "partner_longitude",
             "logo",
             "vat",
+            "is_joint_buying_supplier",
         )
 
     def _prepare_joint_buying_partner_vals(self):
@@ -129,6 +130,7 @@ class ResCompany(models.Model):
 
     @api.multi
     def write(self, vals):
+        ResPartner = self.env["res.partner"]
         # Technical Note: we add context key here
         # to avoid error when recomputing related / computed values
         res = super(
@@ -139,7 +141,22 @@ class ResCompany(models.Model):
         ).write(vals)
         partner_fields = self._get_company_fields_for_joint_buying_partner()
         if list(set(vals.keys()) & set(partner_fields)):
-            self.update_joint_buying_partners()
+            extra_vals = {}
+            if vals.get("is_joint_buying_supplier", False):
+                extra_vals.update(
+                    {
+                        "joint_buying_subscribed_company_ids": [
+                            (
+                                6,
+                                False,
+                                ResPartner.with_context(
+                                    joint_buying=True
+                                )._default_joint_buying_subscribed_company_ids(),
+                            )
+                        ]
+                    }
+                )
+            self.update_joint_buying_partners(extra_vals=extra_vals)
         return res
 
     def geo_localize(self):
@@ -150,8 +167,10 @@ class ResCompany(models.Model):
         return res
 
     @api.multi
-    def update_joint_buying_partners(self):
+    def update_joint_buying_partners(self, extra_vals=False):
+        extra_vals = extra_vals or {}
         for company in self:
+            extra_vals.update(company._prepare_joint_buying_partner_vals())
             company.joint_buying_partner_id.with_context(
                 write_joint_buying_partner=True
-            ).write(company._prepare_joint_buying_partner_vals())
+            ).write(extra_vals)
