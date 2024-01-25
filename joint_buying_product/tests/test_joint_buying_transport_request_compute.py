@@ -60,3 +60,44 @@ class TestJointBuyingTransportRequest(
 
         self.assertEqual(request.amount_untaxed, order_VEV.amount_untaxed)
         self.assertEqual(request.total_weight, order_VEV.total_weight)
+
+    def test_transport_request_joint_buying_change_delivery_partner(self):
+        # This demo grouped order is delivered in 1GG
+        order_VEV = self.env.ref("joint_buying_product.order_ronzon_VEV_past")
+
+        request = order_VEV.transport_request_id
+        self.assertEqual(request.start_partner_id.joint_buying_code, "1GG")
+        self.assertEqual(request.arrival_partner_id.joint_buying_code, "VEV")
+
+        # check initial computation
+        request.button_compute_tour()
+        self.assertEqual(request.state, "computed")
+        self.assertEqual(len(request.line_ids), 2)
+        self.assertEqual(request.line_ids[0].starting_point_id.joint_buying_code, "1GG")
+        self.assertEqual(request.line_ids[0].arrival_point_id.joint_buying_code, "LSE")
+        self.assertEqual(request.line_ids[1].starting_point_id.joint_buying_code, "LSE")
+        self.assertEqual(request.line_ids[1].arrival_point_id.joint_buying_code, "VEV")
+
+        # Change delivery_partner_id to the deposit_partner_id
+        # should delete the transport request
+        order_VEV.delivery_partner_id = self.company_1GG.joint_buying_partner_id
+        self.assertFalse(order_VEV.transport_request_id)
+
+        # Change delivery_partner_id to a third partner
+        # should recrate the transport request
+        order_VEV.delivery_partner_id = self.company_CDA.joint_buying_partner_id
+        self.assertTrue(order_VEV.transport_request_id)
+        request = order_VEV.transport_request_id
+        self.assertEqual(request.start_partner_id.joint_buying_code, "1GG")
+        self.assertEqual(request.arrival_partner_id.joint_buying_code, "CDA")
+        self.assertEqual(request.state, "to_compute")
+
+        request.button_compute_tour()
+        self.assertEqual(request.state, "computed")
+        self.assertEqual(len(request.line_ids), 3)
+        self.assertEqual(request.line_ids[0].starting_point_id.joint_buying_code, "1GG")
+        self.assertEqual(request.line_ids[0].arrival_point_id.joint_buying_code, "LSE")
+        self.assertEqual(request.line_ids[1].starting_point_id.joint_buying_code, "LSE")
+        self.assertEqual(request.line_ids[1].arrival_point_id.joint_buying_code, "VEV")
+        self.assertEqual(request.line_ids[2].starting_point_id.joint_buying_code, "VEV")
+        self.assertEqual(request.line_ids[2].arrival_point_id.joint_buying_code, "CDA")

@@ -16,6 +16,7 @@ class TestAbstract(TransactionCase):
 
         self.user_3PP = self.env.ref("joint_buying_base.user_joint_buying_user_3PP")
 
+        self.company_1GG = self.env.ref("joint_buying_base.company_1GG")
         self.company_3PP = self.env.ref("joint_buying_base.company_3PP")
         self.company_CDA = self.env.ref("joint_buying_base.company_CDA")
         self.company_CHE = self.env.ref("joint_buying_base.company_CHE")
