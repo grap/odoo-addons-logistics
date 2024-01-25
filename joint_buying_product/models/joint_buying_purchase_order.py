@@ -345,7 +345,7 @@ class JointBuyingPurchaseOrder(models.Model):
         Create transport requests:
         - if not exists,
         - if state != closed / deposited or is not null
-        - if deposit place != customer_id
+        - if deposit_partner_id != delivery_partner_id
 
         Unlink transport requests:
         - if exists
@@ -358,20 +358,33 @@ class JointBuyingPurchaseOrder(models.Model):
                 or (x.total_weight or x.amount_untaxed)
             )
             and not x.transport_request_id
-            and x.deposit_partner_id != x.customer_id
+            and x.deposit_partner_id != x.delivery_partner_id
         )
         if orders_request_to_create:
             vals_list = [{"order_id": x.id} for x in orders_request_to_create]
             self.env["joint.buying.transport.request"].create(vals_list)
-            # for (order, request) in zip(orders_request_to_create, requests):
-            #     order.write({"transport_request_id": request.id})
 
         orders_request_to_unlink = self.filtered(
-            lambda x: x.state in ["closed", "deposited"]
-            and not (x.total_weight or x.amount_untaxed)
+            lambda x: (
+                x.state in ["closed", "deposited"]
+                and not (x.total_weight or x.amount_untaxed)
+            )
+            or x.deposit_partner_id == x.delivery_partner_id
         )
         if orders_request_to_unlink:
             orders_request_to_unlink.mapped("transport_request_ids").unlink()
+
+    def write(self, vals):
+        res = super().write(vals)
+        if "delivery_partner_id" in vals:
+            # Maybe some transport request are now required, or now obsolete
+            # depending if deposit_partner_id is equal or not to delivery_partner_id
+            self._hook_state_changed()
+            # Anyway, as destination changed, invalidate transport request
+            self.mapped("transport_request_ids").filtered(
+                lambda x: x.state != "to_compute"
+            )._invalidate()
+        return res
 
     @api.model_create_multi
     def create(self, vals_list):
