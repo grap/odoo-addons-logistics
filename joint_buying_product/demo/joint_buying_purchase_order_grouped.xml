@@ -22,6 +22,7 @@
     <record id="order_ronzon_ELD_past" model="joint.buying.purchase.order">
         <field name="grouped_order_id" ref="joint_buying_product.grouped_order_ronzon_past"/>
         <field name="customer_id" model="res.partner" eval="obj().env.ref('joint_buying_base.company_ELD').joint_buying_partner_id.id"/>
+        <field name="delivery_partner_id" model="res.partner" eval="obj().env.ref('joint_buying_base.company_ELD').joint_buying_partner_id.id"/>
     </record>
 
     <record id="line_ronzon_ELD_past_1" model="joint.buying.purchase.order.line">
@@ -56,6 +57,7 @@
     <record id="order_ronzon_1GG_past" model="joint.buying.purchase.order">
         <field name="grouped_order_id" ref="joint_buying_product.grouped_order_ronzon_past"/>
         <field name="customer_id" model="res.partner" eval="obj().env.ref('joint_buying_base.company_1GG').joint_buying_partner_id.id"/>
+        <field name="delivery_partner_id" model="res.partner" eval="obj().env.ref('joint_buying_base.company_1GG').joint_buying_partner_id.id"/>
     </record>
 
     <record id="line_ronzon_1GG_past_1" model="joint.buying.purchase.order.line">
@@ -89,6 +91,7 @@
     <record id="order_ronzon_LSE_past" model="joint.buying.purchase.order">
         <field name="grouped_order_id" ref="joint_buying_product.grouped_order_ronzon_past"/>
         <field name="customer_id" model="res.partner" eval="obj().env.ref('joint_buying_base.company_LSE').joint_buying_partner_id.id"/>
+        <field name="delivery_partner_id" model="res.partner" eval="obj().env.ref('joint_buying_base.company_LSE').joint_buying_partner_id.id"/>
     </record>
 
     <record id="line_ronzon_LSE_past_1" model="joint.buying.purchase.order.line">
@@ -122,6 +125,7 @@
     <record id="order_ronzon_VEV_past" model="joint.buying.purchase.order">
         <field name="grouped_order_id" ref="joint_buying_product.grouped_order_ronzon_past"/>
         <field name="customer_id" model="res.partner" eval="obj().env.ref('joint_buying_base.company_VEV').joint_buying_partner_id.id"/>
+        <field name="delivery_partner_id" model="res.partner" eval="obj().env.ref('joint_buying_base.company_VEV').joint_buying_partner_id.id"/>
     </record>
 
     <record id="line_ronzon_VEV_past_1" model="joint.buying.purchase.order.line">
@@ -155,6 +159,7 @@
     <record id="order_ronzon_CDA_past" model="joint.buying.purchase.order">
         <field name="grouped_order_id" ref="joint_buying_product.grouped_order_ronzon_past"/>
         <field name="customer_id" model="res.partner" eval="obj().env.ref('joint_buying_base.company_CDA').joint_buying_partner_id.id"/>
+        <field name="delivery_partner_id" model="res.partner" eval="obj().env.ref('joint_buying_base.company_CDA').joint_buying_partner_id.id"/>
     </record>
 
     <record id="line_ronzon_CDA_past_1" model="joint.buying.purchase.order.line">

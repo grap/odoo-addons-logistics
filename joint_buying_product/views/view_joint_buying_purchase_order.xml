@@ -104,6 +104,7 @@ License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl.html).
                             <field name="grouped_order_id"/>
                             <field name="supplier_id"/>
                             <field name="customer_id"/>
+                            <field name="delivery_partner_id"/>
                             <label for="amount_untaxed"/>
                             <div class="o_row">
                                 <field name="amount_untaxed"/>
