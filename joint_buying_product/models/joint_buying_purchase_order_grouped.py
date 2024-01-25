@@ -307,6 +307,10 @@ class JointBuyingPurchaseOrderGrouped(models.Model):
         res = super().write(vals)
         if not self.env.context.get("update_state_value"):
             self.update_state_value()
+        if "deposit_partner_id" in vals.keys():
+            # Maybe some transport request are now required, or now obsolete
+            # depending if deposit_partner_id is equal or not to delivery_partner_id
+            self.mapped("order_ids")._hook_state_changed()
         if {"deposit_date", "deposit_partner_id"}.intersection(set(vals.keys())):
             self.mapped("order_ids.transport_request_id")._invalidate()
         return res
