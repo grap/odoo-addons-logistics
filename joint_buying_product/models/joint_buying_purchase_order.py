@@ -87,6 +87,20 @@ class JointBuyingPurchaseOrder(models.Model):
         context=_JOINT_BUYING_PARTNER_CONTEXT,
     )
 
+    delivery_partner_id = fields.Many2one(
+        comodel_name="res.partner",
+        string="Delivery Place",
+        required=True,
+        track_visibility=True,
+        context=_JOINT_BUYING_PARTNER_CONTEXT,
+        help="the place where the goods are"
+        " to be delivered. Defined by default"
+        " as the customer's address,"
+        " the location may be different in some cases,"
+        " if the customer collects the goods"
+        " from another location.",
+    )
+
     state = fields.Selection(
         related="grouped_order_id.state", string="State", store=True
     )
@@ -316,7 +330,11 @@ class JointBuyingPurchaseOrder(models.Model):
     @api.model
     def _prepare_order_vals(self, supplier, customer, categories):
         OrderLine = self.env["joint.buying.purchase.order.line"]
-        res = {"customer_id": customer.id, "line_ids": []}
+        res = {
+            "customer_id": customer.id,
+            "delivery_partner_id": customer.id,
+            "line_ids": [],
+        }
         for product in supplier._get_joint_buying_products(categories):
             vals = OrderLine._prepare_line_vals(product)
             res["line_ids"].append((0, 0, vals))
