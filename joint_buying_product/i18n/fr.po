@@ -6,8 +6,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Odoo Server 12.0\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2023-12-13 20:31+0000\n"
-"PO-Revision-Date: 2023-12-13 20:31+0000\n"
+"POT-Creation-Date: 2024-01-26 19:54+0000\n"
+"PO-Revision-Date: 2024-01-26 19:54+0000\n"
 "Last-Translator: <>\n"
 "Language-Team: \n"
 "MIME-Version: 1.0\n"
@@ -499,8 +499,8 @@ msgid "Companies"
 msgstr "Sociétés"
 
 #. module: joint_buying_product
-#: code:addons/joint_buying_product/models/joint_buying_purchase_order_grouped.py:542
-#: code:addons/joint_buying_product/models/joint_buying_purchase_order_grouped.py:583
+#: code:addons/joint_buying_product/models/joint_buying_purchase_order_grouped.py:546
+#: code:addons/joint_buying_product/models/joint_buying_purchase_order_grouped.py:587
 #, python-format
 msgid "Compose Email"
 msgstr "Rédiger un courriel"
@@ -632,6 +632,11 @@ msgstr "Supprimer la copie du message"
 #: model:ir.model.fields,help:joint_buying_product.field_mail_compose_message_purchase_order_grouped__auto_delete
 msgid "Delete sent emails (mass mailing only)"
 msgstr "Supprimer les courriels envoyés (seulement publipostage)"
+
+#. module: joint_buying_product
+#: model:ir.model.fields,field_description:joint_buying_product.field_joint_buying_purchase_order__delivery_partner_id
+msgid "Delivery Place"
+msgstr "Lieu de livraison"
 
 #. module: joint_buying_product
 #: model:ir.model.fields,field_description:joint_buying_product.field_joint_buying_purchase_order__deposit_date
@@ -819,8 +824,8 @@ msgid "Gingembrette Sachet 200gr @ Three Peas"
 msgstr ""
 
 #. module: joint_buying_product
-#: code:addons/joint_buying_product/models/joint_buying_purchase_order_grouped.py:530
-#: code:addons/joint_buying_product/models/joint_buying_purchase_order_grouped.py:573
+#: code:addons/joint_buying_product/models/joint_buying_purchase_order_grouped.py:534
+#: code:addons/joint_buying_product/models/joint_buying_purchase_order_grouped.py:577
 #: model:ir.actions.report,name:joint_buying_product.action_report_joint_buying_purchase_order_grouped
 #: model:ir.model.fields,field_description:joint_buying_product.field_joint_buying_purchase_order__grouped_order_id
 #: model:ir.model.fields,field_description:joint_buying_product.field_mail_compose_message_purchase_order_grouped__grouped_order_id
@@ -1970,11 +1975,6 @@ msgid "Rillette (500gr) (Global)"
 msgstr ""
 
 #. module: joint_buying_product
-#: selection:joint.buying.transport.request,request_type:0
-msgid "Sale Order"
-msgstr "Commande de vente"
-
-#. module: joint_buying_product
 #: model:product.product,name:joint_buying_product.product_devidal_saucisson
 #: model:product.template,name:joint_buying_product.product_devidal_saucisson_product_template
 msgid "Saucisson (~350gr) (Global)"
@@ -2189,7 +2189,7 @@ msgid "Technical field, used to know if the joint buying purchase order has a re
 msgstr "Champ technique, utilisé pour savoir si la commande groupée a une demande de transport associée. Il peut seulement contenir 0 ou une demande de transport."
 
 #. module: joint_buying_product
-#: code:addons/joint_buying_product/models/joint_buying_purchase_order_grouped.py:636
+#: code:addons/joint_buying_product/models/joint_buying_purchase_order_grouped.py:640
 #, python-format
 msgid "The company '%s' has been subscribed to the supplier '%s'."
 msgstr "La société '%s' a été abonnée au fournisseur '%s'."
@@ -2454,20 +2454,6 @@ msgid "Users"
 msgstr "Utilisateurs"
 
 #. module: joint_buying_product
-#: model:ir.model.fields,field_description:joint_buying_product.field_joint_buying_category__website_message_ids
-#: model:ir.model.fields,field_description:joint_buying_product.field_joint_buying_purchase_order__website_message_ids
-#: model:ir.model.fields,field_description:joint_buying_product.field_joint_buying_purchase_order_grouped__website_message_ids
-msgid "Website Messages"
-msgstr "Messages du site web"
-
-#. module: joint_buying_product
-#: model:ir.model.fields,help:joint_buying_product.field_joint_buying_category__website_message_ids
-#: model:ir.model.fields,help:joint_buying_product.field_joint_buying_purchase_order__website_message_ids
-#: model:ir.model.fields,help:joint_buying_product.field_joint_buying_purchase_order_grouped__website_message_ids
-msgid "Website communication history"
-msgstr "Historique de communication du site web"
-
-#. module: joint_buying_product
 #: model:ir.model.fields,help:joint_buying_product.field_mail_compose_message_purchase_order_grouped__is_log
 msgid "Whether the message is an internal note (comment mode only)"
 msgstr "Si un message est une note interne (en mode commentaire seulement)"
@@ -2484,13 +2470,13 @@ msgid "You can not change the value of the Joint buying partner."
 msgstr "Vous ne pouvez pas changer la valeur de partenaire de commande groupée"
 
 #. module: joint_buying_product
-#: code:addons/joint_buying_product/models/joint_buying_purchase_order.py:372
+#: code:addons/joint_buying_product/models/joint_buying_purchase_order.py:403
 #, python-format
 msgid "You can not confirm an order with null amount."
 msgstr "Vous ne pouvez pas confirmer une commande avec un montant nul."
 
 #. module: joint_buying_product
-#: code:addons/joint_buying_product/models/joint_buying_purchase_order.py:368
+#: code:addons/joint_buying_product/models/joint_buying_purchase_order.py:399
 #, python-format
 msgid "You can not confirm an order without any lines."
 msgstr "Vous ne pouvez pas confirmer une commande sans lignes."
@@ -2518,13 +2504,13 @@ msgid "You can not set a negative quantity in the 'Purchase Quantity' field !"
 msgstr "Vous ne pouvez pas saisir de quantité négative dans le champ 'quantité à commander' !"
 
 #. module: joint_buying_product
-#: code:addons/joint_buying_product/models/joint_buying_purchase_order.py:376
+#: code:addons/joint_buying_product/models/joint_buying_purchase_order.py:407
 #, python-format
 msgid "You cannot confirm an order for which you have not reached the minimum purchase amount."
 msgstr "Vous ne pouvez pas confirmer une commande pour laquelle le franco de port n'est pas atteint."
 
 #. module: joint_buying_product
-#: code:addons/joint_buying_product/models/joint_buying_purchase_order.py:383
+#: code:addons/joint_buying_product/models/joint_buying_purchase_order.py:414
 #, python-format
 msgid "You cannot confirm an order for which you have not reached the minimum weight."
 msgstr "Vous ne pouvez pas confirmer une commande pour laquelle le franco de port n'est pas atteint."
@@ -2618,4 +2604,9 @@ msgstr ""
 #: model_terms:ir.ui.view,arch_db:joint_buying_product.view_joint_buying_wizard_update_order_grouped_form
 msgid "or"
 msgstr "ou"
+
+#. module: joint_buying_product
+#: model:ir.model.fields,help:joint_buying_product.field_joint_buying_purchase_order__delivery_partner_id
+msgid "the place where the goods are to be delivered. Defined by default as the customer's address, the location may be different in some cases, if the customer collects the goods from another location."
+msgstr "Le lieu ou la marchandise doit être livrée. Par défaut, il s'agit de l'adresse du client qui commande, mais l'emplacement peut être différent dans certains cas, si le client récupère la marchandise à un autre endroit."
 
