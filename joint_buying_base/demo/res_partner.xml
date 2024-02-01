@@ -90,6 +90,7 @@
         <field name="email">benoit.ronzon@gmail.com</field>
         <field name="country_id" ref="base.es"/>
         <field name="is_joint_buying" eval="True"/>
+        <field name="joint_buying_commission_rate">5</field>
         <field name="customer" eval="False"/>
         <field name="supplier" eval="True"/>
         <field name="company_id" eval="False"/>
@@ -150,6 +151,14 @@
         <field name="customer" eval="False"/>
         <field name="supplier" eval="True"/>
         <field name="joint_buying_global_partner_id" ref="supplier_fumet_dombes"/>
+    </record>
+
+    <record id="supplier_benoit_ronzon_at_LOG" model="res.partner">
+        <field name="name">Benoit Ronzon @ Logistics</field>
+        <field name="company_id" ref="joint_buying_base.company_LOG"/>
+        <field name="customer" eval="False"/>
+        <field name="supplier" eval="True"/>
+        <field name="joint_buying_global_partner_id" ref="supplier_benoit_ronzon"/>
     </record>
 
 

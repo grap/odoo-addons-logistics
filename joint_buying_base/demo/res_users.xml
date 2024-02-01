@@ -28,6 +28,7 @@
             (4, ref('joint_buying_base.company_EDC')),
             (4, ref('joint_buying_base.company_ELD')),
             (4, ref('joint_buying_base.company_LSE')),
+            (4, ref('joint_buying_base.company_LOG')),
             (4, ref('joint_buying_base.company_PZI')),
             (4, ref('joint_buying_base.company_TOU')),
             (4, ref('joint_buying_base.company_VEV')),
@@ -127,6 +128,7 @@
             (4, ref('joint_buying_base.company_CHE')),
             (4, ref('joint_buying_base.company_ELD')),
             (4, ref('joint_buying_base.company_LSE')),
+            (4, ref('joint_buying_base.company_LOG')),
         ]" />
     </record>
 
