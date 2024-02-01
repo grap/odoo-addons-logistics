@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+Copyright (C) 2024-Today GRAP (http://www.grap.coop)
+@author: Sylvain LE GAL (https://twitter.com/legalsylvain)
+License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl.html).
+-->
+
+<odoo>
+
+    <record id="view_joint_buying_invoice_commission_wizard_form" model="ir.ui.view">
+        <field name="model">joint.buying.invoice.commission.wizard</field>
+        <field name="arch" type="xml">
+            <form>
+                <group string="Settings">
+                    <field name="max_deposit_date"/>
+                </group>
+                <group string="Suppliers">
+                    <field name="line_ids" nolabel="1">
+                        <tree editable="bottom" decoration-muted="grouped_order_qty == 0">
+                            <field name="partner_id" force_save="True"/>
+                            <field name="local_partner_id" required="True"/>
+                            <field name="commission_rate"/>
+                            <field name="grouped_order_qty"/>
+                        </tree>
+                    </field>
+                </group>
+                <footer>
+                    <button name="invoice_commission" type="object" string="Confirm" class="oe_highlight"/>
+                    <button string="Cancel" class="oe_link" special="cancel"/>
+               </footer>
+            </form>
+        </field>
+    </record>
+
+    <record id="action_view_joint_buying_invoice_commission_wizard" model="ir.actions.act_window">
+        <field name="name">Make Joint Buying Commission Invoice</field>
+        <field name="binding_model_id" ref="base.model_res_partner" />
+        <field name="res_model">joint.buying.invoice.commission.wizard</field>
+        <field name="type">ir.actions.act_window</field>
+        <field name="view_type">form</field>
+        <field name="view_mode">form</field>
+        <field name="target">new</field>
+    </record>
+
+</odoo>

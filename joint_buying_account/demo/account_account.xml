@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<odoo>
+
+    <record id="account_LOG_401" model="account.account">
+        <field name="name">LOG-401 - Payable</field>
+        <field name="code">401</field>
+        <field name="company_id" ref="joint_buying_base.company_LOG"/>
+        <field name="user_type_id" ref="account.data_account_type_payable"/>
+        <field name="internal_type">payable</field>
+        <field name="reconcile" eval="True"/>
+    </record>
+
+    <record id="account_LOG_411" model="account.account">
+        <field name="name">LOG-411 - Receivable</field>
+        <field name="code">411</field>
+        <field name="company_id" ref="joint_buying_base.company_LOG"/>
+        <field name="user_type_id" ref="account.data_account_type_receivable"/>
+        <field name="internal_type">receivable</field>
+        <field name="reconcile" eval="True"/>
+    </record>
+
+    <record id="account_LOG_706" model="account.account">
+        <field name="name">LOG-706 - Services Income</field>
+        <field name="code">706</field>
+        <field name="company_id" ref="joint_buying_base.company_LOG"/>
+        <field name="user_type_id" ref="account.data_account_type_revenue"/>
+        <field name="internal_type">other</field>
+    </record>
+
+</odoo>

@@ -124,6 +124,20 @@
         <field name="joint_buying_is_durable_storage" eval="True"/>
     </record>
 
+    <record id="company_LOG" model="res.company">
+        <field name="code">LOG</field>
+        <field name="name">[LOG - Logistic]</field>
+        <field name="email">no-spam@logistic.fr</field>
+        <field name="street">105, avenue Jean Jaurès</field>
+        <field name="city">Oullins</field>
+        <field name="zip">69600</field>
+        <field name="country_id" ref="base.fr"/>
+        <field name="partner_latitude">45.71355112210139</field>
+        <field name="partner_longitude">4.819783362129657</field>
+        <field name="logo" type="base64" file="joint_buying_base/static/img/company_LOG-logo.png"/>
+        <field name="joint_buying_is_durable_storage" eval="True"/>
+    </record>
+
     <record id="company_PZI" model="res.company">
         <field name="code">PZI</field>
         <field name="name">[PZI - small Zests from Italy and elsewhere]</field>
