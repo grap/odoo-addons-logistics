@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<odoo>
+
+    <record id="joint_buying_base.company_LOG" model="res.company">
+        <field name="joint_buying_commission_product_id" ref="product_LOG_commission"/>
+    </record>
+
+</odoo>

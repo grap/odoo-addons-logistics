@@ -9,7 +9,7 @@
         <field name="company_id" ref="joint_buying_base.company_ELD"/>
         <field name="price">10</field>
         <field name="taxes_id" eval="[
-            (4, ref('joint_buying_account.tax_20_included')),
+            (4, ref('joint_buying_account.tax_ELD_20_included')),
         ]"/>
     </record>
 
@@ -20,7 +20,19 @@
         <field name="company_id" ref="joint_buying_base.company_ELD"/>
         <field name="price">10</field>
         <field name="taxes_id" eval="[
-            (4, ref('joint_buying_account.tax_20_excluded')),
+            (4, ref('joint_buying_account.tax_ELD_20_excluded')),
+        ]"/>
+    </record>
+
+    <record id="product_LOG_commission" model="product.product">
+        <field name="default_code">LOG-COM</field>
+        <field name="type">service</field>
+        <field name="name">Commission VAT 20% Excl</field>
+        <field name="is_joint_buying" eval="False"/>
+        <field name="company_id" ref="joint_buying_base.company_LOG"/>
+        <field name="price">0</field>
+        <field name="taxes_id" eval="[
+            (4, ref('joint_buying_account.tax_LOG_20_excluded')),
         ]"/>
     </record>
 
