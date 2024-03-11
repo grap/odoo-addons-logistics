@@ -2418,8 +2418,8 @@ msgstr "Mettre à jour le produit de commande groupée"
 
 #. module: joint_buying_product
 #: model_terms:ir.ui.view,arch_db:joint_buying_product.view_joint_buying_purchase_order_grouped_form
-msgid "Update Products List"
-msgstr "Mettre à jour la liste des articles"
+msgid "Update Products"
+msgstr "Mettre à jour les articles"
 
 #. module: joint_buying_product
 #: model:ir.actions.act_window,name:joint_buying_product.action_order_grouped_2_wizard_update_order_grouped
