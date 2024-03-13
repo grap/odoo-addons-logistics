@@ -749,12 +749,6 @@ msgid "Joint Buying Code"
 msgstr "Code de commande groupée"
 
 #. module: joint_buying_base
-#: model:ir.model.fields,field_description:joint_buying_base.field_res_partner__joint_buying_commission_state
-#: model:ir.model.fields,field_description:joint_buying_base.field_res_users__joint_buying_commission_state
-msgid "Joint Buying Commission Agreement"
-msgstr "Accord de commission pour les commandes groupées"
-
-#. module: joint_buying_base
 #: model:ir.model.fields,field_description:joint_buying_base.field_res_partner__joint_buying_commission_rate
 #: model:ir.model.fields,field_description:joint_buying_base.field_res_users__joint_buying_commission_rate
 msgid "Joint Buying Commission Rate"
@@ -1030,11 +1024,6 @@ msgid "Next Activity Type"
 msgstr "Type d'Activités à Venir"
 
 #. module: joint_buying_base
-#: selection:res.partner,joint_buying_commission_state:0
-msgid "Not Applicable"
-msgstr "Non applicable"
-
-#. module: joint_buying_base
 #: selection:joint.buying.transport.request,state:0
 msgid "Not Computable"
 msgstr "Non calculable"
@@ -1145,11 +1134,6 @@ msgid "Poultry Shop"
 msgstr "Volaillerie"
 
 #. module: joint_buying_base
-#: selection:res.partner,joint_buying_commission_state:0
-msgid "Rejected"
-msgstr "Refusé"
-
-#. module: joint_buying_base
 #: model:ir.model.fields,field_description:joint_buying_base.field_joint_buying_transport_request_line__request_id
 msgid "Request"
 msgstr "Demande"
@@ -1216,11 +1200,6 @@ msgstr "Configurer la tournée"
 #: model_terms:ir.ui.view,arch_db:joint_buying_base.view_res_partner_form
 msgid "Settings"
 msgstr "Configuration"
-
-#. module: joint_buying_base
-#: selection:res.partner,joint_buying_commission_state:0
-msgid "Signed"
-msgstr "Signé"
 
 #. module: joint_buying_base
 #: model:ir.model.fields,field_description:joint_buying_base.field_joint_buying_transport_request_line__start_action_type
