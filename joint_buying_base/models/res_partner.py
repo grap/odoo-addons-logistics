@@ -17,12 +17,6 @@ class ResPartner(models.Model):
     _inherit = ["res.partner", "joint.buying.mixin", "joint.buying.check.access.mixin"]
     _name = "res.partner"
 
-    _COMMISSION_STATE = [
-        ("signed", "Signed"),
-        ("rejected", "Rejected"),
-        ("not_applicable", "Not Applicable"),
-    ]
-
     _check_access_write_fields_no_check = ["joint_buying_is_subscribed"]
 
     joint_buying_subscribed_company_ids = fields.Many2many(
@@ -83,10 +77,6 @@ class ResPartner(models.Model):
         search="_search_joint_buying_is_mine_pivot",
         help="This box is checked if the current company of the user is the pivot company"
         " of the given joint buying partner.",
-    )
-
-    joint_buying_commission_state = fields.Selection(
-        selection=_COMMISSION_STATE, string="Joint Buying Commission Agreement"
     )
 
     joint_buying_commission_rate = fields.Float(string="Joint Buying Commission Rate")
