@@ -37,7 +37,9 @@ class JointbuyingInvoiceCommissionWizardLine(models.TransientModel):
     )
 
     commission_rate = fields.Float(
-        string="Commission Rate", related="partner_id.joint_buying_commission_rate"
+        string="Commission Rate",
+        related="partner_id.joint_buying_commission_rate",
+        readonly=False,
     )
 
     grouped_order_qty = fields.Integer(
@@ -58,14 +60,14 @@ class JointbuyingInvoiceCommissionWizardLine(models.TransientModel):
         max_deposit_date = datetime(
             max_deposit_date.year, max_deposit_date.month, max_deposit_date.day
         ) + timedelta(days=1)
-        return (
-            partner.mapped("joint_buying_grouped_order_ids")
-            .filtered(
-                lambda x: not x.invoice_line_id
-                and x.deposit_date < max_deposit_date
-                and x.state == "deposited"
-            )
-            .sorted("deposit_date")
+        return self.env["joint.buying.purchase.order.grouped"].search(
+            [
+                ("supplier_id", "=", partner.id),
+                ("invoice_line_id", "=", False),
+                ("deposit_date", "<", max_deposit_date),
+                ("amount_untaxed", ">", 0.0),
+                ("state", "=", "deposited"),
+            ]
         )
 
     # Prepare Section
