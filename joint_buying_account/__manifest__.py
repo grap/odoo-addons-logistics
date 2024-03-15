@@ -24,6 +24,7 @@
     "data": [
         "wizards/view_joint_buying_invoice_commission_wizard.xml",
         "views/view_res_config_settings.xml",
+        "views/view_joint_buying_purchase_order_grouped.xml",
     ],
     "installable": True,
     "auto_install": True,

@@ -43,16 +43,26 @@ class JointbuyingInvoiceCommissionWizardLine(models.TransientModel):
     )
 
     grouped_order_qty = fields.Integer(
-        string="Grouped Orders Quantity", compute="_compute_grouped_order_qty"
+        string="Quantity", compute="_compute_grouped_order_info"
+    )
+
+    grouped_order_detail = fields.Text(
+        string="Detail", compute="_compute_grouped_order_info"
     )
 
     @api.depends("wizard_id.max_deposit_date", "partner_id")
-    def _compute_grouped_order_qty(self):
+    def _compute_grouped_order_info(self):
         for line in self:
-            line.grouped_order_qty = len(
-                self._compute_grouped_order_ids_model(
-                    line.wizard_id.max_deposit_date, line.partner_id
-                )
+            grouped_orders = self._compute_grouped_order_ids_model(
+                line.wizard_id.max_deposit_date, line.partner_id
+            )
+            line.grouped_order_qty = len(grouped_orders)
+            line.grouped_order_detail = "\n".join(
+                [
+                    f"- {x.name} - {x.deposit_date.strftime('%m/%d/%Y')}"
+                    f" - {x.amount_untaxed:.2f} €"
+                    for x in grouped_orders
+                ]
             )
 
     @api.model
@@ -67,7 +77,8 @@ class JointbuyingInvoiceCommissionWizardLine(models.TransientModel):
                 ("deposit_date", "<", max_deposit_date),
                 ("amount_untaxed", ">", 0.0),
                 ("state", "=", "deposited"),
-            ]
+            ],
+            order="deposit_date",
         )
 
     # Prepare Section
@@ -146,20 +157,29 @@ class JointbuyingInvoiceCommissionWizardLine(models.TransientModel):
             lambda x: x.customer_id != x.grouped_order_id.deposit_partner_id
             and x.amount_untaxed != 0.0
         )
-        if not valid_orders:
-            return
+        deposit_order = grouped_order.order_ids.filtered(
+            lambda x: x.customer_id == x.grouped_order_id.deposit_partner_id
+            and x.amount_untaxed != 0.0
+        )
         base = sum(valid_orders.mapped("amount_untaxed"))
         description = _(
-            "Commission: Rate : %.2f %%; Base : %.2f €.\n"
-            "%s, deposited on %s for %d customers. (%s)"
+            "Commission on %s deposited on %s\n"
+            "- Ordered Amount : %.2f €\n"
+            "- %d Customers: %s\n"
+            "- Rate : %.2f %%"
         ) % (
-            self.partner_id.joint_buying_commission_rate,
-            base,
             grouped_order.name,
-            grouped_order.deposit_date,
+            grouped_order.deposit_date.strftime("%m/%d/%Y"),
+            base,
             len(valid_orders),
             "-".join(valid_orders.mapped("customer_id.joint_buying_code")),
+            self.partner_id.joint_buying_commission_rate,
         )
+        if deposit_order:
+            description += _("\n" "- Non-commissioned sale: %s ; %.2f €") % (
+                deposit_order.customer_id.joint_buying_code,
+                deposit_order.amount_untaxed,
+            )
         product = self.local_partner_id.company_id.joint_buying_commission_product_id
         return {
             "invoice_id": invoice.id,

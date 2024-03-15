@@ -16,11 +16,13 @@ License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl.html).
                 </group>
                 <group string="Suppliers">
                     <field name="line_ids" nolabel="1">
-                        <tree editable="bottom" decoration-muted="grouped_order_qty == 0">
+                        <tree editable="bottom" decoration-muted="grouped_order_qty == 0"
+                            create="false">
                             <field name="partner_id" force_save="True"/>
                             <field name="local_partner_id" required="True"/>
                             <field name="commission_rate"/>
                             <field name="grouped_order_qty"/>
+                            <field name="grouped_order_detail"/>
                         </tree>
                     </field>
                 </group>

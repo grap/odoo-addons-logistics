@@ -8,4 +8,14 @@ from odoo import fields, models
 class JointBuyingPurchaseOrderGrouped(models.Model):
     _inherit = "joint.buying.purchase.order.grouped"
 
-    invoice_line_id = fields.Many2one(comodel_name="account.invoice.line")
+    invoice_line_id = fields.Many2one(
+        string="Commission Invoice Line",
+        comodel_name="account.invoice.line",
+        readonly=True,
+    )
+
+    invoice_id = fields.Many2one(
+        string="Commission Invoice",
+        comodel_name="account.invoice",
+        related="invoice_line_id.invoice_id",
+    )
