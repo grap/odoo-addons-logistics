@@ -29,20 +29,15 @@ class JointBuyingInvoiceCommissionWizard(models.TransientModel):
     # Default values Section
     def _default_line_ids(self):
         res = []
-        ResPartner = self.env["res.partner"]
-        WizardLine = self.env["joint.buying.invoice.commission.wizard.line"]
-        partners = ResPartner.browse(self.env.context.get("active_ids", []))
+        partners = self.env["res.partner"].browse(
+            self.env.context.get("active_ids", [])
+        )
         for partner in partners:
             local_partner = partner.get_joint_buying_local_partner_id()
             line_vals = {
                 "partner_id": partner.id,
                 "local_partner_id": local_partner and local_partner.id,
                 "commission_rate": partner.joint_buying_commission_rate,
-                "grouped_order_qty": len(
-                    WizardLine._compute_grouped_order_ids_model(
-                        self._default_max_deposit_date(), partner
-                    )
-                ),
             }
             res.append([0, 0, line_vals])
         return res
