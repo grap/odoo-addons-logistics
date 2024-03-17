@@ -57,11 +57,15 @@ class JointbuyingInvoiceCommissionWizardLine(models.TransientModel):
                 line.wizard_id.max_deposit_date, line.partner_id
             )
             line.grouped_order_qty = len(grouped_orders)
+            all_data = grouped_orders.search_read(
+                [("id", "in", grouped_orders.ids)],
+                ["name", "deposit_date", "amount_untaxed"],
+            )
             line.grouped_order_detail = "\n".join(
                 [
-                    f"- {x.name} - {x.deposit_date.strftime('%m/%d/%Y')}"
-                    f" - {x.amount_untaxed:.2f} €"
-                    for x in grouped_orders
+                    f"- {x['name']} - {x['deposit_date'].strftime('%m/%d/%Y')}"
+                    f" - {x['amount_untaxed']:.2f} €"
+                    for x in all_data
                 ]
             )
 
