@@ -58,26 +58,3 @@ class TestModule(TransactionCase):
             "Global Product (from product vat incl) should has price vat incl."
             " (regression regarding pricelist feature)",
         )
-
-    # def test_02_create_global_product_with_pricelist(self):
-    #     self.company_ELD.joint_buying_pricelist_id = self.pricelist_ELD
-
-    #     # Test product vat incl
-    #     global_product_vat_incl = self.product_vat_incl.create_joint_buying_product()
-
-    #     self.assertEqual(
-    #         global_product_vat_incl.lst_price,
-    #         self.product_vat_incl.lst_price / 1.2 * 0.9,
-    #         "Global Product (from product vat incl) should has price vat excl."
-    #         " (regression regarding pricelist feature)",
-    #     )
-
-    #     # Test product vat incl
-    #     global_product_vat_excl = self.product_vat_incl.create_joint_buying_product()
-
-    #     self.assertEqual(
-    #         global_product_vat_excl.lst_price,
-    #         self.product_vat_excl.lst_price * 0.9,
-    #         "Global Product (from product vat excl) should has price vat excl."
-    #         " (regression regarding pricelist feature)",
-    #     )

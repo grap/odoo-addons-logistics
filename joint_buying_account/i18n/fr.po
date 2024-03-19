@@ -6,14 +6,98 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Odoo Server 12.0\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2023-12-03 00:08+0000\n"
-"PO-Revision-Date: 2023-12-03 00:08+0000\n"
+"POT-Creation-Date: 2024-03-15 14:08+0000\n"
+"PO-Revision-Date: 2024-03-15 14:08+0000\n"
 "Last-Translator: <>\n"
 "Language-Team: \n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: \n"
 "Plural-Forms: \n"
+
+#. module: joint_buying_account
+#: code:addons/joint_buying_account/wizards/joint_buying_invoice_commission_wizard_line.py:179
+#, python-format
+msgid "\n"
+"- Non-commissioned sale: %s ; %.2f €"
+msgstr "\n"
+"- Vente Non commissionnée: %s ; %.2f €"
+
+#. module: joint_buying_account
+#: model_terms:ir.ui.view,arch_db:joint_buying_account.view_joint_buying_invoice_commission_wizard_form
+msgid "Cancel"
+msgstr "Annuler"
+
+#. module: joint_buying_account
+#: model:ir.model.fields,field_description:joint_buying_account.field_joint_buying_purchase_order_grouped__invoice_id
+msgid "Commission Invoice"
+msgstr "Facture de commission"
+
+#. module: joint_buying_account
+#: model:ir.model.fields,field_description:joint_buying_account.field_joint_buying_purchase_order_grouped__invoice_line_id
+msgid "Commission Invoice Line"
+msgstr "Ligne de facture de commission"
+
+#. module: joint_buying_account
+#: model:ir.model.fields,field_description:joint_buying_account.field_joint_buying_invoice_commission_wizard_line__commission_rate
+msgid "Commission Rate"
+msgstr "Taux de commission"
+
+#. module: joint_buying_account
+#: model:product.product,name:joint_buying_account.product_LOG_commission
+#: model:product.template,name:joint_buying_account.product_LOG_commission_product_template
+msgid "Commission VAT 20% Excl"
+msgstr "Commission 20% HT"
+
+#. module: joint_buying_account
+#: code:addons/joint_buying_account/wizards/joint_buying_invoice_commission_wizard_line.py:165
+#, python-format
+msgid "Commission on %s deposited on %s\n"
+"- Ordered Amount : %.2f €\n"
+"- %d Customers: %s\n"
+"- Rate : %.2f %%"
+msgstr "Commission sur %s déposé le %s\n"
+"- Montant commandé : %.2f €\n"
+"- %d Clients: %s\n"
+"- Taux : %.2f %%"
+
+#. module: joint_buying_account
+#: model:ir.model,name:joint_buying_account.model_res_company
+msgid "Companies"
+msgstr "Sociétés"
+
+#. module: joint_buying_account
+#: model:ir.model,name:joint_buying_account.model_res_config_settings
+msgid "Config Settings"
+msgstr "Paramètres de config"
+
+#. module: joint_buying_account
+#: model_terms:ir.ui.view,arch_db:joint_buying_account.view_joint_buying_invoice_commission_wizard_form
+msgid "Confirm"
+msgstr "Confirmer"
+
+#. module: joint_buying_account
+#: model:ir.model.fields,field_description:joint_buying_account.field_joint_buying_invoice_commission_wizard__create_uid
+#: model:ir.model.fields,field_description:joint_buying_account.field_joint_buying_invoice_commission_wizard_line__create_uid
+msgid "Created by"
+msgstr "Créé par"
+
+#. module: joint_buying_account
+#: model:ir.model.fields,field_description:joint_buying_account.field_joint_buying_invoice_commission_wizard__create_date
+#: model:ir.model.fields,field_description:joint_buying_account.field_joint_buying_invoice_commission_wizard_line__create_date
+msgid "Created on"
+msgstr "Créé le"
+
+#. module: joint_buying_account
+#: model:ir.model.fields,field_description:joint_buying_account.field_joint_buying_invoice_commission_wizard_line__grouped_order_detail
+msgid "Detail"
+msgstr "Détail"
+
+#. module: joint_buying_account
+#: model:ir.model.fields,field_description:joint_buying_account.field_joint_buying_invoice_commission_wizard__display_name
+#: model:ir.model.fields,field_description:joint_buying_account.field_joint_buying_invoice_commission_wizard_line__display_name
+msgid "Display Name"
+msgstr "Nom affiché"
 
 #. module: joint_buying_account
 #: model:product.product,name:joint_buying_account.product_ELD_ecureuil
@@ -28,23 +112,151 @@ msgid "Hibou Garni 150gr LAIT"
 msgstr ""
 
 #. module: joint_buying_account
+#: model:ir.model.fields,field_description:joint_buying_account.field_joint_buying_invoice_commission_wizard__id
+#: model:ir.model.fields,field_description:joint_buying_account.field_joint_buying_invoice_commission_wizard_line__id
+msgid "ID"
+msgstr ""
+
+#. module: joint_buying_account
+#: code:addons/joint_buying_account/wizards/joint_buying_invoice_commission_wizard_line.py:124
+#, python-format
+msgid "Incorrect fiscal settings block the possibility to generate commission invoices : Incorrect tax type on the tax %s"
+msgstr "Le paramétrage fiscal incorrect empêche de générer des factures de commission : type de taxe incorrect sur la taxe %s"
+
+#. module: joint_buying_account
+#: code:addons/joint_buying_account/wizards/joint_buying_invoice_commission_wizard_line.py:114
+#, python-format
+msgid "Incorrect fiscal settings block the possibility to generate commission invoices : Too many taxes %s"
+msgstr "Le paramétrage fiscal incorrect empêche de générer des factures de commissions : Trop de taxes %s"
+
+#. module: joint_buying_account
+#: model:ir.model,name:joint_buying_account.model_joint_buying_invoice_commission_wizard_line
+msgid "Invoice Line Commission Wizard"
+msgstr "Ligne d'assistant de commission"
+
+#. module: joint_buying_account
+#: model:ir.model.fields,field_description:joint_buying_account.field_res_company__joint_buying_commission_product_id
+#: model:ir.model.fields,field_description:joint_buying_account.field_res_config_settings__joint_buying_commission_product_id
+msgid "Joint Buying Commission Product"
+msgstr "Produit de commission de commandes groupées"
+
+#. module: joint_buying_account
+#: model:ir.model,name:joint_buying_account.model_joint_buying_purchase_order_grouped
+msgid "Joint Buying Grouped Order"
+msgstr "Commande groupée"
+
+#. module: joint_buying_account
+#: model:ir.model,name:joint_buying_account.model_joint_buying_invoice_commission_wizard
+msgid "Joint Buying Invoice Commission Wizard"
+msgstr "Assistant de commission de commande groupé"
+
+#. module: joint_buying_account
+#: model:ir.model.fields,field_description:joint_buying_account.field_joint_buying_invoice_commission_wizard____last_update
+#: model:ir.model.fields,field_description:joint_buying_account.field_joint_buying_invoice_commission_wizard_line____last_update
+msgid "Last Modified on"
+msgstr "Dernière modification le"
+
+#. module: joint_buying_account
+#: model:ir.model.fields,field_description:joint_buying_account.field_joint_buying_invoice_commission_wizard__write_uid
+#: model:ir.model.fields,field_description:joint_buying_account.field_joint_buying_invoice_commission_wizard_line__write_uid
+msgid "Last Updated by"
+msgstr "Dernière mise à jour par"
+
+#. module: joint_buying_account
+#: model:ir.model.fields,field_description:joint_buying_account.field_joint_buying_invoice_commission_wizard__write_date
+#: model:ir.model.fields,field_description:joint_buying_account.field_joint_buying_invoice_commission_wizard_line__write_date
+msgid "Last Updated on"
+msgstr "Dernière mise à jour le"
+
+#. module: joint_buying_account
+#: model:ir.model.fields,field_description:joint_buying_account.field_joint_buying_invoice_commission_wizard__line_ids
+msgid "Line"
+msgstr "Ligne"
+
+#. module: joint_buying_account
+#: model:ir.model.fields,field_description:joint_buying_account.field_joint_buying_invoice_commission_wizard_line__local_partner_id
+msgid "Local Partner"
+msgstr "Partenaire local"
+
+#. module: joint_buying_account
+#: model:ir.actions.act_window,name:joint_buying_account.action_view_joint_buying_invoice_commission_wizard
+msgid "Make Joint Buying Commission Invoice"
+msgstr "Faire les factures de commission de commandes groupées"
+
+#. module: joint_buying_account
+#: model:ir.model.fields,field_description:joint_buying_account.field_joint_buying_invoice_commission_wizard__max_deposit_date
+msgid "Max Deposit Date"
+msgstr "Date maximum de dépôt"
+
+#. module: joint_buying_account
+#: code:addons/joint_buying_account/wizards/joint_buying_invoice_commission_wizard.py:62
+#, python-format
+msgid "No Grouped Order to invoice for the selected suppliers and the selected date."
+msgstr "Aucune commande groupée à facturer pour les fournisseurs sélectionnés à la date sélectionnée."
+
+#. module: joint_buying_account
 #: model:ir.model,name:joint_buying_account.model_product_product
 msgid "Product"
 msgstr "Article"
 
 #. module: joint_buying_account
+#: model:ir.model.fields,field_description:joint_buying_account.field_joint_buying_invoice_commission_wizard_line__grouped_order_qty
+msgid "Quantity"
+msgstr "Quantité"
+
+#. module: joint_buying_account
+#: model_terms:ir.ui.view,arch_db:joint_buying_account.view_res_config_settings_form
+msgid "Set the product used to make commission invoices."
+msgstr "Article utilisé pour réaliser les factures de commission de commande groupée."
+
+#. module: joint_buying_account
+#: model_terms:ir.ui.view,arch_db:joint_buying_account.view_joint_buying_invoice_commission_wizard_form
+msgid "Settings"
+msgstr "Configuration"
+
+#. module: joint_buying_account
+#: model:ir.model.fields,field_description:joint_buying_account.field_joint_buying_invoice_commission_wizard_line__partner_id
+msgid "Supplier"
+msgstr "Fournisseur"
+
+#. module: joint_buying_account
+#: model_terms:ir.ui.view,arch_db:joint_buying_account.view_joint_buying_invoice_commission_wizard_form
+msgid "Suppliers"
+msgstr "Fournisseurs"
+
+#. module: joint_buying_account
+#: model:ir.model.fields,help:joint_buying_account.field_joint_buying_invoice_commission_wizard__max_deposit_date
+msgid "The commission will be computed for the grouped order deposited by the suppliers until this date included."
+msgstr "La commission sera calculée pour les commandes groupées déposés par les fournisseurs jusqu'à cette date inclue."
+
+#. module: joint_buying_account
 #: model:product.product,uom_name:joint_buying_account.product_ELD_ecureuil
 #: model:product.product,uom_name:joint_buying_account.product_ELD_hibou
+#: model:product.product,uom_name:joint_buying_account.product_LOG_commission
 #: model:product.template,uom_name:joint_buying_account.product_ELD_ecureuil_product_template
 #: model:product.template,uom_name:joint_buying_account.product_ELD_hibou_product_template
+#: model:product.template,uom_name:joint_buying_account.product_LOG_commission_product_template
 msgid "Unit(s)"
 msgstr "Unité(s)"
 
 #. module: joint_buying_account
+#: model:ir.model.fields,field_description:joint_buying_account.field_joint_buying_invoice_commission_wizard_line__wizard_id
+msgid "Wizard"
+msgstr "Assistant"
+
+#. module: joint_buying_account
+#: code:addons/joint_buying_account/wizards/joint_buying_invoice_commission_wizard_line.py:196
+#, python-format
+msgid "You should define a local partner for the supplier %s."
+msgstr "Vous devez définir un partenaire local pour le fournisseur %s."
+
+#. module: joint_buying_account
 #: model:product.product,weight_uom_name:joint_buying_account.product_ELD_ecureuil
 #: model:product.product,weight_uom_name:joint_buying_account.product_ELD_hibou
+#: model:product.product,weight_uom_name:joint_buying_account.product_LOG_commission
 #: model:product.template,weight_uom_name:joint_buying_account.product_ELD_ecureuil_product_template
 #: model:product.template,weight_uom_name:joint_buying_account.product_ELD_hibou_product_template
+#: model:product.template,weight_uom_name:joint_buying_account.product_LOG_commission_product_template
 msgid "kg"
 msgstr ""
 

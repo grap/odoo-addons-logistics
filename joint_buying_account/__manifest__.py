@@ -14,8 +14,17 @@
         "joint_buying_product",
     ],
     "demo": [
+        "demo/account_account.xml",
+        "demo/account_journal.xml",
         "demo/account_tax.xml",
         "demo/product_product.xml",
+        "demo/res_company.xml",
+        "demo/ir_property.xml",
+    ],
+    "data": [
+        "wizards/view_joint_buying_invoice_commission_wizard.xml",
+        "views/view_res_config_settings.xml",
+        "views/view_joint_buying_purchase_order_grouped.xml",
     ],
     "installable": True,
     "auto_install": True,

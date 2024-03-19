@@ -114,7 +114,6 @@ License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl.html).
                     <page string="Commission" name="page_commission"
                             groups="joint_buying_base.group_joint_buying_manager">
                         <group colspan="4" col="4">
-                            <field name="joint_buying_commission_state" string="Commission Agreement"/>
                             <field name="joint_buying_commission_rate" string="Commission Rate"/>
                         </group>
                     </page>
@@ -169,7 +168,6 @@ License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl.html).
                 <field name="city"/>
                 <field name="zip"/>
                 <field name="joint_buying_pivot_company_id"/>
-                <field name="joint_buying_commission_state"/>
                 <field name="joint_buying_commission_rate"/>
             </tree>
         </field>
