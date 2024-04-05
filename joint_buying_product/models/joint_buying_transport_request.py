@@ -19,13 +19,23 @@ class JointBuyingTransportRequest(models.Model):
         readonly=True,
     )
 
+    def _get_depends_request_type(self):
+        res = super()._get_depends_request_type()
+        res.append("order_id")
+        return res
+
+    def _get_depends_can_change(self):
+        res = super()._get_depends_can_change()
+        res += ["order_id"]
+        return res
+
     def _get_depends_origin(self):
         res = super()._get_depends_origin()
         res.append("order_id")
         return res
 
-    def _get_depends_request_type(self):
-        res = super()._get_depends_request_type()
+    def _get_depends_supplier_id(self):
+        res = super()._get_depends_supplier_id()
         res.append("order_id")
         return res
 
@@ -63,15 +73,10 @@ class JointBuyingTransportRequest(models.Model):
         ]
         return res
 
-    def _get_depends_can_change(self):
-        res = super()._get_depends_can_change()
-        res += ["order_id"]
-        return res
-
     def _compute_origin(self):
         super(
             JointBuyingTransportRequest, self.filtered(lambda x: not x.order_id)
-        )._compute_request_type()
+        )._compute_origin()
 
         for request in self.filtered(lambda x: x.order_id):
             request.origin = request.order_id.name
@@ -83,6 +88,14 @@ class JointBuyingTransportRequest(models.Model):
 
         for request in self.filtered(lambda x: x.order_id):
             request.request_type = "joint_buying"
+
+    def _compute_supplier_id(self):
+        super(
+            JointBuyingTransportRequest, self.filtered(lambda x: not x.order_id)
+        )._compute_supplier_id()
+
+        for request in self.filtered(lambda x: x.order_id):
+            request.supplier_id = request.order_id.supplier_id
 
     def _compute_availability_date(self):
         super(
