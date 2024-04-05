@@ -22,7 +22,10 @@ License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl.html).
                 <field name="name"/>
                 <field name="start_date"/>
                 <field name="carrier_id"/>
+                <field name="type_id"/>
                 <field name="is_on_my_way"/>
+                <filter string="Carrier" name="groupby_carrier_id" domain="[]" context="{'group_by':'carrier_id'}"/>
+                <filter string="Type" name="groupby_type_id" domain="[]" context="{'group_by':'type_id'}"/>
             </search>
         </field>
     </record>
