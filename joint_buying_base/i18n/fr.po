@@ -6,8 +6,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Odoo Server 12.0\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2024-04-05 08:43+0000\n"
-"PO-Revision-Date: 2024-04-05 08:43+0000\n"
+"POT-Creation-Date: 2024-04-05 10:18+0000\n"
+"PO-Revision-Date: 2024-04-05 10:18+0000\n"
 "Last-Translator: <>\n"
 "Language-Team: \n"
 "MIME-Version: 1.0\n"
@@ -16,7 +16,7 @@ msgstr ""
 "Plural-Forms: \n"
 
 #. module: joint_buying_base
-#: code:addons/joint_buying_base/models/joint_buying_tour.py:260
+#: code:addons/joint_buying_base/models/joint_buying_tour.py:288
 #, python-format
 msgid "%s (copy)"
 msgstr "%s (copie)"
@@ -32,19 +32,19 @@ msgid "<b>Company Address:</b>"
 msgstr "<b>Adresse de la société:</b>"
 
 #. module: joint_buying_base
-#: code:addons/joint_buying_base/models/joint_buying_tour.py:191
+#: code:addons/joint_buying_base/models/joint_buying_tour.py:205
 #, python-format
 msgid "<i>Delivery and pick-up</i>"
 msgstr "<i>Livraison et retrait</i>"
 
 #. module: joint_buying_base
-#: code:addons/joint_buying_base/models/joint_buying_tour.py:187
+#: code:addons/joint_buying_base/models/joint_buying_tour.py:201
 #, python-format
 msgid "<i>Truck loading</i>"
 msgstr "<i>Chargement du camion</i>"
 
 #. module: joint_buying_base
-#: code:addons/joint_buying_base/models/joint_buying_tour.py:189
+#: code:addons/joint_buying_base/models/joint_buying_tour.py:203
 #, python-format
 msgid "<i>Truck unloading</i>"
 msgstr "<i>Déchargement du camion</i>"
@@ -65,7 +65,7 @@ msgid "<span class=\"oe_inline\"> ( On  </span>"
 msgstr "<span class=\"oe_inline\"> ( Dans </span>"
 
 #. module: joint_buying_base
-#: code:addons/joint_buying_base/models/joint_buying_tour.py:184
+#: code:addons/joint_buying_base/models/joint_buying_tour.py:198
 #, python-format
 msgid "<span style='color: green'><b>Pause</b></span>"
 msgstr ""
@@ -102,7 +102,17 @@ msgstr "<strong>Durée</strong>"
 
 #. module: joint_buying_base
 #: model_terms:ir.ui.view,arch_db:joint_buying_base.report_joint_buying_tour_document
-msgid "<strong>Payload (kg)</strong>"
+msgid "<strong>Loaded Amount Untaxed</strong>"
+msgstr "Montant HT chargé"
+
+#. module: joint_buying_base
+#: model_terms:ir.ui.view,arch_db:joint_buying_base.report_joint_buying_tour_document
+msgid "<strong>Loaded Weight</strong>"
+msgstr "Poids chargé"
+
+#. module: joint_buying_base
+#: model_terms:ir.ui.view,arch_db:joint_buying_base.report_joint_buying_tour_document
+msgid "<strong>Payload</strong>"
 msgstr "<strong>Charge Utile (kg)</strong>"
 
 #. module: joint_buying_base
@@ -516,7 +526,7 @@ msgid "Distance"
 msgstr ""
 
 #. module: joint_buying_base
-#: code:addons/joint_buying_base/models/joint_buying_tour.py:125
+#: code:addons/joint_buying_base/models/joint_buying_tour.py:139
 #, python-format
 msgid "Draft Tour"
 msgstr "Tournée en brouillon"
@@ -852,7 +862,7 @@ msgid "Journey"
 msgstr "Trajet"
 
 #. module: joint_buying_base
-#: code:addons/joint_buying_base/models/joint_buying_tour.py:179
+#: code:addons/joint_buying_base/models/joint_buying_tour.py:193
 #, python-format
 msgid "Journey from %s to %s"
 msgstr "Trajet de %s à %s"
@@ -920,6 +930,16 @@ msgstr "Ligne"
 #: model_terms:ir.ui.view,arch_db:joint_buying_base.report_joint_buying_tour_document
 msgid "Load"
 msgstr "Charger"
+
+#. module: joint_buying_base
+#: model:ir.model.fields,field_description:joint_buying_base.field_joint_buying_tour__loaded_amount_untaxed
+msgid "Loaded Amount Untaxed"
+msgstr "Montant HT chargé"
+
+#. module: joint_buying_base
+#: model:ir.model.fields,field_description:joint_buying_base.field_joint_buying_tour__loaded_weight
+msgid "Loaded Weight"
+msgstr "Poids chargé"
 
 #. module: joint_buying_base
 #: model_terms:ir.ui.view,arch_db:joint_buying_base.report_joint_buying_tour_document_request_lines

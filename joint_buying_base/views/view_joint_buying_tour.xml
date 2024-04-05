@@ -52,6 +52,8 @@ License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl.html).
                 <field name="arrival_point_id" attrs="{'invisible': [('is_loop', '=', True)]}"/>
                 <field name="stop_qty"/>
                 <field name="distance"/>
+                <field name="loaded_weight"/>
+                <field name="loaded_amount_untaxed"/>
                 <field name="is_loop" invisible="1"/>
             </tree>
         </field>
@@ -101,6 +103,8 @@ License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl.html).
                             <field name="arrival_point_id" attrs="{'invisible': [('is_loop', '=', True)]}"/>
                             <field name="duration" widget="float_time"/>
                             <field name="distance"/>
+                            <field name="loaded_weight"/>
+                            <field name="loaded_amount_untaxed"/>
                             <field name="stop_qty"/>
                             <field name="cost"/>
                         </group>
@@ -161,12 +165,36 @@ There may be traffic jams, delays, unforeseen events, etc...
         </field>
     </record>
 
+    <record id="view_joint_buying_tour_pivot" model="ir.ui.view">
+        <field name="model">joint.buying.tour</field>
+        <field name="arch" type="xml">
+            <pivot>
+                <field name="start_date" interval="month" type="row"/>
+                <field name="carrier_id" type="col"/>
+                <field name="loaded_weight" type="measure"/>
+                <field name="loaded_amount_untaxed" type="measure"/>
+            </pivot>
+        </field>
+    </record>
+
+    <record id="view_joint_buying_tour_graph" model="ir.ui.view">
+        <field name="model">joint.buying.tour</field>
+        <field name="arch" type="xml">
+            <graph stacked="True">
+                <field name="start_date" type="row"/>
+                <field name="carrier_id" type="col"/>
+                <field name="loaded_weight" type="measure"/>
+                <field name="loaded_amount_untaxed" type="measure"/>
+            </graph>
+        </field>
+    </record>
+
     <record id="action_joint_buying_tour_my" model="ir.actions.act_window">
         <field name="name">My Tours</field>
         <field name="type">ir.actions.act_window</field>
         <field name="res_model">joint.buying.tour</field>
         <field name="view_type">form</field>
-        <field name="view_mode">calendar,tree,form</field>
+        <field name="view_mode">calendar,tree,pivot,graph,form</field>
         <field name="domain">[('is_on_my_way', '=', True)]</field>
     </record>
 
@@ -182,7 +210,7 @@ There may be traffic jams, delays, unforeseen events, etc...
         <field name="type">ir.actions.act_window</field>
         <field name="res_model">joint.buying.tour</field>
         <field name="view_type">form</field>
-        <field name="view_mode">calendar,tree,form</field>
+        <field name="view_mode">calendar,tree,pivot,graph,form</field>
     </record>
 
 
