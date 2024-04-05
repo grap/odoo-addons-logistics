@@ -33,10 +33,12 @@ License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl.html).
                 <field name="origin"/>
                 <field name="state"/>
                 <field name="request_type"/>
+                <field name="supplier_id"/>
                 <filter name="filter_amount_positive" string="Positive Amount" domain="['|',
                     ('amount_untaxed','!=', 0),
                     ('total_weight','!=', 0),
                 ]"/>
+                <filter string="Request Type" name="groupby_request_type" domain="[]" context="{'group_by':'request_type'}"/>
             </search>
         </field>
     </record>
@@ -50,6 +52,7 @@ License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl.html).
                 decoration-danger="state == 'not_computable' and (amount_untaxed != 0 or total_weight != 0)"
                 >
                 <field name="availability_date"/>
+                <field name="supplier_id"/>
                 <field name="start_partner_id"/>
                 <field name="arrival_partner_id"/>
                 <field name="start_date"/>
@@ -85,6 +88,7 @@ License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl.html).
                             groups="base.group_erp_manager"
                         />
 
+                    <field name="request_type" widget="statusbar"/>
                     <field name="state" widget="statusbar"/>
                 </header>
                 <sheet>
@@ -127,6 +131,13 @@ License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl.html).
                                 'required': [('can_change_extra_data', '=', True)],
                                 }"/>
                             <field name="total_weight" attrs="{
+                                'invisible': [('can_change_extra_data', '=', True)],
+                                }"/>
+                            <field name="manual_supplier_id" attrs="{
+                                'invisible': [('can_change_extra_data', '=', False)],
+                                'required': [('can_change_extra_data', '=', True)],
+                                }"/>
+                            <field name="supplier_id" attrs="{
                                 'invisible': [('can_change_extra_data', '=', True)],
                                 }"/>
                         </group>
