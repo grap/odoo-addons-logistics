@@ -131,6 +131,7 @@ class JointBuyingCreatePurchaseOrderWizard(models.TransientModel):
         partner = self.joint_buying_local_supplier_id
         return {
             "partner_id": partner.id,
+            "partner_ref": self.order_id.name,
             "date_planned": self.date_planned,
             "company_id": self.env.user.company_id.id,
             "fiscal_position_id": partner.property_account_position_id
