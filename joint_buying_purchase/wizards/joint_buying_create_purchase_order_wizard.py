@@ -47,8 +47,10 @@ class JointBuyingCreatePurchaseOrderWizard(models.TransientModel):
     )
 
     def _default_date_planned(self):
-        # TODO: With LOG2, recover the delivery date
-        return False
+        order = self.env["joint.buying.purchase.order"].browse(
+            self.env.context.get("active_id")
+        )
+        return order and order.request_arrival_date
 
     def _default_order_id(self):
         return self.env.context.get("active_id")
