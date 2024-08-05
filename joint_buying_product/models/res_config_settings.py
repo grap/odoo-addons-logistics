@@ -29,14 +29,6 @@ class ResConfigSettings(models.TransientModel):
         help="Number of days after which a product will no longer be marked as new.",
     )
 
-    joint_buying_supplier_document_url = fields.Char(
-        string="Supplier Document URL",
-        required=True,
-        config_parameter="joint_buying_product.supplier_document_url",
-        help="URL of the online document that will be added to the email"
-        " send to the supplier.",
-    )
-
     joint_buying_send_pivot_email_in_progress = fields.Boolean(
         string="Send email when opening Grouped Order",
         related="company_id.joint_buying_send_pivot_email_in_progress",

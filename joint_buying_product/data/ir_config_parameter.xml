@@ -17,9 +17,4 @@
         <field name="value">60</field>
     </record>
 
-    <record id="supplier_url_document" model="ir.config_parameter">
-        <field name="key">joint_buying_product.supplier_document_url</field>
-        <field name="value">http://framabook.org/docs/NRC/Numerique_ReprendreLeControle_CC-By.pdf</field>
-    </record>
-
 </odoo>

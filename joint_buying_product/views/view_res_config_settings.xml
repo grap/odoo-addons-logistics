@@ -42,18 +42,10 @@ License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl.html).
                     </div>
                 </div>
 
-                <div class="col-xs-12 col-md-6 o_setting_box">
-                    <div class="o_setting_left_pane"/>
-                    <div class="o_setting_right_pane">
-
-                        <label for="joint_buying_supplier_document_url"/>
-                        <div class="text-muted">URL of the online document that will be added to the email send to the supplier.</div>
-                        <field name="joint_buying_supplier_document_url"/>
-                    </div>
-                </div>
             </xpath>
 
             <xpath expr="//div[@name='joint_buying_company_setting']" position="inside">
+
                 <div class="col-xs-12 col-md-6 o_setting_box">
                     <div class="o_setting_left_pane"/>
                     <div class="o_setting_right_pane">

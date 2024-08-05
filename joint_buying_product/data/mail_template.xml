@@ -24,7 +24,6 @@
                     <br/>
                     If you see in this document, incorrect informations (product not for sale or out of stock, incorrect price, etc. ...) please contact your pivot activity <strong>${object.pivot_company_id.name}</strong> as soon as possible.
                     <br/><br/>
-                    You can download the packing instructions by clicking on <a href="${object.env['ir.config_parameter'].sudo().get_param('joint_buying_product.supplier_url_document')}">this link.</a>
                     Have a nice day.
                 </p>
             </div>
