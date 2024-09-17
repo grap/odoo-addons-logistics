@@ -8,3 +8,4 @@ from . import test_check_access_joint_buying_purchase
 from . import test_tour_report
 from . import test_request_invalidate
 from . import test_joint_buying_transport_request_compute
+from . import test_joint_buying_wizard_update_order_grouped

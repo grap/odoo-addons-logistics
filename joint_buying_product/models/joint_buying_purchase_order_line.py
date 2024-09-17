@@ -343,3 +343,13 @@ class JointBuyingPurchaseOrderLine(models.Model):
                 "</span>"
             ),
         }
+
+    def write(self, vals):
+        res = super().write(vals)
+        # if the related orders are closed (or deposited), and if user changed the quantity
+        # lately. (for exemple, view joint.buying.wizard.update.order.grouped), we should
+        # ensure that transport request are correctly created. (or deleted)
+        self.mapped("order_id").filtered(
+            lambda x: x.state in ["closed", "deposited"]
+        )._hook_state_changed()
+        return res
