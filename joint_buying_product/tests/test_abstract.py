@@ -36,6 +36,7 @@ class TestAbstract(TransactionCase):
         self.company_CHE = self.env.ref("joint_buying_base.company_CHE")
         self.company_3PP = self.env.ref("joint_buying_base.company_3PP")
         self.company_LSE = self.env.ref("joint_buying_base.company_LSE")
+        self.company_1GG = self.env.ref("joint_buying_base.company_1GG")
 
         self.salaison_devidal = self.JointBuyingResPartner.browse(
             self.env.ref("joint_buying_base.supplier_salaison_devidal").id

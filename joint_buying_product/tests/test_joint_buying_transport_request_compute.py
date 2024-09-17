@@ -6,15 +6,11 @@ from datetime import datetime, timedelta
 
 from odoo.tests import tagged
 
-from odoo.addons.joint_buying_base.tests import (
-    test_joint_buying_transport_request_compute,
-)
+from .test_abstract import TestAbstract
 
 
 @tagged("post_install", "-at_install")
-class TestJointBuyingTransportRequest(
-    test_joint_buying_transport_request_compute.TestJointBuyingTransportRequest
-):
+class TestJointBuyingTransportRequest(TestAbstract):
     def setUp(self):
         super().setUp()
 
