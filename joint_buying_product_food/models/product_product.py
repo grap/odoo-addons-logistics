@@ -13,3 +13,14 @@ class ProductProduct(models.Model):
         will impact order in the joint.buying.tour report"""
         self.ensure_one()
         return self.storage_method or "normal"
+
+    def _prepare_joint_buying_product(self, action):
+        res = super()._prepare_joint_buying_product(action)
+        res.update(
+            {
+                "storage_method": self.storage_method,
+                "use_by_date_day": self.use_by_date_day,
+                "best_before_date_day": self.best_before_date_day,
+            }
+        )
+        return res
