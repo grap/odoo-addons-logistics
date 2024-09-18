@@ -16,6 +16,7 @@
     "data": [
         "views/view_res_partner.xml",
         "views/view_product_product.xml",
+        "views/view_joint_buying_purchase_order.xml",
     ],
     "installable": True,
     "auto_install": True,

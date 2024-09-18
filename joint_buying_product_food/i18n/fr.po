@@ -1,16 +1,37 @@
 # Translation of Odoo Server.
 # This file contains the translation of the following modules:
+#   * joint_buying_product_food
 #
 msgid ""
 msgstr ""
 "Project-Id-Version: Odoo Server 12.0\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2021-08-12 13:30+0000\n"
-"PO-Revision-Date: 2021-08-12 13:30+0000\n"
+"POT-Creation-Date: 2024-09-18 01:14+0000\n"
+"PO-Revision-Date: 2024-09-18 01:14+0000\n"
 "Last-Translator: <>\n"
 "Language-Team: \n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: \n"
 "Plural-Forms: \n"
+
+#. module: joint_buying_product_food
+#: model:ir.model,name:joint_buying_product_food.model_joint_buying_purchase_order_line
+msgid "Joint Buying Purchase Order"
+msgstr "Commande"
+
+#. module: joint_buying_product_food
+#: model:ir.model,name:joint_buying_product_food.model_joint_buying_tour
+msgid "Joint buying tour"
+msgstr "Tournée de commandes groupées"
+
+#. module: joint_buying_product_food
+#: model:ir.model,name:joint_buying_product_food.model_product_product
+msgid "Product"
+msgstr "Article"
+
+#. module: joint_buying_product_food
+#: model:ir.model.fields,field_description:joint_buying_product_food.field_joint_buying_purchase_order_line__residual_use_by_date
+msgid "Residual Use By Date"
+msgstr "DLC résiduelle"
 
