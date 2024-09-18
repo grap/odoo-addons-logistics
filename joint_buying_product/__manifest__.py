@@ -13,6 +13,7 @@
         # OCA
         "product_uom_measure_type",
         "web_notify",
+        "web_tree_dynamic_colored_field",
         "web_tree_image_tooltip",
         "web_widget_x2many_2d_matrix",
         # GRAP
