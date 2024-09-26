@@ -175,6 +175,7 @@ class JointBuyingPurchaseOrder(models.Model):
     amount_untaxed = fields.Float(
         string="Total Untaxed Amount",
         compute="_compute_amount",
+        track_visibility=True,
         store=True,
         digits=dp.get_precision("Product Price"),
     )
