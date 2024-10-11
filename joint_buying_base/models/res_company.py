@@ -73,10 +73,9 @@ class ResCompany(models.Model):
         self.ensure_one()
         icp = self.env["ir.config_parameter"].sudo()
         group_name = icp.get_param("joint_buying_base.group_name", "")
-        suffix = group_name and ("(" + group_name + ")") or ""
-        sanitized_name = self.name.replace("|", "").strip()
+        suffix = group_name and (" (" + group_name + ")") or ""
         vals = {
-            "name": f"{sanitized_name} {suffix}",
+            "name": f"{self.name}{suffix}",
             "active": self.active,
             "is_joint_buying": True,
             "is_joint_buying_stage": True,
