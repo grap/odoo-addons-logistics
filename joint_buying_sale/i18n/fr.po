@@ -183,7 +183,7 @@ msgid "Origin"
 msgstr "Origine"
 
 #. module: joint_buying_sale
-#: code:addons/joint_buying_sale/wizards/joint_buying_create_transport_request_wizard.py:73
+#: code:addons/joint_buying_sale/wizards/joint_buying_create_transport_request_wizard.py:83
 #, python-format
 msgid "Please set a weight for all products."
 msgstr "Veuillez renseigner un poids brut pour tous les articles."
@@ -234,13 +234,13 @@ msgid "There are no orders with valid amount."
 msgstr "Il ny'a pas de commande avec un montant valide."
 
 #. module: joint_buying_sale
-#: code:addons/joint_buying_sale/wizards/joint_buying_create_transport_request_wizard.py:62
+#: code:addons/joint_buying_sale/wizards/joint_buying_create_transport_request_wizard.py:72
 #, python-format
 msgid "There are no products to deliver."
 msgstr "Il n'y a aucun article livrable."
 
 #. module: joint_buying_sale
-#: code:addons/joint_buying_sale/wizards/joint_buying_create_transport_request_wizard.py:70
+#: code:addons/joint_buying_sale/wizards/joint_buying_create_transport_request_wizard.py:80
 #, python-format
 msgid "There is already a transport demand for this sale."
 msgstr "Il y a déjà une demande de transport pour cette vente."
@@ -266,6 +266,12 @@ msgstr "Assistant"
 #, python-format
 msgid "You should define the customer in your local partners database to create a sale order for him."
 msgstr "Vous devez créer un client dans votre base de données local de contact et l'associer, pour pouvoir créer un bon de commande ce vente pour ce client."
+
+#. module: joint_buying_sale
+#: code:addons/joint_buying_sale/wizards/joint_buying_create_transport_request_wizard.py:56
+#, python-format
+msgid "Your Sale Order has been generated from a Joint Buying Purchase Order. A transport request has still been generated. There is no need to create a new one."
+msgstr "Votre vente a été générée depuis une commande groupée. Une demande de tranport a déjà été générée. Il n'y a pas besoin d'en générer une autre."
 
 #. module: joint_buying_sale
 #: model_terms:ir.ui.view,arch_db:joint_buying_sale.view_joint_buying_create_sale_order_wizard_form

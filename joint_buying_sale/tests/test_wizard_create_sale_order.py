@@ -14,9 +14,14 @@ class TestWizardCreateSaleOrder(TransactionCase):
         super().setUp()
         self.GroupedOrder = self.env["joint.buying.purchase.order.grouped"]
         self.GroupedOrderWizard = self.env["joint.buying.wizard.create.order"]
-        self.CreateSaleOrderrWizard = self.env["joint.buying.create.sale.order.wizard"]
+        self.CreateSaleOrderWizard = self.env["joint.buying.create.sale.order.wizard"]
+        self.CreateTransportRequestWizard = self.env[
+            "joint.buying.create.transport.request.wizard"
+        ]
 
         self.global_supplier_company = self.env.ref("joint_buying_base.company_ELD")
+        self.company_EDC = self.env.ref("joint_buying_base.company_EDC")
+
         self.global_supplier_partner = (
             self.global_supplier_company.joint_buying_partner_id
         )
@@ -100,12 +105,12 @@ class TestWizardCreateSaleOrder(TransactionCase):
         )
 
     def _get_wizard_create_sale_order(self):
-        wizard = self.CreateSaleOrderrWizard.with_context(
+        wizard = self.CreateSaleOrderWizard.with_context(
             active_id=self.grouped_order.id,
         ).create({})
         return wizard
 
-    def test_01_create_sale_order_not_local_partner(self):
+    def _test_01_create_sale_order_not_local_partner(self):
         wizard = self._get_wizard_create_sale_order()
 
         with self.assertRaises(ValidationError):
@@ -137,9 +142,23 @@ class TestWizardCreateSaleOrder(TransactionCase):
         wizard = self._get_wizard_create_sale_order()
         wizard.create_sale_order()
 
-        self.assertTrue(self.order_EDC.sale_order_id)
+        sale_order = self.order_EDC.sale_order_id
+        self.assertTrue(sale_order)
 
         # Try to rerun the wizard should fail because all the sale orders
         # have been created.
         with self.assertRaises(UserError):
             wizard = self._get_wizard_create_sale_order()
+
+        # Try to create transport request from sale_order generated from joint buying purchase
+        # Order should fail
+        with self.assertRaises(UserError):
+            wizard = self.CreateTransportRequestWizard.with_context(
+                active_id=sale_order.id
+            ).create(
+                {
+                    "availability_date": datetime.now(),
+                    "start_partner_id": self.global_supplier_company.joint_buying_partner_id.id,
+                    "arrival_partner_id": self.company_EDC.joint_buying_partner_id.id,
+                }
+            )

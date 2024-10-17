@@ -48,7 +48,22 @@ class JointBuyingCreateTransportRequestWizard(models.TransientModel):
     )
 
     def _default_sale_order_id(self):
-        return self.env.context.get("active_id")
+        sale_order_id = self.env.context.get("active_id")
+        JointBuyingPurchaseOrder = self.env["joint.buying.purchase.order"]
+
+        purchase_orders = JointBuyingPurchaseOrder.search(
+            [("sale_order_id", "=", sale_order_id)]
+        )
+        if purchase_orders:
+            raise UserError(
+                _(
+                    "Your Sale Order has been generated from a Joint Buying Purchase Order."
+                    " A transport request has still been generated."
+                    " There is no need to create a new one."
+                )
+            )
+
+        return sale_order_id
 
     def _default_product_ids(self):
 
