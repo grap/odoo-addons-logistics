@@ -196,6 +196,9 @@ There may be traffic jams, delays, unforeseen events, etc...
         <field name="view_type">form</field>
         <field name="view_mode">calendar,tree,pivot,graph,form</field>
         <field name="domain">[('is_on_my_way', '=', True)]</field>
+        <field name="context">{
+            "joint_buying": 1,
+        }</field>
     </record>
 
     <menuitem id="menu_joint_buying_tour_my"
@@ -211,6 +214,9 @@ There may be traffic jams, delays, unforeseen events, etc...
         <field name="res_model">joint.buying.tour</field>
         <field name="view_type">form</field>
         <field name="view_mode">calendar,tree,pivot,graph,form</field>
+        <field name="context">{
+            "joint_buying": 1,
+        }</field>
     </record>
 
 
