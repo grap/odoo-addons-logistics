@@ -2502,6 +2502,12 @@ msgid "You can not set a negative quantity in the 'Purchase Quantity' field !"
 msgstr "Vous ne pouvez pas saisir de quantité négative dans le champ 'quantité à commander' !"
 
 #. module: joint_buying_product
+#: code:addons/joint_buying_product/models/res_partner.py:105
+#, python-format
+msgid "You can not uncheck 'Use Order Categories' if some categories are defined in the 'Next Orders' Section."
+msgstr "Vous ne pouvez pas décocher la case 'Utiliser les catégories de commandes, si certaines catégories sont paramétrées dans la section 'Prochaines commandes'."
+
+#. module: joint_buying_product
 #: code:addons/joint_buying_product/models/joint_buying_purchase_order.py:407
 #, python-format
 msgid "You cannot confirm an order for which you have not reached the minimum purchase amount."
