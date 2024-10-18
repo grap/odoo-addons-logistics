@@ -16,7 +16,7 @@ msgstr ""
 "Plural-Forms: \n"
 
 #. module: joint_buying_account
-#: code:addons/joint_buying_account/wizards/joint_buying_invoice_commission_wizard_line.py:179
+#: code:addons/joint_buying_account/wizards/joint_buying_invoice_commission_wizard_line.py:195
 #, python-format
 msgid "\n"
 "- Non-commissioned sale: %s ; %.2f €"
@@ -50,7 +50,7 @@ msgid "Commission VAT 20% Excl"
 msgstr "Commission 20% HT"
 
 #. module: joint_buying_account
-#: code:addons/joint_buying_account/wizards/joint_buying_invoice_commission_wizard_line.py:165
+#: code:addons/joint_buying_account/wizards/joint_buying_invoice_commission_wizard_line.py:181
 #, python-format
 msgid "Commission on %s deposited on %s\n"
 "- Ordered Amount : %.2f €\n"
@@ -118,13 +118,13 @@ msgid "ID"
 msgstr ""
 
 #. module: joint_buying_account
-#: code:addons/joint_buying_account/wizards/joint_buying_invoice_commission_wizard_line.py:124
+#: code:addons/joint_buying_account/wizards/joint_buying_invoice_commission_wizard_line.py:139
 #, python-format
 msgid "Incorrect fiscal settings block the possibility to generate commission invoices : Incorrect tax type on the tax %s"
 msgstr "Le paramétrage fiscal incorrect empêche de générer des factures de commission : type de taxe incorrect sur la taxe %s"
 
 #. module: joint_buying_account
-#: code:addons/joint_buying_account/wizards/joint_buying_invoice_commission_wizard_line.py:114
+#: code:addons/joint_buying_account/wizards/joint_buying_invoice_commission_wizard_line.py:129
 #, python-format
 msgid "Incorrect fiscal settings block the possibility to generate commission invoices : Too many taxes %s"
 msgstr "Le paramétrage fiscal incorrect empêche de générer des factures de commissions : Trop de taxes %s"
@@ -245,7 +245,7 @@ msgid "Wizard"
 msgstr "Assistant"
 
 #. module: joint_buying_account
-#: code:addons/joint_buying_account/wizards/joint_buying_invoice_commission_wizard_line.py:196
+#: code:addons/joint_buying_account/wizards/joint_buying_invoice_commission_wizard_line.py:212
 #, python-format
 msgid "You should define a local partner for the supplier %s."
 msgstr "Vous devez définir un partenaire local pour le fournisseur %s."
