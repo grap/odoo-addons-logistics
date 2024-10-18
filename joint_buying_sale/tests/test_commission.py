@@ -12,21 +12,26 @@ class TestCommission(TransactionCase):
     def setUp(self):
         super().setUp()
         self.company_LOG = self.env.ref("joint_buying_base.company_LOG")
-        self.benoit_ronzon = self.env.ref("joint_buying_base.supplier_benoit_ronzon")
-        self.CommissionWizardRonzon = self.env[
+        self.elodie_d = self.env.ref(
+            "joint_buying_base.company_ELD"
+        ).joint_buying_partner_id
+        self.CommissionWizardElodieD = self.env[
             "joint.buying.invoice.commission.wizard"
-        ].with_context(active_ids=self.benoit_ronzon.ids)
+        ].with_context(active_ids=self.elodie_d.ids)
         self.AccountInvoice = self.env["account.invoice"]
-        self.grouped_orders = self.benoit_ronzon.joint_buying_grouped_order_ids
+        self.TransportRequest = self.env["joint.buying.transport.request"]
+        self.transport_requests = self.TransportRequest.search(
+            [("supplier_id", "=", self.elodie_d.id)]
+        )
         self.env.user.company_id = self.company_LOG
 
-    def test_01_create_commission_from_grouped_orders(self):
-        # Wizard in a date BEFORE the delivery of grouped orders, should fail
-        day_before_deposit = min(
-            self.grouped_orders.mapped("deposit_date")
+    def test_01_create_commission_from_transport_requests_sale(self):
+        # Wizard in a date BEFORE the availability date of transport Requests, should fail
+        day_before_availability = min(
+            self.transport_requests.mapped("availability_date")
         ) + timedelta(days=-1)
-        wizard = self.CommissionWizardRonzon.create(
-            {"max_deposit_date": day_before_deposit}
+        wizard = self.CommissionWizardElodieD.create(
+            {"max_deposit_date": day_before_availability}
         )
         self.assertEqual(len(wizard.line_ids), 1)
         self.assertEqual(wizard.line_ids[0].grouped_order_qty, 0)
@@ -35,26 +40,31 @@ class TestCommission(TransactionCase):
             wizard.invoice_commission()
 
         # Wizard in a date AFTER the delivery of grouped orders, should success
-        day_after_deposit = max(self.grouped_orders.mapped("deposit_date"))
-        wizard = self.CommissionWizardRonzon.create(
-            {"max_deposit_date": day_after_deposit}
+        day_after_availability = max(
+            self.transport_requests.mapped("availability_date")
+        )
+        wizard = self.CommissionWizardElodieD.create(
+            {"max_deposit_date": day_after_availability}
         )
         self.assertEqual(len(wizard.line_ids), 1)
-        self.assertEqual(wizard.line_ids[0].grouped_order_qty, len(self.grouped_orders))
-        self.assertEqual(wizard.line_ids[0].transport_request_qty, 0)
+        self.assertEqual(wizard.line_ids[0].grouped_order_qty, 0)
+        self.assertEqual(
+            wizard.line_ids[0].transport_request_qty, len(self.transport_requests)
+        )
+
         result = wizard.invoice_commission()
 
         # Check invoice content
         invoice = self.AccountInvoice.browse(result.get("res_id", False))
         self.assertEqual(len(invoice), 1)
         self.assertEqual(
-            set(self.grouped_orders.mapped("invoice_line_id").ids),
+            set(self.transport_requests.mapped("invoice_line_id").ids),
             set(invoice.mapped("invoice_line_ids").ids),
         )
 
         # Try to re create invoices, should fail
-        wizard = self.CommissionWizardRonzon.create(
-            {"max_deposit_date": day_after_deposit}
+        wizard = self.CommissionWizardElodieD.create(
+            {"max_deposit_date": day_after_availability}
         )
         with self.assertRaises(UserError):
             wizard.invoice_commission()

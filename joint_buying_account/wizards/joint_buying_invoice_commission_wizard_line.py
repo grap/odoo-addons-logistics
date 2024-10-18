@@ -43,16 +43,19 @@ class JointbuyingInvoiceCommissionWizardLine(models.TransientModel):
     )
 
     grouped_order_qty = fields.Integer(
-        string="Quantity", compute="_compute_grouped_order_info"
+        string="Grouped Order Quantity", compute="_compute_info"
     )
 
-    grouped_order_detail = fields.Text(
-        string="Detail", compute="_compute_grouped_order_info"
+    transport_request_qty = fields.Integer(
+        string="Transport Request Quantity", compute="_compute_info"
     )
+
+    grouped_order_detail = fields.Text(string="Detail", compute="_compute_info")
 
     @api.depends("wizard_id.max_deposit_date", "partner_id")
-    def _compute_grouped_order_info(self):
+    def _compute_info(self):
         for line in self:
+            # Grouped Orders
             grouped_orders = self._compute_grouped_order_ids_model(
                 line.wizard_id.max_deposit_date, line.partner_id
             )
@@ -68,6 +71,36 @@ class JointbuyingInvoiceCommissionWizardLine(models.TransientModel):
                     for x in all_data
                 ]
             )
+
+            # Transport Requests (Except from Grouped Orders)
+            transport_requests = self._compute_transport_request_ids_model(
+                line.wizard_id.max_deposit_date, line.partner_id
+            )
+            line.transport_request_qty = len(transport_requests)
+            all_data = transport_requests.search_read(
+                [("id", "in", transport_requests.ids)],
+                ["name", "availability_date", "amount_untaxed"],
+            )
+            line.grouped_order_detail += "\n".join(
+                [f"- {x['name']} - {x['amount_untaxed']:.2f} €" for x in all_data]
+            )
+
+    @api.model
+    def _compute_transport_request_ids_model(self, max_deposit_date, partner):
+        max_deposit_date = datetime(
+            max_deposit_date.year, max_deposit_date.month, max_deposit_date.day
+        ) + timedelta(days=1)
+        return self.env["joint.buying.transport.request"].search(
+            [
+                ("supplier_id", "=", partner.id),
+                ("invoice_line_id", "=", False),
+                ("availability_date", "<", max_deposit_date),
+                ("amount_untaxed", ">", 0.0),
+                ("state", "=", "computed"),
+                ("request_type", "!=", "joint_buying"),
+            ],
+            order="availability_date",
+        )
 
     @api.model
     def _compute_grouped_order_ids_model(self, max_deposit_date, partner):
@@ -97,16 +130,34 @@ class JointbuyingInvoiceCommissionWizardLine(models.TransientModel):
         invoice_vals = self._prepare_invoice()
         invoice = AccountInvoice.create(invoice_vals)
 
+        # Grouped Orders
         for grouped_order in self._compute_grouped_order_ids_model(
             self.wizard_id.max_deposit_date, self.partner_id
         ):
-            invoice_line_vals = self._prepare_invoice_line(invoice, grouped_order)
+            invoice_line_vals = self._prepare_invoice_line_from_grouped_order(
+                invoice, grouped_order
+            )
             if not invoice_line_vals:
                 continue
-            line = AccountInvoiceLine.create(invoice_line_vals)
+            grouped_order.invoice_line_id = AccountInvoiceLine.create(
+                invoice_line_vals
+            ).id
 
-            grouped_order.invoice_line_id = line.id
+        # Transport Requests (Except from Grouped Orders)
+        for transport_request in self._compute_transport_request_ids_model(
+            self.wizard_id.max_deposit_date, self.partner_id
+        ):
+            invoice_line_vals = self._prepare_invoice_line_from_transport_request(
+                invoice, transport_request
+            )
+            if not invoice_line_vals:
+                continue
+            transport_request.invoice_line_id = AccountInvoiceLine.create(
+                invoice_line_vals
+            ).id
 
+        # Compute extra line values (taxes, name, etc...)
+        for line in invoice.invoice_line_ids:
             # We try to compute correctly taxes, check vat included, etc...
             price_unit = line.price_unit
             line_name = line.name
@@ -154,7 +205,7 @@ class JointbuyingInvoiceCommissionWizardLine(models.TransientModel):
         }
 
     @api.multi
-    def _prepare_invoice_line(self, invoice, grouped_order):
+    def _prepare_invoice_line_from_grouped_order(self, invoice, grouped_order):
         self.ensure_one()
 
         valid_orders = grouped_order.order_ids.filtered(
@@ -184,6 +235,33 @@ class JointbuyingInvoiceCommissionWizardLine(models.TransientModel):
                 deposit_order.customer_id.joint_buying_code,
                 deposit_order.amount_untaxed,
             )
+        return self._prepare_invoice_line(invoice, base, description)
+
+    @api.multi
+    def _prepare_invoice_line_from_transport_request(self, invoice, transport_request):
+        self.ensure_one()
+
+        base = transport_request.amount_untaxed
+
+        description = _(
+            "Commission on transport Request from %s to %s available on %s\n"
+            "- Amount : %.2f €\n"
+            "- Rate : %.2f %%"
+        ) % (
+            transport_request.start_partner_id.joint_buying_code,
+            transport_request.arrival_partner_id.joint_buying_code,
+            self.datetime_to_string(
+                transport_request.availability_date, self.local_partner_id
+            ),
+            base,
+            self.partner_id.joint_buying_commission_rate,
+        )
+
+        return self._prepare_invoice_line(invoice, base, description)
+
+    @api.multi
+    def _prepare_invoice_line(self, invoice, base, description):
+        self.ensure_one()
         product = self.local_partner_id.company_id.joint_buying_commission_product_id
         return {
             "invoice_id": invoice.id,

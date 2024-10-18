@@ -6,8 +6,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Odoo Server 12.0\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2024-03-15 14:08+0000\n"
-"PO-Revision-Date: 2024-03-15 14:08+0000\n"
+"POT-Creation-Date: 2024-04-05 16:01+0000\n"
+"PO-Revision-Date: 2024-04-05 16:01+0000\n"
 "Last-Translator: <>\n"
 "Language-Team: \n"
 "MIME-Version: 1.0\n"
@@ -16,7 +16,7 @@ msgstr ""
 "Plural-Forms: \n"
 
 #. module: joint_buying_account
-#: code:addons/joint_buying_account/wizards/joint_buying_invoice_commission_wizard_line.py:179
+#: code:addons/joint_buying_account/wizards/joint_buying_invoice_commission_wizard_line.py:246
 #, python-format
 msgid "\n"
 "- Non-commissioned sale: %s ; %.2f €"
@@ -30,11 +30,13 @@ msgstr "Annuler"
 
 #. module: joint_buying_account
 #: model:ir.model.fields,field_description:joint_buying_account.field_joint_buying_purchase_order_grouped__invoice_id
+#: model:ir.model.fields,field_description:joint_buying_account.field_joint_buying_transport_request__invoice_id
 msgid "Commission Invoice"
 msgstr "Facture de commission"
 
 #. module: joint_buying_account
 #: model:ir.model.fields,field_description:joint_buying_account.field_joint_buying_purchase_order_grouped__invoice_line_id
+#: model:ir.model.fields,field_description:joint_buying_account.field_joint_buying_transport_request__invoice_line_id
 msgid "Commission Invoice Line"
 msgstr "Ligne de facture de commission"
 
@@ -50,7 +52,7 @@ msgid "Commission VAT 20% Excl"
 msgstr "Commission 20% HT"
 
 #. module: joint_buying_account
-#: code:addons/joint_buying_account/wizards/joint_buying_invoice_commission_wizard_line.py:165
+#: code:addons/joint_buying_account/wizards/joint_buying_invoice_commission_wizard_line.py:232
 #, python-format
 msgid "Commission on %s deposited on %s\n"
 "- Ordered Amount : %.2f €\n"
@@ -59,6 +61,16 @@ msgid "Commission on %s deposited on %s\n"
 msgstr "Commission sur %s déposé le %s\n"
 "- Montant commandé : %.2f €\n"
 "- %d Clients: %s\n"
+"- Taux : %.2f %%"
+
+#. module: joint_buying_account
+#: code:addons/joint_buying_account/wizards/joint_buying_invoice_commission_wizard_line.py:258
+#, python-format
+msgid "Commission on transport Request from %s to %s available on %s\n"
+"- Amount : %.2f €\n"
+"- Rate : %.2f %%"
+msgstr "Commission sur demande de transport de %s à %s disponible le %s\n"
+"- Montant : %.2f €\n"
 "- Taux : %.2f %%"
 
 #. module: joint_buying_account
@@ -106,6 +118,11 @@ msgid "Ecureuil Garni 150gr LAIT (VAT INCL)"
 msgstr ""
 
 #. module: joint_buying_account
+#: model:ir.model.fields,field_description:joint_buying_account.field_joint_buying_invoice_commission_wizard_line__grouped_order_qty
+msgid "Grouped Order Quantity"
+msgstr "Quantité de commandes groupées"
+
+#. module: joint_buying_account
 #: model:product.product,name:joint_buying_account.product_ELD_hibou
 #: model:product.template,name:joint_buying_account.product_ELD_hibou_product_template
 msgid "Hibou Garni 150gr LAIT"
@@ -118,13 +135,13 @@ msgid "ID"
 msgstr ""
 
 #. module: joint_buying_account
-#: code:addons/joint_buying_account/wizards/joint_buying_invoice_commission_wizard_line.py:124
+#: code:addons/joint_buying_account/wizards/joint_buying_invoice_commission_wizard_line.py:190
 #, python-format
 msgid "Incorrect fiscal settings block the possibility to generate commission invoices : Incorrect tax type on the tax %s"
 msgstr "Le paramétrage fiscal incorrect empêche de générer des factures de commission : type de taxe incorrect sur la taxe %s"
 
 #. module: joint_buying_account
-#: code:addons/joint_buying_account/wizards/joint_buying_invoice_commission_wizard_line.py:114
+#: code:addons/joint_buying_account/wizards/joint_buying_invoice_commission_wizard_line.py:180
 #, python-format
 msgid "Incorrect fiscal settings block the possibility to generate commission invoices : Too many taxes %s"
 msgstr "Le paramétrage fiscal incorrect empêche de générer des factures de commissions : Trop de taxes %s"
@@ -149,6 +166,11 @@ msgstr "Commande groupée"
 #: model:ir.model,name:joint_buying_account.model_joint_buying_invoice_commission_wizard
 msgid "Joint Buying Invoice Commission Wizard"
 msgstr "Assistant de commission de commande groupé"
+
+#. module: joint_buying_account
+#: model:ir.model,name:joint_buying_account.model_joint_buying_transport_request
+msgid "Joint Buying Transport Request"
+msgstr "Demande de transport"
 
 #. module: joint_buying_account
 #: model:ir.model.fields,field_description:joint_buying_account.field_joint_buying_invoice_commission_wizard____last_update
@@ -200,11 +222,6 @@ msgid "Product"
 msgstr "Article"
 
 #. module: joint_buying_account
-#: model:ir.model.fields,field_description:joint_buying_account.field_joint_buying_invoice_commission_wizard_line__grouped_order_qty
-msgid "Quantity"
-msgstr "Quantité"
-
-#. module: joint_buying_account
 #: model_terms:ir.ui.view,arch_db:joint_buying_account.view_res_config_settings_form
 msgid "Set the product used to make commission invoices."
 msgstr "Article utilisé pour réaliser les factures de commission de commande groupée."
@@ -230,6 +247,11 @@ msgid "The commission will be computed for the grouped order deposited by the su
 msgstr "La commission sera calculée pour les commandes groupées déposés par les fournisseurs jusqu'à cette date inclue."
 
 #. module: joint_buying_account
+#: model:ir.model.fields,field_description:joint_buying_account.field_joint_buying_invoice_commission_wizard_line__transport_request_qty
+msgid "Transport Request Quantity"
+msgstr "Quantité de demandes de transport"
+
+#. module: joint_buying_account
 #: model:product.product,uom_name:joint_buying_account.product_ELD_ecureuil
 #: model:product.product,uom_name:joint_buying_account.product_ELD_hibou
 #: model:product.product,uom_name:joint_buying_account.product_LOG_commission
@@ -245,7 +267,7 @@ msgid "Wizard"
 msgstr "Assistant"
 
 #. module: joint_buying_account
-#: code:addons/joint_buying_account/wizards/joint_buying_invoice_commission_wizard_line.py:196
+#: code:addons/joint_buying_account/wizards/joint_buying_invoice_commission_wizard_line.py:290
 #, python-format
 msgid "You should define a local partner for the supplier %s."
 msgstr "Vous devez définir un partenaire local pour le fournisseur %s."

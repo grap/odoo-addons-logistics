@@ -129,6 +129,14 @@
         <field name="joint_buying_global_partner_id" model="res.partner" eval="obj().env.ref('joint_buying_base.company_ELD').joint_buying_partner_id.id"/>
     </record>
 
+    <record id="supplier_ELD_at_LOG" model="res.partner">
+        <field name="name">Elodia D @ Logistics</field>
+        <field name="company_id" ref="joint_buying_base.company_LOG"/>
+        <field name="customer" eval="True"/>
+        <field name="supplier" eval="False"/>
+        <field name="joint_buying_global_partner_id" model="res.partner" eval="obj().env.ref('joint_buying_base.company_ELD').joint_buying_partner_id.id"/>
+    </record>
+
     <record id="customer_3PP_at_ELD" model="res.partner">
         <field name="name">Three Peas @ Elodia D</field>
         <field name="company_id" ref="joint_buying_base.company_ELD"/>

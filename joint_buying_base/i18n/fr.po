@@ -953,7 +953,7 @@ msgid "Manager"
 msgstr "Gestionnaire"
 
 #. module: joint_buying_base
-#: code:addons/joint_buying_base/models/joint_buying_transport_request.py:198
+#: code:addons/joint_buying_base/models/joint_buying_transport_request.py:212
 #: selection:joint.buying.transport.request,request_type:0
 #, python-format
 msgid "Manual"
@@ -963,6 +963,11 @@ msgstr "Manuel"
 #: model:ir.model.fields,field_description:joint_buying_base.field_joint_buying_transport_request__manual_description
 msgid "Manual Description"
 msgstr "Description (Manuelle)"
+
+#. module: joint_buying_base
+#: model:ir.model.fields,field_description:joint_buying_base.field_joint_buying_transport_request__manual_supplier_id
+msgid "Manual Supplier"
+msgstr "Fournisseur (Manuel)"
 
 #. module: joint_buying_base
 #: model:ir.model.fields,field_description:joint_buying_base.field_joint_buying_carrier__message_has_error
@@ -1140,6 +1145,7 @@ msgstr "Demande"
 
 #. module: joint_buying_base
 #: model:ir.model.fields,field_description:joint_buying_base.field_joint_buying_transport_request__request_type
+#: model_terms:ir.ui.view,arch_db:joint_buying_base.view_joint_buying_transport_request_search
 msgid "Request Type"
 msgstr "Type de demande"
 
@@ -1301,6 +1307,7 @@ msgid "Summary"
 msgstr "Résumé"
 
 #. module: joint_buying_base
+#: model:ir.model.fields,field_description:joint_buying_base.field_joint_buying_transport_request__supplier_id
 #: model_terms:ir.ui.view,arch_db:joint_buying_base.view_res_partner_form
 msgid "Supplier"
 msgstr "Fournisseur"

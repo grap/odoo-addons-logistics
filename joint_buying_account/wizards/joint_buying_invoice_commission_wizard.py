@@ -53,7 +53,9 @@ class JointBuyingInvoiceCommissionWizard(models.TransientModel):
         self._check_values()
         invoices = self.env["account.invoice"]
 
-        for wizard_line in self.line_ids.filtered(lambda x: x.grouped_order_qty):
+        for wizard_line in self.line_ids.filtered(
+            lambda x: x.grouped_order_qty or x.transport_request_qty
+        ):
             invoice = wizard_line._create_invoice()
             invoices |= invoice
 
