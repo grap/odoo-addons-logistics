@@ -34,9 +34,10 @@ License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl.html).
                 <field name="state"/>
                 <field name="request_type"/>
                 <field name="supplier_id"/>
-                <filter name="filter_amount_positive" string="Positive Amount" domain="['|',
+                <filter name="filter_amount_positive_or_manual" string="Positive Amount or Manual" domain="['|', '|',
                     ('amount_untaxed','!=', 0),
                     ('total_weight','!=', 0),
+                    ('request_type','=', 'manual'),
                 ]"/>
                 <filter string="Request Type" name="groupby_request_type" domain="[]" context="{'group_by':'request_type'}"/>
             </search>
@@ -207,7 +208,7 @@ License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl.html).
         <field name="res_model">joint.buying.transport.request</field>
         <field name="view_type">form</field>
         <field name="view_mode">tree,form</field>
-        <field name="context">{'search_default_filter_amount_positive':1}</field>
+        <field name="context">{'search_default_filter_amount_positive_or_manual':1}</field>
     </record>
 
     <menuitem id="menu_joint_buying_transport_request"

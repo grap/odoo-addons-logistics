@@ -1137,8 +1137,8 @@ msgstr "Planifiée"
 
 #. module: joint_buying_base
 #: model_terms:ir.ui.view,arch_db:joint_buying_base.view_joint_buying_transport_request_search
-msgid "Positive Amount"
-msgstr "Montant positif"
+msgid "Positive Amount or Manual"
+msgstr "Montant positif ou Demande manuelle"
 
 #. module: joint_buying_base
 #: model:res.partner.category,name:joint_buying_base.partner_category_poultry
