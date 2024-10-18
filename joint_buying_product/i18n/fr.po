@@ -544,11 +544,6 @@ msgid "Correct purchase state"
 msgstr "Corriger l'état de la commande"
 
 #. module: joint_buying_product
-#: model_terms:ir.ui.view,arch_db:joint_buying_product.view_joint_buying_purchase_order_grouped_tree
-msgid "Create"
-msgstr "Créer"
-
-#. module: joint_buying_product
 #: model_terms:ir.ui.view,arch_db:joint_buying_product.view_joint_buying_purchase_order_grouped_form
 #: model_terms:ir.ui.view,arch_db:joint_buying_product.view_joint_buying_purchase_order_grouped_tree
 msgid "Create New Order and subscribe to the Supplier"
@@ -556,7 +551,6 @@ msgstr "Créer une nouvelle commande et s'abonner au fournisseur"
 
 #. module: joint_buying_product
 #: model:ir.actions.act_window,name:joint_buying_product.action_partner_2_wizard_create_order
-#: model_terms:ir.ui.view,arch_db:joint_buying_product.view_joint_buying_purchase_order_grouped_form
 #: model_terms:ir.ui.view,arch_db:joint_buying_product.view_joint_buying_wizard_create_order_form
 msgid "Create Order"
 msgstr "Créer une commande"
@@ -1711,6 +1705,12 @@ msgid "Order Lines"
 msgstr "Lignes de la commande"
 
 #. module: joint_buying_product
+#: model_terms:ir.ui.view,arch_db:joint_buying_product.view_joint_buying_purchase_order_grouped_form
+#: model_terms:ir.ui.view,arch_db:joint_buying_product.view_joint_buying_purchase_order_grouped_tree
+msgid "Order and Subscribe"
+msgstr "Commander et s'abonner"
+
+#. module: joint_buying_product
 #: model_terms:ir.ui.view,arch_db:joint_buying_product.view_joint_buying_purchase_order_form
 msgid "Order line"
 msgstr "Ligne de commande"
@@ -1952,7 +1952,7 @@ msgstr "Type de demande"
 
 #. module: joint_buying_product
 #: model_terms:ir.ui.view,arch_db:joint_buying_product.view_joint_buying_purchase_order_grouped_form
-msgid "Resend  to Supplier by Email"
+msgid "Resend to Supplier by Email"
 msgstr "Réenvoyer au fournisseur par email"
 
 #. module: joint_buying_product
