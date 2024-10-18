@@ -171,8 +171,17 @@ class ProductProduct(models.Model):
         if current_local_product == new_local_product:
             # Nothing change
             return
-        if current_local_product:
-            raise ValidationError(_("Unimplemented Feature"))
+        if (
+            current_local_product
+            and current_local_product.company_id.joint_buying_partner_id
+            == self.joint_buying_partner_id
+        ):
+            raise ValidationError(
+                _(
+                    "You can not change the relation between a global product"
+                    " and a local product if you sale it."
+                )
+            )
         new_local_product.joint_buying_product_id = self and self.id
 
     @api.model
@@ -209,6 +218,7 @@ class ProductProduct(models.Model):
     def update_joint_buying_product(self):
         products = self.filtered(lambda x: (x.joint_buying_product_id))
         for product in products:
+
             vals = product._prepare_joint_buying_product("update")
             global_product = product.joint_buying_product_id.with_context(
                 joint_buying=True, joint_buying_local_to_global=True
