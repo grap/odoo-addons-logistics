@@ -73,7 +73,7 @@ class ResCompany(models.Model):
         self.ensure_one()
         icp = self.env["ir.config_parameter"].sudo()
         group_name = icp.get_param("joint_buying_base.group_name", "")
-        suffix = group_name and (" (" + group_name + ")") or ""
+        suffix = group_name and f" ({self.code} - {group_name})" or f"({self.code})"
         vals = {
             "name": f"{self.name}{suffix}",
             "active": self.active,

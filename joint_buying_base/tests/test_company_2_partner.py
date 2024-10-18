@@ -18,11 +18,14 @@ class TestModule(TestAbstract):
     # Test Section
     def test_001_write_company_to_partner_info(self):
         company_name = "Demo Company for Joint Buying"
-        new_company = self.ResCompany.create({"name": company_name})
+        company_code = "DJB"
+        new_company = self.ResCompany.create(
+            {"name": company_name, "code": company_code}
+        )
 
         self.assertEqual(
             new_company.joint_buying_partner_id.name,
-            f"{company_name} ({self.suffixParameter.value})",
+            f"{company_name} ({company_code} - {self.suffixParameter.value})",
             "Create a company should create a related joint buying partner",
         )
 
@@ -46,6 +49,6 @@ class TestModule(TestAbstract):
         for company in self.ResCompany.search([]):
             self.assertEqual(
                 company.joint_buying_partner_id.name,
-                f"{company.name} ({self.suffixParameter.value})",
+                f"{company.name} ({company.code} - {self.suffixParameter.value})",
                 "Update the config parameter should update all the joint buying partner names",
             )
