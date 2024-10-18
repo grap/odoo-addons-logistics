@@ -15,6 +15,7 @@ class JointBuyingTransportRequest(models.Model):
     _name = "joint.buying.transport.request"
     _inherit = ["mail.thread", "mail.activity.mixin"]
     _description = "Joint Buying Transport Request"
+    _order = "availability_date desc, supplier_id"
 
     _INVALIDATE_VALS = {
         "start_date": False,
