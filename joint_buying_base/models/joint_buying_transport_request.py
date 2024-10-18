@@ -291,7 +291,7 @@ class JointBuyingTransportRequest(models.Model):
 
             self.write(
                 {
-                    "start_date": max(tour_lines.mapped("start_date")),
+                    "start_date": min(tour_lines.mapped("start_date")),
                     "arrival_date": max(tour_lines.mapped("arrival_date")),
                     "state": "computed",
                     "line_ids": [(5,)] + [(0, 0, x) for x in line_vals],
