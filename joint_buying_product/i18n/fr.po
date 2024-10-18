@@ -2322,12 +2322,6 @@ msgid "Unavailable Product (450gr) (Global)"
 msgstr "Article indisponible (450gr) (Global)"
 
 #. module: joint_buying_product
-#: code:addons/joint_buying_product/models/product_product.py:175
-#, python-format
-msgid "Unimplemented Feature"
-msgstr "Fonctionnalité non implémentée"
-
-#. module: joint_buying_product
 #: model_terms:ir.ui.view,arch_db:joint_buying_product.view_joint_buying_purchase_order_form
 #: model_terms:ir.ui.view,arch_db:joint_buying_product.view_joint_buying_purchase_order_grouped_form
 #: model_terms:ir.ui.view,arch_db:joint_buying_product.view_joint_buying_wizard_create_order_form
@@ -2478,6 +2472,18 @@ msgstr "Vous ne pouvez pas confirmer une commande avec un montant nul."
 #, python-format
 msgid "You can not confirm an order without any lines."
 msgstr "Vous ne pouvez pas confirmer une commande sans lignes."
+
+#. module: joint_buying_product
+#: code:addons/joint_buying_product/models/product_product.py:180
+#, python-format
+msgid "You can not change the relation between a global product and a local product if you sale it."
+msgstr "Vous ne pouvez pas changer le lien entre un produit global et un produit local si vous en êtes le fournisseur."
+
+#. module: joint_buying_product
+#: code:addons/joint_buying_product/models/product_product.py:231
+#, python-format
+msgid "You can not update the data of the product that belong to %s."
+msgstr "Vous ne pouvez pas mettre à jour les données d'un produit qui appartient à %s."
 
 #. module: joint_buying_product
 #: code:addons/joint_buying_product/models/product_product.py:136

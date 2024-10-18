@@ -5,7 +5,7 @@
 from datetime import timedelta
 
 from odoo import _, api, fields, models
-from odoo.exceptions import ValidationError
+from odoo.exceptions import AccessError, ValidationError
 
 from odoo.addons.joint_buying_base.models.res_partner import (
     _JOINT_BUYING_PARTNER_CONTEXT,
@@ -223,6 +223,16 @@ class ProductProduct(models.Model):
             global_product = product.joint_buying_product_id.with_context(
                 joint_buying=True, joint_buying_local_to_global=True
             )
+            if (
+                product.company_id.joint_buying_partner_id
+                != global_product.joint_buying_partner_id
+            ):
+                raise AccessError(
+                    _(
+                        "You can not update the data of the product that belong to %s."
+                        % global_product.joint_buying_partner_id.name
+                    )
+                )
             global_product.write(vals)
 
     def _prepare_joint_buying_product(self, action):
