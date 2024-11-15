@@ -129,6 +129,35 @@
     </record>
 
     <!--                        -->
+    <!-- Tournée CDA - GOU EXTRA -->
+    <!--                        -->
+
+    <record id="tour_cda_gou_1" model="joint.buying.tour">
+        <field name="name">Lyon - Loire</field>
+        <field name="type_id" ref="type_extra_COU"/>
+        <field name="carrier_id" ref="carrier_extra_COU"/>
+        <field name="start_date" eval="(DateTime.today() + timedelta(days=1)).strftime('%Y-%m-%d 10:30')"/>
+    </record>
+
+    <record id="tour_cda_gou_1_line_1" model="joint.buying.tour.line">
+        <field name="sequence">1</field>
+        <field name="sequence_type">handling</field>
+        <field name="tour_id" ref="tour_cda_gou_1"/>
+        <field name="duration" eval="2/60"/>
+    </record>
+
+    <record id="tour_cda_gou_1_line_2" model="joint.buying.tour.line">
+        <field name="sequence">2</field>
+        <field name="sequence_type">journey</field>
+        <field name="duration" eval="89/60"/>
+        <field name="distance">122</field>
+        <field name="tour_id" ref="tour_cda_gou_1"/>
+        <field name="starting_point_id" model="res.partner" eval="obj().env.ref('joint_buying_base.company_CDA').joint_buying_partner_id.id"/>
+        <field name="arrival_point_id" model="res.partner" eval="obj().env.ref('joint_buying_base.company_GOU').joint_buying_partner_id.id"/>
+    </record>
+
+
+    <!--                        -->
     <!-- Tournée Lyon - Loire 2 -->
     <!--                        -->
 

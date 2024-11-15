@@ -24,4 +24,10 @@
         <field name="currency_id" ref="base.EUR"/>
     </record>
 
+    <record id="carrier_extra_COU" model="joint.buying.carrier">
+        <field name="name">Extra COU</field>
+        <field name="is_provider" eval="True"/>
+        <field name="currency_id" ref="base.EUR"/>
+    </record>
+
 </odoo>
