@@ -82,26 +82,37 @@
                     <span t-field="doc.name"/>
                 </h2>
 
-                <div class="row mt32 mb32" id="informations">
-                    <div class="col-auto mw-100 mb-2">
+                <div class="row mt16">
+                    <div class="w-50">
                         <strong>Starting Point</strong>
                         <p class="m-0" t-field="doc.starting_point_id.name"/>
                     </div>
-                    <div class="col-auto mw-100 mb-2">
+                    <div class="w-25">
                         <strong>Start Date</strong>
                         <p class="m-0" t-field="doc.start_date"/>
                     </div>
-                    <div class="col-auto mw-100 mb-2">
+                    <div class="w-25">
+                        <strong>Payload</strong>
+                        <p class="m-0"><span t-esc="doc.carrier_id.payload"/> kg</p>
+                    </div>
+                </div>
+
+                <div class="row mt16 mb16">
+                    <div class="w-25">
                         <strong>Duration</strong>
                         <p class="m-0" t-esc="doc.display_time(doc.duration)"/>
                     </div>
-                    <div class="col-auto mw-100 mb-2">
+                    <div class="w-25">
                         <strong>Distance</strong>
-                        <p class="m-0" t-field="doc.distance"/>
+                        <p class="m-0"><span t-esc="doc.distance"/> km</p>
                     </div>
-                    <div class="col-auto mw-100 mb-2">
-                        <strong>Payload (kg)</strong>
-                        <p class="m-0" t-esc="doc.carrier_id.payload"/>
+                    <div class="w-25">
+                        <strong>Loaded Weight</strong>
+                        <p class="m-0"><span t-esc="doc.loaded_weight"/> kg</p>
+                    </div>
+                    <div class="w-25">
+                        <strong>Loaded Amount Untaxed</strong>
+                        <p class="m-0"><span t-esc="doc.loaded_amount_untaxed"/> €</p>
                     </div>
                 </div>
 

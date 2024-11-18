@@ -50,6 +50,17 @@ class JointbuyingInvoiceCommissionWizardLine(models.TransientModel):
         string="Detail", compute="_compute_grouped_order_info"
     )
 
+    def datetime_to_string(self, dt, partner=False):
+        if not partner or not partner.lang:
+            partner = self.env.user.partner_id
+        if not partner or not partner.lang:
+            partner = self.env.user.company_id.partner_id
+        lang = self.env["res.lang"].search([("code", "=", partner.lang)])
+        date_tz_user = fields.Datetime.context_timestamp(
+            self, fields.Datetime.from_string(dt)
+        )
+        return date_tz_user.strftime(lang.date_format)
+
     @api.depends("wizard_id.max_deposit_date", "partner_id")
     def _compute_grouped_order_info(self):
         for line in self:
@@ -63,7 +74,7 @@ class JointbuyingInvoiceCommissionWizardLine(models.TransientModel):
             )
             line.grouped_order_detail = "\n".join(
                 [
-                    f"- {x['name']} - {x['deposit_date'].strftime('%m/%d/%Y')}"
+                    f"- {x['name']} - {self.datetime_to_string(x['deposit_date'])}"
                     f" - {x['amount_untaxed']:.2f} €"
                     for x in all_data
                 ]
@@ -166,6 +177,7 @@ class JointbuyingInvoiceCommissionWizardLine(models.TransientModel):
             and x.amount_untaxed != 0.0
         )
         base = sum(valid_orders.mapped("amount_untaxed"))
+
         description = _(
             "Commission on %s deposited on %s\n"
             "- Ordered Amount : %.2f €\n"
@@ -173,7 +185,7 @@ class JointbuyingInvoiceCommissionWizardLine(models.TransientModel):
             "- Rate : %.2f %%"
         ) % (
             grouped_order.name,
-            grouped_order.deposit_date.strftime("%m/%d/%Y"),
+            self.datetime_to_string(grouped_order.deposit_date, self.local_partner_id),
             base,
             len(valid_orders),
             "-".join(valid_orders.mapped("customer_id.joint_buying_code")),

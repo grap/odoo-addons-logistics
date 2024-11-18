@@ -15,6 +15,7 @@ class JointBuyingTransportRequest(models.Model):
     _name = "joint.buying.transport.request"
     _inherit = ["mail.thread", "mail.activity.mixin"]
     _description = "Joint Buying Transport Request"
+    _order = "availability_date desc, supplier_id"
 
     _INVALIDATE_VALS = {
         "start_date": False,
@@ -33,8 +34,8 @@ class JointBuyingTransportRequest(models.Model):
 
     request_type = fields.Selection(
         selection=[("manual", "Manual")],
-        required=True,
         compute="_compute_request_type",
+        store=True,
     )
 
     origin = fields.Char(compute="_compute_origin", store=True)
@@ -51,9 +52,20 @@ class JointBuyingTransportRequest(models.Model):
         track_visibility=True,
     )
 
-    manual_availability_date = fields.Datetime(
-        string="Availability Date (Manual)",
+    manual_supplier_id = fields.Many2one(
+        comodel_name="res.partner",
+        context=_JOINT_BUYING_PARTNER_CONTEXT,
     )
+
+    supplier_id = fields.Many2one(
+        comodel_name="res.partner",
+        context=_JOINT_BUYING_PARTNER_CONTEXT,
+        compute="_compute_supplier_id",
+        store=True,
+        track_visibility=True,
+    )
+
+    manual_availability_date = fields.Datetime(string="Availability Date (Manual)")
 
     availability_date = fields.Datetime(
         string="Availability Date",
@@ -151,11 +163,17 @@ class JointBuyingTransportRequest(models.Model):
             vals.update(self._INVALIDATE_VALS)
         return super().write(vals)
 
+    def _get_depends_request_type(self):
+        return ["state"]  # fake, to make dependency working
+
+    def _get_depends_can_change(self):
+        return ["state"]  # fake, to make dependency working
+
     def _get_depends_origin(self):
         return ["state"]  # fake, to make dependency working
 
-    def _get_depends_request_type(self):
-        return ["state"]  # fake, to make dependency working
+    def _get_depends_supplier_id(self):
+        return ["manual_supplier_id"]
 
     def _get_depends_availability_date(self):
         return ["manual_availability_date"]
@@ -174,9 +192,6 @@ class JointBuyingTransportRequest(models.Model):
 
     def _get_depends_description(self):
         return ["manual_description"]
-
-    def _get_depends_can_change(self):
-        return ["state"]  # fake, to make dependency working
 
     @api.depends("start_partner_id", "arrival_partner_id", "availability_date")
     def _compute_name(self):
@@ -201,6 +216,11 @@ class JointBuyingTransportRequest(models.Model):
     def _compute_request_type(self):
         for request in self:
             request.request_type = "manual"
+
+    @api.depends(lambda x: x._get_depends_supplier_id())
+    def _compute_supplier_id(self):
+        for request in self:
+            request.supplier_id = request.manual_supplier_id
 
     @api.depends(lambda x: x._get_depends_availability_date())
     def _compute_availability_date(self):
@@ -271,7 +291,7 @@ class JointBuyingTransportRequest(models.Model):
 
             self.write(
                 {
-                    "start_date": max(tour_lines.mapped("start_date")),
+                    "start_date": min(tour_lines.mapped("start_date")),
                     "arrival_date": max(tour_lines.mapped("arrival_date")),
                     "state": "computed",
                     "line_ids": [(5,)] + [(0, 0, x) for x in line_vals],

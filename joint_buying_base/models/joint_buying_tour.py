@@ -7,6 +7,8 @@ from dateutil.relativedelta import relativedelta
 
 from odoo import _, api, fields, models
 
+from odoo.addons import decimal_precision as dp
+
 from .res_partner import _JOINT_BUYING_PARTNER_CONTEXT
 
 
@@ -98,6 +100,18 @@ class JointBuyingTour(models.Model):
         search="_search_is_on_my_way",
         help="Technical field that indicates that the tour"
         " passes through the current company.",
+    )
+
+    loaded_weight = fields.Float(
+        compute="_compute_loaded_data",
+        digits=dp.get_precision("Stock Weight"),
+        store=True,
+    )
+
+    loaded_amount_untaxed = fields.Float(
+        compute="_compute_loaded_data",
+        digits=dp.get_precision("Product Price"),
+        store=True,
     )
 
     @api.onchange("type_id")
@@ -227,6 +241,20 @@ class JointBuyingTour(models.Model):
                 continue
             tour.starting_point_id = journey_lines[0].starting_point_id
             tour.arrival_point_id = journey_lines[-1].arrival_point_id
+
+    @api.depends(
+        "line_ids.transport_request_line_ids.request_id.total_weight",
+        "line_ids.transport_request_line_ids.request_id.amount_untaxed",
+    )
+    def _compute_loaded_data(self):
+        for tour in self:
+            requests = tour.mapped("line_ids.transport_request_line_ids.request_id")
+            data = requests.search_read(
+                domain=[("id", "in", requests.ids)],
+                fields=["total_weight", "amount_untaxed"],
+            )
+            tour.loaded_weight = sum([x["total_weight"] for x in data])
+            tour.loaded_amount_untaxed = sum([x["amount_untaxed"] for x in data])
 
     @api.depends("line_ids.starting_point_id", "line_ids.arrival_point_id")
     def _compute_is_on_my_way(self):
