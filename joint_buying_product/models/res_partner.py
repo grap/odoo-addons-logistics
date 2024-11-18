@@ -2,7 +2,8 @@
 # @author: Sylvain LE GAL (https://twitter.com/legalsylvain)
 # License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl.html).
 
-from odoo import api, fields, models
+from odoo import _, api, fields, models
+from odoo.exceptions import ValidationError
 
 
 class ResPartner(models.Model):
@@ -93,6 +94,17 @@ class ResPartner(models.Model):
             partner.joint_buying_grouped_order_qty = len(
                 partner.joint_buying_grouped_order_ids
             )
+
+    @api.constrains("joint_buying_use_category", "joint_buying_frequency_ids")
+    def _check_joint_buying_use_category(self):
+        for partner in self.filtered(lambda x: not x.joint_buying_use_category):
+            if partner.mapped("joint_buying_frequency_ids.category_ids"):
+                raise ValidationError(
+                    _(
+                        "You can not uncheck 'Use Order Categories'"
+                        " if some categories are defined in the 'Next Orders' Section."
+                    )
+                )
 
     # Custom Section
     def _get_joint_buying_products(self, categories):
