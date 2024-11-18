@@ -3,7 +3,7 @@
 # License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl.html).
 {
     "name": "Joint Buying - Base",
-    "version": "12.0.7.0.0",
+    "version": "12.0.8.0.0",
     "category": "GRAP - Logistics",
     "author": "GRAP,La Jardinière,Hashbang",
     "website": "https://github.com/grap/odoo-addons-logistics",
