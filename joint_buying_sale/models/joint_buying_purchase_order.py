@@ -10,6 +10,7 @@ class JointBuyingPurchaseOrder(models.Model):
 
     sale_order_id = fields.Many2one(
         comodel_name="sale.order",
+        readonly=True,
         help="Related sale order in the local database of the"
         " supplier for the related customer.",
     )
