@@ -5,7 +5,7 @@
 from datetime import timedelta
 
 from odoo import _, api, fields, models
-from odoo.exceptions import ValidationError
+from odoo.exceptions import AccessError, ValidationError
 
 from odoo.addons.joint_buying_base.models.res_partner import (
     _JOINT_BUYING_PARTNER_CONTEXT,
@@ -171,8 +171,17 @@ class ProductProduct(models.Model):
         if current_local_product == new_local_product:
             # Nothing change
             return
-        if current_local_product:
-            raise ValidationError(_("Unimplemented Feature"))
+        if (
+            current_local_product
+            and current_local_product.company_id.joint_buying_partner_id
+            == self.joint_buying_partner_id
+        ):
+            raise ValidationError(
+                _(
+                    "You can not change the relation between a global product"
+                    " and a local product if you sale it."
+                )
+            )
         new_local_product.joint_buying_product_id = self and self.id
 
     @api.model
@@ -209,10 +218,21 @@ class ProductProduct(models.Model):
     def update_joint_buying_product(self):
         products = self.filtered(lambda x: (x.joint_buying_product_id))
         for product in products:
+
             vals = product._prepare_joint_buying_product("update")
             global_product = product.joint_buying_product_id.with_context(
                 joint_buying=True, joint_buying_local_to_global=True
             )
+            if (
+                product.company_id.joint_buying_partner_id
+                != global_product.joint_buying_partner_id
+            ):
+                raise AccessError(
+                    _(
+                        "You can not update the data of the product that belong to %s."
+                        % global_product.joint_buying_partner_id.name
+                    )
+                )
             global_product.write(vals)
 
     def _prepare_joint_buying_product(self, action):
