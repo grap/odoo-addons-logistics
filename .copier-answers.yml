@@ -1,8 +1,8 @@
 # Do NOT update manually; changes here will be overwritten by Copier
-_commit: ebd3bb9
-_src_path: https://github.com/grap/oca-addons-repo-template-new
-ci: GitHub
-convert_readme_fragments_to_markdown: false
+_commit: 3c7d193
+_src_path: https://github.com/grap/oca-addons-repo-template-v16
+additional_ruff_rules: []
+convert_readme_fragments_to_markdown: true
 enable_checklog_odoo: false
 generate_requirements_txt: true
 github_check_license: true
@@ -16,6 +16,7 @@ odoo_test_flavor: Odoo
 odoo_version: 16.0
 org_name: GRAP
 org_slug: grap
+postgres_image: ''
 rebel_module_groups: []
 repo_description: '
 
@@ -43,8 +44,5 @@ repo_name: Main repository for GRAP Logistics modules
 repo_slug: odoo-addons-logistics
 repo_website: https://github.com/grap/odoo-addons-logistics
 use_pyproject_toml: false
-use_ruff: false
-
-convert_readme_fragments_to_markdown: true
-odoo_test_flavor: Odoo
 use_ruff: true
+
