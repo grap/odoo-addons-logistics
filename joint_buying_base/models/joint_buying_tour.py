@@ -7,7 +7,6 @@ from dateutil.relativedelta import relativedelta
 
 from odoo import _, api, fields, models
 
-
 from .res_partner import _JOINT_BUYING_PARTNER_CONTEXT
 
 
@@ -189,9 +188,11 @@ class JointBuyingTour(models.Model):
             description = ""
             for i, line in enumerate(tour.line_ids):
                 if line.sequence_type == "journey":
-                    line_name = _("Journey from %s to %s") % (
-                        line.starting_point_id.name,
-                        line.arrival_point_id.name,
+                    line_name = _(
+                        "Journey from %(starting_point_name)s"
+                        " to %(arrival_point_name)s",
+                        starting_point_name=line.starting_point_id.name,
+                        arrival_point_name=line.arrival_point_id.name,
                     )
                 elif line.sequence_type == "pause":
                     line_name = _("<span style='color: green'><b>Pause</b></span>")
@@ -385,7 +386,9 @@ class JointBuyingTour(models.Model):
                     base_data.update(
                         {
                             "handling_sequence": sequence,
-                            "handling_partner": transport_request_line.starting_point_id,
+                            "handling_partner": (
+                                transport_request_line.starting_point_id
+                            ),
                             "action_type": "2_loading",
                         }
                     )

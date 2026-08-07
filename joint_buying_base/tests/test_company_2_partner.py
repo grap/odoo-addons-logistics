@@ -50,5 +50,6 @@ class TestModule(TestAbstract):
             self.assertEqual(
                 company.joint_buying_partner_id.name,
                 f"{company.name} ({company.code} - {self.suffixParameter.value})",
-                "Update the config parameter should update all the joint buying partner names",
+                "Update the config parameter should update"
+                " all the joint buying partner names",
             )

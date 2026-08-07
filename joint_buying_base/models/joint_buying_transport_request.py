@@ -6,7 +6,6 @@ from datetime import timedelta
 
 from odoo import _, api, fields, models
 
-
 from .res_partner import _JOINT_BUYING_PARTNER_CONTEXT
 
 
@@ -67,7 +66,6 @@ class JointBuyingTransportRequest(models.Model):
     manual_availability_date = fields.Datetime(string="Availability Date (Manual)")
 
     availability_date = fields.Datetime(
-        string="Availability Date",
         compute="_compute_availability_date",
         store=True,
         track_visibility=True,
@@ -139,9 +137,9 @@ class JointBuyingTransportRequest(models.Model):
         readonly=True,
     )
 
-    start_date = fields.Datetime(string="Start Date", readonly=True)
+    start_date = fields.Datetime(readonly=True)
 
-    arrival_date = fields.Datetime(string="Arrival Date", readonly=True)
+    arrival_date = fields.Datetime(readonly=True)
 
     manual_description = fields.Html()
 

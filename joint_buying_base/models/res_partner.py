@@ -75,11 +75,11 @@ class ResPartner(models.Model):
     joint_buying_is_mine_pivot = fields.Boolean(
         compute="_compute_joint_buying_is_mine_pivot",
         search="_search_joint_buying_is_mine_pivot",
-        help="This box is checked if the current company of the user is the pivot company"
-        " of the given joint buying partner.",
+        help="This box is checked if the current company of the user"
+        " is the pivot company of the given joint buying partner.",
     )
 
-    joint_buying_commission_rate = fields.Float(string="Joint Buying Commission Rate")
+    joint_buying_commission_rate = fields.Float()
 
     joint_buying_display_name_step = fields.Char(
         compute="_compute_joint_buying_display_name_step",
@@ -119,15 +119,13 @@ class ResPartner(models.Model):
             if other_partners:
                 raise ValidationError(
                     _(
-                        "You can not link the supplier %s to the Joint"
-                        " Buying partner %s"
+                        "You can not link the supplier %(supplier_partner_name)s"
+                        " to the joint buying partner %(joint_buying_partner_name)s"
                         " because you have other suppliers that are still"
-                        " related to him : \n\n %s"
-                        % (
-                            partner.name,
-                            partner.joint_buying_global_partner_id.name,
-                            ", ".join([x.name for x in other_partners]),
-                        )
+                        " related to him : \n\n %(other_partner_names)s",
+                        supplier_partner_name=partner.name,
+                        joint_buying_partner_name=partner.joint_buying_global_partner_id.name,
+                        other_partner_names=", ".join([x.name for x in other_partners]),
                     )
                 )
 

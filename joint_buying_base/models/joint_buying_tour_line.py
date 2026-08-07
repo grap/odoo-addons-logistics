@@ -7,7 +7,6 @@ import requests
 from odoo import _, api, fields, models
 from odoo.exceptions import UserError
 
-
 from .res_partner import _JOINT_BUYING_PARTNER_CONTEXT
 
 _TOUR_LINE_SEQUENCE_TYPES = [
@@ -116,17 +115,20 @@ class JointBuyingTourLine(models.Model):
             "?alternatives=false&overview=false"
         )
         try:
-            response = requests.get(url)
-        except requests.exceptions.ConnectionError:
-            raise UserError(_("Unable to reach the service 'router.project-osrm.org'."))
+            response = requests.get(url, timeout=60)
+        except requests.exceptions.ConnectionError as err:
+            raise UserError(
+                _("Unable to reach the service 'router.project-osrm.org'.")
+            ) from err
         if response.status_code != 200:
             raise UserError(
                 _(
                     "Calling 'router.project-osrm.org' returned the following error"
-                    " Status Code : %s"
-                    " Reason : %s"
+                    " Status Code : %(status_code)s"
+                    " Reason : %(reason)s",
+                    status_code=response.status_code,
+                    reason=response.reason,
                 )
-                % (response.status_code, response.reason)
             )
         result = response.json().get("routes")[0]
         return {

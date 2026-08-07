@@ -16,16 +16,16 @@ class TestJointBuyingTransportRequest(TestAbstract):
         self.TransportRequest = self.env["joint.buying.transport.request"]
 
     def test_create_transport_request_manual(self):
-        request = self.TransportRequest.create(
-            {
-                "manual_start_partner_id": self.company_CDA.joint_buying_partner_id.id,
-                "manual_arrival_partner_id": self.company_CHE.joint_buying_partner_id.id,
-                "manual_description": "manual_description",
-                "manual_availability_date": datetime.today(),
-                "manual_amount_untaxed": 999,
-                "manual_total_weight": 111,
-            }
-        )
+        vals = {
+            "manual_start_partner_id": self.company_CDA.joint_buying_partner_id.id,
+            "manual_arrival_partner_id": (self.company_CHE.joint_buying_partner_id.id),
+            "manual_description": "manual_description",
+            "manual_availability_date": datetime.today(),
+            "manual_amount_untaxed": 999,
+            "manual_total_weight": 111,
+        }
+        request = self.TransportRequest.create(vals)
+
         # Check Type
         self.assertEqual(request.request_type, "manual")
 

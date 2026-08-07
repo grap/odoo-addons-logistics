@@ -196,7 +196,8 @@ class JointBuyingWizardFindRoute(models.TransientModel):
     # #################
     @api.model
     def _populate_tree(self, transport_request):
-        # Get all the tours subsequent to the transport request for a given period of time
+        # Get all the tours subsequent to the transport request
+        # for a given period of time
         max_duration = int(
             self.env["ir.config_parameter"]
             .sudo()
@@ -227,7 +228,8 @@ class JointBuyingWizardFindRoute(models.TransientModel):
             startable_nodes = self._get_startable_nodes(tree)
             for startable_node in startable_nodes:
                 for line in tour.line_ids.filtered(
-                    lambda x: x.sequence_type == "journey"
+                    lambda x, startable_node=startable_node: x.sequence_type
+                    == "journey"
                     and startable_node.data.date <= x.start_date
                     and startable_node.data.partner == x.starting_point_id
                 ):

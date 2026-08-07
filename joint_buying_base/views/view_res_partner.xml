@@ -30,7 +30,7 @@ License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl.html).
                 </header>
                 <sheet>
                     <div class="oe_button_box" name="button_box">
-                        
+
             <field name="active" invisible="1" />
             <widget
                 name="web_ribbon"
@@ -38,7 +38,7 @@ License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl.html).
                 bg_color="bg-danger"
                 attrs="{'invisible': [('active', '=', True)]}"
             />
-            
+
 
                         <button name="toggle_joint_buying_is_subscribed" type="object" class="oe_stat_button" icon="fa-star">
                             <field name="joint_buying_is_subscribed" widget="boolean_button"
