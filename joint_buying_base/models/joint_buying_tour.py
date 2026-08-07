@@ -258,7 +258,7 @@ class JointBuyingTour(models.Model):
 
     @api.depends("line_ids.starting_point_id", "line_ids.arrival_point_id")
     def _compute_is_on_my_way(self):
-        current_partner = self.env.user.company_id.joint_buying_partner_id
+        current_partner = self.env.company.joint_buying_partner_id
         for tour in self:
             tour.is_on_my_way = current_partner in self.mapped(
                 "line_ids.starting_point_id"
@@ -266,7 +266,7 @@ class JointBuyingTour(models.Model):
 
     # Search Section
     def _search_is_on_my_way(self, operator, value):
-        current_partner = self.env.user.company_id.joint_buying_partner_id
+        current_partner = self.env.company.joint_buying_partner_id
         if (operator == "=" and value) or (operator == "!=" and not value):
             search_operator = "in"
         else:

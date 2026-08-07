@@ -184,7 +184,7 @@ class ResPartner(models.Model):
             )
 
     def _compute_joint_buying_is_mine_pivot(self):
-        current_company = self.env.user.company_id
+        current_company = self.env.company
         for partner in self:
             partner.joint_buying_is_mine_pivot = (
                 partner.joint_buying_pivot_company_id == current_company
@@ -198,7 +198,7 @@ class ResPartner(models.Model):
 
     # Search Section
     def _search_joint_buying_is_mine_pivot(self, operator, value):
-        current_company = self.env.user.company_id
+        current_company = self.env.company
         if (operator == "=" and value) or (operator == "!=" and not value):
             search_operator = "in"
         else:
