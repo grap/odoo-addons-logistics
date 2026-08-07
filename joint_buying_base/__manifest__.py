@@ -44,7 +44,6 @@
         "wizards/joint_buying_wizard_find_route.xml",
         "reports/report_joint_buying_tour.xml",
         "reports/report.xml",
-        "views/templates.xml",
     ],
     "demo": [
         "demo/res_company.xml",

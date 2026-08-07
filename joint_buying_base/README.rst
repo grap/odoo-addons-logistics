@@ -74,14 +74,6 @@ Other credits
 
 - Module Icon come from https://icon-icons.com/fr/icone/groupe/129531
 
-The development of this module has been financially supported by:
-
-- La Région Auvergne Rhône-Alpes
-
-|image1|
-
-.. |image1| image:: https://raw.githubusercontent.com/grap/odoo-addons-logistics/16.0/joint_buying_base/static/description/logo_region_auvergne_rhone_alpes.png
-
 Maintainers
 -----------
 

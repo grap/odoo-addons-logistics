@@ -127,6 +127,9 @@ License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl.html).
                             <field name="availability_date" attrs="{
                                 'invisible': [('can_change_date', '=', True)],
                                 }"/>
+                            <field name="can_change_date" invisible="1" />
+                            <field name="can_change_extra_data" invisible="1"/>
+                            <field name="can_change_partners" invisible="1"/>
                         </group>
                         <group>
                             <field name="start_date" attrs="{'invisible': [('start_date', '=', False)]}"/>
@@ -193,13 +196,6 @@ License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl.html).
                                         <field name="distance" sum="Total"/>
                                     </tree>
                                 </field>
-                        </page>
-                        <page string="Technical Fields" groups="base.group_erp_manager">
-                            <group>
-                                <field name="can_change_date" />
-                                <field name="can_change_extra_data" />
-                                <field name="can_change_partners" />
-                            </group>
                         </page>
                     </notebook>
                 </sheet>
