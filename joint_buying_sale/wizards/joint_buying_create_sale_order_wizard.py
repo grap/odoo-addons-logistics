@@ -27,7 +27,6 @@ class JointBuyingCreateSaleOrderWizard(models.TransientModel):
         return self.env.context.get("active_id")
 
     def _default_line_ids(self):
-
         line_vals = []
 
         grouped_order = self.env["joint.buying.purchase.order.grouped"].browse(

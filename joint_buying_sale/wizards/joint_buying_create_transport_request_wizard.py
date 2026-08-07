@@ -66,7 +66,6 @@ class JointBuyingCreateTransportRequestWizard(models.TransientModel):
         return sale_order_id
 
     def _default_product_ids(self):
-
         sale_order = self.env["sale.order"].browse(self.env.context.get("active_id"))
         products = (
             sale_order.mapped("order_line")

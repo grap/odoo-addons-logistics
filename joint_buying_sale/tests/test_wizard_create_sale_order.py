@@ -119,7 +119,6 @@ class TestWizardCreateSaleOrder(TransactionCase):
             wizard.create_sale_order()
 
     def test_02_create_sale_orders(self):
-
         # Create sale orders for associated customer
         wizard = self._get_wizard_create_sale_order()
         wizard.line_ids.filtered(
