@@ -253,12 +253,12 @@ class JointBuyingWizardFindRoute(models.TransientModel):
                                 transport_request.arrival_partner_id,
                             )
 
-                            # we've arrived at our destination!
-                            if (
-                                found_line.arrival_point_id
-                                == transport_request.arrival_partner_id
-                            ):
-                                return tree
+                            # # we've arrived at our destination!
+                            # if (
+                            #     found_line.arrival_point_id
+                            #     == transport_request.arrival_partner_id
+                            # ):
+                            #     return tree
 
         return tree
 
@@ -274,6 +274,8 @@ class JointBuyingWizardFindRoute(models.TransientModel):
         ]
 
         # The destination is present in the available lines, directly return
+        # Exemple: tour is A -> B -> C -> D -> E and destination is D,
+        # return D.
         if destination in [x.arrival_point_id for x in available_lines]:
             return available_lines
 

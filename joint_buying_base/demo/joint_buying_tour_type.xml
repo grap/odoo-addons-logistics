@@ -37,4 +37,9 @@
         <field name="carrier_id" ref="carrier_coolivri_savoie"/>
     </record>
 
+    <record id="type_extra_COU" model="joint.buying.tour.type">
+        <field name="name">Savoie Impaire</field>
+        <field name="carrier_id" ref="carrier_extra_COU"/>
+    </record>
+
 </odoo>

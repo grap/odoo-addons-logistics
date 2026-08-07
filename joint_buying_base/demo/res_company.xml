@@ -110,6 +110,19 @@
         <field name="logo" type="base64" file="joint_buying_base/static/img/company_ELD-logo.png"/>
     </record>
 
+    <record id="company_GOU" model="res.company">
+        <field name="code">GOU</field>
+        <field name="name">[GOU - Taste of Kids]</field>
+        <field name="email">no-spam@goutchou.fr/</field>
+        <field name="street"> Avenue du 8 Mai</field>
+        <field name="city">Saint Just La Pendue</field>
+        <field name="zip">42540</field>
+        <field name="country_id" ref="base.fr"/>
+        <field name="partner_latitude">45.8915716</field>
+        <field name="partner_longitude">4.2352806</field>
+        <field name="logo" type="base64" file="joint_buying_base/static/img/company_GOU-logo.png"/>
+    </record>
+
     <record id="company_LSE" model="res.company">
         <field name="code">LSE</field>
         <field name="name">[LSE - The Super Mall]</field>

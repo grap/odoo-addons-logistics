@@ -27,6 +27,7 @@
             (4, ref('joint_buying_base.company_CRB')),
             (4, ref('joint_buying_base.company_EDC')),
             (4, ref('joint_buying_base.company_ELD')),
+            (4, ref('joint_buying_base.company_GOU')),
             (4, ref('joint_buying_base.company_LSE')),
             (4, ref('joint_buying_base.company_LOG')),
             (4, ref('joint_buying_base.company_PZI')),
