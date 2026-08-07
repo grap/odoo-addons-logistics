@@ -4,7 +4,6 @@
 
 from odoo import fields, models
 
-from odoo.addons import decimal_precision as dp
 from odoo.addons.joint_buying_base.models.res_partner import (
     _JOINT_BUYING_PARTNER_CONTEXT,
 )
@@ -31,7 +30,7 @@ class JointBuyingCreateSaleOrderWizardLine(models.TransientModel):
         string="Total Untaxed Amount",
         compute="_compute_amount",
         store=True,
-        digits=dp.get_precision("Product Price"),
+        digits="Product Price",
     )
 
     joint_buying_global_customer_id = fields.Many2one(
