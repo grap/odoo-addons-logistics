@@ -652,15 +652,10 @@ class JointBuyingPurchaseOrderGrouped(models.Model):
         ).id
         menu_id = self.env.ref("joint_buying_base.menu_root").id
         return (
-            "{base_url}/web?"
-            "#id={grouped_order_id}"
-            "&action={action_id}"
+            f"{base_url}/web?"
+            f"#id={self.id}"
+            f"&action={action_id}"
             "&model=joint.buying.purchase.order.grouped"
             "&view_type=form"
-            "&menu_id={menu_id}".format(
-                base_url=base_url,
-                grouped_order_id=self.id,
-                action_id=action_id,
-                menu_id=menu_id,
-            )
+            f"&menu_id={menu_id}"
         )

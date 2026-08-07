@@ -14,7 +14,6 @@ class TestJointBuyingWizardUpdateOrderGrouped(TestAbstract):
         super().setUp()
 
     def test_01_wizard_update_order_grouped(self):
-
         wizard = self.JointBuyingWizardUpdateOrderGrouped.with_context(
             active_id=self.grouped_order_ronzon_past.id
         ).create({})

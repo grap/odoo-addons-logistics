@@ -291,7 +291,6 @@ class TestJointBuyingPurchaseOrder(TestAbstract):
         )
 
     def test_11_joint_buying_grouped_order_update_product_list(self):
-
         grouped_order = self._get_grouped_order_benoit_ronzon()
 
         # Check 0 : we check that the order is correctly set
@@ -368,9 +367,9 @@ class TestJointBuyingPurchaseOrder(TestAbstract):
         )
 
         # Launch Oil Order
-        self.env.ref(
-            "joint_buying_product.frequency_oil_PZI"
-        ).next_start_date = now + timedelta(days=-1)
+        self.env.ref("joint_buying_product.frequency_oil_PZI").next_start_date = (
+            now + timedelta(days=-1)
+        )
         self.OrderGrouped.cron_create_purchase_order_grouped()
 
         orders_grouped_step_3 = self.OrderGrouped.search(

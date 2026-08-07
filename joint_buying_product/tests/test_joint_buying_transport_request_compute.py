@@ -100,7 +100,6 @@ class TestJointBuyingTransportRequest(TestAbstract):
         self.assertEqual(request.line_ids[2].arrival_point_id.joint_buying_code, "CDA")
 
     def test_joint_buying_order_grouped_change_deposit_partner(self):
-
         grouped_order = self.env.ref("joint_buying_product.grouped_order_ronzon_past")
         order_LSE = grouped_order.order_ids.filtered(
             lambda x: x.customer_id.joint_buying_code == "LSE"

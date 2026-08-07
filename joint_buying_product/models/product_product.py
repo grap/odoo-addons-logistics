@@ -218,7 +218,6 @@ class ProductProduct(models.Model):
     def update_joint_buying_product(self):
         products = self.filtered(lambda x: (x.joint_buying_product_id))
         for product in products:
-
             vals = product._prepare_joint_buying_product("update")
             global_product = product.joint_buying_product_id.with_context(
                 joint_buying=True, joint_buying_local_to_global=True

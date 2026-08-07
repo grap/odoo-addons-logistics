@@ -264,7 +264,7 @@ class JointBuyingPurchaseOrderLine(models.Model):
             line.product_qty = product_qty
             if product_qty:
                 line.uom_different_description = _(
-                    "or {} x {}".format(product_qty, line.product_uom_id.name)
+                    f"or {product_qty} x {line.product_uom_id.name}"
                 )
             else:
                 line.uom_different_description = False

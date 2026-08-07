@@ -4,7 +4,6 @@
 
 
 def pre_init_product_db(cr):
-
     # Add product_product.is_joint_buying
     cr.execute(
         """
