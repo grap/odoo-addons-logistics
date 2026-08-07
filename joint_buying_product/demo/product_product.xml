@@ -1,0 +1,247 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<odoo>
+
+    <!-- Joint Buying Products -->
+    <record id="product_dombes_smoked_salmon_100" model="product.product"
+        context="{'joint_buying': True}">
+        <field name="name">Saumon fumé des Dombes 100g (Global)</field>
+        <field name="joint_buying_partner_id" ref="joint_buying_base.supplier_fumet_dombes"/>
+        <field name="barcode">3356997201003</field>
+        <field name="price">6</field>
+    </record>
+
+    <record id="product_dombes_smoked_salmon_200" model="product.product"
+        context="{'joint_buying': True}">
+        <field name="name">Saumon fumé des Dombes 200g (Global)</field>
+        <field name="joint_buying_partner_id" ref="joint_buying_base.supplier_fumet_dombes"/>
+        <field name="barcode">3356997202000</field>
+        <field name="price">11</field>
+    </record>
+
+    <record id="product_devidal_caillette" model="product.product"
+        context="{'joint_buying': True}">
+        <field name="name">Caillette sous vide (~300gr) (Global)</field>
+        <field name="uom_id" ref="uom.product_uom_kgm"/>
+        <field name="uom_po_id" ref="uom.product_uom_kgm"/>
+        <field name="uom_package_id" ref="joint_buying_product.uom_0_300_kg"/>
+        <field name="joint_buying_partner_id" ref="joint_buying_base.supplier_salaison_devidal"/>
+        <field name="price">13</field>
+    </record>
+
+    <record id="product_devidal_huile_olive" model="product.product"
+        context="{'joint_buying': True}">
+        <field name="name">Huile d'Olive (bidon de 5L) (Global)</field>
+        <field name="uom_id" ref="uom.product_uom_kgm"/>
+        <field name="uom_po_id" ref="joint_buying_product.uom_0_950_oil_liter_kg"/>
+        <field name="uom_package_qty">5</field>
+        <field name="joint_buying_partner_id" ref="joint_buying_base.supplier_salaison_devidal"/>
+        <field name="price">8</field>
+    </record>
+
+    <record id="product_devidal_concombre" model="product.product"
+        context="{'joint_buying': True}">
+        <field name="name">Cagette de 10/14 concombres (Global)</field>
+        <field name="uom_id" ref="uom.product_uom_unit"/>
+        <field name="uom_po_id" ref="uom.product_uom_dozen"/>
+        <field name="uom_package_qty">1</field>
+        <field name="joint_buying_partner_id" ref="joint_buying_base.supplier_salaison_devidal"/>
+        <field name="weight">0.200</field>
+        <field name="price">8</field>
+    </record>
+
+    <record id="product_devidal_saucisson" model="product.product"
+        context="{'joint_buying': True}">
+        <field name="name">Saucisson (~350gr) (Global)</field>
+        <field name="uom_id" ref="uom.product_uom_kgm"/>
+        <field name="uom_po_id" ref="uom.product_uom_kgm"/>
+        <field name="uom_package_id" ref="joint_buying_product.uom_0_350_kg"/>
+        <field name="joint_buying_partner_id" ref="joint_buying_base.supplier_salaison_devidal"/>
+        <field name="price">19</field>
+        <field name="uom_package_qty">1</field>
+    </record>
+
+    <record id="product_devidal_rillette" model="product.product"
+        context="{'joint_buying': True}">
+        <field name="name">Rillette (500gr) (Global)</field>
+        <field name="uom_id" ref="uom.product_uom_unit"/>
+        <field name="uom_po_id" ref="uom.product_uom_unit"/>
+        <field name="joint_buying_partner_id" ref="joint_buying_base.supplier_salaison_devidal"/>
+        <field name="weight">0.5</field>
+        <field name="price">8</field>
+        <field name="uom_package_qty">12</field>
+    </record>
+
+    <record id="product_devidal_unavailable_product" model="product.product"
+        context="{'joint_buying': True}">
+        <field name="name">Unavailable Product (450gr) (Global)</field>
+        <field name="uom_id" ref="uom.product_uom_unit"/>
+        <field name="uom_po_id" ref="uom.product_uom_unit"/>
+        <field name="joint_buying_partner_id" ref="joint_buying_base.supplier_salaison_devidal"/>
+        <field name="weight">0.450</field>
+        <field name="price">10</field>
+        <field name="uom_package_qty">6</field>
+        <field name="purchase_ok" eval="False"/>
+    </record>
+
+    <record id="product_morell_orange" model="product.product"
+        context="{'joint_buying': True}">
+        <field name="name">Orange (Global)</field>
+        <field name="uom_id" ref="uom.product_uom_kgm"/>
+        <field name="uom_po_id" ref="uom.product_uom_kgm"/>
+        <field name="joint_buying_partner_id" ref="joint_buying_base.supplier_oscar_morell"/>
+        <field name="price">2</field>
+        <field name="uom_package_qty">12</field>
+    </record>
+
+    <record id="product_ronzon_patatoe_agila" model="product.product"
+        context="{'joint_buying': True}">
+        <field name="name">Potatoes Agila (Bag of 10kg) (Global)</field>
+        <field name="uom_id" ref="uom.product_uom_kgm"/>
+        <field name="uom_po_id" ref="uom.product_uom_kgm"/>
+        <field name="joint_buying_partner_id" ref="joint_buying_base.supplier_benoit_ronzon"/>
+        <field name="price">1.5</field>
+        <field name="uom_package_qty">10</field>
+    </record>
+
+    <record id="product_ronzon_patatoe_charlotte" model="product.product"
+        context="{'joint_buying': True}">
+        <field name="name">Potatoes Charlotte (Bag of 10kg) (Global)</field>
+        <field name="uom_id" ref="uom.product_uom_kgm"/>
+        <field name="uom_po_id" ref="uom.product_uom_kgm"/>
+        <field name="joint_buying_partner_id" ref="joint_buying_base.supplier_benoit_ronzon"/>
+        <field name="price">1.5</field>
+        <field name="uom_package_qty">10</field>
+    </record>
+
+    <record id="product_ronzon_patatoe_cephora" model="product.product"
+        context="{'joint_buying': True}">
+        <field name="name">Potatoes Cephora (Bag of 10kg) (Global)</field>
+        <field name="uom_id" ref="uom.product_uom_kgm"/>
+        <field name="uom_po_id" ref="uom.product_uom_kgm"/>
+        <field name="joint_buying_partner_id" ref="joint_buying_base.supplier_benoit_ronzon"/>
+        <field name="price">1.5</field>
+        <field name="uom_package_qty">10</field>
+        <field name="purchase_ok" eval="False"/>
+    </record>
+
+    <!-- Local Products ELD -->
+    <record id="product_ELD_orangettes" model="product.product">
+        <field name="default_code">ELD-ORANGETTE</field>
+        <field name="image" type="base64" file="joint_buying_product/static/src/img/product_ELD_orangettes-image.png"/>
+        <field name="is_joint_buying" eval="False"/>
+        <field name="company_id" ref="joint_buying_base.company_ELD"/>
+        <field name="name">Orangette Sachet 200gr</field>
+        <field name="price">12</field>
+        <field name="weight">0.210</field>
+    </record>
+
+    <record id="product_ELD_gingembrettes" model="product.product">
+        <field name="default_code">ELD-GINGEMBRETTE</field>
+        <field name="image" type="base64" file="joint_buying_product/static/src/img/product_ELD_gingembrettes-image.png"/>
+        <field name="is_joint_buying" eval="False"/>
+        <field name="company_id" ref="joint_buying_base.company_ELD"/>
+        <field name="name">Gingembrette Sachet 200gr</field>
+        <field name="price">10</field>
+        <field name="weight">0.210</field>
+    </record>
+
+    <function model="product.product" name="create_joint_buying_product">
+        <value eval="[
+            ref('joint_buying_product.product_ELD_orangettes'),
+            ref('joint_buying_product.product_ELD_gingembrettes')]"
+        />
+    </function>
+
+    <!-- Local Products 3PP -->
+    <record id="product_3PP_orangettes" model="product.product">
+        <field name="default_code">3PP-ORANGETTE</field>
+        <field name="is_joint_buying" eval="False"/>
+        <field name="company_id" ref="joint_buying_base.company_3PP"/>
+        <field name="name">Orangette Sachet 200gr @ Three Peas</field>
+        <field name="joint_buying_product_id" model="product.product"
+            eval="obj().browse(ref('joint_buying_product.product_ELD_orangettes')).joint_buying_product_id.id"/>
+    </record>
+
+    <record id="product_3PP_gingembrettes" model="product.product">
+        <field name="default_code">3PP-GINGEMBRETTE</field>
+        <field name="is_joint_buying" eval="False"/>
+        <field name="company_id" ref="joint_buying_base.company_3PP"/>
+        <field name="name">Gingembrette Sachet 200gr @ Three Peas</field>
+        <field name="joint_buying_product_id" model="product.product"
+            eval="obj().browse(ref('joint_buying_product.product_ELD_gingembrettes')).joint_buying_product_id.id"/>
+    </record>
+
+    <!-- Local Products LSE -->
+    <record id="product_LSE_patatoe_agila" model="product.product">
+        <field name="name">Potatoes Agila (Bag of 10kg) @ Super Mall</field>
+        <field name="default_code">LSE-PATATOE-AGILA</field>
+        <field name="is_joint_buying" eval="False"/>
+        <field name="company_id" ref="joint_buying_base.company_LSE"/>
+        <field name="joint_buying_product_id" ref="product_ronzon_patatoe_agila"/>
+        <field name="uom_id" ref="uom.product_uom_kgm"/>
+        <field name="uom_po_id" ref="uom.product_uom_kgm"/>
+        <field name="price">2.5</field>
+    </record>
+
+    <!-- Local Products PZI -->
+    <record id="product_PZI_orange_navelina" model="product.product">
+        <field name="default_code">PZI-OR-NAV</field>
+        <field name="company_id" ref="joint_buying_base.company_PZI"/>
+        <field name="name">Orange Navelina</field>
+        <field name="price">1.5</field>
+        <field name="uom_id" ref="uom.product_uom_kgm"/>
+        <field name="uom_po_id" ref="uom.product_uom_kgm"/>
+    </record>
+
+    <record id="product_PZI_orange_moro" model="product.product">
+        <field name="default_code">PZI-OR-MOR</field>
+        <field name="company_id" ref="joint_buying_base.company_PZI"/>
+        <field name="name">Orange Moro (bloody)</field>
+        <field name="price">1.6</field>
+        <field name="uom_id" ref="uom.product_uom_kgm"/>
+        <field name="uom_po_id" ref="uom.product_uom_kgm"/>
+    </record>
+
+    <record id="product_PZI_oil" model="product.product">
+        <field name="default_code">PZI-OIL</field>
+        <field name="company_id" ref="joint_buying_base.company_PZI"/>
+        <field name="name">Olive Oil</field>
+        <field name="price">10</field>
+    </record>
+
+    <record id="product_PZI_other" model="product.product">
+        <field name="default_code">PZI-OTH</field>
+        <field name="company_id" ref="joint_buying_base.company_PZI"/>
+        <field name="name">Other Product Allway present</field>
+        <field name="price">5</field>
+    </record>
+
+    <function model="product.product" name="create_joint_buying_product">
+        <value eval="[
+            ref('joint_buying_product.product_PZI_other'),
+            ref('joint_buying_product.product_PZI_orange_navelina'),
+            ref('joint_buying_product.product_PZI_orange_moro'),
+            ref('joint_buying_product.product_PZI_oil'),
+        ]"
+        />
+    </function>
+
+    <function model="product.product" name="write">
+        <value model="product.product" eval="[
+            obj().browse(ref('joint_buying_product.product_PZI_orange_navelina')).joint_buying_product_id.id,
+            obj().browse(ref('joint_buying_product.product_PZI_orange_moro')).joint_buying_product_id.id,
+        ]"
+        />
+        <value eval="{'joint_buying_category_id': ref('joint_buying_product.category_fruits_vegetables_PZI')}"/>
+    </function>
+
+    <function model="product.product" name="write">
+        <value model="product.product" eval="[
+            obj().browse(ref('joint_buying_product.product_PZI_oil')).joint_buying_product_id.id,
+        ]"
+        />
+        <value eval="{'joint_buying_category_id': ref('joint_buying_product.category_oil_PZI')}"/>
+    </function>
+
+</odoo>

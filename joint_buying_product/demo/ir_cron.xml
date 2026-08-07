@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<odoo>
+
+    <record id="cron_create_purchase_order_grouped" model="ir.cron">
+        <field name="active" eval="False"/>
+    </record>
+
+</odoo>

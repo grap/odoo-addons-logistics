@@ -1,0 +1,75 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+Copyright (C) 2021 - Today: GRAP (http://www.grap.coop)
+@author: Sylvain LE GAL (https://twitter.com/legalsylvain)
+License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl.html).
+-->
+<odoo>
+    <record id="view_joint_buying_wizard_create_order_form" model="ir.ui.view">
+        <field name="model">joint.buying.wizard.create.order</field>
+        <field name="arch" type="xml">
+            <form>
+                <group>
+                    <group attrs="{'invisible': [('overlap_message', '=', False)]}" colspan="4">
+                        <div class="alert alert-warning" role="alert">
+                            <field name="overlap_message" nolabel="1" class="oe_inline"/>
+                        </div>
+                    </group>
+                    <group>
+                        <field name="use_joint_buying_category" invisible="1"/>
+                        <field name="supplier_id" readonly="1"/>
+                        <field name="pivot_company_id"/>
+                        <field name="deposit_partner_id"/>
+                        <field name="product_qty"/>
+                    </group>
+                    <group>
+                        <field name="start_date"/>
+                        <field name="end_date"/>
+                        <field name="deposit_date"/>
+                        <field name="category_ids" widget="many2many_tags"
+                            attrs="{'invisible': [('use_joint_buying_category', '=', False)]}"
+                            options="{'no_create': True, 'no_open': True}"
+                        />
+                    </group>
+                    <group string="Minimum Amount" colspan="4" col="4">
+                        <label for="minimum_amount" string="Grouped Order"/>
+                        <div class="o_row">
+                            <field name="minimum_amount"/>
+                            <span>€</span>
+                        </div>
+                        <label for="minimum_unit_amount" string="Unit Order"/>
+                        <div class="o_row">
+                            <field name="minimum_unit_amount"/>
+                            <span>€</span>
+                        </div>
+                        <label for="minimum_weight" string="Grouped Order"/>
+                        <div class="o_row">
+                            <field name="minimum_weight"/>
+                            <span>kg</span>
+                        </div>
+                        <label for="minimum_unit_weight" string="Unit Order"/>
+                        <div class="o_row">
+                            <field name="minimum_unit_weight"/>
+                            <span>kg</span>
+                        </div>
+                    </group>
+                </group>
+                <group string="List of Customers">
+                    <field name="line_ids" nolabel="1">
+                        <tree editable="bottom">
+                            <field name="customer_id" context="{'joint_buying': 1}"/>
+                        </tree>
+                    </field>
+                </group>
+                <footer>
+                    <button name="create_order_grouped"
+                            string="Create Order"
+                            type="object"
+                            class="oe_highlight"/>
+                    or
+                    <button string="Cancel" class="oe_link" special="cancel"/>
+                </footer>
+            </form>
+        </field>
+    </record>
+</odoo>

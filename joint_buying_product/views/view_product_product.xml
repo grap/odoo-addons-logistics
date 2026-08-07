@@ -1,0 +1,178 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+Copyright (C) 2020 - Today: GRAP (http://www.grap.coop)
+@author: Sylvain LE GAL (https://twitter.com/legalsylvain)
+License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl.html).
+-->
+<odoo>
+
+    <record id="view_product_product_search" model="ir.ui.view">
+        <field name="model">product.product</field>
+        <field name="inherit_id" ref="product.product_search_form_view"/>
+        <field name="groups_id" eval="[(4, ref('joint_buying_base.group_joint_buying_user'))]"/>
+        <field name="arch" type="xml">
+            <field name="product_tmpl_id" position="after">
+                <field name="joint_buying_partner_id" />
+            </field>
+        </field>
+    </record>
+
+    <record id="view_product_product_tree" model="ir.ui.view">
+        <field name="model">product.product</field>
+        <field name="priority" eval="20"/>
+        <field name="arch" type="xml">
+            <tree>
+                <field name="is_joint_buying" invisible="1"/>
+                <field name="image_small" string="Image" widget="image" options="{'tooltip_image': 'image'}"/>
+                <field name="default_code" string="Sup. Code"/>
+                <field name="name"/>
+                <field name="lst_price" string="Pricing"/>
+                <field name="type" invisible="1"/>
+                <field name="uom_id" string="UoM"/>
+                <field name="uom_po_id" groups="uom.group_uom" string="Invoice Supplier UoM"/>
+                <field name="uom_package_id" groups="uom.group_uom" string="UoM Weight / Unit"/>
+                <field name="product_tmpl_id" invisible="1"/>
+                <field name="active" invisible="1"/>
+                <field name="joint_buying_partner_id"/>
+            </tree>
+        </field>
+    </record>
+
+    <record id="view_product_product_form_classic" model="ir.ui.view">
+        <field name="model">product.product</field>
+        <field name="inherit_id" ref="product.product_normal_form_view"/>
+        <field name="groups_id" eval="[(4, ref('joint_buying_base.group_joint_buying_user'))]"/>
+        <field name="arch" type="xml">
+            <xpath expr="//header" position="inside">
+                <button string="Offer For joint Buying" type="object" name="create_joint_buying_product"
+                    attrs="{'invisible': ['|', ('joint_buying_display_propagation', '=', False), ('joint_buying_product_id', '!=', False)]}"/>
+            </xpath>
+            <xpath expr="//field[@name='description']/.." position="before">
+                <group name="joint_buying" string="Joint Buying" col="4">
+                    <field name="joint_buying_display_propagation" invisible="1"/>
+                    <field name="joint_buying_is_mine" invisible="1"/>
+                    <field name="is_joint_buying" invisible="1"/>
+                    <field name="joint_buying_partner_id"
+                            attrs="{'invisible': [('is_joint_buying', '=', False)], 'required': [('is_joint_buying', '=', True)]}"/>
+                    <field name="joint_buying_product_id" attrs="{'invisible': [('joint_buying_display_propagation', '=', False)]}"/>
+                    <button string="Update Joint Buying Product" type="object" name="update_joint_buying_product"
+                        attrs="{'invisible': [('joint_buying_product_id', '=', False)]}"/>
+                </group>
+            </xpath>
+        </field>
+    </record>
+
+    <record id="view_product_product_form" model="ir.ui.view">
+        <field name="model">product.product</field>
+        <field name="priority" eval="100"/>
+        <field name="arch" type="xml">
+            <form>
+                <header>
+                </header>
+                <sheet>
+                    <div class="oe_button_box" name="button_box">
+                        
+            <field name="active" invisible="1" />
+            <widget
+                name="web_ribbon"
+                title="Archived"
+                bg_color="bg-danger"
+                attrs="{'invisible': [('active', '=', True)]}"
+            />
+            
+                    </div>
+                    <field name="image" widget='image' class="oe_avatar" options='{"preview_image": "image_medium", "size": [90, 90]}'/>
+                    <div class="oe_title">
+                        <h1>
+                            <field name="name" default_focus="1" required="1"/>
+                        </h1>
+                        <div name="options">
+                            <div>
+                                <field name="purchase_ok"/>
+                                <label for="purchase_ok"/>
+                            </div>
+                        </div>
+                    </div>
+
+                    <notebook>
+                        <page string="General Information" name="general_information">
+                            <group>
+                                <group name="group_general" string="General">
+                                    <field name="joint_buying_partner_id" required="1"/>
+                                    <field name="default_code" string="Sup. Code"/>
+                                    <field name="barcode"/>
+                                    <field name="uom_id"/>
+                                    <field name="uom_po_id"/>
+                                    <field name="lst_price" string="Pricing"/>
+                                    <field name="uom_package_qty"/>
+                                    <field name="joint_buying_is_new" widget="boolean_toggle"/>
+                                    <field name="joint_buying_is_sold"/>
+                                </group>
+                                <group name="right_part" col="1">
+                                    <group name="group_logistic" string="Logistics">
+                                        <field name="weight"/>
+                                    </group>
+                                </group>
+                            </group>
+                            <group string="Internal Notes">
+                                <field name="description" nolabel="1" placeholder="This note is only for internal purposes."/>
+                            </group>
+                        </page>
+                    </notebook>
+                </sheet>
+                <div class="oe_chatter">
+                    <field name="message_follower_ids" widget="mail_followers"/>
+                    <field name="activity_ids" widget="mail_activity"/>
+                    <field name="message_ids" widget="mail_thread"/>
+                </div>
+            </form>
+        </field>
+    </record>
+
+    <record id="actions_server_update_joint_buying_product" model="ir.actions.server">
+        <field name="name">Update Joint Buying Product</field>
+        <field name="type">ir.actions.server</field>
+        <field name="state">code</field>
+        <field name="model_id" ref="product.model_product_product"/>
+        <field name="binding_model_id" ref="product.model_product_product"/>
+        <field name="code">records.update_joint_buying_product()</field>
+    </record>
+
+    <record id="action_res_partner_2_product_product" model="ir.actions.act_window">
+        <field name="name">Products</field>
+        <field name="type">ir.actions.act_window</field>
+        <field name="res_model">product.product</field>
+        <field name="view_mode">tree,form</field>
+        <field name="context">
+            {
+                "joint_buying": 1,
+                "form_view_ref": "joint_buying_product.view_product_product_form",
+                "tree_view_ref": "joint_buying_product.view_product_product_tree",
+                "search_default_joint_buying_partner_id": active_id,
+                "default_joint_buying_partner_id": active_id,
+            }
+        </field>
+    </record>
+
+    <record id="action_product_product" model="ir.actions.act_window">
+        <field name="name">Products</field>
+        <field name="type">ir.actions.act_window</field>
+        <field name="res_model">product.product</field>
+        <field name="view_mode">tree,form</field>
+        <field name="context">
+            {
+                "joint_buying": 1,
+                "form_view_ref": "joint_buying_product.view_product_product_form",
+                "tree_view_ref": "joint_buying_product.view_product_product_tree",
+            }
+        </field>
+    </record>
+
+    <menuitem id="menu_product_product"
+        name="Products"
+        parent="joint_buying_base.menu_catalog_main"
+        action="action_product_product"
+        sequence="20"
+    />
+
+</odoo>
