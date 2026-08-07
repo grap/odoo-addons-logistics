@@ -60,7 +60,6 @@ class JointBuyingWizardSetTour(models.TransientModel):
             line_vals.append((0, 0, _vals))
         return line_vals
 
-    @api.multi
     def set_tour(self):
         self.ensure_one()
         # TODO - Optimize. do not delete lines, if lines are the same

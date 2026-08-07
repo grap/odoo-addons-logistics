@@ -32,6 +32,6 @@ class TestAbstract(TransactionCase):
         vals = {"name": "My supplier", "supplier": True, "customer": False}
         vals.update(extra_vals or {})
         supplier = (
-            self.ResPartner.sudo(user).with_context(joint_buying=True).create(vals)
+            self.ResPartner.with_user(user).with_context(joint_buying=True).create(vals)
         )
         return supplier

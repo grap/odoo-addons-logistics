@@ -6,7 +6,6 @@ from datetime import timedelta
 
 from odoo import _, api, fields, models
 
-from odoo.addons import decimal_precision as dp
 
 from .res_partner import _JOINT_BUYING_PARTNER_CONTEXT
 
@@ -108,27 +107,27 @@ class JointBuyingTransportRequest(models.Model):
 
     manual_amount_untaxed = fields.Float(
         string="Untaxed Amount (Manual)",
-        digits=dp.get_precision("Product Price"),
+        digits="Product Price",
     )
 
     amount_untaxed = fields.Float(
         string="Untaxed Amount",
         compute="_compute_amount_untaxed",
         store=True,
-        digits=dp.get_precision("Product Price"),
+        digits="Product Price",
         track_visibility=True,
     )
 
     manual_total_weight = fields.Float(
         string="Weight (Manual)",
-        digits=dp.get_precision("Stock Weight"),
+        digits="Stock Weight",
     )
 
     total_weight = fields.Float(
         string="Weight",
         compute="_compute_total_weight",
         store=True,
-        digits=dp.get_precision("Stock Weight"),
+        digits="Stock Weight",
         compute_sudo=True,
         track_visibility=True,
     )
@@ -311,7 +310,6 @@ class JointBuyingTransportRequest(models.Model):
         for request in self:
             request._set_tour_lines(results[request][1])
 
-    @api.multi
     def button_see_tours(self):
         self.ensure_one()
         res = self.env["ir.actions.act_window"].for_xml_id(

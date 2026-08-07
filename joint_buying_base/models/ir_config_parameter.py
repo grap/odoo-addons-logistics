@@ -8,7 +8,6 @@ from odoo import api, models
 class IrConfigParameter(models.Model):
     _inherit = "ir.config_parameter"
 
-    @api.multi
     def write(self, vals):
         res = super().write(vals)
         joint_buying_config = self.search(

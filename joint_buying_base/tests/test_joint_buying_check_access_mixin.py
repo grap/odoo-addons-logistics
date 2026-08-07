@@ -49,7 +49,7 @@ class TestModule(TestAbstract):
         partner_3PP = self._create_supplier(
             extra_vals={"joint_buying_pivot_company_id": self.company_3PP.id},
         )
-        context_3PP_partner_3PP = self.ResPartner.sudo(user=self.user_3PP).browse(
+        context_3PP_partner_3PP = self.ResPartner.with_user(user=self.user_3PP).browse(
             partner_3PP.id
         )
 
@@ -66,7 +66,7 @@ class TestModule(TestAbstract):
         partner_CHE = self._create_supplier(
             extra_vals={"joint_buying_pivot_company_id": self.company_CHE.id},
         )
-        context_3PP_partner_CHE = self.ResPartner.sudo(user=self.user_3PP).browse(
+        context_3PP_partner_CHE = self.ResPartner.with_user(user=self.user_3PP).browse(
             partner_CHE.id
         )
 

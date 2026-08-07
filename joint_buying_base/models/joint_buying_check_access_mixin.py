@@ -16,7 +16,6 @@ class JointBuyingCheckAccessMixin(models.AbstractModel):
 
     _check_access_write_fields_no_check = []
 
-    @api.multi
     def _joint_buying_check_access(self):
         """Overload this function in each model
         Should return False if the access is forbidden
@@ -53,7 +52,6 @@ class JointBuyingCheckAccessMixin(models.AbstractModel):
             )
         return res
 
-    @api.multi
     def write(self, vals):
         if self.env.context.get("no_check_joint_buying", False):
             # explicitely ignore the check, if asked
@@ -82,7 +80,6 @@ class JointBuyingCheckAccessMixin(models.AbstractModel):
             )
         return super().write(vals)
 
-    @api.multi
     def unlink(self):
         if self.env.context.get("no_check_joint_buying", False):
             # explicitely ignore the check, if asked

@@ -127,7 +127,6 @@ class ResCompany(models.Model):
         ).create(partner_vals)
         return res
 
-    @api.multi
     def write(self, vals):
         ResPartner = self.env["res.partner"]
         # Technical Note: we add context key here
@@ -165,7 +164,6 @@ class ResCompany(models.Model):
         self.update_joint_buying_partners()
         return res
 
-    @api.multi
     def update_joint_buying_partners(self, extra_vals=False):
         extra_vals = extra_vals or {}
         for company in self:

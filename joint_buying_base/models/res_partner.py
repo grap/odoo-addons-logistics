@@ -88,7 +88,6 @@ class ResPartner(models.Model):
         " in a context of displaying joint buying tour.",
     )
 
-    @api.multi
     def _joint_buying_check_access(self):
         # We allow access to pivot company
         return len(self.filtered(lambda x: x.joint_buying_is_mine_pivot)) == len(self)

@@ -7,7 +7,6 @@ from dateutil.relativedelta import relativedelta
 
 from odoo import _, api, fields, models
 
-from odoo.addons import decimal_precision as dp
 
 from .res_partner import _JOINT_BUYING_PARTNER_CONTEXT
 
@@ -104,13 +103,13 @@ class JointBuyingTour(models.Model):
 
     loaded_weight = fields.Float(
         compute="_compute_loaded_data",
-        digits=dp.get_precision("Stock Weight"),
+        digits="Stock Weight",
         store=True,
     )
 
     loaded_amount_untaxed = fields.Float(
         compute="_compute_loaded_data",
-        digits=dp.get_precision("Product Price"),
+        digits="Product Price",
         store=True,
     )
 
@@ -281,14 +280,12 @@ class JointBuyingTour(models.Model):
         return [("id", search_operator, tour_lines.mapped("tour_id").ids)]
 
     # Overload Section
-    @api.multi
     def copy(self, default=None):
         self.ensure_one()
         default = default or {}
         default["name"] = _("%s (copy)") % self.name
         return super().copy(default)
 
-    @api.multi
     def write(self, vals):
         min_date = min(self.mapped("start_date"))
         res = super().write(vals)
@@ -298,7 +295,6 @@ class JointBuyingTour(models.Model):
         self._invalidate_transport_requests(min_date)
         return res
 
-    @api.multi
     def unlink(self):
         min_date = min(self.mapped("start_date"))
         self._invalidate_transport_requests(min_date)
@@ -340,14 +336,12 @@ class JointBuyingTour(models.Model):
         action["domain"] = [("id", "in", steps.ids)]
         return action
 
-    @api.multi
     def display_time(self, time):
         return (
             f"{str(int(time)).rjust(2, '0')}"
             f":{str(int((time % 1) * 60)).rjust(2, '0')}"
         )
 
-    @api.multi
     def button_see_transport_requests(self):
         self.ensure_one()
         res = self.env["ir.actions.act_window"].for_xml_id(

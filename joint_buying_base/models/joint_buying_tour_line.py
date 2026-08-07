@@ -7,7 +7,6 @@ import requests
 from odoo import _, api, fields, models
 from odoo.exceptions import UserError
 
-from odoo.addons import decimal_precision as dp
 
 from .res_partner import _JOINT_BUYING_PARTNER_CONTEXT
 
@@ -74,7 +73,7 @@ class JointBuyingTourLine(models.Model):
 
     load = fields.Float(
         compute="_compute_load",
-        digits=dp.get_precision("Stock Weight"),
+        digits="Stock Weight",
     )
 
     @api.depends("start_date", "arrival_date")
