@@ -62,7 +62,6 @@ class JointBuyingCreatePurchaseOrderWizard(models.TransientModel):
         return order and order.supplier_id.get_joint_buying_local_partner_id() or False
 
     def _default_line_ids(self):
-
         line_vals = []
 
         order = self.env["joint.buying.purchase.order"].browse(

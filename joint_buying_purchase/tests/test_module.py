@@ -126,7 +126,6 @@ class TestModule(TransactionCase):
         )
 
     def test_10_create_purchase_order(self):
-
         # Create purchase orders for associated supplier
         wizard = self._get_wizard_create_purchase_order()
 
