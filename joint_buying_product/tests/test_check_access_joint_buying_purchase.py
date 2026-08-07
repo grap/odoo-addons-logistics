@@ -44,7 +44,7 @@ class TestCheckAccessJointBuyingPurchase(TestAbstract):
 
         # delete a purchase order grouped. (pivot company = current company) should fail
         with self.assertRaises(AccessError):
-            order_grouped.sudo(self.user_CDA).unlink()
+            order_grouped.with_user(self.user_CDA).unlink()
 
         # ###############################
         # Check context 3PP (non pivot)
@@ -52,7 +52,7 @@ class TestCheckAccessJointBuyingPurchase(TestAbstract):
 
         # delete a purchase order grouped. (pivot company != current company) should fail
         with self.assertRaises(AccessError):
-            order_grouped.sudo(self.user_CDA).unlink()
+            order_grouped.with_user(self.user_CDA).unlink()
 
     def test_503_purchase_order_check_access_mixin_user(self):
         # create a joint buying purchase order grouped
@@ -66,17 +66,17 @@ class TestCheckAccessJointBuyingPurchase(TestAbstract):
         # Check context 3PP (non pivot)
         # ###############################
         with self.assertRaises(AccessError):
-            order_LSE.sudo(self.user_3PP).action_skip_purchase()
+            order_LSE.with_user(self.user_3PP).action_skip_purchase()
 
         # ###############################
         # Check context CDA (Pivot)
         # ###############################
-        order_LSE.sudo(self.user_CDA).action_skip_purchase()
+        order_LSE.with_user(self.user_CDA).action_skip_purchase()
 
         # ###############################
         # Check context LSE (Customer)
         # ###############################
-        order_LSE.sudo(self.user_LSE).action_skip_purchase()
+        order_LSE.with_user(self.user_LSE).action_skip_purchase()
 
     def test_504_purchase_order_line_check_access_mixin_user(self):
         # create a joint buying purchase order grouped
@@ -90,14 +90,14 @@ class TestCheckAccessJointBuyingPurchase(TestAbstract):
         # Check context 3PP (non pivot)
         # ###############################
         with self.assertRaises(AccessError):
-            line_LSE.sudo(self.user_3PP).write({"qty": 60})
+            line_LSE.with_user(self.user_3PP).write({"qty": 60})
 
         # ###############################
         # Check context CDA (Pivot)
         # ###############################
-        line_LSE.sudo(self.user_CDA).write({"qty": 120})
+        line_LSE.with_user(self.user_CDA).write({"qty": 120})
 
         # ###############################
         # Check context LSE (Customer)
         # ###############################
-        line_LSE.sudo(self.user_LSE).write({"qty": 180})
+        line_LSE.with_user(self.user_LSE).write({"qty": 180})

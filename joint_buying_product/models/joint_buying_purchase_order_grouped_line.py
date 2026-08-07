@@ -4,7 +4,6 @@
 
 from odoo import fields, models
 
-from odoo.addons import decimal_precision as dp
 
 
 class JointBuyingPurchaseOrderGroupedLine(models.TransientModel):
@@ -15,15 +14,15 @@ class JointBuyingPurchaseOrderGroupedLine(models.TransientModel):
     product_id = fields.Many2one(comodel_name="product.product")
 
     product_uom_package_qty = fields.Float(
-        digits=dp.get_precision("Product Unit of Measure")
+        digits="Product Unit of Measure"
     )
 
-    qty = fields.Float(digits=dp.get_precision("Product Unit of Measure"))
+    qty = fields.Float(digits="Product Unit of Measure")
 
     uom_id = fields.Many2one(comodel_name="uom.uom")
 
-    price_unit = fields.Float(digits=dp.get_precision("Product Price"))
+    price_unit = fields.Float(digits="Product Price")
 
-    amount_untaxed = fields.Float(digits=dp.get_precision("Product Price"))
+    amount_untaxed = fields.Float(digits="Product Price")
 
-    total_weight = fields.Float(digits=dp.get_precision("Product Price"))
+    total_weight = fields.Float(digits="Product Price")

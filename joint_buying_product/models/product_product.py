@@ -91,7 +91,6 @@ class ProductProduct(models.Model):
         store=True,
     )
 
-    @api.multi
     def _joint_buying_check_access(self):
         return set(
             self.mapped("joint_buying_partner_id.joint_buying_pivot_company_id").ids
@@ -141,7 +140,6 @@ class ProductProduct(models.Model):
                 )
         return res
 
-    @api.multi
     def write(self, vals):
         if vals.get("joint_buying_partner_id", False):
             for product in self:

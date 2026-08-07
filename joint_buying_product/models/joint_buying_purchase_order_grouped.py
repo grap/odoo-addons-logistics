@@ -8,7 +8,6 @@ from odoo import _, api, fields, models
 from odoo.exceptions import ValidationError
 from odoo.osv import expression
 
-from odoo.addons import decimal_precision as dp
 from odoo.addons.joint_buying_base.models.res_partner import (
     _JOINT_BUYING_PARTNER_CONTEXT,
 )
@@ -123,14 +122,14 @@ class JointBuyingPurchaseOrderGrouped(models.Model):
         string="Total Untaxed Amount",
         compute="_compute_amount",
         store=True,
-        digits=dp.get_precision("Product Price"),
+        digits="Product Price",
     )
 
     total_weight = fields.Float(
         string="Total Brut Weight",
         compute="_compute_total_weight",
         store=True,
-        digits=dp.get_precision("Stock Weight"),
+        digits="Stock Weight",
     )
 
     summary_line_ids = fields.One2many(
@@ -146,7 +145,6 @@ class JointBuyingPurchaseOrderGrouped(models.Model):
         compute="_compute_is_mine_pivot", search="_search_is_mine_pivot"
     )
 
-    @api.multi
     def _joint_buying_check_access(self):
         return set(self.mapped("pivot_company_id").ids) == {self.env.user.company_id.id}
 
@@ -302,7 +300,6 @@ class JointBuyingPurchaseOrderGrouped(models.Model):
         grouped_order.update_state_value()
         return grouped_order
 
-    @api.multi
     def write(self, vals):
         res = super().write(vals)
         if not self.env.context.get("update_state_value"):
@@ -315,7 +312,6 @@ class JointBuyingPurchaseOrderGrouped(models.Model):
             self.mapped("order_ids.transport_request_id")._invalidate()
         return res
 
-    @api.multi
     @api.returns("mail.message", lambda value: value.id)
     def message_post(self, **kwargs):
         if self.env.context.get("mark_as_sent"):
@@ -352,7 +348,6 @@ class JointBuyingPurchaseOrderGrouped(models.Model):
                 vals[field] = getattr(frequency, field) + delta
             frequency.write(vals)
 
-    @api.multi
     def update_state_value(self, check_all=False):
         end_date_near_day = int(
             self.env["ir.config_parameter"]
@@ -403,7 +398,6 @@ class JointBuyingPurchaseOrderGrouped(models.Model):
                 # Send email to pivot company if required
                 grouped_order.send_mail_to_pivot_company(previous_state)
 
-    @api.multi
     def send_mail_to_pivot_company(self, previous_state):
         """
         Send an email to the pivot company if the current state and the previous state
@@ -434,7 +428,6 @@ class JointBuyingPurchaseOrderGrouped(models.Model):
             )
             template.send_mail(self.id, force_send=True)
 
-    @api.multi
     def update_product_list(self):
         OrderLine = self.env["joint.buying.purchase.order.line"]
 
@@ -518,7 +511,6 @@ class JointBuyingPurchaseOrderGrouped(models.Model):
             )
         return vals
 
-    @api.multi
     def action_send_email_for_supplier(self):
         self.ensure_one()
         IrModelData = self.env["ir.model.data"]
@@ -643,7 +635,6 @@ class JointBuyingPurchaseOrderGrouped(models.Model):
 
         return self.see_current_order()
 
-    @api.multi
     def get_url(self):
         self.ensure_one()
         base_url = self.env["ir.config_parameter"].sudo().get_param("web.base.url")

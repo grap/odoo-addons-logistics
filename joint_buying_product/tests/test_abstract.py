@@ -71,7 +71,7 @@ class TestAbstract(TransactionCase):
         deposit_date = fields.datetime.now() + timedelta(days=14)
 
         if user:
-            WizardObj = self.JointBuyingWizardCreateOrder.sudo(user=user)
+            WizardObj = self.JointBuyingWizardCreateOrder.with_user(user=user)
         else:
             WizardObj = self.JointBuyingWizardCreateOrder
 

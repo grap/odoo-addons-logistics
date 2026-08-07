@@ -5,7 +5,6 @@
 from odoo import _, api, fields, models
 from odoo.exceptions import ValidationError
 
-from odoo.addons import decimal_precision as dp
 from odoo.addons.joint_buying_base.models.res_partner import (
     _JOINT_BUYING_PARTNER_CONTEXT,
 )
@@ -98,7 +97,7 @@ class JointBuyingPurchaseOrderLine(models.Model):
 
     qty = fields.Float(
         string="Purchase Quantity",
-        digits=dp.get_precision("Product Unit of Measure"),
+        digits="Product Unit of Measure",
         required=True,
     )
 
@@ -110,7 +109,7 @@ class JointBuyingPurchaseOrderLine(models.Model):
 
     product_uom_package_qty = fields.Float(
         string="Package Quantity",
-        digits=dp.get_precision("Product Unit of Measure"),
+        digits="Product Unit of Measure",
         readonly=True,
         required=True,
     )
@@ -125,7 +124,7 @@ class JointBuyingPurchaseOrderLine(models.Model):
 
     product_qty = fields.Float(
         string="Quantity (in Main UoM)",
-        digits=dp.get_precision("Product Unit of Measure"),
+        digits="Product Unit of Measure",
         compute="_compute_product_qty",
         store=True,
     )
@@ -138,12 +137,12 @@ class JointBuyingPurchaseOrderLine(models.Model):
         string="Brut Weight",
         required=True,
         readonly=True,
-        digits=dp.get_precision("Stock Weight"),
+        digits="Stock Weight",
     )
 
     price_unit = fields.Float(
         string="Unit Price",
-        digits=dp.get_precision("Product Price"),
+        digits="Product Price",
         required=True,
         readonly=True,
     )
@@ -156,7 +155,7 @@ class JointBuyingPurchaseOrderLine(models.Model):
         string="Total Untaxed Amount",
         compute="_compute_amount_untaxed",
         store=True,
-        digits=dp.get_precision("Product Price"),
+        digits="Product Price",
     )
 
     total_weight = fields.Float(
@@ -177,7 +176,6 @@ class JointBuyingPurchaseOrderLine(models.Model):
         compute="_compute_is_mine_pivot", search="_search_is_mine_pivot"
     )
 
-    @api.multi
     def _joint_buying_check_access(self):
         # We allow access to customer and to pivot company of the related supplier
         return len(

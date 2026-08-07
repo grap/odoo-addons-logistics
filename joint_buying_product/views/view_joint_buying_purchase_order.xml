@@ -197,7 +197,6 @@ License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl.html).
         <field name="name">My Orders to Place</field>
         <field name="type">ir.actions.act_window</field>
         <field name="res_model">joint.buying.purchase.order</field>
-        <field name="view_type">form</field>
         <field name="view_mode">tree,calendar,form</field>
         <field name="view_id" ref="view_joint_buying_purchase_order_to_place_my_tree"/>
         <field name="domain">[("is_mine_customer", "=", True),('state', 'in', ['in_progress', 'in_progress_near', 'in_progress_imminent']), ('purchase_state', '=', 'draft')]</field>
@@ -230,7 +229,6 @@ License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl.html).
         <field name="name">My Placed Orders</field>
         <field name="type">ir.actions.act_window</field>
         <field name="res_model">joint.buying.purchase.order</field>
-        <field name="view_type">form</field>
         <field name="view_mode">tree,calendar,form</field>
         <field name="domain">[("is_mine_customer", "=", True), ("purchase_state", "=", "done")]</field>
         <field name="view_id" ref="view_joint_buying_purchase_order_placed_my_tree"/>
@@ -251,7 +249,6 @@ License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl.html).
         <field name="name">My Skipped Orders</field>
         <field name="type">ir.actions.act_window</field>
         <field name="res_model">joint.buying.purchase.order</field>
-        <field name="view_type">form</field>
         <field name="view_mode">tree,calendar,form</field>
         <field name="domain">[("is_mine_customer", "=", True), ('purchase_state', '=', 'skipped')]</field>
         <field name="view_id" ref="view_joint_buying_purchase_order_placed_my_tree"/>
@@ -272,7 +269,6 @@ License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl.html).
         <field name="name">My Orders</field>
         <field name="type">ir.actions.act_window</field>
         <field name="res_model">joint.buying.purchase.order</field>
-        <field name="view_type">form</field>
         <field name="view_mode">tree,calendar,form</field>
         <field name="domain">[("is_mine_customer", "=", True)]</field>
         <field name="view_id" ref="view_joint_buying_purchase_order_placed_my_tree"/>
@@ -293,7 +289,6 @@ License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl.html).
         <field name="name">All Orders</field>
         <field name="type">ir.actions.act_window</field>
         <field name="res_model">joint.buying.purchase.order</field>
-        <field name="view_type">form</field>
         <field name="view_mode">tree,form</field>
         <field name="context">{
             "joint_buying": 1,

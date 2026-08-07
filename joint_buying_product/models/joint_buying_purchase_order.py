@@ -5,7 +5,6 @@
 from odoo import _, api, fields, models
 from odoo.exceptions import ValidationError
 
-from odoo.addons import decimal_precision as dp
 from odoo.addons.joint_buying_base.models.res_partner import (
     _JOINT_BUYING_PARTNER_CONTEXT,
 )
@@ -177,14 +176,14 @@ class JointBuyingPurchaseOrder(models.Model):
         compute="_compute_amount",
         track_visibility=True,
         store=True,
-        digits=dp.get_precision("Product Price"),
+        digits="Product Price",
     )
 
     total_weight = fields.Float(
         string="Total Brut Weight",
         compute="_compute_total_weight",
         store=True,
-        digits=dp.get_precision("Stock Weight"),
+        digits="Stock Weight",
     )
 
     is_mine_customer = fields.Boolean(
@@ -201,7 +200,6 @@ class JointBuyingPurchaseOrder(models.Model):
 
     has_image = fields.Boolean(compute="_compute_has_image")
 
-    @api.multi
     def _joint_buying_check_access(self):
         # We allow access to customer and to pivot company of the related supplier
         return len(
@@ -452,7 +450,6 @@ class JointBuyingPurchaseOrder(models.Model):
                     except ValidationError:
                         pass
 
-    @api.multi
     def button_see_request(self):
         self.ensure_one()
         xml_action = "joint_buying_base.action_joint_buying_transport_request"
@@ -462,7 +459,6 @@ class JointBuyingPurchaseOrder(models.Model):
         action["res_id"] = self.transport_request_id.id
         return action
 
-    @api.multi
     def get_url_purchase_order(self):
         self.ensure_one()
         base_url = self.env["ir.config_parameter"].sudo().get_param("web.base.url")

@@ -24,7 +24,7 @@ class TestCheckAccessProduct(TestAbstract):
         vals = {"name": "My product"}
         vals.update(extra_vals or {})
         return (
-            self.ProductProduct.sudo(user)
+            self.ProductProduct.with_user(user)
             .with_context(joint_buying=joint_buying)
             .create(vals)
         )
@@ -71,7 +71,7 @@ class TestCheckAccessProduct(TestAbstract):
         # # Check context 3PP (non pivot)
         # # ###############################
 
-        context_3PP_product_LSE = self.ProductProduct.sudo(user=self.user_3PP).browse(
+        context_3PP_product_LSE = self.ProductProduct.with_user(user=self.user_3PP).browse(
             product_LSE.id
         )
 
@@ -87,7 +87,7 @@ class TestCheckAccessProduct(TestAbstract):
         # # Check context LSE (pivot)
         # # ###############################
 
-        context_LSE_product_LSE = self.ProductProduct.sudo(user=self.user_LSE).browse(
+        context_LSE_product_LSE = self.ProductProduct.with_user(user=self.user_LSE).browse(
             product_LSE.id
         )
 

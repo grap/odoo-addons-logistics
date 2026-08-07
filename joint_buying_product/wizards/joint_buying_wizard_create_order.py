@@ -153,7 +153,6 @@ class JointBuyingWizardCreateOrder(models.TransientModel):
                 )
             )
 
-    @api.multi
     def create_order_grouped(self):
         self.ensure_one()
         OrderGrouped = self.env["joint.buying.purchase.order.grouped"]

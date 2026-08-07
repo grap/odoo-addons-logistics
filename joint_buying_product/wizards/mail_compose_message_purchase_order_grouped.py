@@ -52,7 +52,6 @@ class MailComposeMessagePurchaseOrderGrouped(models.TransientModel):
         )
         return res
 
-    @api.multi
     def action_send_mail(self):
         self.ensure_one()
         self.composer_id.with_context(do_not_send_copy=True).send_mail()
