@@ -16,24 +16,24 @@ class ResUsers(models.Model):
         " to new suppliers.",
     )
 
-    def __init__(self, pool, cr):
-        """Override of __init__ to add access rights.
-        Access rights are disabled by default, but allowed on some specific
-        fields defined in self.SELF_WRITEABLE_FIELDS.
-        """
-        super().__init__(pool, cr)
-        # duplicate list to avoid modifying the original reference
-        type(self).SELF_WRITEABLE_FIELDS = list(self.SELF_WRITEABLE_FIELDS)
-        type(self).SELF_WRITEABLE_FIELDS.extend(["joint_buying_auto_subscribe"])
+    # def __init__(self, pool, cr):
+    #     """Override of __init__ to add access rights.
+    #     Access rights are disabled by default, but allowed on some specific
+    #     fields defined in self.SELF_WRITEABLE_FIELDS.
+    #     """
+    #     super().__init__(pool, cr)
+    #     # duplicate list to avoid modifying the original reference
+    #     type(self).SELF_WRITEABLE_FIELDS = list(self.SELF_WRITEABLE_FIELDS)
+    #     type(self).SELF_WRITEABLE_FIELDS.extend(["joint_buying_auto_subscribe"])
 
-    def _compute_joint_buying_auto_subscribe(self):
-        for user in self:
-            user.joint_buying_auto_subscribe = (
-                user.company_id.joint_buying_auto_subscribe
-            )
+    # def _compute_joint_buying_auto_subscribe(self):
+    #     for user in self:
+    #         user.joint_buying_auto_subscribe = (
+    #             user.company_id.joint_buying_auto_subscribe
+    #         )
 
-    def _inverse_joint_buying_auto_subscribe(self):
-        for user in self:
-            user.company_id.joint_buying_auto_subscribe = (
-                user.joint_buying_auto_subscribe
-            )
+    # def _inverse_joint_buying_auto_subscribe(self):
+    #     for user in self:
+    #         user.company_id.joint_buying_auto_subscribe = (
+    #             user.joint_buying_auto_subscribe
+    #         )

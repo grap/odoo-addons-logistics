@@ -12,15 +12,13 @@
         "base",
         "mail",
         "web",
-        "decimal_precision",
         # OCA
         "base_geolocalize_company",
         "res_company_code",
         "res_company_active",
+        "partner_manual_rank",
         "web_notify",
         "web_view_leaflet_map_partner",
-        # GRAP
-        "name_search_reset_res_partner",
     ],
     "external_dependencies": {"python": ["openupgradelib", "geopy", "treelib"]},
     "data": [
@@ -32,9 +30,9 @@
         "data/ir_cron.xml",
         "views/menu.xml",
         "views/view_res_company.xml",
-        "views/view_res_partner.xml",
+        # "views/view_res_partner.xml",
         "views/view_res_partner_category.xml",
-        "views/view_res_users.xml",
+        # "views/view_res_users.xml",
         "views/view_res_config_settings.xml",
         "views/view_joint_buying_carrier.xml",
         "views/view_joint_buying_tour_type.xml",

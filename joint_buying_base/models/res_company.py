@@ -33,14 +33,14 @@ class ResCompany(models.Model):
     )
 
     is_joint_buying_customer = fields.Boolean(
-        related="joint_buying_partner_id.customer",
+        related="joint_buying_partner_id.is_customer",
         string="Is a Customer",
         readonly=False,
         store=True,
     )
 
     is_joint_buying_supplier = fields.Boolean(
-        related="joint_buying_partner_id.supplier",
+        related="joint_buying_partner_id.is_supplier",
         string="Is a Vendor",
         readonly=False,
         store=True,
