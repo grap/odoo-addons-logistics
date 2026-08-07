@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<odoo>
+
+    <record id="journal_LOG_sale" model="account.journal">
+        <field name="name">LOG - Sale Journal</field>
+        <field name="code">LOG-SAJ</field>
+        <field name="company_id" ref="joint_buying_base.company_LOG"/>
+        <field name="type">sale</field>
+    </record>
+
+</odoo>

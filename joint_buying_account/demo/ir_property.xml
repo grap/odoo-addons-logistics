@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<odoo>
+
+    <record id="property_partner_401_LOG" model="ir.property">
+        <field name="name">property_account_payable_id</field>
+        <field name="fields_id" ref="account.field_res_partner__property_account_payable_id"/>
+        <field name="company_id" ref="joint_buying_base.company_LOG"/>
+        <field name="type">many2one</field>
+        <field name="value_reference" model="res.company" eval="'account.account,' + str(obj().env.ref('joint_buying_account.account_LOG_401').id)"/>
+    </record>
+
+    <record id="property_partner_411_LOG" model="ir.property">
+        <field name="name">property_account_receivable_id</field>
+        <field name="fields_id" ref="account.field_res_partner__property_account_receivable_id"/>
+        <field name="company_id" ref="joint_buying_base.company_LOG"/>
+        <field name="type">many2one</field>
+        <field name="value_reference" model="res.company" eval="'account.account,' + str(obj().env.ref('joint_buying_account.account_LOG_411').id)"/>
+    </record>
+
+    <record id="property_partner_706_LOG" model="ir.property">
+        <field name="name">property_account_income_id</field>
+        <field name="fields_id" ref="account.field_product_template__property_account_income_id"/>
+        <field name="company_id" ref="joint_buying_base.company_LOG"/>
+        <field name="type">many2one</field>
+        <field name="value_reference" model="res.company" eval="'account.account,' + str(obj().env.ref('joint_buying_account.account_LOG_706').id)"/>
+    </record>
+
+</odoo>
