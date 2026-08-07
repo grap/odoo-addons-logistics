@@ -1,3 +1,7 @@
+.. image:: https://odoo-community.org/readme-banner-image
+   :target: https://odoo-community.org/get-involved?utm_source=readme
+   :alt: Odoo Community Association
+
 ===================
 Joint Buying - Base
 ===================
@@ -13,25 +17,26 @@ Joint Buying - Base
 .. |badge1| image:: https://img.shields.io/badge/maturity-Beta-yellow.png
     :target: https://odoo-community.org/page/development-status
     :alt: Beta
-.. |badge2| image:: https://img.shields.io/badge/licence-AGPL--3-blue.png
+.. |badge2| image:: https://img.shields.io/badge/license-AGPL--3-blue.png
     :target: http://www.gnu.org/licenses/agpl-3.0-standalone.html
     :alt: License: AGPL-3
 .. |badge3| image:: https://img.shields.io/badge/github-grap%2Fodoo--addons--logistics-lightgray.png?logo=github
-    :target: https://github.com/grap/odoo-addons-logistics/tree/12.0/joint_buying_base
+    :target: https://github.com/grap/odoo-addons-logistics/tree/16.0/joint_buying_base
     :alt: grap/odoo-addons-logistics
 
 |badge1| |badge2| |badge3|
 
 Add a new menu entry named "Joint Buyings"
 
-Add a new mixin model ``joint.buying.mixin``, that adds a field ``is_joint_buying``.
+Add a new mixin model ``joint.buying.mixin``, that adds a field
+``is_joint_buying``.
 
-* "Joint Buying" item have a ``company_id`` set to ``False``.
+- "Joint Buying" item have a ``company_id`` set to ``False``.
+- Joint Buying" items are available, only if the key ``joint_buying`` is
+  present in the context.
 
-* Joint Buying" items are available, only if the key ``joint_buying`` is present in the context.
-
-
-Add the possibility to have "Joint Buying" partners in a specific menu entry.
+Add the possibility to have "Joint Buying" partners in a specific menu
+entry.
 
 **Table of contents**
 
@@ -44,7 +49,7 @@ Bug Tracker
 Bugs are tracked on `GitHub Issues <https://github.com/grap/odoo-addons-logistics/issues>`_.
 In case of trouble, please check there if your issue has already been reported.
 If you spotted it first, help us to smash it by providing a detailed and welcomed
-`feedback <https://github.com/grap/odoo-addons-logistics/issues/new?body=module:%20joint_buying_base%0Aversion:%2012.0%0A%0A**Steps%20to%20reproduce**%0A-%20...%0A%0A**Current%20behavior**%0A%0A**Expected%20behavior**>`_.
+`feedback <https://github.com/grap/odoo-addons-logistics/issues/new?body=module:%20joint_buying_base%0Aversion:%2016.0%0A%0A**Steps%20to%20reproduce**%0A-%20...%0A%0A**Current%20behavior**%0A%0A**Expected%20behavior**>`_.
 
 Do not contact contributors directly about support or help with technical issues.
 
@@ -52,32 +57,34 @@ Credits
 =======
 
 Authors
-~~~~~~~
+-------
 
 * GRAP
 * La Jardinière
 * Hashbang
 
 Contributors
-~~~~~~~~~~~~
+------------
 
-* Sylvain LE GAL (https://www.twitter.com/legalsylvain)
-* Lucien DELEU (https://github.com/LucienD)
+- Sylvain LE GAL (https://www.twitter.com/legalsylvain)
+- Lucien DELEU (https://github.com/LucienD)
 
 Other credits
-~~~~~~~~~~~~~
+-------------
 
-* Module Icon come from https://icon-icons.com/fr/icone/groupe/129531
+- Module Icon come from https://icon-icons.com/fr/icone/groupe/129531
 
 The development of this module has been financially supported by:
 
-* La Région Auvergne Rhône-Alpes
+- La Région Auvergne Rhône-Alpes
 
-.. figure:: https://raw.githubusercontent.com/grap/odoo-addons-logistics/12.0/joint_buying_base/static/description/logo_region_auvergne_rhone_alpes.png
+|image1|
+
+.. |image1| image:: https://raw.githubusercontent.com/grap/odoo-addons-logistics/16.0/joint_buying_base/static/description/logo_region_auvergne_rhone_alpes.png
 
 Maintainers
-~~~~~~~~~~~
+-----------
 
-This module is part of the `grap/odoo-addons-logistics <https://github.com/grap/odoo-addons-logistics/tree/12.0/joint_buying_base>`_ project on GitHub.
+This module is part of the `grap/odoo-addons-logistics <https://github.com/grap/odoo-addons-logistics/tree/16.0/joint_buying_base>`_ project on GitHub.
 
 You are welcome to contribute.

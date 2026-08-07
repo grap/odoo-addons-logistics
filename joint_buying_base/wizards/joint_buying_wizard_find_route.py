@@ -119,7 +119,6 @@ class JointBuyingWizardFindRoute(models.TransientModel):
 
     @api.model
     def _create_following_node(self, tree, parent, line, destination):
-
         partner = line.arrival_point_id
         date = line.arrival_date
         best_main_node = (

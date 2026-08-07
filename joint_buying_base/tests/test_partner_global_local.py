@@ -10,7 +10,6 @@ from .test_abstract import TestAbstract
 
 @tagged("post_install", "-at_install")
 class TestModule(TestAbstract):
-
     # Test Section
     def test_601_double_link_supplier_to_joint_buying_partner(self):
         # Create a new supplier in a company linked to a joint buying partner should
@@ -25,7 +24,6 @@ class TestModule(TestAbstract):
         self.ResPartner.create(vals)
 
         with self.assertRaises(ValidationError):
-
             # We should not have the possibility to link two suppliers
             # to the same joint buying supplier for the same company
             vals.update(

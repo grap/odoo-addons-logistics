@@ -9,7 +9,6 @@ from .test_abstract import TestAbstract
 
 @tagged("post_install", "-at_install")
 class TestModule(TestAbstract):
-
     # Test Section
     def test_501_create_partner_subscription_by_company(self):
         self.env.user.company_id.joint_buying_auto_subscribe = False

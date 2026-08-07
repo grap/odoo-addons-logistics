@@ -11,7 +11,6 @@ _logger = logging.getLogger(__name__)
 
 @openupgrade.migrate()
 def migrate(env, version):
-
     _logger.info(
         "Fix bad computation of joint_buying_transport_request.start_date field."
     )

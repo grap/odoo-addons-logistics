@@ -11,7 +11,6 @@ _logger = logging.getLogger(__name__)
 
 @openupgrade.migrate()
 def migrate(env, version):
-
     _logger.info(
         "Drop start_hour and arrival_hour column in joint_buying_tour_line"
         " as there are now computed on the fly"
