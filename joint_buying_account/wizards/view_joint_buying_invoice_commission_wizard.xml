@@ -39,7 +39,6 @@ License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl.html).
         <field name="binding_model_id" ref="base.model_res_partner" />
         <field name="res_model">joint.buying.invoice.commission.wizard</field>
         <field name="type">ir.actions.act_window</field>
-        <field name="view_type">form</field>
         <field name="view_mode">form</field>
         <field name="target">new</field>
     </record>

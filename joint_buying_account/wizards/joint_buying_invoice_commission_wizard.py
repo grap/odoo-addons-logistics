@@ -47,7 +47,6 @@ class JointBuyingInvoiceCommissionWizard(models.TransientModel):
         return fields.date(today.year, today.month, 1) - timedelta(days=1)
 
     # Action Section
-    @api.multi
     def invoice_commission(self):
         self.ensure_one()
         self._check_values()

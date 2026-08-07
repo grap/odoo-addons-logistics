@@ -97,7 +97,6 @@ class JointbuyingInvoiceCommissionWizardLine(models.TransientModel):
         )
 
     # Prepare Section
-    @api.multi
     def _create_invoice(self):
         AccountInvoice = self.env["account.invoice"]
         AccountInvoiceLine = self.env["account.invoice.line"]
@@ -155,7 +154,6 @@ class JointbuyingInvoiceCommissionWizardLine(models.TransientModel):
             line.name = line_name
         return invoice
 
-    @api.multi
     def _prepare_invoice(self):
         self.ensure_one()
         return {
@@ -164,7 +162,6 @@ class JointbuyingInvoiceCommissionWizardLine(models.TransientModel):
             "type": "out_invoice",
         }
 
-    @api.multi
     def _prepare_invoice_line(self, invoice, grouped_order):
         self.ensure_one()
 
