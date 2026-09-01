@@ -1,0 +1,194 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+    Copyright (C) 2021 - Today: GRAP (http://www.grap.coop)
+    @author: Sylvain LE GAL (https://twitter.com/legalsylvain)
+    License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl.html).
+-->
+<odoo>
+
+    <record id="supplier_demo_joint_buying" model="res.partner">
+        <field name="name">Joint Buying Supplier for Your Company</field>
+        <field name="street">street</field>
+        <field name="street2">street 2</field>
+        <field name="city">City</field>
+        <field name="zip">01000</field>
+        <field name="country_id" ref="base.fr"/>
+        <field name="phone">01.01.01.01.01</field>
+        <field name="email">email@mywebsite.com</field>
+        <field name="website">https://mywebsite.com</field>
+        <field name="is_joint_buying" eval="True"/>
+        <field name="customer" eval="False"/>
+        <field name="supplier" eval="True"/>
+        <field name="company_id" eval="False"/>
+        <field name="joint_buying_pivot_company_id" ref="base.main_company"/>
+    </record>
+
+    <record id="supplier_fumet_dombes" model="res.partner">
+        <field name="name">le Fumet des Dombes</field>
+        <field name="street">Z.I. Sure</field>
+        <field name="street2">93 rue de l'artisanat</field>
+        <field name="city">Saint-André-de-Corcy</field>
+        <field name="zip">01390</field>
+        <field name="country_id" ref="base.fr"/>
+        <field name="phone">04.72.26.44.42</field>
+        <field name="website">https://www.lefumetdesdombes.com</field>
+        <field name="is_joint_buying" eval="True"/>
+        <field name="customer" eval="False"/>
+        <field name="supplier" eval="True"/>
+        <field name="company_id" eval="False"/>
+        <field name="joint_buying_pivot_company_id" ref="joint_buying_base.company_1GG"/>
+        <field name="category_id" eval="[
+            (4, ref('joint_buying_base.partner_category_fishmonger')),
+            (4, ref('joint_buying_base.partner_category_poultry')),
+        ]"/>
+    </record>
+
+    <record id="supplier_salaison_devidal" model="res.partner">
+        <field name="name">Salaison Devidal</field>
+        <field name="street">La Besse</field>
+        <field name="city">Yssingeaux</field>
+        <field name="zip">43200</field>
+        <field name="country_id" ref="base.fr"/>
+        <field name="is_joint_buying" eval="True"/>
+        <field name="customer" eval="False"/>
+        <field name="supplier" eval="True"/>
+        <field name="company_id" eval="False"/>
+        <field name="joint_buying_pivot_company_id" ref="joint_buying_base.company_CDA"/>
+        <field name="joint_buying_subscribed_company_ids" eval="[
+            (4, ref('joint_buying_base.company_LSE')),
+            (4, ref('joint_buying_base.company_3PP')),
+            (4, ref('joint_buying_base.company_CDA')),
+        ]"/>
+        <field name="category_id" eval="[
+            (4, ref('joint_buying_base.partner_category_delicatessen')),
+        ]"/>
+    </record>
+
+    <record id="supplier_oscar_morell" model="res.partner">
+        <field name="name">Frutas Oscar Morell S.L.</field>
+        <field name="street"> Calle Chiva 61</field>
+        <field name="city">Cheste</field>
+        <field name="zip">46380</field>
+        <field name="email">frutasmorell@gmail.com</field>
+        <field name="country_id" ref="base.es"/>
+        <field name="is_joint_buying" eval="True"/>
+        <field name="customer" eval="False"/>
+        <field name="supplier" eval="True"/>
+        <field name="company_id" eval="False"/>
+        <field name="comment">The Spanish orange season begins in mid-November and ends in mid-June.</field>
+        <field name="joint_buying_pivot_company_id" ref="joint_buying_base.company_3PP"/>
+        <field name="category_id" eval="[
+            (4, ref('joint_buying_base.partner_category_fruits')),
+        ]"/>
+    </record>
+
+    <record id="supplier_benoit_ronzon" model="res.partner">
+        <field name="name">Benoit Ronzon</field>
+        <field name="street">Les Places</field>
+        <field name="city">St Clément les Places</field>
+        <field name="zip">69930</field>
+        <field name="email">benoit.ronzon@gmail.com</field>
+        <field name="country_id" ref="base.es"/>
+        <field name="is_joint_buying" eval="True"/>
+        <field name="joint_buying_commission_rate">5</field>
+        <field name="customer" eval="False"/>
+        <field name="supplier" eval="True"/>
+        <field name="company_id" eval="False"/>
+        <field name="joint_buying_pivot_company_id" ref="joint_buying_base.company_LSE"/>
+        <field name="joint_buying_subscribed_company_ids" eval="[
+            (4, ref('joint_buying_base.company_LSE')),
+            (4, ref('joint_buying_base.company_VEV')),
+            (4, ref('joint_buying_base.company_CDA')),
+        ]"/>
+        <field name="category_id" eval="[
+            (4, ref('joint_buying_base.partner_category_vegetable')),
+        ]"/>
+    </record>
+
+    <record id="place_romagnieu" model="res.partner">
+        <field name="name">Romagnieu</field>
+        <field name="street">Impasse du Martarey</field>
+        <field name="city">Romagnieu</field>
+        <field name="zip">38480 </field>
+        <field name="country_id" ref="base.fr"/>
+        <field name="is_joint_buying" eval="True"/>
+        <field name="is_joint_buying_stage" eval="True"/>
+        <field name="joint_buying_is_durable_storage" eval="True"/>
+        <field name="customer" eval="False"/>
+        <field name="supplier" eval="False"/>
+        <field name="company_id" eval="False"/>
+        <field name="partner_latitude">45.56650356987968</field>
+        <field name="partner_longitude">5.637343182496801</field>
+    </record>
+
+    <record id="supplier_ELD_at_3PP" model="res.partner">
+        <field name="name">Elodia D @ Three Peas</field>
+        <field name="company_id" ref="joint_buying_base.company_3PP"/>
+        <field name="customer" eval="False"/>
+        <field name="supplier" eval="True"/>
+        <field name="joint_buying_global_partner_id" model="res.partner" eval="obj().env.ref('joint_buying_base.company_ELD').joint_buying_partner_id.id"/>
+    </record>
+
+    <record id="customer_3PP_at_ELD" model="res.partner">
+        <field name="name">Three Peas @ Elodia D</field>
+        <field name="company_id" ref="joint_buying_base.company_ELD"/>
+        <field name="customer" eval="True"/>
+        <field name="supplier" eval="False"/>
+        <field name="joint_buying_global_partner_id" model="res.partner" eval="obj().env.ref('joint_buying_base.company_3PP').joint_buying_partner_id.id"/>
+    </record>
+
+    <record id="customer_1GG_at_ELD" model="res.partner">
+        <field name="name">A Grain in the Granary @ Elodia D</field>
+        <field name="company_id" ref="joint_buying_base.company_ELD"/>
+        <field name="customer" eval="True"/>
+        <field name="supplier" eval="False"/>
+        <field name="joint_buying_global_partner_id" model="res.partner" eval="obj().env.ref('joint_buying_base.company_1GG').joint_buying_partner_id.id"/>
+    </record>
+
+    <record id="supplier_fumet_dombes_at_3PP" model="res.partner">
+        <field name="name">Fumet des Dombes @ Three Peas</field>
+        <field name="company_id" ref="joint_buying_base.company_3PP"/>
+        <field name="customer" eval="False"/>
+        <field name="supplier" eval="True"/>
+        <field name="joint_buying_global_partner_id" ref="supplier_fumet_dombes"/>
+    </record>
+
+    <record id="supplier_benoit_ronzon_at_LOG" model="res.partner">
+        <field name="name">Benoit Ronzon @ Logistics</field>
+        <field name="company_id" ref="joint_buying_base.company_LOG"/>
+        <field name="customer" eval="False"/>
+        <field name="supplier" eval="True"/>
+        <field name="joint_buying_global_partner_id" ref="supplier_benoit_ronzon"/>
+    </record>
+
+
+    <function model="res.partner" name="write">
+        <value model="res.company" eval="[
+            obj().browse(ref('joint_buying_base.company_PZI')).joint_buying_partner_id.id
+            ]"
+        />
+        <value eval="{
+            'joint_buying_subscribed_company_ids': [
+                (4, ref('joint_buying_base.company_1GG')),
+                (4, ref('joint_buying_base.company_3PP')),
+            ]
+        }"/>
+    </function>
+
+    <function model="res.partner" name="write">
+        <value model="res.company" eval="[
+            obj().browse(ref('joint_buying_base.company_ELD')).joint_buying_partner_id.id
+            ]"
+        />
+        <value eval="{
+            'joint_buying_subscribed_company_ids': [
+                (4, ref('joint_buying_base.company_1GG')),
+                (4, ref('joint_buying_base.company_3PP')),
+                (4, ref('joint_buying_base.company_EDC')),
+                (4, ref('joint_buying_base.company_CRB')),
+                (4, ref('joint_buying_base.company_VEV')),
+            ]
+        }"/>
+    </function>
+
+</odoo>

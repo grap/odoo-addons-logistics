@@ -1,0 +1,254 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+Copyright (C) 2023 - Today: GRAP (http://www.grap.coop)
+@author: Sylvain LE GAL (https://twitter.com/legalsylvain)
+License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl.html).
+-->
+<odoo>
+
+    <record id="action_server_module_immediate_install" model="ir.actions.server">
+        <field name="name">Compute Route</field>
+        <field name="type">ir.actions.server</field>
+        <field name="model_id" ref="model_joint_buying_transport_request" />
+        <field name="binding_model_id" ref="model_joint_buying_transport_request" />
+        <field name="state">code</field>
+        <field name="code">records.button_compute_tour()</field>
+    </record>
+
+    <record id="action_request_2_wizard_find_route" model="ir.actions.act_window">
+        <field name="name">Find the Best Route</field>
+        <field name="type">ir.actions.act_window</field>
+        <field name="res_model">joint.buying.wizard.find.route</field>
+        <field name="view_mode">form</field>
+        <field name="target">new</field>
+    </record>
+
+    <record id="view_joint_buying_transport_request_search" model="ir.ui.view">
+        <field name="model">joint.buying.transport.request</field>
+        <field name="arch" type="xml">
+            <search>
+                <field name="start_partner_id"/>
+                <field name="arrival_partner_id"/>
+                <field name="origin"/>
+                <field name="state"/>
+                <field name="request_type"/>
+                <field name="supplier_id"/>
+                <filter name="filter_amount_positive_or_manual" string="Positive Amount or Manual" domain="['|', '|',
+                    ('amount_untaxed','!=', 0),
+                    ('total_weight','!=', 0),
+                    ('request_type','=', 'manual'),
+                ]"/>
+                <filter string="Request Type" name="groupby_request_type" domain="[]" context="{'group_by':'request_type'}"/>
+            </search>
+        </field>
+    </record>
+
+    <record id="view_joint_buying_transport_request_calendar" model="ir.ui.view">
+        <field name="model">joint.buying.transport.request</field>
+        <field name="arch" type="xml">
+            <calendar date_start="start_date" date_stop="arrival_date" color="supplier_id">
+                <field name="name"/>
+                <field name="total_weight"/>
+                <field name="amount_untaxed"/>
+            </calendar>
+        </field>
+    </record>
+
+    <record id="view_joint_buying_transport_request_tree" model="ir.ui.view">
+        <field name="model">joint.buying.transport.request</field>
+        <field name="arch" type="xml">
+            <tree
+                decoration-muted="amount_untaxed == 0 and total_weight == 0"
+                decoration-info="state == 'to_compute' and (amount_untaxed != 0 or total_weight != 0)"
+                decoration-danger="state == 'not_computable' and (amount_untaxed != 0 or total_weight != 0)"
+                >
+                <field name="availability_date"/>
+                <field name="supplier_id"/>
+                <field name="start_partner_id"/>
+                <field name="arrival_partner_id"/>
+                <field name="start_date"/>
+                <field name="arrival_date"/>
+                <field name="amount_untaxed" sum="Total"/>
+                <field name="total_weight" sum="Total"/>
+                <field name="request_type" invisible="1"/>
+                <field name="origin"/>
+                <field name="state"/>
+            </tree>
+        </field>
+    </record>
+
+    <record id="view_joint_buying_transport_request_form" model="ir.ui.view">
+        <field name="model">joint.buying.transport.request</field>
+        <field name="arch" type="xml">
+            <form>
+                <header>
+                    <button string="Compute Route" name="button_compute_tour" icon="fa-map-signs" type="object" class="oe_highlight"
+                            attrs="{'invisible': [('state', '=', 'computed')]}"
+                    />
+                    <button string="Compute Route" name="button_compute_tour" icon="fa-map-signs" type="object"
+                            attrs="{'invisible': [('state', '!=', 'computed')]}"
+                    />
+                    <button type="action" string="Find the Best Route (Wizard)" class="oe_highlight"
+                            attrs="{'invisible': [('state', '=', 'computed')]}"
+                            name="%(joint_buying_base.action_request_2_wizard_find_route)d"
+                            groups="base.group_erp_manager"
+                        />
+                    <button type="action" string="Find the Best Route (Wizard)"
+                            attrs="{'invisible': [('state', '!=', 'computed')]}"
+                            name="%(joint_buying_base.action_request_2_wizard_find_route)d"
+                            groups="base.group_erp_manager"
+                        />
+
+                    <field name="request_type" widget="statusbar"/>
+                    <field name="state" widget="statusbar"/>
+                </header>
+                <sheet>
+                    <div class="oe_button_box" name="button_box">
+                        <button type="object" name="button_see_tours" class="oe_stat_button" icon="fa-list">
+                            <div class="o_form_field o_stat_info">
+                                <span class="o_stat_value">
+                                    <field name="tour_qty" widget="integer"/>
+                                </span>
+                                <span class="o_stat_text">Tours</span>
+                            </div>
+                        </button>
+                    </div>
+                    <div class="oe_title">
+                        <h1>
+                            <field name="name"/>
+                        </h1>
+                    </div>
+                    <group colspan="4">
+                        <group colspan="4">
+                            <field name="manual_availability_date" attrs="{
+                                'invisible': [('can_change_date', '=', False)],
+                                'required': [('can_change_date', '=', True)],
+                                }"/>
+                            <field name="availability_date" attrs="{
+                                'invisible': [('can_change_date', '=', True)],
+                                }"/>
+                            <field name="can_change_date" invisible="1" />
+                            <field name="can_change_extra_data" invisible="1"/>
+                            <field name="can_change_partners" invisible="1"/>
+                        </group>
+                        <group>
+                            <field name="start_date" attrs="{'invisible': [('start_date', '=', False)]}"/>
+                            <field name="manual_start_partner_id"  attrs="{
+                                'invisible': [('can_change_partners', '=', False)],
+                                'required': [('can_change_partners', '=', True)],
+                                }"/>
+                            <field name="start_partner_id" attrs="{
+                                'invisible': [('can_change_partners', '=', True)],
+                                }"/>
+                            <field name="manual_total_weight" attrs="{
+                                'invisible': [('can_change_extra_data', '=', False)],
+                                'required': [('can_change_extra_data', '=', True)],
+                                }"/>
+                            <field name="total_weight" attrs="{
+                                'invisible': [('can_change_extra_data', '=', True)],
+                                }"/>
+                            <field name="manual_supplier_id" attrs="{
+                                'invisible': [('can_change_extra_data', '=', False)],
+                                'required': [('can_change_extra_data', '=', True)],
+                                }"/>
+                            <field name="supplier_id" attrs="{
+                                'invisible': [('can_change_extra_data', '=', True)],
+                                }"/>
+                        </group>
+                        <group>
+                            <field name="arrival_date" attrs="{'invisible': [('arrival_date', '=', False)]}"/>
+                            <field name="manual_arrival_partner_id" attrs="{
+                                'invisible': [('can_change_partners', '=', False)],
+                                'required': [('can_change_partners', '=', True)],
+                                }"/>
+                            <field name="arrival_partner_id" attrs="{
+                                'invisible': [('can_change_partners', '=', True)],
+                                }"/>
+                            <field name="manual_amount_untaxed" attrs="{
+                                'invisible': [('can_change_extra_data', '=', False)],
+                                'required': [('can_change_extra_data', '=', True)],
+                                }"/>
+                            <field name="amount_untaxed" attrs="{
+                                'invisible': [('can_change_extra_data', '=', True)],
+                                }"/>
+                        </group>
+                        <group colspan="4">
+                            <field name="manual_description" widget="html" attrs="{
+                                'invisible': [('can_change_extra_data', '=', False)],
+                                'required': [('can_change_extra_data', '=', True)],
+                                }"/>
+                            <field name="description" widget="html" attrs="{
+                                'invisible': [('can_change_extra_data', '=', True)],
+                                }"/>
+
+                        </group>
+                    </group>
+                    <notebook>
+                        <page string="Transport Lines">
+                                <field name="line_ids">
+                                    <tree>
+                                        <field name="start_action_type"/>
+                                        <field name="start_date"/>
+                                        <field name="starting_point_id"/>
+                                        <field name="arrival_action_type"/>
+                                        <field name="arrival_date"/>
+                                        <field name="arrival_point_id"/>
+                                        <field name="distance" sum="Total"/>
+                                    </tree>
+                                </field>
+                        </page>
+                    </notebook>
+                </sheet>
+                <div class="oe_chatter">
+                    <field name="message_follower_ids" widget="mail_followers"/>
+                    <field name="activity_ids" widget="mail_activity"/>
+                    <field name="message_ids" widget="mail_thread"/>
+                </div>
+            </form>
+        </field>
+    </record>
+
+    <record id="view_joint_buying_transport_request_pivot" model="ir.ui.view">
+        <field name="model">joint.buying.transport.request</field>
+        <field name="arch" type="xml">
+            <pivot>
+                <field name="start_date" interval="month" type="row"/>
+                <field name="request_type" type="col"/>
+                <field name="total_weight" type="measure"/>
+                <field name="amount_untaxed" type="measure"/>
+            </pivot>
+        </field>
+    </record>
+
+    <record id="view_joint_buying_transport_request_graph" model="ir.ui.view">
+        <field name="model">joint.buying.transport.request</field>
+        <field name="arch" type="xml">
+            <graph stacked="True">
+                <field name="start_date" type="row"/>
+                <field name="request_type" type="col"/>
+                <field name="total_weight" type="measure"/>
+                <field name="amount_untaxed" type="measure"/>
+            </graph>
+        </field>
+    </record>
+
+    <record id="action_joint_buying_transport_request" model="ir.actions.act_window">
+        <field name="name">Transport Requests</field>
+        <field name="type">ir.actions.act_window</field>
+        <field name="res_model">joint.buying.transport.request</field>
+        <field name="view_mode">tree,calendar,pivot,graph,form</field>
+        <field name="context">{
+            "search_default_filter_amount_positive_or_manual": 1,
+            "joint_buying": 1,
+        }</field>
+    </record>
+
+    <menuitem id="menu_joint_buying_transport_request"
+        name="Transport Requests"
+        parent="joint_buying_base.menu_transport_main"
+        action="action_joint_buying_transport_request"
+        sequence="200"
+        groups="joint_buying_base.group_joint_buying_user"
+    />
+
+</odoo>

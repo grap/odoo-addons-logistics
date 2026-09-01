@@ -1,0 +1,229 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+Copyright (C) 2021 - Today: GRAP (http://www.grap.coop)
+@author: Sylvain LE GAL (https://twitter.com/legalsylvain)
+License AGPL-3.0 or later (http://www.gnu.org/licenses/agpl.html).
+-->
+<odoo>
+
+    <record id="action_tour_2_wizard_set_tour" model="ir.actions.act_window">
+        <field name="name">Set Tour</field>
+        <field name="type">ir.actions.act_window</field>
+        <field name="res_model">joint.buying.wizard.set.tour</field>
+        <field name="view_mode">form</field>
+        <field name="target">new</field>
+    </record>
+
+    <record id="view_joint_buying_tour_search" model="ir.ui.view">
+        <field name="model">joint.buying.tour</field>
+        <field name="arch" type="xml">
+            <search>
+                <field name="name"/>
+                <field name="start_date"/>
+                <field name="carrier_id"/>
+                <field name="type_id"/>
+                <field name="is_on_my_way"/>
+                <field name="starting_point_id"/>
+                <field name="arrival_point_id"/>
+                <filter string="Carrier" name="groupby_carrier_id" domain="[]" context="{'group_by':'carrier_id'}"/>
+                <filter string="Type" name="groupby_type_id" domain="[]" context="{'group_by':'type_id'}"/>
+            </search>
+        </field>
+    </record>
+
+    <record id="view_joint_buying_tour_calendar" model="ir.ui.view">
+        <field name="model">joint.buying.tour</field>
+        <field name="arch" type="xml">
+            <calendar date_start="start_date" date_stop="end_date" color="carrier_id">
+                <field name="carrier_id"/>
+                <field name="summary"/>
+            </calendar>
+        </field>
+    </record>
+
+    <record id="view_joint_buying_tour_tree" model="ir.ui.view">
+        <field name="model">joint.buying.tour</field>
+        <field name="arch" type="xml">
+            <tree>
+                <field name="start_date"/>
+                <field name="end_date"/>
+                <field name="name"/>
+                <field name="carrier_id"/>
+                <field name="starting_point_id"/>
+                <field name="arrival_point_id" attrs="{'invisible': [('is_loop', '=', True)]}"/>
+                <field name="stop_qty"/>
+                <field name="distance"/>
+                <field name="loaded_weight"/>
+                <field name="loaded_amount_untaxed"/>
+                <field name="is_loop" invisible="1"/>
+            </tree>
+        </field>
+    </record>
+
+    <record id="view_joint_buying_tour_form" model="ir.ui.view">
+        <field name="model">joint.buying.tour</field>
+        <field name="arch" type="xml">
+            <form>
+                <header>
+                     <button type="action" class="oe_highlight" string="Configure Steps"
+                            name="%(joint_buying_base.action_tour_2_wizard_set_tour)d"
+                            attrs="{'invisible': [('stop_qty', '!=', 0)]}"/>
+                     <button type="action" string="Configure"
+                            name="%(joint_buying_base.action_tour_2_wizard_set_tour)d"
+                            attrs="{'invisible': [('stop_qty', '=', 0)]}"/>
+                    <button type="object" name="estimate_route" string="Estimate Route"/>
+                </header>
+                <sheet>
+                    <div class="oe_button_box" name="button_box">
+                        <button
+                            class="oe_stat_button" string="Steps"
+                            type="object"
+                            name="see_steps"
+                            icon="fa-map">
+                        </button>
+                        <button type="object" name="button_see_transport_requests" class="oe_stat_button" icon="fa-list">
+                            <div class="o_form_field o_stat_info">
+                                <span class="o_stat_value">
+                                    <field name="transport_request_qty" widget="integer"/>
+                                </span>
+                                <span class="o_stat_text">Transport Requests</span>
+                            </div>
+                        </button>
+                    </div>
+                    <div class="oe_title">
+                        <h1><field name="name"/></h1>
+                        <h2><field name="summary"/></h2>
+                    </div>
+                    <group>
+                        <group colspan="4" col="4">
+                            <field name="start_date"/>
+                            <field name="end_date"/>
+                            <field name="type_id"/>
+                            <field name="carrier_id"/>
+                            <field name="starting_point_id"/>
+                            <field name="arrival_point_id" attrs="{'invisible': [('is_loop', '=', True)]}"/>
+                            <field name="duration" widget="float_time"/>
+                            <field name="distance"/>
+                            <field name="loaded_weight"/>
+                            <field name="loaded_amount_untaxed"/>
+                            <field name="stop_qty"/>
+                            <field name="cost"/>
+                        </group>
+                    </group>
+                    <notebook colspan="4">
+                        <page name="description" string="Description">
+                            <p class="alert alert-warning" role="alert">
+Route information is given as an indication only!<br/>
+There may be traffic jams, delays, unforeseen events, etc...
+                            </p>
+                            <field name="description" widget="html" />
+                        </page>
+                        <page name="lines" string="Steps">
+                            <field name="line_ids">
+                                <tree>
+                                    <field name="sequence" invisible="1"/>
+                                    <field name="start_date" invisible="1"/>
+                                    <field name="start_hour" widget="float_time"/>
+                                    <field name="arrival_date" invisible="1"/>
+                                    <field name="arrival_hour" widget="float_time"/>
+                                    <field name="currency_id" invisible="1" />
+                                    <field name="sequence_type"/>
+                                    <field name="starting_point_id"
+                                        attrs="{'invisible': [('sequence_type', '!=', 'journey')]}"/>
+                                    <field name="arrival_point_id"
+                                        attrs="{'invisible': [('sequence_type', '!=', 'journey')]}"/>
+                                    <field name="duration" widget="float_time" sum="Total Duration"/>
+                                    <field name="distance"
+                                        attrs="{'invisible': [('sequence_type', '!=', 'journey')]}"
+                                        sum="Total Distance"/>
+                                </tree>
+                            </field>
+                        </page>
+                        <page name="extra_informations" string="Economic Informations">
+                            <group col="6">
+                                <group string="Settings" colspan="2">
+                                    <field name="currency_id" groups="base.group_multi_currency"/>
+                                    <newline/>
+                                    <field name="hourly_cost"/>
+                                    <field name="kilometer_cost"/>
+                                    <field name="is_loop" invisible="1"/>
+                                </group>
+                                <group string="Cost allocation" colspan="2">
+                                    <field name="toll_cost"/>
+                                    <field name="salary_cost"/>
+                                    <field name="vehicle_cost"/>
+                                </group>
+                            </group>
+                        </page>
+                    </notebook>
+                </sheet>
+                <div class="oe_chatter">
+                    <field name="message_follower_ids" widget="mail_followers"/>
+                    <field name="activity_ids" widget="mail_activity"/>
+                    <field name="message_ids" widget="mail_thread"/>
+                </div>
+            </form>
+        </field>
+    </record>
+
+    <record id="view_joint_buying_tour_pivot" model="ir.ui.view">
+        <field name="model">joint.buying.tour</field>
+        <field name="arch" type="xml">
+            <pivot>
+                <field name="start_date" interval="month" type="row"/>
+                <field name="carrier_id" type="col"/>
+                <field name="loaded_weight" type="measure"/>
+                <field name="loaded_amount_untaxed" type="measure"/>
+            </pivot>
+        </field>
+    </record>
+
+    <record id="view_joint_buying_tour_graph" model="ir.ui.view">
+        <field name="model">joint.buying.tour</field>
+        <field name="arch" type="xml">
+            <graph stacked="True">
+                <field name="start_date" type="row"/>
+                <field name="carrier_id" type="col"/>
+                <field name="loaded_weight" type="measure"/>
+                <field name="loaded_amount_untaxed" type="measure"/>
+            </graph>
+        </field>
+    </record>
+
+    <record id="action_joint_buying_tour_my" model="ir.actions.act_window">
+        <field name="name">My Tours</field>
+        <field name="type">ir.actions.act_window</field>
+        <field name="res_model">joint.buying.tour</field>
+        <field name="view_mode">calendar,tree,pivot,graph,form</field>
+        <field name="domain">[('is_on_my_way', '=', True)]</field>
+        <field name="context">{
+            "joint_buying": 1,
+        }</field>
+    </record>
+
+    <menuitem id="menu_joint_buying_tour_my"
+        name="My Tours"
+        parent="menu_tour"
+        action="action_joint_buying_tour_my"
+        sequence="10"
+    />
+
+    <record id="action_joint_buying_tour_all" model="ir.actions.act_window">
+        <field name="name">All Tours</field>
+        <field name="type">ir.actions.act_window</field>
+        <field name="res_model">joint.buying.tour</field>
+        <field name="view_mode">calendar,tree,pivot,graph,form</field>
+        <field name="context">{
+            "joint_buying": 1,
+        }</field>
+    </record>
+
+
+    <menuitem id="menu_joint_buying_tour_all"
+        name="All Tours"
+        parent="menu_tour"
+        action="action_joint_buying_tour_all"
+        sequence="20"
+    />
+
+</odoo>

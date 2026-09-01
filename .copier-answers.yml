@@ -23,21 +23,11 @@ repo_description: '
     ## Authors
 
     * La Jardinière
-
     * GRAP (https://www.grap.coop/)
 
     ## Contributors
 
     * Sylvain LE GAL <https://twitter.com/legalsylvain>
-
-
-    ## Funders
-
-    The development of this module has been financially supported by:
-
-    * La Région Auvergne Rhône-Alpes
-
-    ![La Région Auvergne Rhône-Alpes](./static/logo_region_auvergne_rhone_alpes.png)
 
     '
 repo_name: Main repository for GRAP Logistics modules
