@@ -43,7 +43,7 @@
         "wizards/view_joint_buying_wizard_set_tour.xml",
         "wizards/joint_buying_wizard_find_route.xml",
         "reports/report_joint_buying_tour.xml",
-        "reports/report.xml",
+        # "reports/report.xml",
     ],
     "demo": [
         "demo/res_company.xml",

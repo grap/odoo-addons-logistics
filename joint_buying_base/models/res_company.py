@@ -89,7 +89,7 @@ class ResCompany(models.Model):
             "partner_latitude": self.partner_latitude,
             "partner_longitude": self.partner_longitude,
             "vat": self.vat,
-            "image": self.logo,
+            "image_1920": self.logo,
         }
         for field_name in ADDRESS_FIELDS:
             value = getattr(self, field_name)
@@ -105,9 +105,9 @@ class ResCompany(models.Model):
         # Handle relate fields, that are not correctly initialized
         # at the creation.
         if "is_joint_buying_customer" in vals:
-            partner_vals["customer"] = vals.get("is_joint_buying_customer")
+            partner_vals["is_customer"] = vals.get("is_joint_buying_customer")
         if "is_joint_buying_supplier" in vals:
-            partner_vals["supplier"] = vals.get("is_joint_buying_supplier")
+            partner_vals["is_supplier"] = vals.get("is_joint_buying_supplier")
             partner_vals["joint_buying_subscribed_company_ids"] = [
                 (
                     6,
